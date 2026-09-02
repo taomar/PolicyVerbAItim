@@ -231,6 +231,8 @@ A case is evaluated against retrieved policies, not the entire corpus. The discl
 
 Verify by recomputing `decision_hash` per the declared `hash_basis` (currently `case_decision_v2_lang_verification`). Do not compare response bytes.
 
+The canonical form is SHA-256 over JSON with **keys sorted at every level, no insignificant whitespace, and non-ASCII characters kept as themselves** — `json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False)`. `apps/consume-demo/src/lib/canonicalHash.ts` reproduces that rule in TypeScript, with tests, if you need one to port; both implementations return the same digest for the same input.
+
 A Decision Light response and the receipt replayed from its `decision_id` are **different envelopes** — `case_decision_light_v1` and `case_decision_v2` — carrying the **same `decision_hash`**. That is the point of the seal: it covers the decision-defining content, not the serialisation. It is also the evidence that Light stores the same full receipt.
 
 `decision_hash` proves the stored receipt is unaltered. It is not a determinism guarantee — a language model is in the decision path. For a repeatable answer, replay `decision_id` or reuse an idempotency key.
