@@ -15,6 +15,10 @@ const base = {
   scenario: 'A supplier in a sanctioned jurisdiction asks about 90-day terms.',
   reasoningEffort: 'medium' as const,
   callingSystemIdentity: 'playground-demo',
+  // The default position of the retrieval control, stated once here so every
+  // test below reads as "and the default mode", and the rule-mode tests read
+  // as the deliberate departure they are.
+  ruleRetrieval: false,
 }
 
 describe('buildRequestBody — what actually goes on the wire', () => {
@@ -79,6 +83,56 @@ describe('buildRequestBody — what actually goes on the wire', () => {
     expect(body).not.toHaveProperty('reasoning_effort')
     expect(body).not.toHaveProperty('calling_system_identity')
     expect(body).not.toHaveProperty('additional_instructions')
+  })
+})
+
+describe('rule_retrieval — a key that only exists when it is true', () => {
+  it('omits the key entirely in the default mode', () => {
+    // Not `false`. The server's idempotency preimage omits it when false, so a
+    // body carrying `"rule_retrieval": false` would put a key on the wire that
+    // the hash this page previews beside it does not contain.
+    const body = buildRequestBody({ ...base, additionalInstructions: '' })
+    expect('rule_retrieval' in body).toBe(false)
+    expect(JSON.stringify(body)).not.toContain('rule_retrieval')
+  })
+
+  it('writes it as true when the caller asked for rule retrieval', () => {
+    const body = buildRequestBody({
+      ...base,
+      additionalInstructions: '',
+      ruleRetrieval: true,
+    })
+    expect(body.rule_retrieval).toBe(true)
+  })
+
+  it('applies the same rule to the light retrieval body', () => {
+    const off = buildPolicyRequestBody({ ...base, additionalInstructions: '' })
+    const on = buildPolicyRequestBody({
+      ...base,
+      additionalInstructions: '',
+      ruleRetrieval: true,
+    })
+
+    expect(off).toEqual({ scenario: base.scenario })
+    expect(on).toEqual({ scenario: base.scenario, rule_retrieval: true })
+  })
+
+  it('keeps it last in wire order, after every field that predates it', () => {
+    const json = requestBodyJson({
+      ...base,
+      additionalInstructions: 'guide',
+      ruleRetrieval: true,
+    })
+    const order = [
+      'scenario',
+      'reasoning_effort',
+      'calling_system_identity',
+      'additional_instructions',
+      'rule_retrieval',
+    ]
+    const indices = order.map((key) => json.indexOf(`"${key}"`))
+    expect(indices.every((index) => index >= 0)).toBe(true)
+    expect(indices).toEqual([...indices].sort((a, b) => a - b))
   })
 })
 

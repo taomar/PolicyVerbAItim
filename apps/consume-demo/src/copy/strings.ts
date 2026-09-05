@@ -58,6 +58,12 @@ export const DOCKET = {
   policiesMetadataNote:
     'Only the scenario and correlation ID are sent. There is no caller guidance, idempotency key, verdict, or stored receipt.',
   reasoningLabel: 'Reasoning effort',
+  retrievalLabel: 'Retrieval',
+  retrievalPolicyOption: 'Policy (default)',
+  retrievalRuleOption: 'Rule (experimental)',
+  retrievalPolicyHint: 'Policies are searched first; a strong rule can raise the policy holding it.',
+  retrievalRuleHint:
+    'Experimental. Rules are searched on their own terms. Recall is unproven, and a project whose index cannot serve it is refused, not quietly answered.',
   callingSystemLabel: 'Calling system',
   callingSystemDefault: 'playground-demo',
   callingSystemCaption: 'Recorded on the decision so the receipt shows who called.',

@@ -145,6 +145,14 @@ export interface RequestRef {  scenario: string
   scope: string
   requested_provision_id?: string | null
   reasoning_effort_requested: string
+  /**
+   * Which retrieval mode the caller asked for. `false` -- and what a receipt
+   * written before the field existed reports, which is nothing -- means the
+   * standard policy retrieval. Which mode actually *ran* is
+   * `retrieval.retrieval_mode`; the request is refused rather than downgraded,
+   * so on a completed receipt the two agree.
+   */
+  rule_retrieval?: boolean
   received_at: string
 }
 
@@ -328,6 +336,12 @@ export interface PolicyRef {
 export interface RetrievalRef {
   status: string
   method?: string | null
+  /** `policy` (the default) or `rule` (experimental). Null on older receipts. */
+  retrieval_mode?: string | null
+  rule_mode_parent_cap?: number | null
+  rule_mode_parents?: number | null
+  rule_mode_rule_hits?: number | null
+  rule_mode_policy_fallback?: number | null
   precision_mode?: string | null
   semantic_candidates?: number | null
   semantic_selected?: number | null
@@ -885,10 +899,18 @@ export interface CaseDecisionRequestBody {
   reasoning_effort: ReasoningEffort
   calling_system_identity: string
   additional_instructions?: string
+  /**
+   * Optional, and written only when true. `false` and absent mean the same
+   * thing to the server, and the server's own idempotency preimage omits the
+   * key when it is false -- so writing it would put a key on the wire that the
+   * hash this page previews does not contain.
+   */
+  rule_retrieval?: true
 }
 
 export interface PolicyRetrievalRequestBody {
   scenario: string
+  rule_retrieval?: true
 }
 
 export type ReasoningEffort = 'low' | 'medium' | 'high'

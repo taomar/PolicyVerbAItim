@@ -656,6 +656,143 @@ describe('the request inspector, before anything is submitted', () => {
   })
 })
 
+describe('the retrieval mode control', () => {
+  it('defaults to policy retrieval and sends no field for it', async () => {
+    // The default is the *absence* of the key, not a false value: the server
+    // hashes the field only when true, so a body carrying `false` would put a
+    // key on the wire that this page's own hash preview does not contain.
+    const calls = installFetch(standardHandler())
+    render(<App />)
+
+    expect(
+      (screen.getByTestId('playground-retrieval-mode') as HTMLSelectElement).value,
+    ).toBe('policy')
+
+    await fillAndSubmit()
+
+    const sent = calls.find((call) => call.url.endsWith('/case'))
+    const body = JSON.parse(String(sent?.init?.body)) as Record<string, unknown>
+    expect('rule_retrieval' in body).toBe(false)
+    expect(String(sent?.init?.body)).not.toContain('rule_retrieval')
+  })
+
+  it('sends rule_retrieval only after the caller selects it, and previews it first', async () => {
+    const calls = installFetch(standardHandler())
+    render(<App />)
+
+    fireEvent.change(screen.getByTestId('playground-scenario'), {
+      target: { value: 'a distinctive scenario string' },
+    })
+    expect(screen.getByTestId('inspector-tab-json').textContent).not.toContain('rule_retrieval')
+
+    fireEvent.change(screen.getByTestId('playground-retrieval-mode'), {
+      target: { value: 'rule' },
+    })
+
+    // Previewed before it is sent, in both the JSON and the raw HTTP tab —
+    // which is the whole point of the inspector.
+    expect(screen.getByTestId('inspector-tab-json').textContent).toContain('"rule_retrieval": true')
+    expect(screen.getByTestId('inspector-tab-http').textContent).toContain('"rule_retrieval":true')
+
+    await fillAndSubmit()
+
+    const sent = calls.find((call) => call.url.endsWith('/case'))
+    expect(JSON.parse(String(sent?.init?.body)).rule_retrieval).toBe(true)
+  })
+
+  it('carries the mode into the policy JSON request too', async () => {
+    const response = {
+      correlation_id: 'policy-correlation',
+      policy_set: { id: 'set-1', key: 'demo-project', name: 'Demo project' },
+      query: { scenario: 'show annual leave policies', scenario_hash: 'a'.repeat(64) },
+      retrieval: { status: 'narrowed', retrieval_mode: 'rule' },
+      policies: [],
+      size: { combined_chars: 0, budget_chars: 200000, oversize: false },
+      latency_ms: 12,
+    }
+    const calls = installFetch((url) => {
+      if (url.includes('/active-version')) {
+        return jsonResponse({ id: 'version-1', version_number: 7 })
+      }
+      if (url.includes('/api/policy-sets/')) {
+        return jsonResponse({ id: 'set-1', key: 'demo-project', name: 'Demo project' })
+      }
+      return jsonResponse(response, { headers: { 'X-Correlation-Id': 'policy-correlation' } })
+    })
+
+    render(<App />)
+
+    fireEvent.click(screen.getByRole('radio', { name: /Policy JSON/ }))
+    fireEvent.change(screen.getByTestId('playground-retrieval-mode'), {
+      target: { value: 'rule' },
+    })
+    fireEvent.change(screen.getByTestId('playground-project-key'), {
+      target: { value: 'demo-project' },
+    })
+    fireEvent.change(screen.getByTestId('playground-subscription-key'), {
+      target: { value: SUBSCRIPTION_KEY },
+    })
+    fireEvent.change(screen.getByTestId('playground-scenario'), {
+      target: { value: 'show annual leave policies' },
+    })
+    await waitFor(() =>
+      expect((screen.getByTestId('playground-submit') as HTMLButtonElement).disabled).toBe(false),
+    )
+    fireEvent.click(screen.getByTestId('playground-submit'))
+
+    expect(await screen.findByTestId('playground-policy-result')).toBeTruthy()
+
+    const sent = calls.find((call) =>
+      call.url.endsWith('/api/policy-decisions/demo-project/policies'),
+    )
+    expect(JSON.parse(String(sent?.init?.body))).toEqual({
+      scenario: 'show annual leave policies',
+      rule_retrieval: true,
+    })
+  })
+
+  it('rotates the previewed request hash when the mode changes', () => {
+    installFetch(standardHandler())
+    render(<App />)
+
+    fireEvent.change(screen.getByTestId('playground-project-key'), {
+      target: { value: 'demo-project' },
+    })
+    fireEvent.change(screen.getByTestId('playground-scenario'), {
+      target: { value: 'a distinctive scenario string' },
+    })
+
+    const before = screen.getByTestId('inspector-request-hash').textContent
+    fireEvent.change(screen.getByTestId('playground-retrieval-mode'), {
+      target: { value: 'rule' },
+    })
+    const after = screen.getByTestId('inspector-request-hash').textContent
+
+    expect(before).toBeTruthy()
+    expect(after).not.toBe(before)
+
+    // And going back returns the original: the preview is a function of the
+    // request, not of the edit history — which is what makes a 409 predictable.
+    fireEvent.change(screen.getByTestId('playground-retrieval-mode'), {
+      target: { value: 'policy' },
+    })
+    expect(screen.getByTestId('inspector-request-hash').textContent).toBe(before)
+  })
+
+  it('labels rule retrieval as experimental rather than recommending it', () => {
+    installFetch(standardHandler())
+    render(<App />)
+
+    const control = screen.getByTestId('playground-retrieval-mode')
+    expect(control.textContent).toContain('Policy (default)')
+    expect(control.textContent).toContain('Rule (experimental)')
+
+    fireEvent.change(control, { target: { value: 'rule' } })
+    const docket = screen.getByTestId('playground-docket')
+    expect(docket.textContent).toContain('Experimental')
+  })
+})
+
 describe('the docket', () => {
   it('holds the subscription key in a masked field that can be revealed, with autocomplete off', () => {
     installFetch(standardHandler())

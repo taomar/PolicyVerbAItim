@@ -964,6 +964,14 @@ button {
   min-width: 140px;
 }
 
+/* The retrieval selector sits beside the effort selector and reads the same
+   way, but its caption is a sentence rather than a label, so it is given room
+   to hold one line at the widths this row actually uses. */
+.compose__retrieval {
+  flex: 1 1 260px;
+  min-width: 200px;
+}
+
 .compose__controls .btn--primary {
   margin-left: auto;
 }

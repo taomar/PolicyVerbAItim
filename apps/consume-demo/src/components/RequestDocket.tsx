@@ -90,6 +90,8 @@ export interface DocketProps {
   onResponseMode: (value: PlaygroundResponseMode) => void
   reasoningEffort: ReasoningEffort
   onReasoningEffort: (value: ReasoningEffort) => void
+  ruleRetrieval: boolean
+  onRuleRetrieval: (value: boolean) => void
   callingSystemIdentity: string
   onCallingSystemIdentity: (value: string) => void
   idempotencyKey: string
@@ -460,6 +462,25 @@ export function RequestDocket(props: DocketProps) {
 
       <div className="compose__send">
         <div className="compose__controls">
+          <div className="field compose__retrieval">
+            <label className="field__label" htmlFor="pg-retrieval">
+              {DOCKET.retrievalLabel}
+            </label>
+            <select
+              id="pg-retrieval"
+              className="select"
+              data-testid="playground-retrieval-mode"
+              value={props.ruleRetrieval ? 'rule' : 'policy'}
+              onChange={(event) => props.onRuleRetrieval(event.target.value === 'rule')}
+            >
+              <option value="policy">{DOCKET.retrievalPolicyOption}</option>
+              <option value="rule">{DOCKET.retrievalRuleOption}</option>
+            </select>
+            <p className="field__caption">
+              {props.ruleRetrieval ? DOCKET.retrievalRuleHint : DOCKET.retrievalPolicyHint}
+            </p>
+          </div>
+
           {decisionRequest ? (
             <div className="field compose__effort">
               <label className="field__label" htmlFor="pg-effort">

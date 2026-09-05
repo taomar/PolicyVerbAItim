@@ -167,6 +167,7 @@ export default function App() {
   const [scenario, setScenario] = useState('')
   const [responseMode, setResponseMode] = useState<PlaygroundResponseMode>('decision')
   const [reasoningEffort, setReasoningEffort] = useState<ReasoningEffort>('medium')
+  const [ruleRetrieval, setRuleRetrieval] = useState(false)
   const [callingSystemIdentity, setCallingSystemIdentity] = useState('playground-demo')
   const [idempotencyKey, setIdempotencyKey] = useState('')
   const [additionalInstructions, setAdditionalInstructions] = useState('')
@@ -208,8 +209,14 @@ export default function App() {
   }, [])
 
   const values: DocketValues = useMemo(
-    () => ({ scenario, reasoningEffort, callingSystemIdentity, additionalInstructions }),
-    [scenario, reasoningEffort, callingSystemIdentity, additionalInstructions],
+    () => ({
+      scenario,
+      reasoningEffort,
+      callingSystemIdentity,
+      additionalInstructions,
+      ruleRetrieval,
+    }),
+    [scenario, reasoningEffort, callingSystemIdentity, additionalInstructions, ruleRetrieval],
   )
   const draftSignature = useMemo(
     () =>
@@ -253,8 +260,9 @@ export default function App() {
         provisionId: null,
         reasoningEffort,
         additionalInstructions: normalisedGuidance,
+        ruleRetrieval,
       }),
-    [projectKey, scenario, reasoningEffort, normalisedGuidance],
+    [projectKey, scenario, reasoningEffort, normalisedGuidance, ruleRetrieval],
   )
   const clientScenarioHash = useMemo(() => scenarioHash(scenario.trim()), [scenario])
   const clientGuidanceHash = useMemo(
@@ -638,6 +646,11 @@ export default function App() {
           onReasoningEffort={(value) => {
             clearRenderedResponse()
             setReasoningEffort(value)
+          }}
+          ruleRetrieval={ruleRetrieval}
+          onRuleRetrieval={(value) => {
+            clearRenderedResponse()
+            setRuleRetrieval(value)
           }}
           callingSystemIdentity={callingSystemIdentity}
           onCallingSystemIdentity={(value) => {

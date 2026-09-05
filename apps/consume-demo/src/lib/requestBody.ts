@@ -18,12 +18,20 @@ export interface DocketValues {
   reasoningEffort: ReasoningEffort
   callingSystemIdentity: string
   additionalInstructions: string
+  /**
+   * Whether the caller asked for the experimental rule-first retrieval mode.
+   *
+   * A boolean rather than an optional, because the playground always has an
+   * answer to it — the control has two positions and one of them is selected.
+   * What is optional is whether the key reaches the wire; see below.
+   */
+  ruleRetrieval: boolean
 }
 
 /**
  * The body, exactly as it will be serialised.
  *
- * Two rules, and both are about honesty rather than tidiness:
+ * Three rules, and all of them are about honesty rather than tidiness:
  *
  *   * The scenario and the guidance are **trimmed**, and the inspector shows
  *     the trimmed value, so what is displayed is what is sent.
@@ -33,6 +41,14 @@ export interface DocketValues {
  *     receipt will echo back and that verification will compare; an absent key
  *     is an absence the receipt can report as one. Collapsing the two would
  *     make the receipt unable to say which of them happened.
+ *
+ *   * `rule_retrieval` is written **only when it is true**, and this is the one
+ *     that matters most. The server binds an idempotency key to a canonical
+ *     hash that includes the field only when true, precisely so a key issued
+ *     before the field existed still replays. Sending `"rule_retrieval": false`
+ *     would be equivalent *to the server* and would make this page's own preview
+ *     lie about the request in the one place a reader compares them: the wire
+ *     form would carry a key the hash preimage does not.
  */
 export function buildRequestBody(values: DocketValues): CaseDecisionRequestBody {
   const guidance = values.additionalInstructions.trim()
@@ -47,12 +63,25 @@ export function buildRequestBody(values: DocketValues): CaseDecisionRequestBody 
     body.additional_instructions = guidance
   }
 
+  if (values.ruleRetrieval) {
+    body.rule_retrieval = true
+  }
+
   return body
 }
 
-/** The light endpoint receives only the query it uses to filter policies. */
+/**
+ * The light endpoint receives only the query it uses to filter policies — and,
+ * when it was asked for, the retrieval mode. Omitted when false for the same
+ * reason it is omitted from the decision body: the default is the absence of
+ * the field, not a value of it.
+ */
 export function buildPolicyRequestBody(values: DocketValues): PolicyRetrievalRequestBody {
-  return { scenario: values.scenario.trim() }
+  const body: PolicyRetrievalRequestBody = { scenario: values.scenario.trim() }
+  if (values.ruleRetrieval) {
+    body.rule_retrieval = true
+  }
+  return body
 }
 
 /**

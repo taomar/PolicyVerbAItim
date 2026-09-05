@@ -107,6 +107,46 @@ describe('the hashes the receipt can be checked against', () => {
       ),
     )
   })
+
+  it('leaves the preimage untouched when rule retrieval is off or absent', () => {
+    // The compatibility rule, asserted against the literal preimage rather than
+    // against another call of the same function: a key issued before the field
+    // existed was bound to exactly these bytes, and a `false` written into them
+    // would rotate the hash of every request that never sent the field.
+    const preimage =
+      '{"additional_instructions":"","policy_set_key":"k","provision_id":null,"reasoning_effort":"low","scenario":"s"}'
+    const common = {
+      policySetKey: 'k',
+      scenario: 's',
+      provisionId: null,
+      reasoningEffort: 'low',
+      additionalInstructions: '',
+    }
+
+    expect(requestHash(common)).toBe(sha256Hex(preimage))
+    expect(requestHash({ ...common, ruleRetrieval: false })).toBe(sha256Hex(preimage))
+  })
+
+  it('writes rule_retrieval into the preimage only when it is true', () => {
+    const common = {
+      policySetKey: 'k',
+      scenario: 's',
+      provisionId: null,
+      reasoningEffort: 'low',
+      additionalInstructions: '',
+    }
+
+    const ruleMode = requestHash({ ...common, ruleRetrieval: true })
+
+    expect(ruleMode).toBe(
+      sha256Hex(
+        '{"additional_instructions":"","policy_set_key":"k","provision_id":null,"reasoning_effort":"low","rule_retrieval":true,"scenario":"s"}',
+      ),
+    )
+    // Two requests differing only in the mode are two requests: reusing one
+    // idempotency key across them must be a 409, never a replay.
+    expect(ruleMode).not.toBe(requestHash(common))
+  })
 })
 
 describe('normaliseAdditionalInstructions', () => {

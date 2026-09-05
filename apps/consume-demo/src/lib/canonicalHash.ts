@@ -158,6 +158,14 @@ export function additionalInstructionsHash(value: string): string {
  * correlation id is retrying the same request. The guidance is deliberately
  * included -- it changes the answer the caller receives, so replaying an
  * earlier receipt against changed guidance would be a silent substitution.
+ *
+ * `rule_retrieval` is included **only when true**, mirroring the server exactly.
+ * The asymmetry is the compatibility rule, not a shortcut: every key issued
+ * before the field existed was bound to a preimage with no such member, so a
+ * `false` written into it would rotate the hash of every request that never
+ * sent the field. A request that omits it and a request that sends `false`
+ * therefore preview the identical hash -- which is what makes the displayed
+ * value comparable against a receipt written months ago.
  */
 export function requestHash(input: {
   policySetKey: string
@@ -165,14 +173,19 @@ export function requestHash(input: {
   provisionId?: string | null
   reasoningEffort: string
   additionalInstructions: string
+  ruleRetrieval?: boolean
 }): string {
-  return canonicalHash({
+  const preimage: { [key: string]: Json } = {
     policy_set_key: input.policySetKey,
     scenario: input.scenario,
     provision_id: input.provisionId || null,
     reasoning_effort: input.reasoningEffort,
     additional_instructions: input.additionalInstructions,
-  })
+  }
+  if (input.ruleRetrieval) {
+    preimage.rule_retrieval = true
+  }
+  return canonicalHash(preimage)
 }
 
 /**
