@@ -63,6 +63,8 @@ from policy_platform.infrastructure.search.policy_index import (  # noqa: E402
     MANIFEST_READY,
     POLICY_INDEX_FRESHNESS_CURRENT,
     POLICY_INDEX_FRESHNESS_STALE,
+    RULE_INDEX_SCOPE_ALL,
+    RULE_INDEX_SCOPE_LARGE_POLICY,
     _document_was_accepted,
     _acknowledged_keys,
     indexable_rules,
@@ -333,15 +335,57 @@ def test_a_filter_scopes_to_one_project_one_kind_and_one_rendering_contract():
 
 
 @pytest.mark.parametrize("corpus", sorted(CORPORA))
-def test_a_provision_at_or_under_the_threshold_gets_no_rule_documents(corpus: str):
-    """Below the threshold a provision is one statement and its own document carries it."""
+def test_a_provision_at_or_under_the_threshold_gets_no_rule_documents_under_the_older_scope(
+    corpus: str,
+):
+    """The rule that held before every published rule was given a document.
+
+    Below the threshold a provision is one statement and its own document
+    carries it. That scope is still selectable and still exact, and it is what
+    `policy_rule_content_filter(large_policies_only=True)` reproduces as a
+    predicate over the wider corpus — which is how the default retrieval mode
+    keeps behaving as it always did.
+    """
 
     for count in (1, LARGE_POLICY_RULE_THRESHOLD - 1, LARGE_POLICY_RULE_THRESHOLD):
-        assert indexable_rules(_projection(rule_count=count, corpus=corpus)) == []
+        assert (
+            indexable_rules(
+                _projection(rule_count=count, corpus=corpus),
+                scope=RULE_INDEX_SCOPE_LARGE_POLICY,
+            )
+            == []
+        )
 
-        _outcome, search, _client = _rebuild([_projection(rule_count=count, corpus=corpus)])
-        assert search.of_type(CONTENT_TYPE_RULE) == []
+
+@pytest.mark.parametrize("corpus", sorted(CORPORA))
+def test_every_published_rule_gets_a_document_under_the_current_scope(corpus: str):
+    """A rule with no document cannot be found by a rule query, whatever its parent's size.
+
+    That is the whole reason the build's scope moved: rule-first retrieval asks
+    the index for rules, and a small provision's rules were simply not there to
+    be asked about. Their absence read as "nothing here bears", which is the one
+    thing retrieval must never say when it has not looked.
+    """
+
+    for count in (1, LARGE_POLICY_RULE_THRESHOLD - 1, LARGE_POLICY_RULE_THRESHOLD):
+        projection = _projection(rule_count=count, corpus=corpus)
+        assert len(indexable_rules(projection)) == count
+
+        _outcome, search, _client = _rebuild([projection])
+        assert len(search.of_type(CONTENT_TYPE_RULE)) == count
         assert len(search.of_type(CONTENT_TYPE_POLICY)) == 1
+        # And every one of them carries its provision's size, which is the field
+        # the default retrieval mode filters on to select exactly the older set.
+        assert {doc["rule_count"] for doc in search.of_type(CONTENT_TYPE_RULE)} == {count}
+
+
+def test_the_manifest_records_which_rules_the_corpus_holds_documents_for():
+    """A rule-first query has to be able to ask, and be refused when the answer is no."""
+
+    _outcome, search, _client = _rebuild([_projection(rule_count=4)])
+
+    assert search.final_manifest["rule_index_scope"] == RULE_INDEX_SCOPE_ALL
+    assert RULE_INDEX_SCOPE_ALL != RULE_INDEX_SCOPE_LARGE_POLICY
 
 
 @pytest.mark.parametrize("corpus", sorted(CORPORA))
@@ -406,28 +450,33 @@ def test_rebuilding_the_same_corpus_twice_produces_the_same_documents():
     assert search_b.deleted == []  # nothing was stale
 
 
-def test_a_provision_that_shrinks_below_the_threshold_loses_its_rule_documents():
+def test_a_provision_that_shrinks_keeps_only_the_rule_documents_it_still_has():
     """The shrink case, which stable ids make automatic rather than special.
 
-    A schedule edited down to a handful of rules is a provision again. Its rule
-    documents are not in the new live set, so the stale sweep removes them — and
-    it must, because a row that no longer exists must not be findable.
+    A schedule edited down to a handful of rules is a smaller provision. The
+    rule documents of the rows it no longer holds are not in the new live set,
+    so the stale sweep removes them — and it must, because a row that no longer
+    exists must not be findable. What it keeps is a document per surviving rule,
+    which is what the current scope means.
     """
 
     large = _projection(rule_count=30)
     _first, search_a, _ = _rebuild([large])
-    stale_rule_ids = [doc["id"] for doc in search_a.of_type(CONTENT_TYPE_RULE)]
-    assert stale_rule_ids
+    previous_rule_ids = [doc["id"] for doc in search_a.of_type(CONTENT_TYPE_RULE)]
+    assert previous_rule_ids
 
     small = _projection(rule_count=4)
-    indexed = stale_rule_ids + [
+    indexed = previous_rule_ids + [
         policy_document_id(policy_version_id=_VERSION, provision_key="a-provision")
     ]
     _second, search_b, _ = _rebuild([small], search=RecordingSearch(existing_ids=indexed))
 
-    assert search_b.of_type(CONTENT_TYPE_RULE) == []
-    assert search_b.deleted, "the rule documents of a shrunk provision were left behind"
-    assert set(stale_rule_ids) <= set(search_b.deleted[0])
+    surviving = {doc["id"] for doc in search_b.of_type(CONTENT_TYPE_RULE)}
+    assert len(surviving) == 4
+    assert search_b.deleted, "the rule documents of removed rows were left behind"
+    removed = set(previous_rule_ids) - surviving
+    assert removed <= set(search_b.deleted[0])
+    assert surviving.isdisjoint(set(search_b.deleted[0]))
 
 
 def test_a_new_version_removes_the_documents_of_the_one_it_replaces():

@@ -208,6 +208,7 @@ from policy_platform.infrastructure.search.policy_index import (
     policy_document_id,
     policy_index_filter,
     policy_index_name,
+    policy_rule_content_filter,
     read_projection_readiness,
 )
 from policy_platform.infrastructure.search.search_client import AzureSearchClient
@@ -2234,10 +2235,14 @@ async def _answer_project_scope(
                             query_text=scenario,
                             vector=vector,
                             top=RETRIEVAL_RULE_SCAN,
-                            filter_expr=policy_index_filter(
+                            # The corpus now holds every published rule,
+                            # while policy mode keeps querying the legacy large-
+                            # provision subset until a caller explicitly asks for
+                            # native rule retrieval.
+                            filter_expr=policy_rule_content_filter(
                                 policy_set.key,
-                                content_type=CONTENT_TYPE_RULE,
                                 projection_profile=readiness.profile,
+                                large_policies_only=True,
                             ),
                             select=_RULE_SELECT,
                             semantic_configuration=POLICY_SEMANTIC_CONFIG,

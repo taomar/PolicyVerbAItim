@@ -130,6 +130,47 @@ from policy_platform.infrastructure.projection.text_canonical import canonical_t
 #: See the module docstring for why this number and not a measured one.
 LARGE_POLICY_RULE_THRESHOLD: Final[int] = 15
 
+#: WHICH RULES A BUILD GIVES THEIR OWN DOCUMENT.
+#:
+#: The vocabulary lives here, at the boundary the build and the quality check
+#: both already depend on, rather than in either of them. It was previously
+#: declared in the build alone, and the consequence was measured rather than
+#: imagined: the build moved to `all_published_rules_v1` while the quality check
+#: went on enforcing the older contract, and the first rebuild that got far
+#: enough to be validated was failed 36 times for holding exactly the corpus it
+#: was asked to hold. A shared decision needs a shared definition.
+RULE_INDEX_SCOPE_LARGE_POLICY: Final[str] = "large_policy_rules_v1"
+RULE_INDEX_SCOPE_ALL: Final[str] = "all_published_rules_v1"
+
+#: Every scope this code knows how to reason about. A value outside it is not
+#: assumed to mean anything, least of all the most permissive thing.
+RULE_INDEX_SCOPES: Final[frozenset[str]] = frozenset(
+    {RULE_INDEX_SCOPE_LARGE_POLICY, RULE_INDEX_SCOPE_ALL}
+)
+
+
+def rule_documents_expected(
+    rule_count: int, *, scope: str, threshold: int = LARGE_POLICY_RULE_THRESHOLD
+) -> bool:
+    """Whether a provision holding ``rule_count`` rules should carry rule documents.
+
+    One function, used by the build to decide and by the quality check to judge,
+    so the two cannot drift again. The mapping from scope to expectation is
+    explicit here — not a threshold of zero passed in from somewhere, which
+    would read as a magic number at every call site and would say nothing about
+    *why* a small provision is suddenly allowed children.
+
+    Raises for a scope it does not recognise. An unknown scope is not a licence
+    to guess: guessing "all" would bless any corpus at all, and guessing
+    "large policy" would condemn a correct one.
+    """
+
+    if scope == RULE_INDEX_SCOPE_ALL:
+        return rule_count > 0
+    if scope == RULE_INDEX_SCOPE_LARGE_POLICY:
+        return rule_count > threshold
+    raise ValueError(f"unknown rule index scope: {scope!r}")
+
 #: How many rules of a large policy may be selected for one case. Deliberately
 #: equal to the threshold: a sliced policy is then never larger, in rules, than
 #: one that passes through whole.

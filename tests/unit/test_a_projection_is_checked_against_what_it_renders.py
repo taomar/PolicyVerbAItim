@@ -55,6 +55,9 @@ os.environ.setdefault("ALEMBIC_DATABASE_URL", "******localhost:5433/test")
 
 from policy_platform.infrastructure.projection.policy_rule_slice import (  # noqa: E402
     LARGE_POLICY_RULE_THRESHOLD,
+    RULE_INDEX_SCOPE_ALL,
+    RULE_INDEX_SCOPE_LARGE_POLICY,
+    rule_documents_expected,
 )
 from policy_platform.infrastructure.quality.projection_faithfulness import (  # noqa: E402
     FINDING_AUTHORITATIVE_RECORD_EMBEDDED,
@@ -68,6 +71,7 @@ from policy_platform.infrastructure.quality.projection_faithfulness import (  # 
     FINDING_PROJECTED_TEXT_EMPTY,
     FINDING_RULE_DOCUMENTS_MISSING,
     FINDING_RULE_DOCUMENTS_UNEXPECTED,
+    FINDING_RULE_INDEX_SCOPE_UNKNOWN,
     FINDING_SIMILARITY_BELOW_FLOOR,
     FINDING_VERSION_MISMATCH,
     PROJECTION_QUALITY_PROFILE,
@@ -184,13 +188,24 @@ def _documents(*, profile: str = _PROFILE, overrides: dict | None = None) -> lis
     return docs
 
 
-def _records(*, rule_count: int = LARGE_POLICY_RULE_THRESHOLD + 1) -> list[ProjectedRecord]:
+def _records(
+    *,
+    rule_count: int = LARGE_POLICY_RULE_THRESHOLD + 1,
+    expected_rule_documents: int | None = None,
+) -> list[ProjectedRecord]:
     records = [
         ProjectedRecord(
             document_id=_PARENT_ID,
             policy_version_id=_VERSION,
             source_text=_PARENT_TEXT,
             provision_rule_count=rule_count,
+            # Defaults to the number of children this fixture actually builds, so
+            # the ordinary corpus is internally consistent. Override it to state
+            # a provision that should have had more documents than it has —
+            # which a zero-versus-nonzero coverage test cannot express at all.
+            expected_rule_documents=(
+                len(_RULE_TEXTS) if expected_rule_documents is None else expected_rule_documents
+            ),
         )
     ]
     for key, text in _RULE_TEXTS.items():
@@ -405,6 +420,272 @@ class TestTheDeterministicHalf:
         report = _validate(records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD))
 
         assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report)
+
+
+class TestRuleCoverageIsJudgedAgainstTheScopeTheBuildUsed:
+    """Which provisions should have rule documents depends on the contract.
+
+    THE DEFECT THIS PREVENTS, WHICH ALREADY HAPPENED
+
+    The build moved from `large_policy_rules_v1` — a document per rule only for
+    provisions past the threshold — to `all_published_rules_v1`, where every
+    published rule has one, because a rule with no document cannot be found by a
+    rule query at all. The quality check went on enforcing the older contract.
+
+    Nothing failed for weeks, because no rebuild got far enough to be validated.
+    The first one that did was failed 36 times, each finding correctly reporting
+    that a small provision had rule documents — against an expectation the build
+    had been deliberately changed to stop meeting. The corpus was right and the
+    judge was out of date.
+
+    So the expectation is now derived from the scope, by the same function the
+    build decides with, and every case below is stated for both scopes. A test
+    that only checked one would have passed throughout the entire drift.
+    """
+
+    def _parent_only(self, *, rule_count: int):
+        records = [r for r in _records(rule_count=rule_count) if r.parent_document_id is None]
+        documents = [d for d in _documents() if d["parent_document_id"] is None]
+        return {"records": records, "documents": documents}
+
+    def test_a_small_provision_with_rule_documents_passes_under_all(self) -> None:
+        """The exact corpus that was failed 36 times. Under the scope it was
+        built to, it is correct."""
+
+        report = _validate(
+            records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD),
+            rule_index_scope=RULE_INDEX_SCOPE_ALL,
+        )
+
+        assert FINDING_RULE_DOCUMENTS_UNEXPECTED not in _codes(report)
+        assert report.state == QUALITY_PASSED
+
+    def test_the_same_corpus_is_still_refused_under_the_legacy_scope(self) -> None:
+        """The legacy control, unweakened. The old contract still means what it
+        meant; this change did not delete it, it stopped applying it to corpora
+        that were never built under it."""
+
+        report = _validate(
+            records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD),
+            rule_index_scope=RULE_INDEX_SCOPE_LARGE_POLICY,
+        )
+
+        assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report)
+
+    def test_a_small_provision_without_rule_documents_is_refused_under_all(self) -> None:
+        """The other direction, and the reason the scope moved. Under `all`, a
+        small provision's rules must be individually findable; a corpus that
+        omits them is complete by count and silent where it matters."""
+
+        report = _validate(
+            **self._parent_only(rule_count=LARGE_POLICY_RULE_THRESHOLD),
+            rule_index_scope=RULE_INDEX_SCOPE_ALL,
+        )
+
+        assert FINDING_RULE_DOCUMENTS_MISSING in _codes(report)
+
+    def test_that_same_omission_is_correct_under_the_legacy_scope(self) -> None:
+        report = _validate(
+            **self._parent_only(rule_count=LARGE_POLICY_RULE_THRESHOLD),
+            rule_index_scope=RULE_INDEX_SCOPE_LARGE_POLICY,
+        )
+
+        assert FINDING_RULE_DOCUMENTS_MISSING not in _codes(report)
+
+    def test_a_large_provision_without_rule_documents_is_refused_under_both(self) -> None:
+        """The case both contracts agree on, which is what makes the two tests
+        above a distinction rather than a disagreement."""
+
+        for scope in (RULE_INDEX_SCOPE_ALL, RULE_INDEX_SCOPE_LARGE_POLICY):
+            report = _validate(
+                **self._parent_only(rule_count=LARGE_POLICY_RULE_THRESHOLD + 1),
+                rule_index_scope=scope,
+            )
+
+            assert FINDING_RULE_DOCUMENTS_MISSING in _codes(report), scope
+
+    def test_a_provision_with_no_rules_at_all_needs_none_under_either(self) -> None:
+        for scope in (RULE_INDEX_SCOPE_ALL, RULE_INDEX_SCOPE_LARGE_POLICY):
+            report = _validate(**self._parent_only(rule_count=0), rule_index_scope=scope)
+
+            assert FINDING_RULE_DOCUMENTS_MISSING not in _codes(report), scope
+            assert FINDING_RULE_DOCUMENTS_UNEXPECTED not in _codes(report), scope
+
+    def test_an_unknown_scope_is_refused_rather_than_guessed(self) -> None:
+        """Neither answer is safe to assume. Reading an unknown scope as `all`
+        would bless any corpus at all; reading it as legacy would condemn a
+        correct one. A validation that cannot say which contract applies has not
+        validated, and says so."""
+
+        report = _validate(
+            records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD),
+            rule_index_scope="some_future_scope_v9",
+        )
+
+        assert FINDING_RULE_INDEX_SCOPE_UNKNOWN in _codes(report)
+        assert report.passed is False
+
+    def test_an_empty_scope_is_not_read_as_permission(self) -> None:
+        report = _validate(
+            records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD),
+            rule_index_scope="",
+        )
+
+        assert FINDING_RULE_INDEX_SCOPE_UNKNOWN in _codes(report)
+
+    def test_the_default_is_legacy_so_an_unstamped_corpus_keeps_its_own_contract(
+        self,
+    ) -> None:
+        """A manifest written before the scope field existed carries none. It was
+        built when legacy was the only contract, so legacy is what it must be
+        judged by — and defaulting the other way would silently pass corpora
+        nobody ever checked."""
+
+        report = _validate(records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD))
+
+        assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report)
+
+    def test_the_expectation_comes_from_the_shared_function_the_build_decides_with(
+        self,
+    ) -> None:
+        """The anti-drift claim itself, stated as an assertion rather than a hope.
+
+        If someone reintroduces a private threshold here, this fails: the two
+        sides would once again be free to disagree, which is the whole defect.
+        """
+
+        assert rule_documents_expected(1, scope=RULE_INDEX_SCOPE_ALL) is True
+        assert rule_documents_expected(0, scope=RULE_INDEX_SCOPE_ALL) is False
+        assert (
+            rule_documents_expected(
+                LARGE_POLICY_RULE_THRESHOLD, scope=RULE_INDEX_SCOPE_LARGE_POLICY
+            )
+            is False
+        )
+        assert (
+            rule_documents_expected(
+                LARGE_POLICY_RULE_THRESHOLD + 1, scope=RULE_INDEX_SCOPE_LARGE_POLICY
+            )
+            is True
+        )
+        with pytest.raises(ValueError):
+            rule_documents_expected(1, scope="not_a_scope")
+
+    def test_the_build_selects_rules_through_that_same_function(self) -> None:
+        """Gap this closed: the build had its own copy of the branch.
+
+        `indexable_rules` is the build's side of the decision. Driving it through
+        the same helper the validator uses is what makes "they cannot disagree" a
+        fact rather than a comment, so it is asserted from the build's side too.
+        """
+
+        from policy_platform.infrastructure.search.policy_index import indexable_rules
+
+        small = {"rules": [{"rule_id": f"r{i}"} for i in range(3)]}
+        large = {"rules": [{"rule_id": f"r{i}"} for i in range(LARGE_POLICY_RULE_THRESHOLD + 1)]}
+
+        assert len(indexable_rules(small, scope=RULE_INDEX_SCOPE_ALL)) == 3
+        assert indexable_rules(small, scope=RULE_INDEX_SCOPE_LARGE_POLICY) == []
+        assert len(indexable_rules(large, scope=RULE_INDEX_SCOPE_LARGE_POLICY)) == (
+            LARGE_POLICY_RULE_THRESHOLD + 1
+        )
+
+    def test_changing_the_shared_helper_moves_both_sides_together(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """The mutation control for the shared decision.
+
+        With the helper forced to "never", the build selects no rules AND the
+        validator stops expecting any — both sides move, which is the property
+        that stops one drifting from the other. If either had kept a private
+        copy, one of these two assertions would fail.
+        """
+
+        from policy_platform.infrastructure.search import policy_index as build_side
+        from policy_platform.infrastructure.quality import projection_faithfulness as judge
+
+        monkeypatch.setattr(build_side, "rule_documents_expected", lambda *a, **k: False)
+        monkeypatch.setattr(judge, "rule_documents_expected", lambda *a, **k: False)
+
+        large = {"rules": [{"rule_id": f"r{i}"} for i in range(LARGE_POLICY_RULE_THRESHOLD + 1)]}
+        assert build_side.indexable_rules(large, scope=RULE_INDEX_SCOPE_ALL) == []
+
+        report = _validate(rule_index_scope=RULE_INDEX_SCOPE_ALL)
+        assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report), (
+            "the validator kept expecting rule documents after the shared decision said none"
+        )
+
+
+class TestRuleCoverageIsCountedExactly:
+    """"Some" is not coverage. A provision short by fifteen rows is not healthy.
+
+    The earlier version of this check asked only whether a provision had any
+    rule documents at all. Under `all_published_rules_v1` a sixteen-rule
+    provision carrying one child passed it; under the legacy scope a
+    seventeen-rule provision carrying one child passed it too. In both cases the
+    rows that could not surface were exactly the rows the split exists for, and
+    the corpus was complete by document count while being unreachable in the
+    part that mattered.
+    """
+
+    def test_a_provision_short_of_its_rule_documents_is_refused_under_all(self) -> None:
+        report = _validate(
+            records=_records(rule_count=8, expected_rule_documents=8),
+            rule_index_scope=RULE_INDEX_SCOPE_ALL,
+        )
+
+        assert FINDING_RULE_DOCUMENTS_MISSING in _codes(report)
+
+    def test_a_provision_short_of_its_rule_documents_is_refused_under_legacy(self) -> None:
+        report = _validate(
+            records=_records(
+                rule_count=LARGE_POLICY_RULE_THRESHOLD + 5,
+                expected_rule_documents=LARGE_POLICY_RULE_THRESHOLD + 5,
+            ),
+            rule_index_scope=RULE_INDEX_SCOPE_LARGE_POLICY,
+        )
+
+        assert FINDING_RULE_DOCUMENTS_MISSING in _codes(report)
+
+    def test_a_provision_carrying_more_than_it_should_is_refused(self) -> None:
+        report = _validate(
+            records=_records(rule_count=8, expected_rule_documents=1),
+            rule_index_scope=RULE_INDEX_SCOPE_ALL,
+        )
+
+        assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report)
+
+    def test_the_exact_count_passes_in_both_scopes(self) -> None:
+        """The control. Without it every assertion above would be satisfied by a
+        check that simply refused everything."""
+
+        under_all = _validate(
+            records=_records(rule_count=len(_RULE_TEXTS), expected_rule_documents=len(_RULE_TEXTS)),
+            rule_index_scope=RULE_INDEX_SCOPE_ALL,
+        )
+        assert under_all.state == QUALITY_PASSED
+
+        under_legacy = _validate(
+            records=_records(
+                rule_count=LARGE_POLICY_RULE_THRESHOLD + 1,
+                expected_rule_documents=len(_RULE_TEXTS),
+            ),
+            rule_index_scope=RULE_INDEX_SCOPE_LARGE_POLICY,
+        )
+        assert under_legacy.state == QUALITY_PASSED
+
+    def test_a_rule_without_an_id_does_not_read_as_a_missing_document(self) -> None:
+        """A rule with no id gets no document, legitimately. The expectation is
+        the count the build made eligible, not the count of rules, or every such
+        provision would be reported permanently short."""
+
+        report = _validate(
+            records=_records(rule_count=len(_RULE_TEXTS) + 1, expected_rule_documents=len(_RULE_TEXTS)),
+            rule_index_scope=RULE_INDEX_SCOPE_ALL,
+        )
+
+        assert FINDING_RULE_DOCUMENTS_MISSING not in _codes(report)
+        assert FINDING_RULE_DOCUMENTS_UNEXPECTED not in _codes(report)
 
     def test_the_manifest_is_excluded_rather_than_counted_as_a_stray(self) -> None:
         """It is the statement *about* the content, so counting it would make

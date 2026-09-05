@@ -83,6 +83,9 @@ from typing import Final, Literal
 from policy_platform.infrastructure.ai.openai_client import AzureOpenAIClient
 from policy_platform.infrastructure.projection.policy_rule_slice import (
     LARGE_POLICY_RULE_THRESHOLD,
+    RULE_INDEX_SCOPE_LARGE_POLICY,
+    RULE_INDEX_SCOPES,
+    rule_documents_expected,
 )
 from policy_platform.infrastructure.search.english_projection import preservation_failure
 
@@ -164,6 +167,10 @@ FINDING_AUTHORITATIVE_RECORD_EMBEDDED: Final[str] = "authoritative_record_embedd
 #: A provision small enough to read as one statement, carrying per-rule
 #: documents anyway.
 FINDING_RULE_DOCUMENTS_UNEXPECTED: Final[str] = "rule_documents_unexpected"
+#: A corpus whose manifest names a rule-index scope this code does not know. It
+#: cannot be judged either way, and neither answer is safe to assume: "all"
+#: would bless any corpus and "large policy" would condemn a correct one.
+FINDING_RULE_INDEX_SCOPE_UNKNOWN: Final[str] = "rule_index_scope_unknown"
 #: A provision past the threshold whose rows got no documents of their own, so a
 #: row past its provision's retrieval-text ceiling cannot surface at all.
 FINDING_RULE_DOCUMENTS_MISSING: Final[str] = "rule_documents_missing"
@@ -384,9 +391,19 @@ class ProjectedRecord:
     #: policy document. It is how a rule document is told from a provision's own
     #: without this module knowing what either is called.
     parent_document_id: str | None = None
-    #: How many rules the provision holds. Read only against the threshold, so
-    #: the one question asked of it is a size question.
+    #: How many rules the provision holds. Read against the scope's expectation,
+    #: so the one question asked of it is a size question.
     provision_rule_count: int = 0
+    #: How many rule documents this provision should have, when the caller knows.
+    #: Set on a provision's own record and left None on a rule's.
+    #:
+    #: Carried rather than inferred because `provision_rule_count` is not always
+    #: the answer: a rule with no id gets no document, so a provision holding one
+    #: legitimately has fewer documents than rules. Deriving the expectation from
+    #: the rule count would report that provision permanently short by one, and
+    #: the honest way to know is for the side that made the documents to say how
+    #: many it made eligible.
+    expected_rule_documents: int | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -464,6 +481,7 @@ def structural_findings(
     expected_profile: str,
     ignore_document_ids: Collection[str] = (),
     rule_threshold: int = LARGE_POLICY_RULE_THRESHOLD,
+    rule_index_scope: str = RULE_INDEX_SCOPE_LARGE_POLICY,
 ) -> list[QualityFinding]:
     """Every deterministic thing wrong with this build, as a set.
 
@@ -527,7 +545,13 @@ def structural_findings(
             )
         )
 
-    findings.extend(_rule_coverage_findings(expected_by_id, rule_threshold=rule_threshold))
+    findings.extend(
+        _rule_coverage_findings(
+            expected_by_id,
+            rule_threshold=rule_threshold,
+            rule_index_scope=rule_index_scope,
+        )
+    )
     return findings
 
 
@@ -578,23 +602,51 @@ def _document_findings(
 
 
 def _rule_coverage_findings(
-    expected_by_id: Mapping[str, ProjectedRecord], *, rule_threshold: int
+    expected_by_id: Mapping[str, ProjectedRecord],
+    *,
+    rule_threshold: int,
+    rule_index_scope: str,
 ) -> list[QualityFinding]:
-    """Rule documents exist for exactly the provisions large enough to have them.
+    """Rule documents exist for exactly the provisions the build's scope says.
 
-    Both directions, because they are different defects. A provision at or under
-    the threshold reads as one governing statement and its own document already
-    carries every rule, so per-rule documents there are duplicates competing with
-    their own parent for rank. A provision past it is a schedule of independent
-    rows, and a row with no document of its own past the parent's retrieval-text
-    ceiling cannot surface at all — the corpus would be complete by count and
-    unreachable in exactly the part that needed the split.
+    Both directions, because they are different defects. A provision that should
+    have no per-rule documents and has them carries duplicates competing with
+    their own parent for rank. A provision that should have them and does not has
+    rows past the parent's retrieval-text ceiling that cannot surface at all —
+    the corpus would be complete by count and unreachable in exactly the part
+    that needed the split.
 
-    The whole decision is a count against a threshold. Nothing here reads a
-    heading, a key, or anything a document says.
+    WHICH PROVISIONS THOSE ARE IS A PROPERTY OF THE SCOPE, NOT OF THIS FUNCTION
+
+    Under ``large_policy_rules_v1`` only provisions past the threshold have them:
+    below it a provision reads as one governing statement and its own document
+    already carries every rule. Under ``all_published_rules_v1`` every provision
+    holding rules has them, because a rule with no document cannot be found by a
+    rule query at all.
+
+    This function used to encode the first of those as if it were the only one.
+    The build moved to the second and this did not, so the first rebuild that
+    rendered successfully was failed 36 times for holding precisely the corpus it
+    had been asked to build. The expectation now comes from
+    :func:`rule_documents_expected`, which the build uses to decide, so the two
+    cannot disagree again without one of them failing its own tests.
+
+    The whole decision is still a count against an expectation. Nothing here
+    reads a heading, a key, or anything a document says.
     """
 
     findings: list[QualityFinding] = []
+    if rule_index_scope not in RULE_INDEX_SCOPES:
+        # Refused, not guessed. Assuming "all" would bless any corpus; assuming
+        # "large policy" would condemn a correct one. Neither is an answer, and
+        # a validation that cannot say which contract applies has not validated.
+        return [
+            QualityFinding(
+                code=FINDING_RULE_INDEX_SCOPE_UNKNOWN,
+                document_id=str(rule_index_scope),
+            )
+        ]
+
     children: dict[str, int] = {}
     for record in expected_by_id.values():
         if record.parent_document_id is not None:
@@ -606,11 +658,25 @@ def _rule_coverage_findings(
         if record.parent_document_id is not None:
             continue
         count = children.get(key, 0)
-        if record.provision_rule_count > rule_threshold and count == 0:
+        # The exact number, not merely "some". A provision holding sixteen rules
+        # and carrying one rule document is missing fifteen rows that cannot
+        # surface, and a zero-versus-nonzero test calls that healthy — which is
+        # the shape of "complete by count and unreachable where it matters" this
+        # check exists to refuse.
+        if not rule_documents_expected(
+            record.provision_rule_count, scope=rule_index_scope, threshold=rule_threshold
+        ):
+            expected_count = 0
+        elif record.expected_rule_documents is not None:
+            expected_count = record.expected_rule_documents
+        else:
+            expected_count = record.provision_rule_count
+
+        if count < expected_count:
             findings.append(
                 QualityFinding(code=FINDING_RULE_DOCUMENTS_MISSING, document_id=key)
             )
-        elif record.provision_rule_count <= rule_threshold and count > 0:
+        elif count > expected_count:
             findings.append(
                 QualityFinding(code=FINDING_RULE_DOCUMENTS_UNEXPECTED, document_id=key)
             )
@@ -797,6 +863,7 @@ async def validate_projection(
     ignore_document_ids: Collection[str] = (),
     profile: ProjectionQualityProfile | None = None,
     rule_threshold: int = LARGE_POLICY_RULE_THRESHOLD,
+    rule_index_scope: str = RULE_INDEX_SCOPE_LARGE_POLICY,
     validated_at: datetime | None = None,
 ) -> ProjectionQualityReport:
     """Whether this corpus' projection may be matched against.
@@ -831,6 +898,7 @@ async def validate_projection(
         expected_profile=expected_profile,
         ignore_document_ids=ignore_document_ids,
         rule_threshold=rule_threshold,
+        rule_index_scope=rule_index_scope,
     )
     structural_count = len(findings)
 

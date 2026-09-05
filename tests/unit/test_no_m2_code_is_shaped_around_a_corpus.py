@@ -630,19 +630,57 @@ def test_numeric_matching_reads_characters_by_category_and_not_by_pattern():
 def test_rule_indexing_turns_on_a_count_against_a_threshold_and_nothing_else():
     """Which provisions get rule documents is a size question, not a subject one.
 
-    The whole decision is `len(rules) > threshold`, and the only string it reads
-    is the schema key that says a rule has an id. No heading, no key, no count
-    fitted to a document that was measured.
+    The whole decision is a count against a declared threshold, and the only
+    string either side reads is the schema key that says a rule has an id. No
+    heading, no key, no count fitted to a document that was measured.
+
+    THE DECISION MOVED, AND THIS GUARD FOLLOWED IT
+
+    It used to be spelled out inside `indexable_rules`. The quality check had its
+    own copy, the two drifted, and a correct corpus was failed 36 times. The
+    comparison now lives once, in `rule_documents_expected`, which the build and
+    the validator both call — so that is where this asserts it is still a size
+    question. Asserting it in `indexable_rules` would now fail for the right
+    change, and deleting the assertion would stop asking the question at all.
     """
 
-    node = _function(policy_index, "indexable_rules")
+    decision = _function(policy_rule_slice, "rule_documents_expected")
 
-    compares = [inner for inner in ast.walk(node) if isinstance(inner, ast.Compare)]
+    compares = [inner for inner in ast.walk(decision) if isinstance(inner, ast.Compare)]
     assert compares, "the threshold comparison is gone"
     assert any(
         isinstance(inner.comparators[0], ast.Name) and inner.comparators[0].id == "threshold"
         for inner in compares
     ), "the rule-document decision no longer turns on the declared threshold"
+
+    # Strings inside a `raise` are excluded: a refusal message is something this
+    # function *writes*, not something it reads out of a document, and the claim
+    # under test is about what it reads. Everything else is still checked, so a
+    # heading or subject smuggled in anywhere but an error message still fails.
+    raised = {
+        id(inner)
+        for statement in ast.walk(decision)
+        if isinstance(statement, ast.Raise)
+        for inner in ast.walk(statement)
+    }
+    for inner in ast.walk(decision):
+        if not isinstance(inner, ast.Constant) or not isinstance(inner.value, str):
+            continue
+        if id(inner) in raised or id(inner) in _docstring_ids(decision):
+            continue
+        raise AssertionError(
+            f"rule_documents_expected reads {inner.value!r}; the scopes it compares "
+            "against are declared constants, and a literal here is a second rule"
+        )
+
+    node = _function(policy_index, "indexable_rules")
+
+    # The build's side reads no subject either, and now defers the size question
+    # rather than answering it a second way.
+    assert any(
+        isinstance(inner, ast.Name) and inner.id == "rule_documents_expected"
+        for inner in ast.walk(node)
+    ), "indexable_rules no longer defers to the shared decision, so the two may drift again"
 
     for value in _function_strings(policy_index, "indexable_rules"):
         assert value in SCHEMA_KEYS, (

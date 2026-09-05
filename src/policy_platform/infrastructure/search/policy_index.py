@@ -125,6 +125,9 @@ from policy_platform.infrastructure.assistants.ai_case_language import (
 )
 from policy_platform.infrastructure.projection.policy_rule_slice import (
     LARGE_POLICY_RULE_THRESHOLD,
+    RULE_INDEX_SCOPE_ALL as _RULE_INDEX_SCOPE_ALL,
+    RULE_INDEX_SCOPE_LARGE_POLICY as _RULE_INDEX_SCOPE_LARGE_POLICY,
+    rule_documents_expected,
     rule_text,
 )
 from policy_platform.infrastructure.quality.projection_faithfulness import (
@@ -188,6 +191,35 @@ CONTENT_TYPE_MANIFEST = "manifest"
 MANIFEST_READY = "ready"
 MANIFEST_INCOMPLETE = "incomplete"
 
+#: WHICH RULES A BUILD GIVES THEIR OWN DOCUMENT, NAMED SO A READER CAN BE ASKED.
+#:
+#: `large_policy_rules_v1` is what every corpus built before this constant
+#: existed holds: a document per rule for provisions above
+#: `LARGE_POLICY_RULE_THRESHOLD` and none at all below it.
+#:
+#: `all_published_rules_v1` gives every published rule its own document. It is
+#: what a rule-first retrieval needs — a rule that has no document cannot be
+#: found by a rule query, whatever its parent's size — and it is a superset, so
+#: it changes nothing for a reader that only wants the large-policy rows: those
+#: documents carry `rule_count`, and a filter on it selects exactly the old set.
+#: See `policy_rule_content_filter`.
+#:
+#: The scope a corpus was actually built under is written on its manifest, and
+#: is absent on every manifest written before this existed. Absent is the honest
+#: answer for those, and it is what a rule-first query refuses on: an index that
+#: holds no document for a small policy's rules would answer a rule query with
+#: silence about them, which is indistinguishable from "nothing there bears".
+#: The names themselves are defined at the projection boundary, which the build
+#: and the quality check both already depend on, and re-exported here so the
+#: many callers that import them from this module are unaffected. They were
+#: declared here once and the quality check could not see them, which is how a
+#: correct corpus came to be failed 36 times.
+RULE_INDEX_SCOPE_LARGE_POLICY = _RULE_INDEX_SCOPE_LARGE_POLICY
+RULE_INDEX_SCOPE_ALL = _RULE_INDEX_SCOPE_ALL
+
+#: The scope a build performed now writes and stamps.
+RULE_INDEX_SCOPE = RULE_INDEX_SCOPE_ALL
+
 #: The fields a validation reads back off a live index. Named here, with the
 #: schema that declares them, because a `select` list is part of how documents
 #: in this index are addressed — the same reason `policy_index_filter` lives
@@ -205,8 +237,13 @@ _MANIFEST_SELECT = (
     "projection_profile,projection_language,expected_policy_documents,"
     "expected_rule_documents,uploaded_documents,indexed_at,status,document_id,"
     "document_version,provision_key,heading_path,section_heading,heading,body,"
-    "retrieval_text"
+    "retrieval_text,rule_index_scope"
 )
+
+#: The manifest fields a rule-first query needs before it may run: which rule
+#: documents this corpus actually holds. Read on its own, and only on the path
+#: that asks — the default retrieval path makes no extra round trip for it.
+_RULE_SCOPE_SELECT = "id,rule_index_scope"
 
 #: How many documents one upload call carries. Azure AI Search accepts batches of
 #: up to 1,000 documents or 16 MB; a policy document carries an embedding and a
@@ -419,6 +456,42 @@ def policy_index_filter(
     return " and ".join(clauses)
 
 
+def policy_rule_content_filter(
+    policy_set_key: str,
+    *,
+    projection_profile: str,
+    large_policies_only: bool,
+    threshold: int = LARGE_POLICY_RULE_THRESHOLD,
+) -> str:
+    """The filter a rule query uses, and the one knob that separates the modes.
+
+    Both modes ask for this project's rule documents under one rendering
+    contract. They differ in a single clause, and it is the clause that keeps the
+    default mode's behaviour byte-for-byte what it was after the corpus started
+    carrying a document for every rule:
+
+    * ``large_policies_only=True`` adds ``rule_count gt threshold``, selecting
+      exactly the documents a `large_policy_rules_v1` corpus would have held and
+      no others. A rule of a small provision is simply not in the result set, the
+      way it was not in the index before.
+    * ``large_policies_only=False`` leaves it off, which is the rule-first mode's
+      whole point: every published rule is a candidate on its own terms.
+
+    Expressed as a predicate rather than as two corpora because it has to be
+    both — one build, read two ways — and because the alternative is a second
+    index whose staleness is a second thing to get wrong.
+    """
+
+    expression = policy_index_filter(
+        policy_set_key,
+        content_type=CONTENT_TYPE_RULE,
+        projection_profile=projection_profile,
+    )
+    if large_policies_only:
+        expression += f" and rule_count gt {int(threshold)}"
+    return expression
+
+
 def policy_index_ready_filter(
     policy_set_key: str,
     *,
@@ -516,6 +589,13 @@ def policy_index_definition(name: str, *, vector_dimensions: int | None = None) 
             {"name": "projection_language", "type": "Edm.String", "filterable": True, "retrievable": True},
             # ── the manifest's own fields ───────────────────────────
             {"name": "manifest_state", "type": "Edm.String", "filterable": True, "retrievable": True},
+            # Which rules this corpus gave their own document. Filterable for the
+            # same reason `projection_profile` is: a rule-first query is only
+            # answerable over a corpus that holds every rule, and a corpus built
+            # under the older scope must fail to satisfy the question rather than
+            # answer it thinly. Absent on every manifest written before it
+            # existed, and absent is the refusal.
+            {"name": "rule_index_scope", "type": "Edm.String", "filterable": True, "retrievable": True},
             {
                 "name": "expected_policy_documents",
                 "type": "Edm.Int32",
@@ -787,6 +867,7 @@ def build_index_manifest_document(
     state: str,
     indexed_at: str,
     quality: ProjectionQualityReport | None = None,
+    rule_index_scope: str = RULE_INDEX_SCOPE,
 ) -> dict:
     """The document that says whether this project may be matched against.
 
@@ -817,6 +898,7 @@ def build_index_manifest_document(
         "version_number": version_number,
         "content_type": CONTENT_TYPE_MANIFEST,
         "manifest_state": state,
+        "rule_index_scope": rule_index_scope,
         "projection_profile": projection_profile,
         "projection_language": PROCESSING_LANGUAGE,
         "expected_policy_documents": expected_policy_documents,
@@ -873,10 +955,23 @@ def rule_retrieval_source_text(projection: dict, rule: dict) -> str:
     return " \n".join(part for part in (heading, body) if part.strip())
 
 
-def indexable_rules(projection: dict, *, threshold: int = LARGE_POLICY_RULE_THRESHOLD) -> list[dict]:
+def indexable_rules(
+    projection: dict,
+    *,
+    threshold: int = LARGE_POLICY_RULE_THRESHOLD,
+    scope: str = RULE_INDEX_SCOPE,
+) -> list[dict]:
     """The rules of this policy that get their own document, in document order.
 
-    Empty for a provision at or under the threshold, and that is the whole rule:
+    Under ``all_published_rules_v1`` that is every rule with an id. A rule with
+    no document cannot be found by a rule query at all, so a retrieval whose
+    primary unit is the rule needs the corpus to hold all of them — and holding
+    them costs nothing to a reader that wants only the large-policy rows, because
+    each document carries its provision's `rule_count` and
+    :func:`policy_rule_content_filter` selects exactly that subset.
+
+    Under ``large_policy_rules_v1`` the older rule stands, unchanged and still
+    the whole rule: empty for a provision at or under the threshold, because
     below it a provision reads as one governing statement and its own document
     already carries every rule; above it the provision is a schedule whose rows
     have nothing to do with one another, and a row that cannot surface on its own
@@ -884,7 +979,12 @@ def indexable_rules(projection: dict, *, threshold: int = LARGE_POLICY_RULE_THRE
     """
 
     rules = _projection_rules(projection)
-    if len(rules) <= threshold:
+    # The scope-to-expectation mapping is `rule_documents_expected`, and it is
+    # deliberately not restated here. This branch and the quality check's used to
+    # be two copies of one rule; they drifted, and a correct corpus was failed 36
+    # times before anyone noticed. One of them has to be the definition, and a
+    # decision the validator must also make belongs at the boundary they share.
+    if not rule_documents_expected(len(rules), scope=scope, threshold=threshold):
         return []
     return [rule for rule in rules if rule.get("rule_id")]
 
@@ -1092,6 +1192,11 @@ async def rebuild_project_policy_index(
             expected_profile=projection_profile,
             openai_client=openai_client,
             profile=resolve_quality_profile(quality_profile_name),
+            # The scope this build is writing onto its own manifest. Passed
+            # rather than defaulted: the check judges rule-document coverage
+            # against it, and a build validated under a contract other than the
+            # one it was built to is not validated.
+            rule_index_scope=RULE_INDEX_SCOPE,
             validated_at=indexed_at,
         )
         if not quality.passed:
@@ -1266,6 +1371,15 @@ async def _build_project_documents(
                 source_text=source,
                 parent_document_id=parent,
                 provision_rule_count=len(_projection_rules(projection)),
+                # Only a provision's own record carries this. It is how many rule
+                # documents *this build made eligible*, which is not the rule
+                # count: a rule with no id gets no document. Stating it here, from
+                # the same call the build selects with, is what lets the quality
+                # check compare an exact number instead of asking the far weaker
+                # question of whether there are any rule documents at all.
+                expected_rule_documents=(
+                    len(indexable_rules(projection)) if parent is None else None
+                ),
             )
         )
     return documents, records
@@ -1460,6 +1574,43 @@ async def read_projection_readiness(
     )
 
 
+async def read_rule_index_scope(
+    search_client: AzureSearchClient,
+    index_name: str,
+    *,
+    policy_set_key: str,
+    projection_profile: str = ENGLISH_PROJECTION_PROFILE,
+) -> str | None:
+    """Which rules this project's live index actually holds documents for.
+
+    Returns the scope stamped on the project's manifest, or ``None`` when the
+    manifest carries none — which is every corpus built before the scope existed,
+    and is a refusal rather than a default. A rule-first query run over a corpus
+    holding rule documents only for large provisions would return silence about
+    every small provision's rules, and silence is indistinguishable from "nothing
+    there bears on this question". So the caller is told the corpus cannot answer
+    the question it was about to ask, and the repair is one rebuild.
+
+    Asked only on the path that needs it. The default retrieval mode reads
+    nothing here and makes no extra round trip.
+    """
+
+    found = await search_client.find_documents_by_filter(
+        index_name,
+        filter_expr=policy_index_filter(
+            policy_set_key,
+            content_type=CONTENT_TYPE_MANIFEST,
+            projection_profile=projection_profile,
+        ),
+        select=_RULE_SCOPE_SELECT,
+        page_size=1,
+    )
+    for document in found:
+        scope = document.get("rule_index_scope")
+        return str(scope) if scope else None
+    return None
+
+
 @dataclass(frozen=True)
 class PolicyIndexValidationOutcome:
     """What a validation of an already-built projection found, and what it wrote.
@@ -1595,6 +1746,16 @@ async def validate_project_policy_index(
             if str(document.get("id") or "") != manifest_id
         ]
 
+        # The scope the corpus was *actually built under*, read off its own
+        # manifest rather than assumed from what this code would write today. A
+        # manifest written before the field existed carries none, and that means
+        # legacy semantics — it was built when legacy was the only contract, so
+        # judging it by today's would condemn a corpus that is correct for its
+        # age. An unrecognised value is neither, and the check refuses it.
+        recorded_scope = await read_rule_index_scope(
+            search_client, index_name, policy_set_key=policy_set_key
+        )
+
         quality = await validate_projection(
             records=records,
             documents=live,
@@ -1602,6 +1763,7 @@ async def validate_project_policy_index(
             openai_client=openai_client,
             ignore_document_ids={manifest_id},
             profile=profile,
+            rule_index_scope=recorded_scope or RULE_INDEX_SCOPE_LARGE_POLICY,
             validated_at=validated_at,
         )
 
@@ -1717,6 +1879,10 @@ def expected_projection_records(
                 ],
                 parent_document_id=None,
                 provision_rule_count=len(rules),
+                # What this build would actually make eligible, so a validation
+                # compares against the number of documents there should be
+                # rather than against the number of rules there are.
+                expected_rule_documents=len(indexable_rules(projection)),
             )
         )
         for rule in indexable_rules(projection):
