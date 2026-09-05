@@ -12,6 +12,8 @@ import {
   type PlaygroundResponseMode,
   type PolicyRetrievalEnvelope,
   type ReasoningEffort,
+  type RetrievalEnvelope,
+  RULE_RETRIEVAL_SCHEMA_VERSION,
 } from './contracts/caseDecision'
 import {
   fetchActiveVersion,
@@ -54,6 +56,7 @@ import { RequestDocket, type ResolutionState } from './components/RequestDocket'
 import { RequestInspector } from './components/RequestInspector'
 import { ResultGrid } from './components/ResultGrid'
 import { RetrievalDisclosure } from './components/RetrievalDisclosure'
+import { RuleRetrievalResult } from './components/RuleRetrievalResult'
 import { RunMetrics } from './components/RunMetrics'
 import { VerdictPanel } from './components/VerdictPanel'
 import type { VerifyState } from './components/VerifyReceipt'
@@ -179,7 +182,7 @@ export default function App() {
   const [completedMs, setCompletedMs] = useState<number | null>(null)
   const [envelope, setEnvelope] = useState<CaseDecisionReceipt | null>(null)
   const [lightEnvelope, setLightEnvelope] = useState<CaseDecisionLightEnvelope | null>(null)
-  const [policyEnvelope, setPolicyEnvelope] = useState<PolicyRetrievalEnvelope | null>(null)
+  const [policyEnvelope, setPolicyEnvelope] = useState<RetrievalEnvelope | null>(null)
   const [sentGuidance, setSentGuidance] = useState<string | undefined>(undefined)
   const [submittedHash, setSubmittedHash] = useState<string | null>(null)
   const [submittedIdempotencyKey, setSubmittedIdempotencyKey] = useState<string | null>(null)
@@ -447,15 +450,24 @@ export default function App() {
         }.`,
       )
     } else {
-      const policies = result.value as PolicyRetrievalEnvelope
-      setPolicyEnvelope(policies)
+      const retrieved = result.value as RetrievalEnvelope
+      setPolicyEnvelope(retrieved)
       setEnvelope(null)
       setLightEnvelope(null)
-      onAnnounce(
-        `${policies.policies.length} ${
-          policies.policies.length === 1 ? 'policy was' : 'policies were'
-        } returned. No decision was generated.`,
-      )
+      // Counted from whichever collection this mode actually answered with. The
+      // previous version read `policies` unconditionally, which under rule mode
+      // would have announced "0 policies were returned" -- a genuine-sounding
+      // negative for a response that returned rules.
+      const isRule = retrieved.schema_version === RULE_RETRIEVAL_SCHEMA_VERSION
+      const count = isRule ? retrieved.rules.length : retrieved.policies.length
+      const noun = isRule
+        ? count === 1
+          ? 'rule was'
+          : 'rules were'
+        : count === 1
+          ? 'policy was'
+          : 'policies were'
+      onAnnounce(`${count} ${noun} returned. No decision was generated.`)
     }
     setSentGuidance(guidanceForThisCall)
     setDocketCollapsed(true)
@@ -714,7 +726,11 @@ export default function App() {
 
           {showResult && responseMode === 'policies' && policyEnvelope ? (
             <>
-              <PolicyRetrievalResult envelope={policyEnvelope} onAnnounce={onAnnounce} />
+              {policyEnvelope.schema_version === RULE_RETRIEVAL_SCHEMA_VERSION ? (
+                <RuleRetrievalResult envelope={policyEnvelope} onAnnounce={onAnnounce} />
+              ) : (
+                <PolicyRetrievalResult envelope={policyEnvelope} onAnnounce={onAnnounce} />
+              )}
               {requestInspector}
             </>
           ) : null}

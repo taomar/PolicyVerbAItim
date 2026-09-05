@@ -39,6 +39,8 @@ export const SCHEMA_VERSION_V1 = 'case_decision_v1'
 export const SCHEMA_VERSION_V2 = 'case_decision_v2'
 /** The retrieval-only response returned when no decision is requested. */
 export const POLICY_RETRIEVAL_SCHEMA_VERSION = 'policy_retrieval_v1'
+/** The retrieval-only response returned when rule mode is requested. */
+export const RULE_RETRIEVAL_SCHEMA_VERSION = 'rule_retrieval_v1'
 export const DECISION_LIGHT_SCHEMA_VERSION = 'case_decision_light_v1'
 
 /** @deprecated Use {@link SCHEMA_VERSION_V1}. Kept so older imports still read. */
@@ -800,15 +802,71 @@ export interface RetrievedPolicyRecord {
   payload: Record<string, unknown>
 }
 
-/** Filtered published policy records, with no decision-shaped fields. */
-export interface PolicyRetrievalEnvelope {
-  schema_version: typeof POLICY_RETRIEVAL_SCHEMA_VERSION
+/**
+ * Where a rule came from -- identifiers for citation only, never the parent's
+ * terms.
+ *
+ * A citation naming only a rule id would be unresolvable by a reader holding
+ * the corpus, so the provision containing the rule is named. That is the whole
+ * of what crosses over, and the limit is the point: no policy body, no other
+ * rules of the parent, no spans or facts belonging to the provision at large.
+ * A caller that wants the provision asks for it in policy mode, which is the
+ * mode that returns provisions.
+ */
+export interface RuleSourceRef {
+  provision_key?: string | null
+  provision_id?: string | null
+  heading_path: string[]
+  document_id?: string | null
+  document_version?: string | null
+}
+
+/**
+ * Why this rule is in the returned set -- the rule ranking's own quantities.
+ *
+ * There is deliberately no parent score here. In rule mode a rule is ranked as
+ * a rule, and reporting a parent's score beside it would re-import the unit of
+ * delivery this mode exists to get away from.
+ */
+export interface RuleMatchRef {
+  best_rank?: number | null
+  best_score?: number | null
+  /** Which quantity `best_score` is, on the same terms as a decision receipt. */
+  score_kind?: string | null
+  /** The reranker score for this rule, comparable to the retrieval cutoff. */
+  semantic_score?: number | null
+  /**
+   * `matched` when the rule placed in the ranking on its own evidence, or
+   * `neighbour` when it was admitted because a matched rule depends on it -- a
+   * condition, exception or override without which the matched rule cannot be
+   * read correctly.
+   */
+  admitted_as: string
+  /** Set on a `neighbour`: the matched rule that pulled it in. */
+  required_by_rule_id?: string | null
+}
+
+/**
+ * One rule, as a rule.
+ *
+ * `rule` is the rule's own published record -- its terms and the spans and
+ * facts it itself references. It is not a policy payload and does not contain
+ * one.
+ */
+export interface RetrievedRuleRecord {
+  rule_id: string
+  source: RuleSourceRef
+  match: RuleMatchRef
+  rule: Record<string, unknown>
+}
+
+/** Everything both retrieval modes report, and nothing either one does not. */
+interface RetrievalEnvelopeCommon {
   correlation_id: string
   policy_set: PolicySetRef
   active_version?: VersionRef | null
   query: PolicyRetrievalQueryRef
   retrieval: RetrievalRef
-  policies: RetrievedPolicyRecord[]
   size: SizeRef
   language: LanguageRef
   token_usage: TokenUsageRef
@@ -818,7 +876,7 @@ export interface PolicyRetrievalEnvelope {
    * for the same reason `token_usage` is: this route has no decision trace to
    * hang them from.
    *
-   * Additive and optional — absent on servers that predate it, and absent for
+   * Additive and optional -- absent on servers that predate it, and absent for
    * any stage that did not run. This route runs no embedding call, no rule
    * query, no classifier and no gather, so it reports far fewer keys than a
    * decision does. Read it as a map; an unrecognised key is a duration you do
@@ -826,6 +884,32 @@ export interface PolicyRetrievalEnvelope {
    */
   stage_latency_ms?: Record<string, number> | null
 }
+
+/** Policy mode. Filtered published policy records; has no `rules` property. */
+export interface PolicyRetrievalEnvelope extends RetrievalEnvelopeCommon {
+  schema_version: typeof POLICY_RETRIEVAL_SCHEMA_VERSION
+  policies: RetrievedPolicyRecord[]
+  /**
+   * Declared absent so the compiler refuses a cross-read. The server has no
+   * such property at all -- the two modes are separate wire models, not one
+   * model with two optional arrays, precisely so a client written for the other
+   * mode gets nothing to misread rather than an empty list. "0 policies
+   * retrieved" is indistinguishable from a genuine negative answer, and that
+   * silent misreport is the failure this shape exists to prevent.
+   */
+  rules?: never
+}
+
+/** Rule mode. Rule records as rules; has no `policies` property. */
+export interface RuleRetrievalEnvelope extends RetrievalEnvelopeCommon {
+  schema_version: typeof RULE_RETRIEVAL_SCHEMA_VERSION
+  rules: RetrievedRuleRecord[]
+  /** Absent for the same reason `rules` is absent from policy mode. */
+  policies?: never
+}
+
+/** The route's response, discriminated on the runtime schema tag. */
+export type RetrievalEnvelope = PolicyRetrievalEnvelope | RuleRetrievalEnvelope
 
 export type ReceiptKind = 'v1' | 'v2' | 'unrecognised'
 
@@ -867,6 +951,58 @@ export function isV2Receipt(receipt: CaseDecisionReceipt): receipt is CaseDecisi
 
 export function isV1Receipt(receipt: CaseDecisionReceipt): receipt is CaseDecisionEnvelope {
   return classifyReceipt(receipt) === 'v1'
+}
+
+export type RetrievalKind = 'policy' | 'rule' | 'unrecognised' | 'mixed' | 'invalid'
+
+/**
+ * Which retrieval envelope this is, by tag -- and whether it is well formed.
+ *
+ * `classifyReceipt` above establishes the discipline: trust the tag, never
+ * coerce, and answer for a version this build has never heard of rather than
+ * guessing. This differs from it in three deliberate ways.
+ *
+ * There is **no structural fallback**. `classifyReceipt` guesses from shape for
+ * rows written before `schema_version` was serialised; retrieval responses have
+ * always carried a tag, so no such population exists, and inferring "has
+ * `policies`, therefore policy mode" is exactly the fallback this contract
+ * forbids.
+ *
+ * The own collection is checked, and the check is **asymmetric**. The array the
+ * tag names IS the answer: it must be present and an array, and only its
+ * *emptiness* is a legitimate result -- a genuine "nothing bore on this
+ * question". A missing or malformed own array is not an empty answer and must
+ * never be rendered as one. The opposite array is compatibility surface only:
+ * absent is the wire model, an empty array is tolerated for a rolling or pinned
+ * deployment, and anything else is a defect.
+ *
+ * `mixed` and `invalid` are separate verdicts because they point at different
+ * repairs -- a server build that crossed the modes, versus a payload this build
+ * cannot trust. Both refuse; only the message differs.
+ */
+export function classifyRetrieval(envelope: unknown): RetrievalKind {
+  if (envelope === null || typeof envelope !== 'object') return 'unrecognised'
+  const candidate = envelope as Record<string, unknown>
+  const version = candidate.schema_version
+
+  const isPolicy = version === POLICY_RETRIEVAL_SCHEMA_VERSION
+  const isRule = version === RULE_RETRIEVAL_SCHEMA_VERSION
+  if (!isPolicy && !isRule) return 'unrecognised'
+
+  const own = isPolicy ? candidate.policies : candidate.rules
+  const opposite = isPolicy ? candidate.rules : candidate.policies
+
+  if (!Array.isArray(own)) return 'invalid'
+  if (opposite !== undefined && !Array.isArray(opposite)) return 'invalid'
+  if (Array.isArray(opposite) && opposite.length > 0) return 'mixed'
+
+  return isPolicy ? 'policy' : 'rule'
+}
+
+export function isRuleRetrieval(
+  envelope: RetrievalEnvelope,
+): envelope is RuleRetrievalEnvelope {
+  return classifyRetrieval(envelope) === 'rule'
 }
 
 /**

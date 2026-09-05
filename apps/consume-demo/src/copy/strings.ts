@@ -61,9 +61,10 @@ export const DOCKET = {
   retrievalLabel: 'Retrieval',
   retrievalPolicyOption: 'Policy (default)',
   retrievalRuleOption: 'Rule (experimental)',
-  retrievalPolicyHint: 'Policies are searched first; a strong rule can raise the policy holding it.',
+  retrievalPolicyHint:
+    'Policies are the unit: the published policy records that bear on the scenario are returned.',
   retrievalRuleHint:
-    'Experimental. Rules are searched on their own terms. Recall is unproven, and a project whose index cannot serve it is refused, not quietly answered.',
+    'Experimental. Rules are the unit: rules are searched on their own terms and returned as rules, with no parent policy expansion. A rule that a matched rule depends on is included as a neighbour. A project whose index cannot serve it is refused, not quietly answered.',
   callingSystemLabel: 'Calling system',
   callingSystemDefault: 'playground-demo',
   callingSystemCaption: 'Recorded on the decision so the receipt shows who called.',

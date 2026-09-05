@@ -260,6 +260,78 @@ export function mapDecisionError(input: {
 }
 
 /**
+ * What was wrong with the shape, said without quoting the shape.
+ *
+ * Enough to diagnose a version or wiring fault -- which tag arrived, which
+ * collections were present and of what type and size -- and nothing that could
+ * carry a policy clause, a rule's terms, or a citation. The counts are lengths,
+ * never contents.
+ *
+ * This is deliberately not the body. `ErrorBand` offers these details as a
+ * clipboard copy for a support conversation, and a retrieval body is corpus
+ * text; the server bounds its own error text for exactly the same reason.
+ */
+function summariseRetrievalShape(body: unknown): Record<string, unknown> {
+  if (body === null || typeof body !== 'object') return { type: typeof body }
+  const candidate = body as Record<string, unknown>
+  const describe = (value: unknown) =>
+    value === undefined
+      ? 'absent'
+      : Array.isArray(value)
+        ? `array(${value.length})`
+        : value === null
+          ? 'null'
+          : typeof value
+  return {
+    schema_version:
+      typeof candidate.schema_version === 'string'
+        ? candidate.schema_version
+        : describe(candidate.schema_version),
+    policies: describe(candidate.policies),
+    rules: describe(candidate.rules),
+    keys: Object.keys(candidate).length,
+  }
+}
+
+/**
+ * A response this build cannot read, refused rather than part-rendered.
+ *
+ * The transport succeeded, so this is not a network or status failure -- the
+ * server answered, and the answer is in a shape or version this page does not
+ * support. Showing part of it would be worse than showing none: an envelope
+ * whose own collection is missing is not an empty result, and a mode this build
+ * does not know is not "nothing was found".
+ *
+ * `recovery` is `none` deliberately. Retrying is not a repair -- the same call
+ * returns the same unreadable shape -- and offering a retry button would send
+ * the reader round a loop that cannot succeed.
+ */
+export function mapUnsupportedRetrievalError(input: {
+  kind: 'unrecognised' | 'mixed' | 'invalid'
+  status: number
+  correlationId?: string
+  body: unknown
+}): PlaygroundError {
+  const explanation =
+    input.kind === 'mixed'
+      ? 'The API answered with both policy and rule records in one response. The two modes answer under different schema versions and never mix, so this response cannot be trusted and nothing is shown.'
+      : input.kind === 'invalid'
+        ? 'The API answered in a known format, but the records it should carry are missing or malformed. This is not an empty result, so it is not shown as one.'
+        : 'The API answered with a response format this build does not support. Nothing is shown, because displaying part of an unknown format would be worse than showing none of it.'
+
+  return {
+    status: input.status,
+    code: 'unsupported_schema_version',
+    heading: 'This page cannot read the response.',
+    body: `${explanation} Update the page, or check that the API and this build are the same version.`,
+    recovery: 'none',
+    correlationId: input.correlationId,
+    // Structure only, never the response body. See summariseRetrievalShape.
+    detail: summariseRetrievalShape(input.body),
+  }
+}
+
+/**
  * The GET side of the same job. Verification failures are their own vocabulary
  * because "the receipt could not be read" and "the receipt does not match" are
  * opposite claims and must never be rendered with the same words.

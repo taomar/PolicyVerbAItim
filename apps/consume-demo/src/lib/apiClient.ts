@@ -2,9 +2,10 @@ import type {
   ActiveVersionSummary,
   CaseDecisionLightEnvelope,
   CaseDecisionReceipt,
-  PolicyRetrievalEnvelope,
   PolicySetSummary,
+  RetrievalEnvelope,
 } from '../contracts/caseDecision'
+import { classifyRetrieval } from '../contracts/caseDecision'
 import type { DocketValues } from './requestBody'
 import {
   buildPolicyRequestBody,
@@ -16,7 +17,13 @@ import {
   receiptPath,
 } from './requestBody'
 import { SUBSCRIPTION_KEY_HEADER } from './subscriptionKey'
-import { TIMEOUT_SECONDS, mapDecisionError, mapVerifyError, type PlaygroundError } from './errors'
+import {
+  TIMEOUT_SECONDS,
+  mapDecisionError,
+  mapUnsupportedRetrievalError,
+  mapVerifyError,
+  type PlaygroundError,
+} from './errors'
 
 /**
  * The whole of this app's contact with the platform: six `fetch` calls.
@@ -39,6 +46,19 @@ import { TIMEOUT_SECONDS, mapDecisionError, mapVerifyError, type PlaygroundError
 
 export type ApiResult<T> =
   | { ok: true; value: T; correlationId?: string }
+  | { ok: false; error: PlaygroundError }
+
+/**
+ * A retrieval call's result, carrying which mode answered.
+ *
+ * Deliberately its own union rather than `ApiResult<RetrievalEnvelope> & {
+ * kind }`: an intersection would widen *both* arms, hanging a meaningless
+ * `kind` off the failure arm and making it optional on the success arm. Here it
+ * is non-optional where it exists, so a consumer cannot forget to branch on the
+ * mode -- which is the whole point of parsing by tag.
+ */
+export type RetrievalResult =
+  | { ok: true; value: RetrievalEnvelope; kind: 'policy' | 'rule'; correlationId?: string }
   | { ok: false; error: PlaygroundError }
 
 function apiHeaders(subscriptionKey: string): HeadersInit {
@@ -285,7 +305,7 @@ export async function postPolicies(input: {
   subscriptionKey: string
   correlationId: string
   values: DocketValues
-}): Promise<ApiResult<PolicyRetrievalEnvelope>> {
+}): Promise<RetrievalResult> {
   const { signal, cancel } = withTimeout()
   const headers: Record<string, string> = {
     ...(apiHeaders(input.subscriptionKey) as Record<string, string>),
@@ -311,7 +331,25 @@ export async function postPolicies(input: {
         }),
       }
     }
-    return { ok: true, value: (await response.json()) as PolicyRetrievalEnvelope, correlationId }
+    // Verified, not asserted. `as` is erased at runtime, so the previous cast
+    // meant whatever the server sent was *declared* to be a policy envelope --
+    // which is how a rule response would have been read as a policy one with
+    // nothing bearing on the question. Only a known tag with a well-formed own
+    // collection gets past here.
+    const body = (await response.json()) as unknown
+    const kind = classifyRetrieval(body)
+    if (kind === 'unrecognised' || kind === 'mixed' || kind === 'invalid') {
+      return {
+        ok: false,
+        error: mapUnsupportedRetrievalError({
+          kind,
+          status: response.status,
+          correlationId: correlationId ?? input.correlationId,
+          body,
+        }),
+      }
+    }
+    return { ok: true, value: body as RetrievalEnvelope, kind, correlationId }
   } catch (cause) {
     if ((cause as Error)?.name === 'AbortError') {
       return {

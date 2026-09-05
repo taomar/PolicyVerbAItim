@@ -29,6 +29,7 @@ import {
   DECISION_LIGHT_SCHEMA_VERSION,
   DECISION_STATUSES,
   POLICY_RETRIEVAL_SCHEMA_VERSION,
+  RULE_RETRIEVAL_SCHEMA_VERSION,
   type CaseDecisionEnvelope,
   type CaseDecisionReceipt,
 } from './contracts/caseDecision'
@@ -701,12 +702,17 @@ describe('the retrieval mode control', () => {
   })
 
   it('carries the mode into the policy JSON request too', async () => {
+    // Rule mode answers under its own schema version and returns rules, so the
+    // fixture is a rule envelope. It previously carried no `schema_version` at
+    // all and a `policies` array, which no server response can be: the tag is a
+    // required field on both wire models, and rule mode never returns policies.
     const response = {
+      schema_version: RULE_RETRIEVAL_SCHEMA_VERSION,
       correlation_id: 'policy-correlation',
       policy_set: { id: 'set-1', key: 'demo-project', name: 'Demo project' },
       query: { scenario: 'show annual leave policies', scenario_hash: 'a'.repeat(64) },
       retrieval: { status: 'narrowed', retrieval_mode: 'rule' },
-      policies: [],
+      rules: [],
       size: { combined_chars: 0, budget_chars: 200000, oversize: false },
       latency_ms: 12,
     }
@@ -740,7 +746,7 @@ describe('the retrieval mode control', () => {
     )
     fireEvent.click(screen.getByTestId('playground-submit'))
 
-    expect(await screen.findByTestId('playground-policy-result')).toBeTruthy()
+    expect(await screen.findByTestId('playground-rule-result')).toBeTruthy()
 
     const sent = calls.find((call) =>
       call.url.endsWith('/api/policy-decisions/demo-project/policies'),
