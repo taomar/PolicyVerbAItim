@@ -11,11 +11,19 @@ from __future__ import annotations
 
 import httpx
 
+from policy_platform.infrastructure.search import ranking_telemetry
 from policy_platform.infrastructure.settings import Settings, get_settings
 
 
 class AzureSearchError(RuntimeError):
     """Raised when a call to Azure AI Search fails or the resource isn't configured."""
+
+
+#: The indexed field a vector query is scored against. Named once, so that the
+#: query and the record of what the query asked for cannot drift apart — a
+#: recorded projection that says a different field was searched than the one the
+#: body named would be worse than no record at all.
+VECTOR_FIELD = "body_vector"
 
 
 class AzureSearchClient:
@@ -223,6 +231,12 @@ class AzureSearchClient:
         policy selection uses Azure's semantic reranker over the English corpus
         projection and does not pay for an embedding that produced the same live
         order. Decision retrieval still supplies a vector and remains hybrid.
+
+        This is also where the platform records *which* of those arrangements
+        ranked an answer — see `search/ranking_telemetry.py` for why the record
+        belongs here and nowhere above. The recording reads the request and the
+        response and writes back into neither: the list returned below is the
+        one the service sent, in the order it sent it.
         """
 
         settings = self._require_enabled()
@@ -241,7 +255,7 @@ class AzureSearchClient:
         }
         if vector is not None:
             body["vectorQueries"] = [
-                {"kind": "vector", "vector": vector, "fields": "body_vector", "k": top}
+                {"kind": "vector", "vector": vector, "fields": VECTOR_FIELD, "k": top}
             ]
         if semantic_configuration:
             body["queryType"] = "semantic"
@@ -259,8 +273,42 @@ class AzureSearchClient:
             clauses.append(f"({filter_expr})")
         if clauses:
             body["filter"] = " and ".join(clauses)
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            resp = await client.post(url, headers=self._headers(), json=body)
+
+        # What the record will say was asked, taken from the body that is about
+        # to be sent rather than from the arguments that shaped it — so it
+        # describes the request that actually went out.
+        observed = {
+            "index": index,
+            "select": body["select"],
+            "filter_expr": body.get("filter"),
+            "vector_field": VECTOR_FIELD if vector is not None else None,
+            "semantic_configuration": semantic_configuration,
+            "query_text": query_text,
+            "requested_top": top,
+        }
+
+        try:
+            async with httpx.AsyncClient(timeout=30.0) as client:
+                resp = await client.post(url, headers=self._headers(), json=body)
+        except Exception as exc:
+            # A retrieval that never got an answer is the one an operator most
+            # needs a line for, so the record is written before the exception
+            # continues on its way unaltered. Only the fault's *type* is
+            # recorded: a transport message routinely carries the endpoint it
+            # could not reach.
+            ranking_telemetry.record_ranking(
+                **observed,
+                outcome=ranking_telemetry.OUTCOME_FAULTED,
+                fault=type(exc).__name__,
+            )
+            raise
         if resp.status_code >= 400:
+            ranking_telemetry.record_ranking(
+                **observed,
+                outcome=ranking_telemetry.OUTCOME_REFUSED,
+                status_code=resp.status_code,
+            )
             raise AzureSearchError(f"Azure Search query failed ({resp.status_code}): {resp.text[:500]}")
-        return resp.json().get("value", [])
+        hits = resp.json().get("value", [])
+        ranking_telemetry.record_ranking(**observed, hits=hits)
+        return hits

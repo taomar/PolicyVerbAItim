@@ -80,6 +80,7 @@ from policy_platform.infrastructure.projection import policy_rule_slice  # noqa:
 from policy_platform.infrastructure.search import (  # noqa: E402
     english_projection,
     policy_index,
+    ranking_telemetry,
     search_client,
 )
 
@@ -93,6 +94,12 @@ AUTHORED = (
     search_client,
     policy_rule_slice,
     ai_case_project,
+    # Reads nothing but the request it was handed and the scores that came back,
+    # and is held to the same ban for the same reason: a record of *why* a
+    # ranking came out as it did is the thing a future decision will be argued
+    # from, and one shaped around a corpus would make that argument wrong in a
+    # way no downstream test could see.
+    ranking_telemetry,
 )
 
 #: Touched by this milestone — a column, a field, a status code, a handler.
