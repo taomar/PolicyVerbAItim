@@ -1357,6 +1357,16 @@ export interface PolicyIndexBuildResult {
   document_count: number;
   indexed_at: string;
   error: string | null;
+  /** The handle this build is watched on. A caller may generate one before the
+   *  POST — as an upload does, because it cannot learn a server-side id until
+   *  the response arrives, which is after the work it wanted to watch has ended
+   *  — and the server allocates one when it does not. */
+  operation_id?: string | null;
+  /** True when the build never ran because another one held the single global
+   *  build slot. Only ever set on publish, which succeeds regardless; a manual
+   *  rebuild is refused with 409 instead. Distinct from a failure: the repair is
+   *  to retry once the slot frees, not to investigate a broken build. */
+  deferred?: boolean;
   /** How the documents split between the two content types the index holds. A
    *  policy holding more rules than one case can read gets one document per
    *  rule as well as its own, so a rule past what its policy's combined text
@@ -1372,6 +1382,133 @@ export interface PolicyIndexBuildResult {
    *  `incomplete` before the first upload, so an interrupted rebuild leaves a
    *  project that refuses rather than one that answers from part of a corpus. */
   manifest_state?: string | null;
+}
+
+/** One policy-index build: where it is, what it measured, and how it ended.
+ *
+ *  The same shape whether it was started by a publish or by somebody pressing
+ *  rebuild, because it is the same operation — one server-side mechanism records
+ *  both, and a second shape here would let the two surfaces drift apart.
+ *
+ *  `active: false` means nothing is recorded for the id asked about: a poll that
+ *  beat the handler, or an operation that was never made. Both are normal states
+ *  and neither is an error.
+ *
+ *  THERE IS NO PERCENTAGE, AND THERE MUST NOT BE ONE. The stages before
+ *  rendering have no denominator at all — how many documents a build will write
+ *  is unknown until the corpus has been rendered — so a bar spanning them would
+ *  be interpolated from elapsed time. `stage_index` of `stage_total` is exactly
+ *  true, and `expected_document_count` beside `acknowledged_count` is the one
+ *  real denominator the build eventually has. */
+export interface PolicyIndexBuildProgress {
+  active: boolean;
+  operation_id?: string;
+  policy_set_key?: string;
+  /** What started it. Both do identical work; this is the only thing that tells
+   *  them apart in a history afterwards. */
+  trigger?: "publish" | "rebuild";
+  actor?: string | null;
+  /** `deferred` means the build never ran because another held the single global
+   *  build slot — a different fact from `failed`, pointing at a different
+   *  repair. */
+  status?: "running" | "completed" | "failed" | "deferred";
+  stage?: string | null;
+  stages?: string[];
+  /** 1-based position of `stage` within `stages`; 0 when the stage is one this
+   *  client does not recognise, and for a deferred build, which has none. */
+  stage_index?: number;
+  stage_total?: number;
+  /** Every counter is nullable and absence is load-bearing: `null` means the
+   *  build has not measured it, which is not zero. A reader that showed both as
+   *  0 would report a project with no policies identically to one whose
+   *  rendering has not started. */
+  projection_count?: number | null;
+  policy_unit_count?: number | null;
+  rule_unit_count?: number | null;
+  rendered_count?: number | null;
+  embedded_count?: number | null;
+  expected_document_count?: number | null;
+  submitted_count?: number | null;
+  acknowledged_count?: number | null;
+  swept_count?: number | null;
+  index_name?: string | null;
+  version_number?: number | null;
+  document_count?: number | null;
+  policy_document_count?: number | null;
+  rule_document_count?: number | null;
+  projection_profile?: string | null;
+  manifest_state?: string | null;
+  quality_state?: "passed" | "failed" | "unavailable" | null;
+  quality_profile?: string | null;
+  quality_checked_documents?: number | null;
+  quality_structural_findings?: number | null;
+  quality_min_similarity?: number | null;
+  quality_mean_similarity?: number | null;
+  error?: string | null;
+  started_at?: string | null;
+  finished_at?: string | null;
+  elapsed_seconds?: number | null;
+  /** Seconds since the build last wrote anything, computed by the server from
+   *  its own clock. Read rather than derived here so no client clock skew enters
+   *  the answer: a browser running ahead would mark a healthy build quiet on its
+   *  first poll, and one running behind would never report a stalled one. */
+  seconds_since_update?: number | null;
+  terminal?: boolean;
+  /** Whether a finished build is recent enough to still be presented as news.
+   *  Bounds a display; the row itself is history and is kept. */
+  recent?: boolean;
+  /** Whether this build holds the one global build slot right now. Rebuild
+   *  controls are disabled while any build does, including one for another
+   *  project. */
+  holds_build_slot?: boolean;
+}
+
+/** A project's build attempts, newest first, plus whatever holds the slot. */
+export interface PolicyIndexBuildHistory {
+  policy_set_key: string;
+  builds: PolicyIndexBuildProgress[];
+  /** The build holding the single global slot, whichever project it belongs to.
+   *  `{active: false}` when nothing is running. */
+  active: PolicyIndexBuildProgress;
+}
+
+/** One project's row in the administrator's index console. */
+export interface PolicyIndexConsoleRow {
+  policy_set_key: string;
+  policy_set_name: string;
+  index_name: string;
+  /** The seven states this console distinguishes, and none of them collapses
+   *  into another: `unvalidated` is refused by retrieval but repaired by a
+   *  validation rather than a rebuild, and `empty` is a project with nothing
+   *  published, which is not a fault. */
+  health: "healthy" | "unvalidated" | "stale" | "failed" | "building" | "not_built" | "empty";
+  last_attempt: PolicyIndexLastAttempt;
+  freshness: PolicyIndexFreshness;
+  active_version_number: number | null;
+  indexed_version_number: number | null;
+  attempted_version_number: number | null;
+  document_count: number;
+  built_at: string | null;
+  attempted_at: string | null;
+  error: string | null;
+  projection_profile: string | null;
+  expected_projection_profile: string | null;
+  quality_state: "passed" | "failed" | "unavailable" | null;
+  quality_profile: string | null;
+  quality_checked_documents: number | null;
+  quality_structural_findings: number | null;
+  quality_min_similarity: number | null;
+  quality_mean_similarity: number | null;
+  quality_validated_at: string | null;
+  /** The most recent attempt, which is what says when and why this project
+   *  reached the state above. The latest-state row cannot: every attempt
+   *  overwrites it. */
+  latest_build: PolicyIndexBuildProgress;
+}
+
+export interface PolicyIndexConsole {
+  projects: PolicyIndexConsoleRow[];
+  active: PolicyIndexBuildProgress;
 }
 
 /** The server's name for a refusal this app has words for.
@@ -2174,6 +2311,45 @@ export interface ExtractResult {
   extraction_run_id: string;
   created: string[];
   skipped: { item: unknown; reason: string }[];
+}
+
+/** Live stage and counters for an upload still in flight, polled while the POST
+ * is open.
+ *
+ * Every figure here is one the server actually measured. There is deliberately
+ * no percentage: the request has no denominator until the document has been
+ * read, so a bar would be interpolated from elapsed time — a guess wearing the
+ * clothes of a measurement. The client shows "step N of M" from the fixed stage
+ * pipeline, and indeterminate motion for a stage with no count of its own.
+ *
+ * `active: false` means nothing is tracked for this operation id — the poll beat
+ * the handler, or the record has been pruned. Both are normal states. */
+export interface UploadProgress {
+  active: boolean;
+  operation_id?: string;
+  status?: "running" | "completed" | "failed";
+  /** Which step of `stages` is running now, as a stable key. */
+  stage?: string;
+  /** The ordered pipeline, sent by the server so the client never holds a
+   *  second copy of the sequence that could drift out of step with it. */
+  stages?: string[];
+  /** 1-based position of `stage` within `stages`; 0 if unrecognised. */
+  stage_index?: number;
+  stage_total?: number;
+  file_bytes?: number;
+  /** `null`/absent means "not measured yet", which is deliberately distinct
+   *  from 0. A document that has not been read and one that yielded no clauses
+   *  are different facts and must not render identically. */
+  clause_count?: number | null;
+  indexed_count?: number | null;
+  warning_count?: number | null;
+  /** True once a residual interleaved-text warning is among the diagnostics.
+   *  Informational: it never gates or delays any stage. */
+  has_interleaved_warning?: boolean;
+  error?: string | null;
+  started_at?: number;
+  updated_at?: number;
+  elapsed_seconds?: number;
 }
 
 /** Live counters for an in-flight extraction, polled while a run is going.
@@ -3340,6 +3516,45 @@ export const auditApi = {
   },
 };
 
+/** A subscription key as the admin screen sees it.
+ *
+ *  Contains no part of the secret, because no part of it is stored — only a
+ *  SHA-256 hash. The plaintext exists in exactly one response, to `generate`,
+ *  and never again. */
+export type SubscriptionKey = {
+  id: string;
+  label: string;
+  created_at: string | null;
+  created_by: string;
+  revoked_at: string | null;
+  revoked_by: string | null;
+  last_used_at: string | null;
+  active: boolean;
+};
+
+export const integrationApi = {
+  /** Whether this deployment issues its own subscription keys.
+   *
+   *  Read before the menu is drawn. Deliberately readable by every role: a
+   *  menu that could only be rendered correctly by an administrator would force
+   *  everyone else to open a page in order to be told it does not exist. */
+  capability: () =>
+    request<{ manages_subscription_keys: boolean }>("/api/integration/capability"),
+
+  list: () => request<{ keys: SubscriptionKey[] }>("/api/integration/keys"),
+
+  /** Issue a key. The response carries the plaintext **once**; it is stored as
+   *  a hash and no later call can return it. */
+  generate: (label: string) =>
+    request<SubscriptionKey & { key: string; warning: string }>("/api/integration/keys", {
+      method: "POST",
+      body: JSON.stringify({ label }),
+    }),
+
+  revoke: (keyId: string) =>
+    request<SubscriptionKey>(`/api/integration/keys/${keyId}`, { method: "DELETE" }),
+};
+
 // ---------------------------------------------------------------------------
 // Extraction surfaces (Docling integration)
 //
@@ -3667,10 +3882,44 @@ export const api = {
   getPolicyIndexState: (key: string) =>
     request<PolicyIndexState>(`/api/policy-sets/${encodeURIComponent(key)}/policy-index`),
 
-  rebuildPolicyIndex: (key: string) =>
-    request<PolicyIndexBuildResult>(`/api/policy-sets/${encodeURIComponent(key)}/policy-index/rebuild`, {
-      method: "POST",
-    }),
+  rebuildPolicyIndex: (key: string, operationId?: string) =>
+    request<PolicyIndexBuildResult>(
+      `/api/policy-sets/${encodeURIComponent(key)}/policy-index/rebuild${
+        operationId ? `?operation_id=${encodeURIComponent(operationId)}` : ""
+      }`,
+      { method: "POST" },
+    ),
+
+  /** This project's build attempts, newest first, and whatever holds the single
+   *  global build slot.
+   *
+   *  The history is a separate read from `getPolicyIndexState` because the two
+   *  answer different questions from different tables: that one is the project's
+   *  latest state, overwritten by every attempt; this one is the append-only
+   *  record of the attempts themselves, which is what a publisher deciding
+   *  whether to retry actually needs. */
+  listPolicyIndexBuilds: (key: string) =>
+    request<PolicyIndexBuildHistory>(
+      `/api/policy-sets/${encodeURIComponent(key)}/policy-index/builds`,
+    ),
+
+  /** One build's stages and counters, by the id its caller polls on.
+   *
+   *  Answers correctly after the page has been closed and reopened, and from a
+   *  replica other than the one running the build, because the record is a row
+   *  rather than a process-local dict. That is what lets a panel restore itself
+   *  on mount instead of trusting whatever the previous component left behind. */
+  policyIndexBuildProgress: (operationId: string) =>
+    request<PolicyIndexBuildProgress>(
+      `/api/policy-index/builds/${encodeURIComponent(operationId)}`,
+    ),
+
+  /** Every project's index state and health, for the administrator's console.
+   *
+   *  ADMINISTER on the server: it enumerates the whole estate's index health,
+   *  which is operator knowledge rather than governed content. A non-admin gets
+   *  403 whatever this client offers. */
+  listPolicyIndexStates: () => request<PolicyIndexConsole>(`/api/policy-index/states`),
 
   /** Check a corpus that is already built, without rebuilding any of it.
    *
@@ -3702,12 +3951,17 @@ export const api = {
     title: string,
     owner: string,
     file: File,
-    policySetKey?: string
+    policySetKey?: string,
+    /** Client-generated id for watching this upload's stages while the POST is
+     * still open. Optional: omitting it uploads exactly as before, with no
+     * progress record kept server-side. */
+    operationId?: string
   ): Promise<DocumentUploadResponse> => {
     const form = new FormData();
     form.append("file", file);
     const params = new URLSearchParams({ title, owner });
     if (policySetKey) params.set("policy_set_key", policySetKey);
+    if (operationId) params.set("operation_id", operationId);
     const res = await (async () => {
       try {
         return await fetch(`${API_BASE_URL}/api/documents/upload?${params.toString()}`, {
@@ -3730,6 +3984,16 @@ export const api = {
     }
     return res.json();
   },
+
+  /** Live stage and counters for an upload still in flight.
+   *
+   * `active: false` means nothing is tracked for this operation id — the poll
+   * beat the handler, or the record has been pruned. Both are normal, so the
+   * panel falls back to its elapsed clock rather than reporting an error. */
+  uploadProgress: (operationId: string) =>
+    request<UploadProgress>(
+      `/api/documents/upload-progress/${encodeURIComponent(operationId)}`
+    ),
 
   assignDocumentToProject: (documentId: string, policySetKey: string | null) =>
     request<SourceDocument>(`/api/documents/${encodeURIComponent(documentId)}/assign`, {

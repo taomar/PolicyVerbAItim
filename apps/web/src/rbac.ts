@@ -70,7 +70,7 @@ const UNKNOWN: SurfaceAccess = {
 // ---------------------------------------------------------------------------
 
 // Nav ids from App.tsx NAV_ITEMS.
-type NavId = "dashboard" | "projects" | "document-inbox" | "evaluate" | "my-attestations";
+type NavId = "dashboard" | "projects" | "document-inbox" | "evaluate" | "my-attestations" | "integration" | "policy-index";
 
 // Tab keys from ProjectWorkspace.tsx TAB_META.
 type TabKey =
@@ -91,6 +91,15 @@ const VIEWER_MAP: SurfaceMap = {
   "document-inbox": HIDDEN,
   evaluate:         FULL,
   "my-attestations": HIDDEN,
+  // Issuing the credentials that authenticate machine access to the decision
+  // API is an administrative act, and so is knowing which ones exist.
+  integration:      HIDDEN,
+  // The estate-wide index console. Hidden for the same reason: it enumerates
+  // every project's index name, failure reasons and how long each has been
+  // broken, which is a description of how this deployment is put together
+  // rather than governed content. The server agrees — the aggregate endpoint is
+  // ADMINISTER-band and answers 403.
+  "policy-index":   HIDDEN,
   // Tabs
   overview:      readOnly("Project settings are managed by a Policy Author. You can view the project's status and history here."),
   documents:     readOnly("Source documents are uploaded by a Policy Author. You can read them and see how rules were extracted."),
@@ -112,6 +121,11 @@ const AUTHOR_MAP: SurfaceMap = {
   "document-inbox": FULL,
   evaluate:         FULL,
   "my-attestations": HIDDEN,
+  integration:      HIDDEN,
+  // An author repairs their own project's index from the project page, which is
+  // where the work is. Enumerating every project's index health is an operator's
+  // view of the estate and is refused by the server for this role.
+  "policy-index":   HIDDEN,
   overview:      FULL,
   documents:     FULL,
   review:        FULL,
@@ -135,6 +149,15 @@ const ADMIN_MAP: SurfaceMap = {
   "document-inbox": FULL,
   evaluate:         FULL,
   "my-attestations": HIDDEN,
+  // The only role that may see it, and even then only where this deployment
+  // issues its own keys. That second condition is a property of the
+  // deployment, not of the role, so it cannot live in this map — see
+  // `App.tsx`, which combines the two filters.
+  integration:      FULL,
+  // The only role that may see it, and unlike Integration it depends on no
+  // deployment shape: every deployment has projects and every one of them has
+  // an index state to report, so role is the whole condition.
+  "policy-index":   FULL,
   overview:      FULL,
   documents:     FULL,
   review:        FULL,

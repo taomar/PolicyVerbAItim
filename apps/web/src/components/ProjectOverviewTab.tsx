@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { Alert, Button, Form, Input, Modal, Space, Tag, Typography } from "antd";
+import { Alert, Button, Form, Input, Modal, Space, Tag, Tooltip, Typography } from "antd";
 import {
   ArrowRightOutlined,
   CalendarOutlined,
@@ -12,15 +12,18 @@ import {
   SyncOutlined,
   WarningOutlined,
 } from "@ant-design/icons";
-import { api, aiApi, PolicyPlatformApiError, type ApprovedPolicyVersion, type DeletePolicySetResponse, type PolicyIndexBuildResult, type PolicyIndexState, type PolicyIndexValidationResult, type PolicySet, type QualityRunSummary, type SourceDocument, type WorkspaceCounts } from "../api";
+import { api, aiApi, PolicyPlatformApiError, type ApprovedPolicyVersion, type DeletePolicySetResponse, type PolicyIndexBuildHistory, type PolicyIndexBuildResult, type PolicyIndexState, type PolicyIndexValidationResult, type PolicySet, type QualityRunSummary, type SourceDocument, type WorkspaceCounts } from "../api";
 import { ActivityPanel } from "./ActivityPanel";
 import { NotesPanel } from "./NotesPanel";
 import { PolicySetSummaryPanel } from "./PolicySetSummaryPanel";
 import ExtractionProgressPanel from "./ExtractionProgressPanel";
+import PolicyIndexProgressPanel from "./PolicyIndexProgressPanel";
+import PolicyIndexBuildHistoryTable from "./PolicyIndexBuildHistoryTable";
 import { routeCell } from "../projectRegisterRow";
 import { policyUnitCount, recordScaleLabel } from "../policyRecordFacts";
 import { useActor } from "../ActorContext";
 import { canAdminister } from "../rbac";
+import { newOperationId } from "../operationId";
 import {
   describePolicyIndexState,
   policyIndexRepairable,
@@ -213,6 +216,13 @@ export function ProjectOverviewTab({
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleteOutcome, setDeleteOutcome] = useState<DeletePolicySetResponse | null>(null);
   const [deleteForm] = Form.useForm<{ confirm: string }>();
+  // The project's own index build history, and whatever holds the single global
+  // build slot. Read from the server on mount — and again whenever a build
+  // settles — so a page that navigated away and back shows the build that was
+  // running while it was gone, rather than nothing.
+  const [buildHistory, setBuildHistory] = useState<PolicyIndexBuildHistory | null>(null);
+  const [watchedOperationId, setWatchedOperationId] = useState<string | null>(null);
+  const [rebuildConflict, setRebuildConflict] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -264,6 +274,44 @@ export function ProjectOverviewTab({
       prev[versionId] === active ? prev : { ...prev, [versionId]: active },
     );
   }, []);
+
+  /**
+   * Recover this project's build history, and any build in flight, from the
+   * server.
+   *
+   * THE SERVER IS THE AUTHORITY, AND THAT IS THE WHOLE POINT
+   *
+   * A build started by a publish keeps running after the publish response has
+   * returned and after the user has navigated somewhere else. Component state
+   * cannot know about it, and browser storage would only remember what *this*
+   * tab happened to see. So the operation being watched is whatever the server
+   * says is running — which also means a build started on another replica, or by
+   * another person, is visible here rather than invisible.
+   *
+   * Only a build for *this* project is adopted for watching. Another project's
+   * build still disables the rebuild control (there is one slot, deployment
+   * wide), but showing its stages on this page would attribute work to a project
+   * it is not being done for.
+   */
+  const loadBuildHistory = useCallback(async () => {
+    try {
+      const next = await api.listPolicyIndexBuilds(policySet.key);
+      setBuildHistory(next);
+      const running = next.builds.find((build) => build.status === "running");
+      const settledRecently = next.builds.find((build) => build.recent);
+      const resumed = running ?? settledRecently ?? null;
+      setWatchedOperationId(resumed?.operation_id ?? null);
+    } catch {
+      // A history this role may not read, or a server that is down. Neither is a
+      // failure of the project, and the panels above already report the state
+      // read that matters. Left null, which renders nothing.
+      setBuildHistory(null);
+    }
+  }, [policySet.key]);
+
+  useEffect(() => {
+    void loadBuildHistory();
+  }, [loadBuildHistory, indexRepair?.nonce]);
 
   useEffect(() => {
     let cancelled = false;
@@ -353,24 +401,48 @@ export function ProjectOverviewTab({
   const policyIndexCanRebuild =
     (policyIndexState ? policyIndexRepairable(policyIndexState) : false) || arrivedFromLiveIndexFault;
   const rebuildNotice = rebuildResult ? rebuildResultMessage(rebuildResult) : null;
+  // Any build anywhere in the deployment, because there is one slot. A control
+  // that stayed enabled while another project was building would send a request
+  // the server answers with 409 — which reads to the user as a broken button
+  // rather than as a queue they are not in.
+  const otherBuildRunning = Boolean(buildHistory?.active.active);
   const validationNotice = validationResult ? validationResultMessage(validationResult) : null;
   const refreshPolicyIndexState = async () => {
     const state = await api.getPolicyIndexState(policySet.key);
     setPolicyIndexState(state);
   };
   const handleRebuildPolicyIndex = async () => {
+    const operationId = newOperationId();
     setRebuildingPolicyIndex(true);
     setPolicyIndexError(null);
     setRebuildResult(null);
+    setRebuildConflict(null);
+    // Watched from the moment the request is made rather than from the moment it
+    // returns: the response does not exist until the build has finished, which
+    // is the whole reason the id is generated on this side.
+    setWatchedOperationId(operationId);
     try {
-      const result = await api.rebuildPolicyIndex(policySet.key);
+      const result = await api.rebuildPolicyIndex(policySet.key, operationId);
       // The refresh comes first: the notice says the state below has been
       // refreshed, and React would commit that claim while the follow-up GET
       // was still in flight, printing it above the pre-rebuild reading.
       await refreshPolicyIndexState();
+      await loadBuildHistory();
       setRebuildResult(result);
     } catch (e) {
-      setPolicyIndexError(e instanceof PolicyPlatformApiError ? e.detail : String(e));
+      if (e instanceof PolicyPlatformApiError && e.status === 409) {
+        // Refused, not failed. Nothing about this project changed and nothing is
+        // broken — another build holds the one slot this deployment has. Shown
+        // as a conflict rather than an error so the reader is not sent looking
+        // for a fault.
+        setRebuildConflict(
+          "Another policy index build is already running, so this one did not start. Only one runs at a time across this deployment, because a build re-renders a whole corpus and rewrites an entire search index. Try again once it finishes.",
+        );
+        await loadBuildHistory();
+      } else {
+        setWatchedOperationId(null);
+        setPolicyIndexError(e instanceof PolicyPlatformApiError ? e.detail : String(e));
+      }
     } finally {
       setRebuildingPolicyIndex(false);
     }
@@ -602,14 +674,52 @@ export function ProjectOverviewTab({
                       <Text type="secondary">Recorded build state, not a live Azure Search check</Text>
                     </div>
                     {policyIndexCanRebuild && (
-                      <Button size="small" onClick={handleRebuildPolicyIndex} loading={rebuildingPolicyIndex}>
-                        Rebuild policy index
-                      </Button>
+                      <Tooltip
+                        title={
+                          otherBuildRunning
+                            ? "Another policy index build is running. Only one runs at a time across this deployment, because a build re-renders a whole corpus and rewrites an entire search index."
+                            : undefined
+                        }
+                      >
+                        {/* A disabled button inside a tooltip needs the wrapper
+                            to receive pointer events, or the explanation for the
+                            disabling is unreachable — which is worse than no
+                            tooltip, because the control just looks broken. */}
+                        <span>
+                          <Button
+                            size="small"
+                            disabled={otherBuildRunning}
+                            onClick={handleRebuildPolicyIndex}
+                            loading={rebuildingPolicyIndex}
+                          >
+                            Rebuild policy index
+                          </Button>
+                        </span>
+                      </Tooltip>
                     )}
                     <Button size="small" onClick={handleValidatePolicyIndex} loading={validatingPolicyIndex}>
                       Validate projection
                     </Button>
                   </div>
+                  {/* The build itself, live, and recovered from the server on
+                      mount — so a publish's best-effort rebuild is still
+                      watchable after navigating away and back, and a build
+                      started on another replica is visible rather than absent. */}
+                  <PolicyIndexProgressPanel
+                    operationId={watchedOperationId}
+                    onSettled={() => {
+                      void refreshPolicyIndexState();
+                      void loadBuildHistory();
+                    }}
+                  />
+                  {rebuildConflict ? (
+                    <Alert
+                      type="info"
+                      showIcon
+                      title="Rebuild did not start"
+                      description={rebuildConflict}
+                    />
+                  ) : null}
                   {policyIndexLoading ? (
                     <Text type="secondary">Loading the recorded index state…</Text>
                   ) : policyIndexError ? (
@@ -664,6 +774,19 @@ export function ProjectOverviewTab({
                       <Text type="secondary" className="policy-index-readiness__source">
                         Source: {policyIndexState.source}; live probe: {policyIndexState.live_probe ? "yes" : "no"}.
                       </Text>
+                      {/* THE HISTORY, WHICH THE STATE ABOVE STRUCTURALLY CANNOT
+                          GIVE. That panel is one row per project, overwritten by
+                          every attempt: a publisher whose build failed an hour
+                          ago, was retried, and failed again sees one row saying
+                          "failed", indistinguishable from a first failure. These
+                          are the attempts themselves. */}
+                      <div>
+                        <Text strong>Index build history</Text>
+                        <PolicyIndexBuildHistoryTable
+                          builds={buildHistory?.builds ?? []}
+                          emptyText="No index build has been recorded for this project yet. Publishing a version starts one."
+                        />
+                      </div>
                     </Space>
                   ) : null}
                 </div>

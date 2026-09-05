@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Button, Layout, Menu, Result, Space, Tag, Typography } from "antd";
 import {
+  ApiOutlined,
+  DatabaseOutlined,
   DesktopOutlined,
   FolderOutlined,
   HomeOutlined,
@@ -9,7 +11,7 @@ import {
   SolutionOutlined,
   ThunderboltOutlined,
 } from "@ant-design/icons";
-import { aiApi, api, onSessionCleared, type AiStatus, type PolicySet } from "./api";
+import { aiApi, api, integrationApi, onSessionCleared, type AiStatus, type PolicySet } from "./api";
 import { useActor } from "./ActorContext";
 import { getSession } from "./auth";
 import type { Session } from "./auth";
@@ -21,6 +23,8 @@ import { ProjectsPage } from "./components/ProjectsPage";
 import { DocumentsPage } from "./components/DocumentsPage";
 import { EvaluatePage } from "./components/EvaluatePage";
 import { MyAttestationsPage } from "./components/MyAttestationsPage";
+import IntegrationPage from "./IntegrationPage";
+import PolicyIndexConsolePage from "./PolicyIndexConsolePage";
 import { AskAiDrawer } from "./components/AskAiDrawer";
 import { distinctLabelsByKey } from "./distinctNames";
 import { PROJECT_NAV_PREFIX, projectNavTarget } from "./projectNav";
@@ -29,7 +33,7 @@ import "./App.css";
 const { Sider, Header, Content } = Layout;
 const { Text } = Typography;
 
-type Page = "dashboard" | "projects" | "document-inbox" | "evaluate" | "my-attestations";
+type Page = "dashboard" | "projects" | "document-inbox" | "evaluate" | "my-attestations" | "integration" | "policy-index";
 
 /**
  * Nav items grouped by what the user is trying to do, with a one-line
@@ -41,7 +45,7 @@ const NAV_ITEMS: {
   id: Page;
   label: string;
   icon: React.ReactNode;
-  group: "overview" | "author" | "runtime";
+  group: "overview" | "author" | "runtime" | "integration";
   hint: string;
 }[] = [
   {
@@ -79,12 +83,27 @@ const NAV_ITEMS: {
     group: "runtime",
     hint: "Policies awaiting your sign-off.",
   },
+  {
+    id: "integration",
+    label: "Integration",
+    icon: <ApiOutlined />,
+    group: "integration",
+    hint: "Keys that let another system call the decision API.",
+  },
+  {
+    id: "policy-index",
+    label: "Policy Index",
+    icon: <DatabaseOutlined />,
+    group: "integration",
+    hint: "Every project's grounding index, and the repair for a broken one.",
+  },
 ];
 
-const NAV_GROUP_LABELS: Record<"overview" | "author" | "runtime", string> = {
+const NAV_GROUP_LABELS: Record<"overview" | "author" | "runtime" | "integration", string> = {
   overview: "Overview",
   author: "Author",
   runtime: "Runtime",
+  integration: "Integration",
 };
 
 /**
@@ -119,14 +138,86 @@ function App() {
   // A 401 from any API call means the session is dead — return to sign-in.
   useEffect(() => onSessionCleared(() => setSession(null)), []);
 
-  // Combined visibility: phase-hidden items plus role-based filtering from
-  // rbac.ts.  Computed inside the component so it reacts to role changes.
+  /**
+   * Whether this deployment issues its own subscription keys.
+   *
+   * Starts null — "not yet answered" — and Integration is hidden while it is
+   * null. A probe that has not returned, or that failed, must not reveal the
+   * surface: offering to rotate a credential the platform does not own is
+   * worse than not offering it, so the unknown state resolves the same way as
+   * a "no".
+   *
+   * This is a property of the deployment, not of the role, which is why it
+   * cannot live in the rbac surface map. It is folded into `hiddenNavIds`
+   * below so it is declared once and applies to all three places that consult
+   * it: the rendered menu, the navigation guard, and the page actually
+   * rendered — the same rule `PHASE_HIDDEN_NAV_IDS` follows, and for the same
+   * reason: a page hidden from the menu but still rendered by another route
+   * would show as a shell whose every call is refused.
+   *
+   * The probe is gated on `session`, like every other data-loading effect
+   * here. The answer is only ever consumable by the menu and the navigation
+   * guard below, and both are unreachable while `session` is null — the
+   * component returns the login screen before it renders either. Asking
+   * earlier put an unauthenticated request on the login screen for an answer
+   * nobody could read yet.
+   *
+   * Losing the session resets the answer to null rather than leaving the last
+   * one in place, so a "yes" obtained by one session cannot survive a sign-out
+   * into the next. Re-entering the shell asks again.
+   */
+  const [managesKeys, setManagesKeys] = useState<boolean | null>(null);
+  useEffect(() => {
+    if (!session) {
+      setManagesKeys(null);
+      return;
+    }
+    let cancelled = false;
+    integrationApi
+      .capability()
+      .then((result) => {
+        if (!cancelled) setManagesKeys(result.manages_subscription_keys);
+      })
+      .catch(() => {
+        if (!cancelled) setManagesKeys(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
+
+  // Combined visibility: phase-hidden items, deployment shape, plus role-based
+  // filtering from rbac.ts.  Computed inside the component so it reacts to
+  // role changes.
   const hiddenNavIds = NAV_ITEMS.filter(
-    (item) => PHASE_HIDDEN_NAV_IDS.includes(item.id) || !canAccessPage(rbacRole, item.id),
+    (item) =>
+      PHASE_HIDDEN_NAV_IDS.includes(item.id) ||
+      (item.id === "integration" && managesKeys !== true) ||
+      !canAccessPage(rbacRole, item.id),
   ).map((item) => item.id);
   const visibleNavItems = NAV_ITEMS.filter((item) => !hiddenNavIds.includes(item.id));
 
   const [page, setPage] = useState<Page>("dashboard");
+
+  /**
+   * The page actually rendered, derived from the same authority that hides nav
+   * items rather than tracked separately.
+   *
+   * `hiddenNavIds` governs the menu and `handleNavigate`, but a selection can
+   * outlive the conditions that permitted it: the 401 handler clears `session`
+   * without touching `page`, so signing back in under a different role, or
+   * after a false or failed capability answer, would otherwise re-render the
+   * page chosen by the previous principal. Hiding the menu entry does not
+   * unrender anything. Deriving the rendered page here means "hidden" cannot
+   * mean one thing to the sider and another to the content area.
+   *
+   * Falling back to the first visible item keeps a demoted user somewhere they
+   * are allowed to be; when nothing is visible the 403 below owns the surface.
+   */
+  const effectivePage: Page | null = hiddenNavIds.includes(page)
+    ? (visibleNavItems[0]?.id ?? null)
+    : page;
+
   const [apiHealthy, setApiHealthy] = useState<"unknown" | "ok" | "down">("unknown");
   const [aiStatus, setAiStatus] = useState<AiStatus | null>(null);
   const [askAiOpen, setAskAiOpen] = useState(false);
@@ -151,7 +242,7 @@ function App() {
       .catch(() => undefined);
   }, [session]);
 
-  const currentNavItem = NAV_ITEMS.find((item) => item.id === page);
+  const currentNavItem = NAV_ITEMS.find((item) => item.id === effectivePage);
 
   /**
    * Projects listed directly in the sider.
@@ -231,17 +322,17 @@ function App() {
             // Reflect the open project rather than just the Projects page, so the
             // sider always shows where the user actually is. A project past the
             // shortcut list has no row to light up, so the parent carries it.
-            page === "projects" &&
+            effectivePage === "projects" &&
             activeProject &&
             !siderCollapsed &&
             siderProjects.some((ps) => ps.key === activeProject.key)
               ? projectNavTarget(activeProject.key)
-              : page,
+              : effectivePage,
           ]}
 
           className="app-menu"
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          items={(["overview", "author", "runtime"] as const).flatMap((group): any[] => {
+          items={(["overview", "author", "runtime", "integration"] as const).flatMap((group): any[] => {
             const groupItems = visibleNavItems.filter((item) => item.group === group);
             if (groupItems.length === 0) return [];
             // A group heading above a single item is noise — render it ungrouped.
@@ -337,7 +428,7 @@ function App() {
           <Space size={8} className="breadcrumb">
             <span className="crumb-icon">{currentNavItem?.icon}</span>
             <Text strong>{currentNavItem?.label}</Text>
-            {page === "projects" && activeProject && (
+            {effectivePage === "projects" && activeProject && (
               <>
                 <Text type="secondary">/</Text>
                 <Text strong>{activeProject.name}</Text>
@@ -381,22 +472,24 @@ function App() {
               />
             ) : (
             <>
-            {page === "dashboard" && (
+            {effectivePage === "dashboard" && (
               <Dashboard
                 onNavigate={handleNavigate}
                 onOpenAskAi={aiStatus?.ai_enabled ? () => setAskAiOpen(true) : undefined}
               />
             )}
-            {page === "projects" && (
+            {effectivePage === "projects" && (
               <ProjectsPage
                 onActiveProjectChange={setActiveProject}
                 onOpenAskAi={aiStatus?.ai_enabled ? () => setAskAiOpen(true) : undefined}
                 openRequest={projectOpenRequest}
               />
             )}
-            {page === "document-inbox" && <DocumentsPage onNavigate={handleNavigate} />}
-            {page === "evaluate" && <EvaluatePage />}
-            {page === "my-attestations" && <MyAttestationsPage />}
+            {effectivePage === "document-inbox" && <DocumentsPage onNavigate={handleNavigate} />}
+            {effectivePage === "evaluate" && <EvaluatePage />}
+            {effectivePage === "my-attestations" && <MyAttestationsPage />}
+            {effectivePage === "integration" && <IntegrationPage />}
+            {effectivePage === "policy-index" && <PolicyIndexConsolePage />}
             </>
             )}
           </div>

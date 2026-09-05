@@ -107,7 +107,7 @@ import hashlib
 from json import JSONDecodeError
 import logging
 import re
-from collections.abc import Iterable, Sequence
+from collections.abc import Awaitable, Callable, Iterable, Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Literal, cast
@@ -115,7 +115,7 @@ from typing import Literal, cast
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from policy_platform.domain.models import PolicyIndexState
+from policy_platform.domain.models import PolicyIndexBuild, PolicyIndexState
 from policy_platform.infrastructure.ai.openai_client import AzureOpenAIClient
 from policy_platform.infrastructure.assistants.ai_case_language import (
     ENGLISH_PROJECTION_PROFILE,
@@ -123,12 +123,18 @@ from policy_platform.infrastructure.assistants.ai_case_language import (
     INDEX_PROJECTION_UNAVAILABLE,
     PROCESSING_LANGUAGE,
 )
+from policy_platform.infrastructure.errors import describe_exception
+from policy_platform.infrastructure.ingestion.mixed_script_text import (
+    INTERLEAVED_TEXT_CODE,
+    interleaved_tokens,
+)
 from policy_platform.infrastructure.projection.policy_rule_slice import (
     LARGE_POLICY_RULE_THRESHOLD,
     RULE_INDEX_SCOPE_ALL as _RULE_INDEX_SCOPE_ALL,
     RULE_INDEX_SCOPE_LARGE_POLICY as _RULE_INDEX_SCOPE_LARGE_POLICY,
     rule_documents_expected,
     rule_text,
+    rule_text_parts,
 )
 from policy_platform.infrastructure.quality.projection_faithfulness import (
     FINDING_EMBEDDING_UNAVAILABLE,
@@ -144,6 +150,17 @@ from policy_platform.infrastructure.quality.projection_faithfulness import (
 from policy_platform.infrastructure.search.english_projection import (
     EnglishProjectionError,
     project_texts_to_english,
+)
+from policy_platform.infrastructure.search.policy_index_build_progress import (
+    NULL_PROGRESS,
+    BuildProgress,
+    RecordedBuildProgress,
+    acquire_build_slot,
+    finish_build,
+    latest_state_status_for,
+    new_operation_id,
+    record_deferred_build,
+    running_build,
 )
 from policy_platform.infrastructure.search.search_client import AzureSearchClient
 from policy_platform.infrastructure.settings import Settings, get_settings
@@ -945,14 +962,50 @@ def rule_retrieval_source_text(projection: dict, rule: dict) -> str:
     the provision around it, and where a row sits is part of what it is.
     """
 
+    return _rule_retrieval(projection, rule)[0]
+
+
+def rule_retrieval_opaque_spans(
+    projection: dict, rule: dict
+) -> tuple[tuple[int, int], ...]:
+    """Where the machine-made terms sit inside that text, as the projection recorded it.
+
+    These are generated keys — slugs of a phrase, closed vocabularies — not
+    language. Rendering them into another language is meaningless, and letting a
+    renderer decide that for itself means letting it guess from shape, which
+    fails on exactly the ones that read like words.
+
+    Positions rather than words, for the reason :func:`rule_text_parts` gives:
+    the same generated value can occur twice in one rule, and can also occur
+    inside a sentence that merely uses the word. Only the position distinguishes
+    the key this system generated from the prose that happens to spell it.
+    """
+
+    return _rule_retrieval(projection, rule)[1]
+
+
+def _rule_retrieval(
+    projection: dict, rule: dict
+) -> tuple[str, tuple[tuple[int, int], ...]]:
     metadata = _projection_metadata(projection)
     heading = " > ".join(_strings(metadata.get("heading_path", [])))
-    body = rule_text(
+    body, opaque = rule_text_parts(
         rule,
         spans=projection.get("spans") or {},
         facts=projection.get("facts") or {},
     )
-    return " \n".join(part for part in (heading, body) if part.strip())
+    # The heading is prepended, so every span the body reported moves by exactly
+    # the length of what now sits in front of it.
+    pieces: list[str] = []
+    if heading.strip():
+        pieces.append(heading)
+    if not body.strip():
+        return " \n".join(pieces), ()
+    offset = len(heading) + 2 if pieces else 0  # 2 == len(" \n")
+    pieces.append(body)
+    return " \n".join(pieces), tuple(
+        (start + offset, end + offset) for start, end in opaque
+    )
 
 
 def indexable_rules(
@@ -1013,6 +1066,7 @@ async def rebuild_project_policy_index(
     indexed_at: datetime | None = None,
     projection_profile: str = ENGLISH_PROJECTION_PROFILE,
     quality_profile_name: str = PROJECTION_QUALITY_PROFILE,
+    progress: BuildProgress = NULL_PROGRESS,
 ) -> PolicyIndexBuildOutcome:
     """Best-effort full rebuild of one project's published-latest policy index.
 
@@ -1059,6 +1113,26 @@ async def rebuild_project_policy_index(
 
     Rollback is this function run again from the authoritative database. Nothing
     here re-extracts, and nothing here is the only copy of anything.
+
+    WHAT `progress` IS, AND WHY IT IS A PARAMETER RATHER THAN A GLOBAL
+
+    Every stage above is knowledge that existed only in local variables and died
+    with the call, because the HTTP response is the single output channel and it
+    does not exist until the last stage has finished. On a real corpus the
+    rendering pass alone runs for minutes, so a caller could show a spinner and
+    nothing else — unable to tell a slow render from a hung one, or to say
+    whether the wait was in the model or in the index.
+
+    `progress` is where those stages are published. It defaults to a no-op, so
+    every existing caller and every test that calls this function directly keeps
+    working unchanged and needs no database; a caller that wants the stages
+    passes a recorder. It is injected rather than reached for globally so this
+    function stays a pure function of its arguments, and so a test can watch the
+    exact sequence it emits by handing it a list.
+
+    Nothing reported here is read back. There is no branch in this function on
+    anything `progress` does, and none of its methods can raise — a build must not
+    be able to fail because its progress could not be recorded.
     """
 
     settings = settings or get_settings()
@@ -1083,7 +1157,9 @@ async def rebuild_project_policy_index(
             raise RuntimeError("Azure OpenAI embeddings are not configured")
         search_client = search_client or AzureSearchClient(settings)
         openai_client = openai_client or AzureOpenAIClient(settings)
+        await progress.stage("collecting")
         projection_list = list(projections)
+        await progress.count(projection_count=len(projection_list))
 
         documents, records = await _build_project_documents(
             policy_set_key=policy_set_key,
@@ -1091,13 +1167,25 @@ async def rebuild_project_policy_index(
             openai_client=openai_client,
             settings=settings,
             projection_profile=projection_profile,
+            progress=progress,
         )
         policy_documents = [d for d in documents if d["content_type"] == CONTENT_TYPE_POLICY]
         rule_documents = [d for d in documents if d["content_type"] == CONTENT_TYPE_RULE]
         policy_version_id = (
             str(policy_documents[0]["policy_version_id"]) if policy_documents else None
         )
+        # The one honest denominator this build ever has, and it does not exist
+        # until here: how many documents will be written is unknown until the
+        # corpus has been rendered. Published as a count beside the
+        # acknowledgements below, never as a percentage spanning the stages that
+        # ran before it existed.
+        await progress.count(
+            expected_document_count=len(documents),
+            policy_unit_count=len(policy_documents),
+            rule_unit_count=len(rule_documents),
+        )
 
+        await progress.stage("indexing")
         await _create_index_accepting_empty_success(
             search_client,
             policy_index_definition(
@@ -1146,9 +1234,12 @@ async def rebuild_project_policy_index(
             )
         manifest_written = True
 
+        await progress.stage("uploading")
+        await progress.count(submitted_count=len(documents))
         acknowledged = await _upload_documents_counting_acknowledgements(
             search_client, index_name, documents
         )
+        await progress.count(acknowledged_count=acknowledged)
         if acknowledged != len(documents):
             # Checked **before** the stale sweep, for the same reason the abort
             # above sits before the first write. Every acknowledgement is a
@@ -1171,6 +1262,8 @@ async def rebuild_project_policy_index(
         )
         live_ids = {doc["id"] for doc in documents} | {policy_index_manifest_id(policy_set_key)}
         stale_ids = sorted(doc_id for doc_id in indexed_ids if doc_id not in live_ids)
+        await progress.stage("sweeping")
+        await progress.count(swept_count=len(stale_ids))
         if stale_ids:
             await search_client.delete_documents(index_name, stale_ids)
 
@@ -1186,6 +1279,7 @@ async def rebuild_project_policy_index(
         # expected document, so re-reading them would cost a full corpus scan to
         # learn what was just proved. The alignment came out of the build with
         # them, which is the one place it is known for certain.
+        await progress.stage("validating")
         quality = await validate_projection(
             records=records,
             documents=documents,
@@ -1226,6 +1320,7 @@ async def rebuild_project_policy_index(
         # pair — a record saying "current" beside a live index that refuses
         # every query, which no repeat rebuild could resolve because each one
         # would report success again.
+        await progress.stage("publishing")
         if await _upload_documents_counting_acknowledgements(
             search_client, index_name, [manifest(MANIFEST_READY, acknowledged, quality)]
         ) != 1:
@@ -1247,7 +1342,15 @@ async def rebuild_project_policy_index(
             quality=quality,
         )
     except Exception as exc:  # noqa: BLE001 - publish must not fail because Search did
-        logger.warning("best-effort policy index rebuild failed for set %s: %s", policy_set_key, exc)
+        # `describe_exception`, never `str`. A transport failure here carries its
+        # meaning in its type and nothing in its message, and recording the empty
+        # message left this row saying `error=''` — which reads as "no reason was
+        # recorded", i.e. as a process that died mid-build. That is a different
+        # diagnosis pointing at a different repair, and it cost an investigation.
+        reason = describe_exception(exc)
+        logger.warning(
+            "best-effort policy index rebuild failed for set %s: %s", policy_set_key, reason
+        )
         return PolicyIndexBuildOutcome(
             state="failed",
             policy_set_key=policy_set_key,
@@ -1255,7 +1358,7 @@ async def rebuild_project_policy_index(
             version_number=version_number,
             document_count=0,
             indexed_at=now,
-            error=str(exc),
+            error=reason,
             # No profile is claimed on a failed build, whatever was rendered.
             # The manifest is `incomplete` if it was reached at all and absent if
             # it was not, and both mean the same thing to the retrieval gate.
@@ -1269,6 +1372,53 @@ async def rebuild_project_policy_index(
         )
 
 
+def _warn_about_interleaved_text(
+    projection: dict, group: Sequence[tuple[str, str]]
+) -> None:
+    """Log which of a policy's retrieval texts were extracted out of reading order.
+
+    The same check the portal runs when a document is loaded, run again over
+    what a rebuild is about to index, so the two paths report the same class of
+    finding about the same corpus rather than one of them noticing and the other
+    not.
+
+    INFORMATIONAL ONLY
+    ------------------
+    This raises nothing, skips nothing and rewrites nothing. Every text in
+    ``group`` is rendered and indexed exactly as it would be if this function
+    did not exist; the sole effect is a line in the build log. Interleaving
+    comes from the source file, and the only thing that resolves it is a
+    corrected PDF or DOCX uploaded as a new version — so a build that refused
+    the text would withhold the corpus without bringing the fix any closer.
+
+    Counts and keys only. The passage is policy wording and does not belong in
+    a log.
+    """
+
+    affected = {key: len(found) for key, text in group if (found := interleaved_tokens(text))}
+    if not affected:
+        return
+    # The identity lives in the projection envelope, not at the top level.
+    # Reading `policy_key` from the projection itself logged "policy unknown"
+    # for every finding on a live build — a real defect reported without saying
+    # where it was, which is most of what makes a finding actionable.
+    metadata = _projection_metadata(projection)
+    logger.warning(
+        "%s: policy %s has %s word(s) across %s retrieval text(s) (%s) whose letters "
+        "alternate between two writing systems — the sign of side-by-side columns read "
+        "across instead of down. Text left unchanged; build continues. Correct the "
+        "original document and upload a new version to resolve it.",
+        INTERLEAVED_TEXT_CODE,
+        metadata.get("provision_key")
+        or metadata.get("policy_key")
+        or metadata.get("policy_id")
+        or "unknown",
+        sum(affected.values()),
+        len(affected),
+        ", ".join(sorted(affected)),
+    )
+
+
 async def _build_project_documents(
     *,
     policy_set_key: str,
@@ -1276,6 +1426,7 @@ async def _build_project_documents(
     openai_client: AzureOpenAIClient,
     settings: Settings,
     projection_profile: str,
+    progress: BuildProgress = NULL_PROGRESS,
 ) -> tuple[list[dict], list[ProjectedRecord]]:
     """Every document this project's index should hold, rendered and embedded.
 
@@ -1307,18 +1458,55 @@ async def _build_project_documents(
     embed_inputs: list[str] = []
     pending: list[tuple[str, dict, dict | None, int, str, str]] = []
 
+    # Rendering is one model call per policy, so the count that moves here is
+    # policies rendered — not documents, which do not exist yet. It is reported
+    # after each group rather than at the end because this is the longest stage
+    # of the build, and a stage that publishes only when it finishes is
+    # indistinguishable from one that has stopped.
+    await progress.stage("rendering")
+    await progress.count(rendered_count=0)
     for projection in projections:
         rules = indexable_rules(projection)
-        policy_source = _retrieval_text_for_projection(projection)[:_MAX_RETRIEVAL_TEXT_CHARS]
+        policy_source, policy_spans = _retrieval_text_and_opaque_spans(projection)
+        policy_source = policy_source[:_MAX_RETRIEVAL_TEXT_CHARS]
         group: list[tuple[str, str]] = [("policy", policy_source)]
         rule_sources: list[str] = []
+        # Per item, never shared. The policy text and each rule text are
+        # different documents: a key generated for one of them says nothing
+        # about where the same letters appear in another, and one set spread
+        # across the group is how a rule's slug ends up protecting a word in
+        # the policy's prose.
+        opaque_spans: dict[str, tuple[tuple[int, int], ...]] = {
+            "policy": tuple(
+                (start, end) for start, end in policy_spans if end <= len(policy_source)
+            )
+        }
         for ordinal, rule in enumerate(rules):
             rule_source = rule_retrieval_source_text(projection, rule)[:_MAX_RULE_TEXT_CHARS]
             rule_sources.append(rule_source)
-            group.append((f"rule-{ordinal}", rule_source))
+            key = f"rule-{ordinal}"
+            group.append((key, rule_source))
+            # A span only survives if the cut above left the whole of it: half a
+            # protected identifier is not one.
+            opaque_spans[key] = tuple(
+                (start, end)
+                for start, end in rule_retrieval_opaque_spans(projection, rule)
+                if end <= len(rule_source)
+            )
+
+        # The same detector the portal runs at upload, asked here of the text a
+        # rebuild actually indexes. It reports and changes nothing: the group
+        # below is the one that would have been rendered either way, so a build
+        # with warnings and a build without do identical work. Text already in
+        # the index is not revisited — a warning is about a source file, and the
+        # only thing that resolves it is a corrected upload.
+        _warn_about_interleaved_text(projection, group)
 
         rendered = await project_texts_to_english(
-            group, settings=settings, openai_client=openai_client
+            group,
+            settings=settings,
+            openai_client=openai_client,
+            opaque_spans=opaque_spans,
         )
         missing = [key for key, text in group if text.strip() and key not in rendered]
         if missing:
@@ -1335,12 +1523,15 @@ async def _build_project_documents(
                 ("rule", projection, rule, ordinal, rendered_rule, rule_sources[ordinal])
             )
             embed_inputs.append(rendered_rule)
+        await progress.count(rendered_count=len(pending))
 
+    await progress.stage("embedding")
     vectors = await openai_client.embed(embed_inputs) if embed_inputs else []
     if len(vectors) != len(embed_inputs):
         raise RuntimeError(
             f"the embedding call returned {len(vectors)} vectors for {len(embed_inputs)} texts"
         )
+    await progress.count(embedded_count=len(vectors))
 
     for (kind, projection, rule, ordinal, text, source), vector in zip(pending, vectors):
         if kind == "policy":
@@ -1988,7 +2179,21 @@ async def record_policy_index_build_state(
     state.status = outcome.state
     state.attempted_version_number = outcome.version_number
     state.attempted_at = attempted_at
-    state.error = outcome.error
+    # THE INVARIANT: a row that says `failed` always says why.
+    #
+    # Enforced here because this is the single point every writer passes through,
+    # so it holds for callers that do not exist yet. An empty string in this
+    # column is worse than a vague one: it is indistinguishable from no error
+    # having been recorded at all, which reads as a process that died before it
+    # could speak, and sends the reader looking for a crash that never happened.
+    # A build did reach this line, and saying so is the honest floor.
+    if outcome.state == "failed" and not (outcome.error or "").strip():
+        state.error = (
+            "the build failed and raised an exception that carried no message; "
+            "see the server log for the traceback"
+        )
+    else:
+        state.error = outcome.error
     if outcome.state == "built":
         state.indexed_version_number = outcome.version_number
         state.document_count = outcome.document_count
@@ -2097,6 +2302,222 @@ def failed_policy_index_build_outcome(
     )
 
 
+#: The history status for a build that never ran because the slot was busy.
+#: Named rather than repeated as a literal so the mapping call below reads as
+#: the translation it is.
+_DEFERRED_HISTORY_STATUS = "deferred"
+
+
+@dataclass(frozen=True)
+class TrackedPolicyIndexBuild:
+    """What one attempt to build a project's index did, whether or not it ran.
+
+    Three cases, and they are deliberately not collapsed into two:
+
+      * it ran — `accepted` is true, `outcome` says what it produced, and `build`
+        is the history row it wrote;
+      * it was refused because another build holds the slot — `accepted` is
+        false, `conflict` names the build that does, and `outcome` is the failed
+        outcome the latest-state row records;
+      * it could not even be recorded — everything is None, which happens only
+        when the database refuses the history write, and a caller that must not
+        fail (publish) carries on regardless.
+    """
+
+    accepted: bool
+    outcome: PolicyIndexBuildOutcome | None = None
+    build: PolicyIndexBuild | None = None
+    #: The build holding the slot when this one was refused. Named so a caller
+    #: can tell the operator *which* project is being rebuilt rather than only
+    #: that something is — "try later" without saying what is running is a
+    #: message nobody can act on.
+    conflict: PolicyIndexBuild | None = None
+
+
+async def run_tracked_policy_index_build(
+    session: AsyncSession,
+    *,
+    policy_set_id: object,
+    policy_set_key: str,
+    version_number: int | None,
+    load_projections: Callable[[], Awaitable[Iterable[dict]]],
+    trigger: str,
+    operation_id: str | None = None,
+    actor: str | None = None,
+    indexed_at: datetime | None = None,
+) -> TrackedPolicyIndexBuild:
+    """Run one index build under the global slot, reporting and recording it.
+
+    THE ONE ENTRY POINT, AND WHY BOTH CALLERS USE IT
+
+    Publishing rebuilds a project's index, and a manual rebuild rebuilds a
+    project's index. They are the same operation started for two reasons, and
+    before this they were two copies of the same six steps in two routers — which
+    is how they came to differ: one recorded an actor and the other did not, and
+    neither coordinated with the other at all, so a publish could start a full
+    corpus render while an administrator's repair of the same project was halfway
+    through rewriting its manifest.
+
+    Everything that is true of a build is therefore decided here once: the slot,
+    the stage reporting, the history row, the latest-state row, and the guarantee
+    that the record ends terminal. A caller supplies only what genuinely differs
+    — which project, which version, why, and who.
+
+    THE ORDER MATTERS IN ONE PLACE
+
+    `load_projections` is a callable rather than a list because it reads the
+    whole active version out of PostgreSQL, and a build that is about to be
+    refused must not pay for that. Nothing is loaded until the slot is held.
+
+    NOTHING HERE RAISES
+
+    Both callers are best-effort about the index — publish has already committed
+    its version by the time this runs, and the repair endpoint reports a failed
+    build rather than a 500. So every failure becomes a recorded outcome, and the
+    exception is not re-raised. What is *not* traded away is terminality: the
+    `finally` releases the slot on every exit, including a cancelled request.
+    """
+
+    operation = (operation_id or "").strip() or new_operation_id()
+    moment = indexed_at or datetime.now(UTC)
+
+    build = await acquire_build_slot(
+        session,
+        operation_id=operation,
+        policy_set_id=policy_set_id,
+        policy_set_key=policy_set_key,
+        trigger=trigger,
+        actor=actor,
+        started_at=moment,
+    )
+    if build is None:
+        # Refused. Nothing was started and nothing is held, so this records the
+        # attempt and returns — it does not wait, retry or queue. A queue would
+        # need a worker to drain it and a story for what happens when the
+        # process holding it dies, and the smallest honest behaviour is to say
+        # no and let the caller decide.
+        active = await running_build(session)
+        reason = (
+            "another policy index build is already running, and only one may run at a "
+            "time across this deployment because a build re-renders and re-embeds a "
+            "whole corpus and then rewrites an entire search index"
+        )
+        deferred = await record_deferred_build(
+            session,
+            operation_id=operation,
+            policy_set_id=policy_set_id,
+            policy_set_key=policy_set_key,
+            trigger=trigger,
+            actor=actor,
+            error=reason,
+            started_at=moment,
+        )
+        # The single place the two status vocabularies are reconciled. The
+        # history says `deferred`, because "never ran" and "ran and failed" point
+        # at different repairs; the latest-state row cannot, because what it
+        # reports is whether the index can be trusted and on that question the
+        # two are identical. Derived through the mapping rather than written as a
+        # literal here, so the correspondence is one fact in one place that a
+        # test can assert on, instead of two literals that can drift apart.
+        deferred_status = cast(
+            PolicyIndexBuildState, latest_state_status_for(_DEFERRED_HISTORY_STATUS)
+        )
+        outcome = PolicyIndexBuildOutcome(
+            state=deferred_status,
+            policy_set_key=policy_set_key,
+            index_name=policy_index_name(policy_set_key),
+            version_number=version_number,
+            document_count=0,
+            indexed_at=_timestamp(moment),
+            error=reason,
+        )
+        return TrackedPolicyIndexBuild(
+            accepted=False, outcome=outcome, build=deferred, conflict=active
+        )
+
+    progress = RecordedBuildProgress(session=session, build_id=build.id)
+    # Initialised before the guarded region so the `finally` always has a real
+    # outcome to record, whatever happened. Its default is a failure that says
+    # so: a build whose record was closed without any stage reaching this
+    # variable did end, and did not finish, and "no outcome" must not be able to
+    # read as success.
+    outcome: PolicyIndexBuildOutcome = failed_policy_index_build_outcome(
+        policy_set_key=policy_set_key,
+        version_number=version_number,
+        error="the build ended before it recorded an outcome",
+        indexed_at=moment,
+    )
+    try:
+        try:
+            outcome = await rebuild_project_policy_index(
+                policy_set_key=policy_set_key,
+                version_number=version_number,
+                projections=await load_projections(),
+                indexed_at=moment,
+                progress=progress,
+            )
+        except BaseException as exc:  # noqa: BLE001 - recorded as a failed build, see below
+            # `BaseException` deliberately, and it is the same argument
+            # `upload_progress.tracking` makes: a cancelled request — the
+            # operator closed the tab during a long render — is one of the ways
+            # a build really ends, and it must not be the one that leaves a row
+            # saying `running` with the slot in it for the whole lease.
+            outcome = failed_policy_index_build_outcome(
+                policy_set_key=policy_set_key,
+                version_number=version_number,
+                error=describe_exception(exc),
+                indexed_at=moment,
+            )
+            if not isinstance(exc, Exception):
+                # A cancellation or an interpreter shutdown is not this build's
+                # to swallow. The record is closed in the `finally` below before
+                # it propagates, so the row is terminal and the slot is free.
+                raise
+    finally:
+        # Terminal on every exit, including the one that re-raises. The status is
+        # derived from the outcome rather than from how we got here, so a build
+        # that failed inside `rebuild_project_policy_index` (which catches its
+        # own exceptions and reports `failed`) and one that raised past it are
+        # recorded identically.
+        await finish_build(
+            session,
+            build.id,
+            status="completed" if outcome.state == "built" else "failed",
+            error=outcome.error,
+            finished_at=datetime.now(UTC),
+            index_name=outcome.index_name,
+            version_number=outcome.version_number,
+            document_count=outcome.document_count,
+            policy_document_count=outcome.policy_document_count,
+            rule_document_count=outcome.rule_document_count,
+            projection_profile=outcome.projection_profile,
+            manifest_state=outcome.manifest_state,
+            **_quality_columns(outcome.quality),
+        )
+
+    return TrackedPolicyIndexBuild(accepted=True, outcome=outcome, build=build)
+
+
+def _quality_columns(quality: ProjectionQualityReport | None) -> dict:
+    """The verdict as history columns. Counts and scores; no finding text.
+
+    Empty when no verdict was reached, so the row's quality columns stay NULL —
+    which reads as "never checked", and is a different fact from a check that
+    ran and failed.
+    """
+
+    if quality is None:
+        return {}
+    return {
+        "quality_state": quality.state,
+        "quality_profile": quality.profile,
+        "quality_checked_documents": quality.checked_documents,
+        "quality_structural_findings": quality.structural_findings,
+        "quality_min_similarity": quality.minimum_similarity,
+        "quality_mean_similarity": quality.mean_similarity,
+    }
+
+
 async def drop_project_policy_index(
     *,
     policy_set_key: str,
@@ -2171,20 +2592,85 @@ def _projection_rules(projection: dict) -> list[dict]:
 
 
 def _retrieval_text_for_projection(projection: dict) -> str:
+    return _retrieval_text_and_opaque_spans(projection)[0]
+
+
+def _retrieval_text_and_opaque_spans(
+    projection: dict,
+) -> tuple[str, tuple[tuple[int, int], ...]]:
+    """The policy retrieval text and the positions of its generated terms.
+
+    Composed in one place so the text and the provenance cannot drift: a second
+    function reproducing this order would be a second thing to keep in step, and
+    the positions are only meaningful against the exact string this returns.
+
+    The policy document is composed the same way a rule's is: mostly the
+    document's own words, with generated fact names among them. Those names need
+    the same protection through a rendering, and for the same reason -- they are
+    keys, not language. The build carries the policy's own positions rather than
+    borrowing a rule's, because a key generated for one rule says nothing about
+    where those letters fall in the policy's prose, and treating one set as
+    covering the whole group is how a rule's slug ends up protecting a word the
+    policy was merely speaking.
+    """
+
     metadata = _projection_metadata(projection)
     rules = _projection_rules(projection)
-    parts = [build_retrieval_text(heading_parts=_strings(metadata.get("heading_path", [])), rules=rules)]
+    # (text, is_machine_made). Headings, titles, statements, conditions and
+    # effects are the document's words. A fact's `name` is generated by this
+    # system; its `source_phrase` is what the document actually said.
+    parts: list[tuple[str, bool]] = [
+        (
+            build_retrieval_text(
+                heading_parts=_strings(metadata.get("heading_path", [])), rules=rules
+            ),
+            False,
+        )
+    ]
     spans = projection.get("spans")
     if isinstance(spans, dict):
-        parts.extend(_strings(item.get("text") for item in spans.values() if isinstance(item, dict)))
+        parts.extend(
+            (text, False)
+            for text in _strings(
+                item.get("text") for item in spans.values() if isinstance(item, dict)
+            )
+        )
     facts = projection.get("facts")
     if isinstance(facts, dict):
         for item in facts.values():
             if isinstance(item, dict):
-                parts.extend(_strings([item.get("name"), item.get("source_phrase")]))
-    return " \n".join(dict.fromkeys(part.strip() for part in parts if part and part.strip()))[
-        :_MAX_RETRIEVAL_TEXT_CHARS
-    ].rstrip()
+                parts.extend((text, True) for text in _strings([item.get("name")]))
+                parts.extend(
+                    (text, False) for text in _strings([item.get("source_phrase")])
+                )
+
+    # Reproduces `" \n".join(dict.fromkeys(part.strip() for part in parts if ...))`
+    # exactly, while recording where each kept part lands. First occurrence wins
+    # the position, so it also wins the provenance: the characters at that offset
+    # are the ones that contributor put there.
+    kept: dict[str, bool] = {}
+    for text, machine in parts:
+        if not text:
+            continue
+        stripped = text.strip()
+        if not stripped or stripped in kept:
+            continue
+        kept[stripped] = machine
+
+    chunks: list[str] = []
+    positions: list[tuple[int, int]] = []
+    cursor = 0
+    for stripped, machine in kept.items():
+        if chunks:
+            cursor += 2  # the " \n" separator
+        if machine:
+            positions.append((cursor, cursor + len(stripped)))
+        cursor += len(stripped)
+        chunks.append(stripped)
+
+    text = " \n".join(chunks)[:_MAX_RETRIEVAL_TEXT_CHARS].rstrip()
+    # A term the cut left incomplete is not that term, so it is not protected.
+    return text, tuple((start, end) for start, end in positions if end <= len(text))
 
 
 async def _create_index_accepting_empty_success(search_client: AzureSearchClient, definition: dict) -> None:

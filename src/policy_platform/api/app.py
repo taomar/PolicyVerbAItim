@@ -17,10 +17,12 @@ from policy_platform.api.routers import (
     documents,
     evaluations,
     extraction,
+    integration,
     notes,
     policy_attestations,
     policy_decisions,
     policy_exceptions,
+    policy_index_console,
     policy_payload,
     policy_review_requests,
     policy_sets,
@@ -184,6 +186,8 @@ def create_app() -> FastAPI:
     app.include_router(policy_decisions.router)
     app.include_router(extraction.router)
     app.include_router(policy_review_requests.router)
+    app.include_router(policy_index_console.router)
+    app.include_router(integration.router)
 
     @app.get("/health", tags=["system"])
     async def health() -> dict:

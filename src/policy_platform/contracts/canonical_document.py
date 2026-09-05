@@ -60,6 +60,16 @@ Transformation = Literal[
     "line_break_hyphen_join",
     "cross_page_join",
     "table_cell_join",
+    #: A row whose cells a parser returned interleaved with their neighbour's,
+    #: re-read from the rendered page and put back in the order the page shows.
+    #: Declared rather than silent, and deliberately not reconstructible: the new
+    #: order comes from reading the page, so no deterministic rule over the
+    #: recorded fragments reproduces it. The fragments and the page's raw text are
+    #: left exactly as the parser recorded them, so the evidence a reviewer checks
+    #: against is unchanged and the reordering is visible as a claim rather than
+    #: hidden as a correction. Every character is conserved -- that is the
+    #: condition of accepting one at all.
+    "visual_reading_order",
 ]
 
 
@@ -132,6 +142,46 @@ class SourceFragment(BaseModel):
     )
 
 
+class ReadingOrderRecovery(BaseModel):
+    """How a re-read row was derived from the parser's own characters.
+
+    The point is that nothing here is the model's words. ``source_cells`` are the
+    cells the parser produced; ``order`` claims the printed characters of those
+    cells one at a time, in the order the page shows them; ``cell_lengths`` says
+    how to regroup them, and ``spacing`` says which offsets hold a separating
+    space. Replaying the four reproduces the element's text exactly, and cannot
+    produce a printed character the parser did not already have — so a reordering
+    is checkable rather than trusted, and a model that invented, translated or
+    dropped anything cannot be represented here at all.
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    source_cells: list[str] = Field(
+        ..., description="The cells the parser produced, before reordering."
+    )
+    cell_lengths: list[int] = Field(
+        ..., description="How many characters each recovered cell takes, in order."
+    )
+    order: list[int] = Field(
+        ...,
+        description=(
+            "In output order, the index in the concatenation of `source_cells` "
+            "of each character the recovered text takes from the parser. Every "
+            "printed character of the source is claimed exactly once, so none "
+            "can be added, dropped or used twice."
+        ),
+    )
+    spacing: list[int] = Field(
+        default_factory=list,
+        description=(
+            "Offsets in the recovered text that the replay fills with a single "
+            "separating space rather than from `order`. Empty on a record that "
+            "carries no such offset, which is how earlier records read."
+        ),
+    )
+
+
 class CanonicalElement(BaseModel):
     """One logical block: a heading, paragraph, list item, or table row.
 
@@ -163,6 +213,14 @@ class CanonicalElement(BaseModel):
     table_headers: list[str] | None = Field(
         default=None,
         description="Column headers for a table_row, preserved rather than flattened into prose.",
+    )
+    reading_order: ReadingOrderRecovery | None = Field(
+        default=None,
+        description=(
+            "Set only on an element declaring `visual_reading_order`. Carries the "
+            "parser's own cells and the permutation that produced `text`, so the "
+            "reordering can be replayed and checked rather than trusted."
+        ),
     )
 
     # --- Structural lineage (Docling integration, directive Phase 1) --------

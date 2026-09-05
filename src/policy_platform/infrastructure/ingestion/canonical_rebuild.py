@@ -19,6 +19,7 @@ from policy_platform.contracts.canonical_document import (
     CanonicalDocument,
     CanonicalElement,
     CanonicalPage,
+    ReadingOrderRecovery,
     SourceFragment,
 )
 from policy_platform.domain.models import Clause
@@ -30,6 +31,19 @@ from policy_platform.domain.models import Clause
 #: that has never heard of it.
 _FRAGMENT_FIELDS = {"page", "start_offset", "end_offset", "text"}
 
+#: Key of the provenance record an element carries when its reading order was
+#: recovered. It rides in the same JSON list as the fragments because that list
+#: is the provenance the clause already stores, and a proof kept anywhere else
+#: would be a second place for it to go missing.
+#:
+#: Namespaced, and skipped by every reader that wants fragments, so a clause
+#: written before this existed rebuilds exactly as it did before.
+READING_ORDER_KEY = "__reading_order__"
+
+
+def _is_reading_order(entry: dict) -> bool:
+    return READING_ORDER_KEY in entry
+
 
 def canonical_from_clauses(document_id: str, clauses: list[Clause]) -> CanonicalDocument:
     """Rebuild a canonical document from the persisted clauses.
@@ -38,18 +52,30 @@ def canonical_from_clauses(document_id: str, clauses: list[Clause]) -> Canonical
     worse, could produce a *different* artifact from the one whose offsets are
     already stored — so every span a reviewer is looking at would silently stop
     referring to what produced it.
+
+    An element whose reading order was recovered carries its replay record here
+    too. Without it the rebuilt element would keep the recovered *text* while
+    losing the proof that the text is a permutation of the parser's own
+    characters, and the fidelity check would then have to take it on trust. The
+    whole point of the record is that nothing takes it on trust.
     """
 
     elements: list[CanonicalElement] = []
     pages: dict[int, list[str]] = {}
 
     for index, clause in enumerate(clauses):
+        stored = list(clause.source_fragments or [])
         fragments = [
             SourceFragment(
                 **{k: v for k, v in fragment.items() if k in _FRAGMENT_FIELDS}
             )
-            for fragment in (clause.source_fragments or [])
+            for fragment in stored
+            if not _is_reading_order(fragment)
         ]
+        recovery = next(
+            (entry[READING_ORDER_KEY] for entry in stored if _is_reading_order(entry)),
+            None,
+        )
         elements.append(
             CanonicalElement(
                 element_id=clause.element_id or f"E{index:06d}",
@@ -58,6 +84,10 @@ def canonical_from_clauses(document_id: str, clauses: list[Clause]) -> Canonical
                 text=clause.text,
                 section=clause.section,
                 source_fragments=fragments,
+                reading_order=ReadingOrderRecovery(**recovery) if recovery else None,
+                transformations=(
+                    ["table_cell_join", "visual_reading_order"] if recovery else []
+                ),
                 # Restored, so a rebuilt document still knows which grid a row
                 # belongs to and what that grid's columns are called. Passed
                 # through untouched, and deliberately not guarded: `None` means

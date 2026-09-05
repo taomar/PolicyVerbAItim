@@ -542,3 +542,95 @@ def test_record_policy_index_build_state_keeps_last_successful_version_when_next
             await engine.dispose()
 
     _run(_case())
+
+def test_a_recorded_failure_always_says_something():
+    """A `failed` row must never carry an empty reason.
+
+    Drawn from a real incident: a rebuild recorded `status=failed` with
+    `error=''`. An empty string is not a weak explanation, it is an absent one -
+    indistinguishable from a row where nothing was written at all, which reads as
+    a process that died before it could speak and sends the reader hunting for a
+    crash that never happened. The exception was real; it was an httpx timeout,
+    whose message is empty because its meaning lives in its type.
+    """
+
+    async def _case():
+        engine = create_async_engine("sqlite+aiosqlite:///:memory:")
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        maker = async_sessionmaker(engine, expire_on_commit=False)
+        try:
+            async with maker() as session:
+                policy_set = PolicySet(
+                    id=uuid.UUID("00000000-0000-4000-8000-000000000202"),
+                    key="silent",
+                    name="Silent",
+                    owner="policy",
+                )
+                session.add(policy_set)
+                await session.flush()
+                await record_policy_index_build_state(
+                    session,
+                    policy_set_id=policy_set.id,
+                    outcome=PolicyIndexBuildOutcome(
+                        state="failed",
+                        policy_set_key="silent",
+                        index_name=policy_index_name("silent"),
+                        version_number=3,
+                        document_count=0,
+                        indexed_at="2026-08-18T13:00:00+00:00",
+                        error="",
+                    ),
+                )
+                state = (await session.execute(select(PolicyIndexState))).scalar_one()
+                assert state.status == "failed"
+                assert state.error, "a failed build recorded no reason at all"
+                assert state.error.strip() == state.error or state.error.strip()
+        finally:
+            await engine.dispose()
+
+    _run(_case())
+
+
+def test_a_successful_build_is_not_given_an_invented_failure():
+    """The control: the guard refuses empty *failures*, not empty everything.
+
+    A build that succeeded has no error, and the absence of one is the correct
+    record. If this test ever fails alongside the one above, the guard has
+    stopped discriminating and is simply writing text into every row.
+    """
+
+    async def _case():
+        engine = create_async_engine("sqlite+aiosqlite:///:memory:")
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        maker = async_sessionmaker(engine, expire_on_commit=False)
+        try:
+            async with maker() as session:
+                policy_set = PolicySet(
+                    id=uuid.UUID("00000000-0000-4000-8000-000000000203"),
+                    key="quiet",
+                    name="Quiet",
+                    owner="policy",
+                )
+                session.add(policy_set)
+                await session.flush()
+                await record_policy_index_build_state(
+                    session,
+                    policy_set_id=policy_set.id,
+                    outcome=PolicyIndexBuildOutcome(
+                        state="built",
+                        policy_set_key="quiet",
+                        index_name=policy_index_name("quiet"),
+                        version_number=4,
+                        document_count=12,
+                        indexed_at="2026-08-18T14:00:00+00:00",
+                    ),
+                )
+                state = (await session.execute(select(PolicyIndexState))).scalar_one()
+                assert state.status == "built"
+                assert not state.error, f"a successful build was given an error: {state.error!r}"
+        finally:
+            await engine.dispose()
+
+    _run(_case())

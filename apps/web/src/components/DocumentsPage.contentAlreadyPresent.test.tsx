@@ -115,7 +115,16 @@ beforeEach(() => {
     "fetch",
     vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
-      if (url.includes(UPLOAD_URL)) {
+      // Routed before the upload branch: `/api/documents/upload-progress/{id}`
+      // is a prefix match for the upload path, so a plain `includes` hands the
+      // progress panel this test's upload body. Nothing here asserts on the
+      // panel, so that would not fail — it would just mean this file quietly
+      // stopped testing what it thinks it tests the day someone did assert on
+      // it. Answer the poll as itself.
+      if (url.includes(`${UPLOAD_URL}-progress/`)) {
+        return jsonResponse({ active: false });
+      }
+      if (url.includes(`${UPLOAD_URL}?`) || url.endsWith(UPLOAD_URL)) {
         return {
           ok: uploadResponse.ok,
           status: uploadResponse.status,

@@ -16,7 +16,7 @@ import { toRbacRole } from "./ActorContext";
 // the test to the component tree.
 // ---------------------------------------------------------------------------
 
-const ALL_NAV_IDS = ["dashboard", "projects", "document-inbox", "evaluate", "my-attestations"];
+const ALL_NAV_IDS = ["dashboard", "projects", "document-inbox", "evaluate", "my-attestations", "integration"];
 const ALL_TAB_KEYS = [
   "overview", "documents", "review", "policies", "compare",
   "quality", "correlation", "tests", "case-runner", "exceptions",

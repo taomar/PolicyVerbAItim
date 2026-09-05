@@ -9,13 +9,126 @@ data.
 """
 from __future__ import annotations
 
+import asyncio
+import logging
+import random
+
 import httpx
 
+from policy_platform.infrastructure.errors import describe_exception
 from policy_platform.infrastructure.settings import Settings, get_settings
 
+logger = logging.getLogger(__name__)
 
 class AzureSearchError(RuntimeError):
     """Raised when a call to Azure AI Search fails or the resource isn't configured."""
+
+
+#: Retried because they describe a service that is momentarily unable, not a
+#: request that is wrong. A 4xx outside this set is a defect in what we sent —
+#: a malformed document, a stale key, an index that does not exist — and
+#: retrying it burns time while hiding the error that would have explained it.
+_RETRYABLE_STATUSES = frozenset({408, 429, 500, 502, 503, 504})
+
+#: Mirrors `openai_client`, deliberately. The render path has survived this
+#: workload for months on these numbers; the upload path had none at all, and
+#: inventing different ones here would only mean two behaviours to reason about.
+_MAX_ATTEMPTS = 4
+_BACKOFF_BASE_SECONDS = 2.0
+_BACKOFF_CAP_SECONDS = 20.0
+
+
+def _retry_delay(attempt: int, retry_after: str | None) -> float:
+    """Seconds to wait before attempt `attempt` (1-based, so the first wait is 0)."""
+
+    if retry_after:
+        try:
+            return min(float(retry_after), _BACKOFF_CAP_SECONDS)
+        except ValueError:
+            pass  # A date-formatted Retry-After; fall through to our own backoff.
+    ceiling = min(_BACKOFF_BASE_SECONDS * (2 ** (attempt - 1)), _BACKOFF_CAP_SECONDS)
+    return random.uniform(0, ceiling)
+
+
+async def _send_with_retry(
+    method: str,
+    url: str,
+    *,
+    headers: dict,
+    json: dict | None = None,
+    timeout: float,
+    label: str,
+) -> httpx.Response:
+    """Send one Search request, retrying transport failures and busy responses.
+
+    Every operation routed through here is idempotent — `mergeOrUpload`,
+    delete-by-key, PUT create-or-replace, and reads — so a retry can at worst
+    repeat work, never corrupt it.
+
+    This exists because of a specific, measured failure: a 36-minute index
+    rebuild rendered and embedded all 318 documents, uploaded the first batch of
+    50, and then lost the whole run to a single transport blip on batch 2. The
+    expensive work was already done and correct; there was no second attempt
+    because there was no retry anywhere on this path, and the exception carried
+    no message, so the recorded reason was the empty string. One momentary
+    network fault discarded half an hour of model calls.
+
+    The failure is raised as `AzureSearchError` with a described cause, never a
+    bare re-raise, because httpx's timeout and transport exceptions stringify to
+    `''` and an empty reason is indistinguishable from no reason.
+    """
+
+    last_error: Exception | None = None
+    last_response: httpx.Response | None = None
+
+    for attempt in range(1, _MAX_ATTEMPTS + 1):
+        if attempt > 1:
+            retry_after = (
+                last_response.headers.get("Retry-After") if last_response is not None else None
+            )
+            await asyncio.sleep(_retry_delay(attempt - 1, retry_after))
+        try:
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                # Dispatched by verb rather than `client.request(...)` to keep the
+                # exact call shape this module has always used, which is the seam
+                # the existing tests substitute against.
+                send = getattr(client, method.lower())
+                if json is None:
+                    resp = await send(url, headers=headers)
+                else:
+                    resp = await send(url, headers=headers, json=json)
+        except (httpx.TimeoutException, httpx.TransportError) as exc:
+            last_error = exc
+            last_response = None
+            logger.warning(
+                "Azure Search %s attempt %s/%s failed in transport: %s",
+                label,
+                attempt,
+                _MAX_ATTEMPTS,
+                describe_exception(exc),
+            )
+            continue
+
+        if resp.status_code in _RETRYABLE_STATUSES and attempt < _MAX_ATTEMPTS:
+            last_response = resp
+            last_error = None
+            logger.warning(
+                "Azure Search %s attempt %s/%s returned %s; retrying",
+                label,
+                attempt,
+                _MAX_ATTEMPTS,
+                resp.status_code,
+            )
+            continue
+
+        return resp
+
+    if last_response is not None:
+        return last_response
+    raise AzureSearchError(
+        f"Azure Search {label} failed after {_MAX_ATTEMPTS} attempts: "
+        f"{describe_exception(last_error) if last_error else 'no response'}"
+    )
 
 
 class AzureSearchClient:
@@ -45,8 +158,9 @@ class AzureSearchClient:
             f"{settings.azure_search_endpoint.rstrip('/')}/indexes/{name}"
             f"?api-version={settings.azure_search_api_version}"
         )
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            resp = await client.put(url, headers=self._headers(), json=definition)
+        resp = await _send_with_retry(
+            "PUT", url, headers=self._headers(), json=definition, timeout=60.0, label="index create"
+        )
         if resp.status_code >= 400:
             raise AzureSearchError(f"Azure Search index create failed ({resp.status_code}): {resp.text[:500]}")
         return resp.json()
@@ -59,8 +173,9 @@ class AzureSearchClient:
             f"{settings.azure_search_endpoint.rstrip('/')}/indexes/{name}"
             f"?api-version={settings.azure_search_api_version}"
         )
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            resp = await client.delete(url, headers=self._headers())
+        resp = await _send_with_retry(
+            "DELETE", url, headers=self._headers(), timeout=60.0, label="index delete"
+        )
         if resp.status_code == 404:
             return False
         if resp.status_code >= 400:
@@ -75,8 +190,9 @@ class AzureSearchClient:
             f"{settings.azure_search_endpoint.rstrip('/')}/indexes/{name}"
             f"?api-version={settings.azure_search_api_version}"
         )
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            resp = await client.get(url, headers=self._headers())
+        resp = await _send_with_retry(
+            "GET", url, headers=self._headers(), timeout=30.0, label="index lookup"
+        )
         if resp.status_code == 404:
             return False
         if resp.status_code >= 400:
@@ -94,8 +210,9 @@ class AzureSearchClient:
             f"?api-version={settings.azure_search_api_version}"
         )
         body = {"value": [{"@search.action": "mergeOrUpload", **doc} for doc in documents]}
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            resp = await client.post(url, headers=self._headers(), json=body)
+        resp = await _send_with_retry(
+            "POST", url, headers=self._headers(), json=body, timeout=60.0, label="upload"
+        )
         if resp.status_code >= 400:
             raise AzureSearchError(f"Azure Search upload failed ({resp.status_code}): {resp.text[:500]}")
         return resp.json()
@@ -112,17 +229,18 @@ class AzureSearchClient:
         )
         ids: list[str] = []
         skip = 0
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            while True:
-                body = {"search": "*", "filter": filter_expr, "select": "id", "top": page_size, "skip": skip}
-                resp = await client.post(url, headers=self._headers(), json=body)
-                if resp.status_code >= 400:
-                    raise AzureSearchError(f"Azure Search query failed ({resp.status_code}): {resp.text[:500]}")
-                batch = resp.json().get("value", [])
-                ids.extend(doc["id"] for doc in batch)
-                if len(batch) < page_size:
-                    break
-                skip += page_size
+        while True:
+            body = {"search": "*", "filter": filter_expr, "select": "id", "top": page_size, "skip": skip}
+            resp = await _send_with_retry(
+                "POST", url, headers=self._headers(), json=body, timeout=30.0, label="id query"
+            )
+            if resp.status_code >= 400:
+                raise AzureSearchError(f"Azure Search query failed ({resp.status_code}): {resp.text[:500]}")
+            batch = resp.json().get("value", [])
+            ids.extend(doc["id"] for doc in batch)
+            if len(batch) < page_size:
+                break
+            skip += page_size
         return ids
 
     async def find_documents_by_filter(
@@ -155,25 +273,26 @@ class AzureSearchClient:
         )
         documents: list[dict] = []
         skip = 0
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            while True:
-                body = {
-                    "search": "*",
-                    "filter": filter_expr,
-                    "select": select,
-                    "top": page_size,
-                    "skip": skip,
-                }
-                resp = await client.post(url, headers=self._headers(), json=body)
-                if resp.status_code >= 400:
-                    raise AzureSearchError(
-                        f"Azure Search query failed ({resp.status_code}): {resp.text[:500]}"
-                    )
-                batch = resp.json().get("value", [])
-                documents.extend(batch)
-                if len(batch) < page_size:
-                    break
-                skip += page_size
+        while True:
+            body = {
+                "search": "*",
+                "filter": filter_expr,
+                "select": select,
+                "top": page_size,
+                "skip": skip,
+            }
+            resp = await _send_with_retry(
+                "POST", url, headers=self._headers(), json=body, timeout=60.0, label="document query"
+            )
+            if resp.status_code >= 400:
+                raise AzureSearchError(
+                    f"Azure Search query failed ({resp.status_code}): {resp.text[:500]}"
+                )
+            batch = resp.json().get("value", [])
+            documents.extend(batch)
+            if len(batch) < page_size:
+                break
+            skip += page_size
         return documents
 
     async def delete_documents(self, index: str, ids: list[str]) -> dict:
@@ -187,8 +306,9 @@ class AzureSearchClient:
             f"?api-version={settings.azure_search_api_version}"
         )
         body = {"value": [{"@search.action": "delete", "id": doc_id} for doc_id in ids]}
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            resp = await client.post(url, headers=self._headers(), json=body)
+        resp = await _send_with_retry(
+            "POST", url, headers=self._headers(), json=body, timeout=60.0, label="delete"
+        )
         if resp.status_code >= 400:
             raise AzureSearchError(f"Azure Search delete failed ({resp.status_code}): {resp.text[:500]}")
         return resp.json()
@@ -259,6 +379,13 @@ class AzureSearchClient:
             clauses.append(f"({filter_expr})")
         if clauses:
             body["filter"] = " and ".join(clauses)
+        # Deliberately NOT routed through `_send_with_retry`, unlike every other
+        # call in this client. This is the serving path: a user is waiting on it,
+        # and silently turning one 30-second failure into up to four changes what
+        # a timeout *means* to the caller above. The build path has no such
+        # caller — it is a background job where a retry costs seconds and a
+        # non-retry costs half an hour — which is why the two differ. Revisit
+        # only with a decision about serving latency, not as tidying.
         async with httpx.AsyncClient(timeout=30.0) as client:
             resp = await client.post(url, headers=self._headers(), json=body)
         if resp.status_code >= 400:

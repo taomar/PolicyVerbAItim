@@ -89,6 +89,15 @@ def _settings(tmp_path, **overrides: Any) -> Settings:
         "policy_subscription_key": CONFIGURED_KEY,
         "policy_subscription_key_identity": CONFIGURED_IDENTITY,
         "policy_subscription_key_role": VIEWER,
+        # Pinned, not inherited. `Settings` reads `.env` for any field the
+        # caller does not pass, so leaving this out would make every test below
+        # depend on whether the developer's machine has `LOCAL=true` — and with
+        # it true the resolver consults the issued-key store, which means these
+        # tests would open a connection to whatever database that machine is
+        # configured for. Pinned false, this file asks exactly what it was
+        # written to ask: how the *configured* key behaves. The issued-key path
+        # has its own file, with a real database fixture.
+        "local": False,
     }
     values.update(overrides)
     return Settings(**values)

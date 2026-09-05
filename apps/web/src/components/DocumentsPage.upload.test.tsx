@@ -73,6 +73,27 @@ function attachFile() {
   return file;
 }
 
+/**
+ * The whole wait area: the progress panel plus the one line the server cannot
+ * know (what the reviewer gets when the request returns).
+ *
+ * This used to be reached with `findByRole("status")`, because the wrapper
+ * carried `role="status"` and so the role happened to select the entire area.
+ * That was an accessibility defect — the panel inside it is also a live region,
+ * and nesting two means a stage change is announced twice or attributed to the
+ * wrong region. The wrapper's role was removed and the panel is now the single
+ * owner, which correctly makes the status role a much narrower element.
+ *
+ * So these tests ask the container for content and the role for announcement.
+ * The distinction is the point: `waitArea()` is "what is on screen during the
+ * wait", `findByRole("status")` is "what a screen reader is told about it".
+ */
+function waitArea(): HTMLElement {
+  const area = document.querySelector(".upload-wait") as HTMLElement | null;
+  expect(area, "the upload wait area is not on screen").not.toBeNull();
+  return area as HTMLElement;
+}
+
 async function startUpload() {
   attachFile();
   // Title and Owner are required, and the page now enforces them before the
@@ -87,9 +108,28 @@ async function startUpload() {
   fireEvent.change(screen.getByPlaceholderText("it-team"), {
     target: { value: "hr-team" },
   });
-  const button = await screen.findByRole("button", { name: /^Upload$/ });
+  // The accessible name of this control is pinned separately by "renders the
+  // upload form at all". Here the lookup reports what it actually saw when it
+  // cannot find the button, because the interesting failures are the ones where
+  // the button is present under a different label — "Reading document…" while a
+  // previous request is still settling — and a bare timeout hides that.
+  let button: HTMLButtonElement | null = null;
+  await waitFor(
+    () => {
+      const buttons = Array.from(document.querySelectorAll("button"));
+      const labels = buttons.map((b) => (b.textContent ?? "").trim());
+      button = (buttons.find((b) => (b.textContent ?? "").trim() === "Upload") ??
+        null) as HTMLButtonElement | null;
+      expect(button, `no Upload button; buttons on screen: ${JSON.stringify(labels)}`).not.toBeNull();
+      expect(
+        (button as unknown as HTMLButtonElement).disabled,
+        "the Upload button is present but disabled"
+      ).toBe(false);
+    },
+    { timeout: 3000 }
+  );
   await act(async () => {
-    fireEvent.click(button);
+    fireEvent.click(button as unknown as HTMLButtonElement);
   });
 }
 
@@ -123,7 +163,18 @@ beforeEach(() => {
     "fetch",
     vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
-      if (url.includes("/api/documents/upload")) {
+      // Order matters. `/api/documents/upload-progress/...` is a prefix match
+      // for `/api/documents/upload`, so a substring test alone routes every
+      // progress poll into the deferred upload branch below — which hands the
+      // panel an unresolved promise AND overwrites `resolveUpload`, so the test
+      // then resolves a poll instead of the POST it meant to. Route the poll
+      // first, and match the POST on its exact path.
+      if (url.includes("/api/documents/upload-progress/")) {
+        // Nothing tracked: the panel keeps its "Sending <file>" fallback, which
+        // is what these tests assert against.
+        return jsonResponse({ active: false });
+      }
+      if (url.includes("/api/documents/upload?") || url.endsWith("/api/documents/upload")) {
         // Held open so the in-flight state can be observed, exactly as it is
         // during the real ninety-second parse.
         return new Promise<Response>((resolve) => {
@@ -154,20 +205,35 @@ describe("what the reviewer is told during the wait", () => {
     render(<DocumentsPage />);
     await startUpload();
 
-    const panel = await screen.findByRole("status");
-    expect(panel.textContent).toContain(FILE_NAME);
-    expect(panel.textContent).toContain("2.0 MB");
+    const area = waitArea();
+    expect(area.textContent).toContain(FILE_NAME);
+    expect(area.textContent).toContain("2.0 MB");
   });
 
   it("says what the server is doing and what happens next", async () => {
     render(<DocumentsPage />);
     await startUpload();
 
-    const panel = await screen.findByRole("status");
+    const area = waitArea();
     // Not a verbatim copy of the sentences — that would only assert the string
     // equals itself. These are the two facts the sentences have to carry.
-    expect(panel.textContent).toMatch(/clause/i);
-    expect(panel.textContent).toMatch(/version/i);
+    expect(area.textContent).toMatch(/clause/i);
+    expect(area.textContent).toMatch(/version/i);
+  });
+
+  it("announces the upload through exactly one live region", async () => {
+    // The a11y invariant the change above exists to protect. Two nested live
+    // regions announce a single change twice, or attribute it to the wrong
+    // one; a reader cannot tell which reading is current. One owner, and the
+    // ticking clock and animated counters stay outside it so a count-up is not
+    // narrated digit by digit.
+    render(<DocumentsPage />);
+    await startUpload();
+
+    const live = waitArea().querySelectorAll('[role="status"], [aria-live]');
+    expect(live.length).toBe(1);
+    expect(live[0].getAttribute("role")).toBe("status");
+    expect(live[0].getAttribute("aria-live")).toBe("polite");
   });
 
   it("advances the elapsed clock, so a hung request is distinguishable from a slow one", async () => {
@@ -175,19 +241,21 @@ describe("what the reviewer is told during the wait", () => {
     render(<DocumentsPage />);
     await startUpload();
 
-    const panel = await screen.findByRole("status");
-    const atStart = panel.textContent ?? "";
-    expect(atStart).toContain("0:00");
+    // The clock is omitted while it would read zero — a "0s elapsed" that
+    // appears before any time has passed states a measurement of nothing. What
+    // has to be true is that it then tracks wall time, so the reviewer can tell
+    // a slow parse from a stopped one. Asserting the later value is what proves
+    // that; a fixed string re-rendered would fail here.
+    const atStart = waitArea().textContent ?? "";
+    expect(atStart).not.toContain("1m 05s");
 
     await act(async () => {
       await vi.advanceTimersByTimeAsync(65_000);
     });
 
-    const later = (await screen.findByRole("status")).textContent ?? "";
-    // The specific value matters: it proves the clock is being recomputed from
-    // wall time rather than re-rendered at a fixed string.
-    expect(later).toContain("1:05");
-    expect(later).not.toContain("0:00");
+    const later = waitArea().textContent ?? "";
+    expect(later).toContain("1m 05s");
+    expect(later).toContain("elapsed");
   });
 
   it("keeps the wait panel out of the way once the request returns", async () => {
@@ -255,6 +323,42 @@ describe("what the reviewer is told when it returns", () => {
       expect(document.body.textContent).toContain("no extractable text layer");
     });
     expect(document.body.textContent).toContain("12 pages carry no text layer");
+  });
+
+  it("shows an interleaving warning without presenting the upload as failed", async () => {
+    // Text read across side-by-side columns loads fine and its clauses persist;
+    // what it needs is for the author to be told, in the same breath as the
+    // success, that the source file has to be corrected and re-uploaded. The
+    // backend ships this as `detail` rather than `message`, so a reader that
+    // only understood `message` would drop it silently.
+    const warning =
+      "3 word(s) across 2 passage(s) have the letters of two writing systems " +
+      "alternating inside them (pages [2, 4]) — correct the layout in the original " +
+      "PDF or Word file and upload it as a new version.";
+
+    render(<DocumentsPage />);
+    await startUpload();
+    await act(async () => {
+      resolveUpload?.(
+        jsonResponse({
+          version_number: 4,
+          clause_count: CLAUSES_READ,
+          clauses_search_indexed: CLAUSES_INDEXED,
+          extraction_error: null,
+          ingestion_diagnostics: [
+            { code: "interleaved_text_not_reading_order", severity: "warning", detail: warning },
+          ],
+        })
+      );
+    });
+
+    await waitFor(() => {
+      expect(document.body.textContent).toContain("upload it as a new version");
+    });
+    // Actionable, not just present: it names the artefact to fix.
+    expect(document.body.textContent).toContain("original");
+    // And the upload is still reported as the success it was.
+    expect(document.body.textContent).toContain(String(CLAUSES_READ));
   });
 });
 
@@ -338,5 +442,115 @@ describe("the pure pieces", () => {
       ],
     });
     expect(outcome.notes).toEqual(["a bare string", "a message field", "a detail field", "a_code_only"]);
+  });
+});
+
+/**
+ * The progress panel is wired to the request it claims to describe.
+ *
+ * The failure this guards is quiet and total: the page generates an operation
+ * id, sends one value with the POST and polls a different one. Every individual
+ * piece then works -- the POST succeeds, the poll returns a well-formed
+ * `{active: false}`, the panel renders its "Sending ..." fallback -- and the
+ * reviewer watches a panel that is faithfully reporting an upload that is not
+ * theirs. Nothing errors, so nothing else can catch it.
+ */
+describe("the progress panel watches the upload that is actually running", () => {
+  it("polls the same operation id it sent with the POST", async () => {
+    render(<DocumentsPage />);
+    await startUpload();
+
+    const calls = (globalThis.fetch as unknown as { mock: { calls: unknown[][] } }).mock.calls;
+    const urls = calls.map((c) => String(c[0]));
+
+    const post = urls.find((u) => u.includes("/api/documents/upload?"));
+    expect(post, "no upload POST was issued").toBeTruthy();
+    const sent = new URL(post as string, "http://localhost").searchParams.get("operation_id");
+    expect(sent, "the POST carried no operation_id").toBeTruthy();
+
+    await waitFor(() => {
+      const polled = urls.concat(
+        (globalThis.fetch as unknown as { mock: { calls: unknown[][] } }).mock.calls.map((c) =>
+          String(c[0])
+        )
+      );
+      expect(
+        polled.some((u) => u.includes(`/api/documents/upload-progress/${sent}`)),
+        "the panel polled no progress endpoint for the id it sent"
+      ).toBe(true);
+    });
+  });
+
+  it("keeps the returned result on screen after the panel goes away", async () => {
+    // The panel is mounted only while the request is open, so completion is
+    // owned by the result line rather than by an animated final stage the
+    // reviewer would never be present to see. That division is only safe if the
+    // result is definitely there once the panel is not.
+    render(<DocumentsPage />);
+    await startUpload();
+
+    expect(screen.getByText(`Sending ${FILE_NAME}`)).toBeTruthy();
+
+    await act(async () => {
+      resolveUpload?.(
+        jsonResponse({
+          version_number: 3,
+          clause_count: CLAUSES_READ,
+          clauses_search_indexed: CLAUSES_INDEXED,
+          duplicate_of: [],
+        })
+      );
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText(`Sending ${FILE_NAME}`)).toBeNull();
+    });
+    expect(await screen.findByText(new RegExp(`${CLAUSES_READ} clauses read from it`))).toBeTruthy();
+    expect(document.body.textContent).toContain("version 3");
+  });
+
+  it("does not leave a stale operation id watching the next upload", async () => {
+    // A second upload must not inherit the first one's id, or its panel reports
+    // the previous document's stages.
+    render(<DocumentsPage />);
+    await startUpload();
+    const first = new URL(
+      (globalThis.fetch as unknown as { mock: { calls: unknown[][] } }).mock.calls
+        .map((c) => String(c[0]))
+        .find((u) => u.includes("/api/documents/upload?")) as string,
+      "http://localhost"
+    ).searchParams.get("operation_id");
+
+    await act(async () => {
+      resolveUpload?.(jsonResponse({ version_number: 1, duplicate_of: [] }));
+      await Promise.resolve();
+    });
+    // Waiting for the panel to go is not enough to start a second upload. The
+    // page clears the file — which unmounts the panel — before it refreshes the
+    // list and before `finally` restores `uploading` to false, so for a moment
+    // the panel is gone while the button still reads "Reading document…". Wait
+    // for the control that actually gates a second upload. This is an ordering
+    // fact about the page, not something to be fixed by reordering production
+    // state resets to suit a test.
+    await waitFor(() => expect(screen.queryByText(`Sending ${FILE_NAME}`)).toBeNull());
+    await waitFor(
+      () => {
+        const labels = Array.from(document.querySelectorAll("button")).map((b) =>
+          (b.textContent ?? "").trim()
+        );
+        expect(labels, `buttons on screen: ${JSON.stringify(labels)}`).toContain("Upload");
+      },
+      { timeout: 3000 }
+    );
+
+    await startUpload();
+    const posts = (globalThis.fetch as unknown as { mock: { calls: unknown[][] } }).mock.calls
+      .map((c) => String(c[0]))
+      .filter((u) => u.includes("/api/documents/upload?"));
+    expect(posts.length).toBe(2);
+    const second = new URL(posts[1], "http://localhost").searchParams.get("operation_id");
+    expect(second).toBeTruthy();
+    expect(second).not.toBe(first);
   });
 });

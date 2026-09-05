@@ -382,6 +382,11 @@ _QUARANTINE: dict[str, str] = {
     # --- Deliberate tooling. Reachable from tooling is the intended design. ---
     "infrastructure/docling/shadow_comparison.py::compare": "shadow comparator, intended to run from tooling only",
     "infrastructure/docling/shadow_comparison.py::format_report": "same comparator",
+    "infrastructure/projection/llm_reasoning_view.py::build_reasoning_view": (
+        "measured payload-analysis view; withdrawn from serving after it moved "
+        "hw-refresh-26-months from missing_required_facts to answered; remove when "
+        "the analysis is deleted or after a future version passes the scenario gate"
+    ),
     # --- Search projection and client: whole surface uncalled in production. ---
     "infrastructure/search/projection.py::build_runtime_document": "search projection surface",
     "infrastructure/search/projection.py::build_review_document": "search projection surface",
