@@ -1,0 +1,5 @@
+# Preserve archival inputs byte-for-byte across hosts.
+.gitattributes -text
+.gitignore -text
+hosthandover.md -text
+handover/** -text
