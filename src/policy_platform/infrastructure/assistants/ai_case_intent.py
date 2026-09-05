@@ -138,6 +138,9 @@ from collections.abc import Callable
 from typing import Final, Literal
 
 from policy_platform.infrastructure.ai.openai_client import AzureOpenAIClient
+from policy_platform.infrastructure.assistants.ai_case_evidence_accounting import (
+    account_for_evidence,
+)
 from policy_platform.infrastructure.assistants.ai_case_plan import (
     PLAN_PROFILE,
     CasePlan,
@@ -201,7 +204,7 @@ logger = logging.getLogger(__name__)
 #: `missing_required_facts` to `answered` and were withdrawn. Their measured
 #: builders remain as unwired analysis; a token reduction that moves a
 #: missing-fact boundary is not a serving optimization.
-PROMPT_VERSION = "ai-case-intent-v15"
+PROMPT_VERSION = "ai-case-intent-v16"
 
 VALID_REASONING_EFFORTS = ("low", "medium", "high")
 
@@ -2128,6 +2131,7 @@ def _decision_from_parsed(
     policies_grounded: int | None = None,
     rule_to_policy: dict[str, dict] | None = None,
     selector_membership: dict | None = None,
+    evidence_keys: frozenset[str] | None = None,
 ) -> dict:
     """Materialise the decision states from one parsed model response.
 
@@ -2348,11 +2352,6 @@ def _decision_from_parsed(
     if status in (ANSWERED, MISSING_REQUIRED_FACTS, NOT_SETTLED_BY_RULES) and not plan.states_answer:
         status = DECLINED
 
-    # Read after the status is settled, not before: a reply relabelled away from
-    # `answered` above must not carry a verdict string out with it, and reading it
-    # here rather than at parse time is what makes that true by construction.
-    verdict = prose["verdict"].strip() if status == ANSWERED else ""
-
     if status == ANSWERED and not plan.states_verdict:
         # The model claimed a determination and named none. A receipt's invariant
         # is that a verdict string is non-empty exactly when one was reached, and
@@ -2371,6 +2370,74 @@ def _decision_from_parsed(
         # above, so anything still `answered` here named none: this is the state
         # where no fact was pointed at and none is invented.
         status = NOT_SETTLED_BY_RULES
+
+    if status == ANSWERED and plan.settles_requested_decision is False:
+        # A CONFERRED ENTITLEMENT IS NOT AN OPERATIONAL APPROVAL
+        #
+        # Rules can settle that something is conferred — an amount, a duration, a
+        # right — and say nothing about whether it may be acted on now. Those are
+        # two questions. A reply that answers the first while the second was asked
+        # is not wrong about the policy; it is answering a question nobody put,
+        # and returning it as a determination reads to a caller as permission the
+        # records never gave.
+        #
+        # Only the reader of the question can tell the two apart, so the reply
+        # says which it settled and this compares that claim against the status it
+        # chose — one returned field against another, never the prose. It is the
+        # same one-directional preference the repairs above take: between "here is
+        # your answer" and "the rules did not settle this", the second is the safe
+        # reading of a reply that has just said the rules do not reach the
+        # question.
+        #
+        # What must NOT happen here is inventing a fact to block on. The case is
+        # not waiting on a document or a value; the records are silent on the
+        # decision. `missing_required_facts` would put a demand in the policy's
+        # mouth, so this is `not_settled_by_rules` with nothing named — and the
+        # explanation survives, so what the rules *do* confer is still reported.
+        status = NOT_SETTLED_BY_RULES
+
+    if status == ANSWERED:
+        # THE ANSWER MUST COVER THE EVIDENCE IT WAS GIVEN
+        #
+        # Every check above compares the reply against itself. This one compares
+        # it against what it was handed, which is the class of error none of the
+        # others can see: a determination composed from one of the two provisions
+        # retrieval retained is internally consistent, cites a real rule, names a
+        # verdict, and is still an answer to a narrower question than the one that
+        # was asked.
+        #
+        # The claim is the model's — only a reader of the question can say whether
+        # a provision bore on it — and this is where the claim is checked. An
+        # account that is absent, incomplete, unrecognised, unowned or
+        # undisclosed leaves evidence unaccounted for, and an unaccounted unit is
+        # exactly the silent partial answer.
+        #
+        # It becomes `not_settled_by_rules` and never a new status: rules bore on
+        # the case and were cited, and what came back did not settle it on
+        # everything it was given. The prose survives as the explanation. The
+        # direction is the same one-way preference the repairs above take —
+        # between "here is your answer" and "this did not settle it", the second
+        # is the safe reading of a reply that cannot account for its own evidence.
+        accounting = account_for_evidence(
+            plan,
+            evidence_keys=frozenset(evidence_keys or ()),
+            available_rule_ids=frozenset(available_ids),
+        )
+        if accounting.blocks_answer:
+            logger.warning(
+                "decision reply did not account for %s evidence unit(s); %s",
+                len(accounting.unaccounted_keys),
+                ", ".join(accounting.failures),
+            )
+            status = NOT_SETTLED_BY_RULES
+
+    # Read after **every** status repair above, not before: a reply relabelled
+    # away from `answered` must not carry a verdict string out with it, and
+    # reading it here rather than at parse time is what makes that true by
+    # construction. Each new repair therefore belongs above this line — a gate
+    # added below it would change the status and leave the verdict behind, which
+    # is precisely the contradiction the receipt's own invariant forbids.
+    verdict = prose["verdict"].strip() if status == ANSWERED else ""
 
     if status == DECLINED:
         return {
@@ -2843,6 +2910,24 @@ which case the status is wrong, and you should return "missing_required_facts" n
 instead. "record_does_not_determine" if no fact the reviewer could supply would settle it.
 - "declined": true only if you cannot read the question or compose a grounded response for a reason \
 other than the retained policies not settling the case. Normally false.
+- "evidence_dispositions": one object for **every** record you were handed, none omitted, in any \
+order: "key" (that record's `provision_key`), "disposition" (exactly "used" or "irrelevant"), \
+"rule_ids" (for "used": the `rule_id`s from *that record* your answer drew on — at least one, and \
+only ids that appear in that record's `rules`; empty for "irrelevant"), and "reason" (for \
+"irrelevant": one short sentence saying why that record does not bear on the question; empty for \
+"used"). You were given these records because they might bear on the question, and saying which \
+did and which did not is part of the answer, not commentary on it. Setting a record aside is \
+expected and is not a fault — many questions are settled by one of several records. Leaving one \
+out is the fault: a record you neither drew on nor set aside has not been accounted for, and a \
+judgement that has not accounted for everything it was given cannot be returned as "answered".
+- "settles_requested_decision": true only if some rule you cited prescribes the outcome the \
+reviewer actually asked for. Rules often settle one thing and are silent on a neighbouring one: \
+they can confer something — an amount, a duration, an entitlement — without stating whether it may \
+be acted on now, or who approves it, or when. If the records settle what is conferred but say \
+nothing about the step the reviewer asked about, this is false. Explain what the records do settle \
+either way; false does not mean you have nothing to say, and it never means a fact is missing — do \
+not name a document or a value as outstanding merely because the records are silent on the \
+decision.
 - "note": optional one-sentence caveat, e.g. that the records are partial or point elsewhere. Empty \
 string if you have nothing to add."""
 
@@ -3082,6 +3167,31 @@ def _policy_identity(record: dict) -> dict:
         if key in envelope:
             identity[key] = envelope[key]
     return identity
+
+
+def _evidence_keys(
+    policies_view: list[dict],
+    *,
+    evidence_kind: Literal["policy", "rule"] = "policy",
+) -> frozenset[str]:
+    """The identity of each unit of evidence the model is about to be handed.
+
+    One key per entry in the view, read from the same object the model sees, so
+    the set a reply is checked against and the set it was given cannot drift
+    apart. A unit with no identity is omitted rather than keyed on a placeholder:
+    a reply cannot be asked to account for something it cannot name.
+    """
+
+    keys: set[str] = set()
+    for entry in policies_view:
+        if evidence_kind == "rule":
+            key = str((entry.get("rule") or {}).get("rule_id") or "").strip()
+        else:
+            identity = entry.get("policy") or {}
+            key = str(identity.get("provision_key") or identity.get("provision_id") or "").strip()
+        if key:
+            keys.add(key)
+    return frozenset(keys)
 
 
 def _union_over_records(
@@ -3355,6 +3465,7 @@ async def answer_decision_over_policies(
         policies_grounded=grounded_count,
         rule_to_policy=rule_to_policy,
         selector_membership=_selector_membership_for_records(records),
+        evidence_keys=_evidence_keys(policies_view, evidence_kind=_evidence_kind),
     )
     if _evidence_kind == "rule":
         for citation in result.get("citations") or []:

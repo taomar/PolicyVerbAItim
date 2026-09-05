@@ -59,7 +59,7 @@ from typing import Final
 #: deciding an outcome. It does not move when a prompt is reworded or a prose
 #: field is added, because neither changes what the decision is computed from.
 #: Carried on the receipt so a stored decision can say which reading produced it.
-PLAN_PROFILE: Final[str] = "case-plan-v3"
+PLAN_PROFILE: Final[str] = "case-plan-v4"
 
 #: The keys a reply may state that **decide** the outcome. Closed on purpose: a
 #: key absent from this list cannot reach the decision however it is spelled,
@@ -74,6 +74,8 @@ PLAN_KEYS: Final[frozenset[str]] = frozenset(
         "missing_required_facts_detail",
         "verification_requirements",
         "unsettled_reason",
+        "evidence_dispositions",
+        "settles_requested_decision",
     }
 )
 
@@ -101,7 +103,53 @@ PROSE_PRESENCE_KEYS: Final[frozenset[str]] = frozenset({"answer", "verdict"})
 #: `label` and `why_needed` are shown. They are listed in `PLAN_KEYS` because the
 #: deciding half is what the plan needs, and the prose half is carried through
 #: untouched by the caller that renders it — this module never reads it.
-DETAIL_PROSE_FIELDS: Final[frozenset[str]] = frozenset({"label", "why_needed"})
+DETAIL_PROSE_FIELDS: Final[frozenset[str]] = frozenset({"label", "why_needed", "reason"})
+
+#: What a reply may say it did with one unit of evidence it was given.
+#:
+#: Closed, because an open vocabulary would let a reply invent a third thing that
+#: is neither using the evidence nor declining it, and an unrecognised token is
+#: exactly the "unaccounted" state this exists to catch.
+DISPOSITION_USED: Final[str] = "used"
+DISPOSITION_IRRELEVANT: Final[str] = "irrelevant"
+DISPOSITION_TOKENS: Final[frozenset[str]] = frozenset({DISPOSITION_USED, DISPOSITION_IRRELEVANT})
+
+
+@dataclass(frozen=True, slots=True)
+class EvidenceDisposition:
+    """What one reply says it did with one unit of evidence it was handed.
+
+    Retrieval keeping a policy and an answer resting on it are different events,
+    and only the second is a claim the model can make. A reply that simply omits
+    a unit is making no claim about it at all — which is why absence is a state
+    here and not a default.
+
+    Identities and one closed token. Like :class:`VerificationClaim`, nothing on
+    this dataclass can hold a sentence: the reason a unit was set aside is prose,
+    is listed in :data:`DETAIL_PROSE_FIELDS`, and is never read here. That is what
+    stops a disposition being argued into a different meaning by rewording it.
+    """
+
+    #: The evidence unit this disposition is about, as the reply wrote it.
+    #: Resolving it against the units actually handed over is the decision
+    #: stage's work — the plan reports the claim, not its truth.
+    key: str = ""
+    #: `used` or `irrelevant`, lowercased. Any other token — including the empty
+    #: string — leaves the unit unaccounted, which no answered status survives.
+    disposition: str = ""
+    #: For `used`: the rule ids the reply says carried this unit into the answer.
+    #: Checking that they are real, and that they belong to *this* unit, is the
+    #: decision stage's job. A `used` claim owning no citation is a claim that
+    #: something was relied on without saying through what.
+    rule_ids: tuple[str, ...] = ()
+    #: Whether a reason was written at all. Presence, never content, exactly as
+    #: `states_answer` is — so a set-aside unit cannot be set aside silently, and
+    #: no wording of the reason can move the decision.
+    states_reason: bool = False
+
+    @property
+    def is_recognised(self) -> bool:
+        return self.disposition in DISPOSITION_TOKENS
 
 
 @dataclass(frozen=True, slots=True)
@@ -179,6 +227,22 @@ class CasePlan:
     states_answer: bool = False
     #: Whether the reply named a verdict at all. Presence, never content.
     states_verdict: bool = False
+    #: What the reply says it did with each unit of evidence it was handed, in
+    #: the order given. Empty when the reply made no such claim at all, which is
+    #: itself the finding: every unit is then unaccounted.
+    evidence_dispositions: tuple[EvidenceDisposition, ...] = ()
+    #: Whether the reply says a cited rule prescribes the *outcome that was
+    #: asked for*, rather than something adjacent to it.
+    #:
+    #: The distinction this exists for: rules can settle that something is
+    #: conferred and be silent on whether it may be acted on now. Those are two
+    #: questions, and an answer to the first is not an answer to the second. Only
+    #: a reader of the question can tell them apart, so the reply says which it
+    #: settled and this records the claim.
+    #:
+    #: `None` when the reply made no claim — a reply that says nothing here has
+    #: not asserted that the rules reach the question, and absence is not assent.
+    settles_requested_decision: bool | None = None
 
     @property
     def names_a_fact(self) -> bool:
@@ -233,7 +297,49 @@ def plan_from_reply(parsed: dict) -> CasePlan:
         unsettled_reason=str(parsed.get("unsettled_reason") or "").strip().lower(),
         states_answer=bool(str(parsed.get("answer") or "").strip()),
         states_verdict=bool(str(parsed.get("verdict") or "").strip()),
+        evidence_dispositions=_dispositions_from_reply(parsed),
+        settles_requested_decision=(
+            bool(parsed["settles_requested_decision"])
+            if isinstance(parsed.get("settles_requested_decision"), bool)
+            else None
+        ),
     )
+
+
+def _dispositions_from_reply(parsed: dict) -> tuple[EvidenceDisposition, ...]:
+    """What the reply claims it did with each unit of evidence, as identities.
+
+    Nothing is inferred and nothing is defaulted. An entry that is not a mapping,
+    or names no unit, is dropped rather than repaired: a disposition this reader
+    had to guess at is not a claim the reply made, and treating it as one would
+    manufacture the accounting the decision stage is about to check.
+    """
+
+    entries = parsed.get("evidence_dispositions")
+    if not isinstance(entries, list):
+        return ()
+
+    claims: list[EvidenceDisposition] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        key = str(entry.get("key") or "").strip()
+        if not key:
+            continue
+        rule_ids = entry.get("rule_ids")
+        claims.append(
+            EvidenceDisposition(
+                key=key,
+                disposition=str(entry.get("disposition") or "").strip().lower(),
+                rule_ids=(
+                    tuple(str(rule_id).strip() for rule_id in rule_ids if str(rule_id).strip())
+                    if isinstance(rule_ids, list)
+                    else ()
+                ),
+                states_reason=bool(str(entry.get("reason") or "").strip()),
+            )
+        )
+    return tuple(claims)
 
 
 def _verifications_from_reply(parsed: dict) -> tuple[VerificationClaim, ...]:

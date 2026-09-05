@@ -354,20 +354,41 @@ DIRECT_POLICY_ORDER_HYBRID = "hybrid_search_order_v1"
 #: aggregated, so it gets a name of its own.
 DIRECT_POLICY_ORDER_RULE = "rule_weighted_rrf_v1"
 
-#: The orders whose cardinality was decided by an evidence cut rather than by
-#: the retention budget.
+#: Whether coverage expansion is eligible to run, derived from the two facts that
+#: make it meaningful rather than from a list of the orderings that happen to
+#: exhibit them.
 #:
 #: Coverage expansion exists to spend budget a *cut* left unspent — it adds a
 #: policy whose heading names an explicit query term the cut selection does not
-#: cover. That is only meaningful where a cut happened: under
-#: `DIRECT_POLICY_ORDER_HYBRID` no cut was made and the pool already reaches the
-#: budget, so there is nothing left to spend. Rule mode belongs here for exactly
-#: the same reason policy-mode RRF does, and it was silently absent — the gate
-#: read one order rather than the property the orders share, so rule mode never
-#: reached the expansion even when its cut had left the budget half empty.
-COVERAGE_EXPANDABLE_POLICY_ORDERS = frozenset(
-    {DIRECT_POLICY_ORDER_RRF, DIRECT_POLICY_ORDER_RULE}
-)
+#: cover. Two things must therefore be true: a relevance cut was applied, and the
+#: retention budget still has room. Where no cut was made the pool already reaches
+#: the budget and there is nothing left to spend; where the budget is full there
+#: is nothing to spend it on.
+#:
+#: THIS WAS AN ENUMERATION AND THE ENUMERATION WAS THE DEFECT
+#:
+#: The gate used to name the orderings that satisfy those two facts. It was
+#: already wrong once — rule mode satisfied them and was silently absent, so its
+#: cut could leave the budget half empty and never reach the expansion. Adding
+#: the missing name fixed that instance and left the trap armed: the next
+#: ordering to cut would be omitted in exactly the same way, and
+#: `DIRECT_POLICY_ORDER_SEMANTIC` was. A strong lead is still a cut, and a cut
+#: that keeps one policy of five leaves four slots unspent.
+#:
+#: Reading the property instead means an ordering added later is included by
+#: being what it is, not by being remembered.
+def coverage_expansion_is_eligible(precision: dict, selected_count: int) -> bool:
+    """True when a relevance cut left retention budget unspent.
+
+    `precision` is the selector's own report and `selected_count` is what the
+    selection actually kept, so both inputs are facts about this retrieval. No
+    ordering is named here, and none may be: the moment this function asks *which*
+    order ran it has stopped reading the property and gone back to the list.
+    """
+
+    if not bool(precision.get("semantic_elbow_applied")):
+        return False
+    return selected_count < RETRIEVAL_POLICY_BUDGET
 
 #: The key each ranked hit carries naming *what quantity* its ``@search.score``
 #: holds, written where that score is established rather than inferred later.
@@ -3631,7 +3652,7 @@ async def _answer_project_scope(
     # consumed a slot is a slot the provision deciding the case never got.
     if (
         not policies_only
-        and precision.get("direct_policy_order") in COVERAGE_EXPANDABLE_POLICY_ORDERS
+        and coverage_expansion_is_eligible(precision, len(current_hits))
     ):
         (
             current_hits,

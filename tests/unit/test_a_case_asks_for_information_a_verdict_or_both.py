@@ -90,6 +90,11 @@ class _StubClient:
         "verdict": "compliant",
         "cited_rule_ids": ["R-CAP"],
         "missing_required_facts": [],
+        # An answered reply accounts for every record it was handed. This stub is
+        # handed the one record below, and rests on it.
+        "evidence_dispositions": [
+            {"key": "A", "disposition": "used", "rule_ids": ["R-CAP"]}
+        ],
         "declined": False,
         "note": "",
     }
@@ -153,6 +158,11 @@ def stubbed(monkeypatch: pytest.MonkeyPatch) -> type[_StubClient]:
         "verdict": "compliant",
         "cited_rule_ids": ["R-CAP"],
         "missing_required_facts": [],
+        # An answered reply accounts for every record it was handed. These tests
+        # hand over `_record()`, whose key is "A", and the reply rests on it.
+        "evidence_dispositions": [
+            {"key": "A", "disposition": "used", "rule_ids": ["R-CAP"]}
+        ],
         "declined": False,
         "note": "",
     }
@@ -813,6 +823,9 @@ async def test_a_verdict_that_names_nothing_outstanding_is_a_verdict(stubbed) ->
         "cited_rule_ids": ["R-CAP"],
         "missing_required_facts": [],
         "missing_required_facts_detail": [],
+        "evidence_dispositions": [
+            {"key": "A", "disposition": "used", "rule_ids": ["R-CAP"]}
+        ],
         "declined": False,
         "note": "",
     }
@@ -852,6 +865,9 @@ async def test_answered_with_no_verdict_named_is_not_reported_as_a_determination
         "verdict": "",
         "cited_rule_ids": ["R-CAP"],
         "missing_required_facts": [],
+        "evidence_dispositions": [
+            {"key": "A", "disposition": "used", "rule_ids": ["R-CAP"]}
+        ],
         "declined": False,
         "note": "",
     }

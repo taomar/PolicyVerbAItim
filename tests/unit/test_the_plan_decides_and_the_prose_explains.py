@@ -259,6 +259,16 @@ def test_no_field_on_the_plan_can_hold_a_sentence() -> None:
         "unsettled_reason",
         "states_answer",
         "states_verdict",
+        # Identities and one closed token per unit of evidence, plus a boolean
+        # for whether a reason was written. The reason itself is prose, is listed
+        # in `DETAIL_PROSE_FIELDS`, and never reaches the plan — so no wording of
+        # it can move a decision, which is the same guarantee `states_answer`
+        # gives for the answer.
+        "evidence_dispositions",
+        # A boolean saying whether the rules reached the question that was asked.
+        # Presence of a claim, never its wording — the same shape as
+        # `states_answer`, and for the same reason.
+        "settles_requested_decision",
     }
     for key in ai_case_plan.PROSE_KEYS:
         assert key not in fields, f"the plan carries the prose field {key!r}"

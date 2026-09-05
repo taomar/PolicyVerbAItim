@@ -219,21 +219,24 @@ class TestTheCutIsOnTheRecord:
         Coverage expansion spends budget a cut left unspent. Rule mode makes a
         cut and was silently absent from the gate, so its unspent budget was
         never offered to a policy whose heading named a term the cut missed.
+
+        The gate now reads that property directly, so this asserts the property:
+        eligibility follows from *a cut having been applied and budget remaining*,
+        for every ordering, including any added after this was written. Naming
+        orders here would reintroduce the list the defect lived in.
         """
 
-        assert (
-            ai_case_project.DIRECT_POLICY_ORDER_RULE
-            in ai_case_project.COVERAGE_EXPANDABLE_POLICY_ORDERS
+        cut_with_room = {"semantic_elbow_applied": True}
+        assert ai_case_project.coverage_expansion_is_eligible(cut_with_room, 1)
+
+        # No cut: the whole pool was kept, so there is no unspent budget.
+        assert not ai_case_project.coverage_expansion_is_eligible(
+            {"semantic_elbow_applied": False}, 1
         )
-        assert (
-            ai_case_project.DIRECT_POLICY_ORDER_RRF
-            in ai_case_project.COVERAGE_EXPANDABLE_POLICY_ORDERS
-        )
-        # And the order that made no cut is not in it: there is no unspent budget
-        # to expand into when the whole pool was kept.
-        assert (
-            ai_case_project.DIRECT_POLICY_ORDER_HYBRID
-            not in ai_case_project.COVERAGE_EXPANDABLE_POLICY_ORDERS
+
+        # A cut, but the budget is already spent: nothing to expand into.
+        assert not ai_case_project.coverage_expansion_is_eligible(
+            cut_with_room, ai_case_project.RETRIEVAL_POLICY_BUDGET
         )
 
 

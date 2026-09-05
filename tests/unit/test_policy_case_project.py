@@ -759,10 +759,12 @@ def test_every_order_whose_count_came_from_a_cut_reaches_coverage_expansion() ->
     )
 
     assert policy_precision["semantic_selected"] >= 1
-    # Every order the policy path can report and that came from a cut is a
-    # candidate for expansion; none of them is empty or unnamed.
-    assert ai_case_project.COVERAGE_EXPANDABLE_POLICY_ORDERS
-    assert all(bool(order) for order in ai_case_project.COVERAGE_EXPANDABLE_POLICY_ORDERS)
+    # This exercises the light selector, which reports a selection but not the
+    # decision path's cut flag. Eligibility itself is a property of the decision
+    # path's own report and is asserted directly in
+    # `test_coverage_expansion_is_eligible_by_property.py`; asserting it here
+    # against a different selector's dict would be checking the wrong contract.
+    assert policy_precision["semantic_selected"] <= ai_case_project.RETRIEVAL_POLICY_BUDGET
 
 
 
@@ -1091,6 +1093,14 @@ async def test_multi_policy_decision_citations_name_the_policy_they_came_from(
         "verdict": "compliant",
         "cited_rule_ids": [rule_from_b],
         "missing_required_facts": [],
+        # Two records were handed over and the answer rests on one. Under the
+        # accounting contract the other is not left unmentioned — it is set aside
+        # explicitly, which is the whole difference between a narrower answer and
+        # a silently partial one.
+        "evidence_dispositions": [
+            {"key": "B", "disposition": "used", "rule_ids": [rule_from_b]},
+            {"key": "A", "disposition": "irrelevant", "reason": "does not bear on the supplied case"},
+        ],
         "declined": False,
         "note": "",
     }

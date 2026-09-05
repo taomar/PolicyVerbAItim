@@ -513,6 +513,9 @@ async def test_a_supplied_selector_is_answered_rather_than_asked_for(
 
     stubbed.verdict_reply = {
         "status": "answered",
+        "evidence_dispositions": [
+            {"key": domain.key, "disposition": "used", "rule_ids": [domain.rule_id]}
+        ],
         "answer": domain.supplied_answer,
         "verdict": domain.supplied_verdict,
         "cited_rule_ids": [domain.rule_id],
@@ -548,6 +551,9 @@ async def test_a_selector_stated_in_the_reviewers_own_words_is_not_asked_for_aga
 
     stubbed.verdict_reply = {
         "status": "answered",
+        "evidence_dispositions": [
+            {"key": domain.key, "disposition": "used", "rule_ids": [domain.rule_id]}
+        ],
         "answer": domain.supplied_answer,
         "verdict": domain.supplied_verdict,
         "cited_rule_ids": [domain.rule_id],
@@ -777,6 +783,9 @@ async def test_a_verdictless_answer_that_names_nothing_is_still_merely_unsettled
 
     stubbed.verdict_reply = {
         "status": "answered",
+        "evidence_dispositions": [
+            {"key": domain.key, "disposition": "used", "rule_ids": [domain.rule_id]}
+        ],
         "answer": "The rules speak to this area but not to the arrangement described.",
         "verdict": "",
         "cited_rule_ids": [domain.rule_id],
@@ -869,6 +878,9 @@ async def test_the_preference_does_not_swallow_a_determination_that_is_finished(
 
     stubbed.verdict_reply = {
         "status": "answered",
+        "evidence_dispositions": [
+            {"key": domain.key, "disposition": "used", "rule_ids": [domain.rule_id]}
+        ],
         "answer": domain.supplied_answer,
         "verdict": domain.supplied_verdict,
         "cited_rule_ids": [domain.rule_id],

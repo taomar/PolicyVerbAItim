@@ -138,6 +138,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from policy_platform.contracts.case_decision import (
     CHANNEL_API,
+    COMPOSITION_CITED,
+    COMPOSITION_UNCITED,
     HASH_BASIS_V2,
     HASH_BASIS_V2_LANG,
     HASH_BASIS_V2_LANG_WITH_VERIFICATION,
@@ -2231,6 +2233,11 @@ def build_envelope(
     )
     verdict = _verdict_section(evaluation, provision_ids=ids) if asked.verdict_requested else None
 
+    # Built before the envelope because the composition disposition is derived
+    # from them, and a policy's disposition is part of what the envelope seals.
+    citations = _merged_citations(information, verdict)
+    considered = _apply_composition(_considered_refs(response, provision_ids=ids), citations)
+
     envelope = CaseDecisionEnvelopeV2(
         schema_version=SCHEMA_VERSION_V2,
         decision_id=decision_id,
@@ -2273,9 +2280,9 @@ def build_envelope(
         information=information,
         verdict=verdict,
         retrieval=RetrievalRef(**_retrieval_fields(response.get("retrieval") or {})),
-        considered=_considered_refs(response, provision_ids=ids),
+        considered=considered,
         excluded=[_policy_ref(entry, provision_ids=ids) for entry in (response.get("excluded") or [])],
-        citations=_merged_citations(information, verdict),
+        citations=citations,
         size=SizeRef(**(response.get("size") or {})) if response.get("size") else None,
         trace=_trace_ref(response, context, evaluated=evaluation is not None),
         decision_hash="",
@@ -2682,6 +2689,43 @@ def _verification_requirement_refs(branch: dict) -> list[VerificationRequirement
             )
         )
     return items
+
+
+def _apply_composition(
+    considered: list[PolicyRef], citations: list[MergedCitationRef]
+) -> list[PolicyRef]:
+    """Record, on every retained policy, whether the answer rested on it.
+
+    Retrieval keeping a policy and the answer using it are two different events,
+    and only the first was ever written down. A policy could therefore be carried
+    into the evaluation, contribute nothing, and leave a receipt that read exactly
+    like one where it had been weighed and found not to apply.
+
+    The disposition is derived, not asserted: a policy is `cited` when some
+    citation resolves to its provision key, and `uncited` otherwise. Nothing here
+    reads a heading, a question, or the policy's text — only whether an identity
+    appears on both sides — so no corpus can steer it.
+
+    Policies that were **not** retained are left `None`. There is no composition
+    verdict to give about evidence the answer never held, and writing `uncited`
+    on a discarded policy would conflate "we did not keep it" with "we kept it and
+    did not use it", which are the two facts this field exists to separate.
+    """
+
+    cited_keys = {
+        str(citation.policy.provision_key)
+        for citation in citations
+        if citation.policy is not None and citation.policy.provision_key
+    }
+    for ref in considered:
+        if not ref.retained:
+            continue
+        ref.composition = (
+            COMPOSITION_CITED
+            if str(ref.provision_key) in cited_keys
+            else COMPOSITION_UNCITED
+        )
+    return considered
 
 
 def _merged_citations(

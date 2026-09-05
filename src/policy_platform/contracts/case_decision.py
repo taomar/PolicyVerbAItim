@@ -737,11 +737,31 @@ class ScoreDisclosureRef(BaseModel):
     )
 
 
+#: What an answer did with a policy retrieval kept. Two values, because there are
+#: only two things that can have happened to held evidence, and a receipt that
+#: recorded neither let the second one happen silently.
+#:
+#: `uncited` is **not** a failure. Retrieval keeps more than any one answer needs,
+#: and forcing every retained policy into the citations would trade precision for
+#: a number — the degenerate repair this vocabulary exists to make visible rather
+#: than to mandate away. What it forbids is a policy that was held, went unused,
+#: and left no trace of either fact.
+COMPOSITION_CITED: Final[str] = "cited"
+COMPOSITION_UNCITED: Final[str] = "uncited"
+CompositionDisposition = Literal["cited", "uncited"]
+
+
 class PolicyRef(BaseModel):
     """One policy the decision saw, and where to read it in full.
 
     `payload_url` is the whole of the policy's content in this receipt: the lean
     published record is served there and is not copied in here.
+
+    Retrieval's verdict and the answer's verdict are separate facts and are held
+    in separate fields. `retained` says the selection kept this policy;
+    `composition` says what the answer then did with it. A policy can be kept and
+    not used — that is ordinary — but it may not be kept and not *accounted for*,
+    which is what the two fields together make impossible.
     """
 
     provision_id: str | None = None
@@ -785,6 +805,17 @@ class PolicyRef(BaseModel):
         description=(
             "The named quantities behind `best_score`. Absent on a receipt written before they "
             "were named, and on a policy reference that records no retrieval verdict."
+        ),
+    )
+    composition: CompositionDisposition | None = Field(
+        default=None,
+        description=(
+            "What the answer did with this policy after retrieval kept it: `cited` if the "
+            "answer rested on it, `uncited` if it was held and not used. Absent when there is "
+            "nothing to dispose of — a policy that was not retained — and on any receipt "
+            "written before the disposition existed. `uncited` is a legitimate outcome and not "
+            "a defect: retrieval deliberately keeps more than one answer needs. What it stops "
+            "being is *silent*, which is the only property this field adds."
         ),
     )
 
@@ -1924,6 +1955,44 @@ def _sealed_citations(citations: list[CitationRef]) -> list[dict[str, Any]]:
     ]
 
 
+def _sealed_policy_entry(ref: PolicyRef) -> dict[str, Any]:
+    """One considered policy, as the v2 seal sees it.
+
+    Which rules of the policy were read is part of what was decided: the same
+    policy read whole and read as a slice of eight rows are two different
+    accounts of the same question. `method` and the counts are derivable from the
+    ids, so the ids alone are sealed.
+
+    `composition` is sealed for the same reason the verdict's verification
+    requirements are: it materially qualifies what the answer rests on. A receipt
+    whose held-but-unused evidence could change without moving its hash would let
+    the account of what was actually read be rewritten afterwards.
+
+    It is written **only when present**, exactly as `verification_requirements`
+    is. A receipt stored before the disposition existed carries `None`, produces
+    the identical preimage it always did, and still verifies against the hash it
+    was written with. Writing the key unconditionally would invalidate every
+    receipt ever issued.
+    """
+
+    entry: dict[str, Any] = {
+        "provision_key": ref.provision_key,
+        "retained": bool(ref.retained),
+        "discard_reason": ref.discard_reason,
+        "selected_rule_ids": (
+            sorted(ref.rule_selection.selected_rule_ids)
+            if ref.rule_selection is not None
+            else None
+        ),
+        "total_rules": (
+            ref.rule_selection.total_rules if ref.rule_selection is not None else None
+        ),
+    }
+    if ref.composition is not None:
+        entry["composition"] = ref.composition
+    return entry
+
+
 def decision_hash_preimage_v2(envelope: CaseDecisionEnvelopeV2) -> dict[str, Any]:
     """The decision-defining subset of a v2 receipt, as the hash sees it.
 
@@ -1933,24 +2002,7 @@ def decision_hash_preimage_v2(envelope: CaseDecisionEnvelopeV2) -> dict[str, Any
 
     policies = sorted(
         (
-            {
-                "provision_key": ref.provision_key,
-                "retained": bool(ref.retained),
-                "discard_reason": ref.discard_reason,
-                # Which rules of the policy were read is part of what was
-                # decided: the same policy read whole and read as a slice of
-                # eight rows are two different accounts of the same question.
-                # `method` and the counts are derivable from the ids, so the ids
-                # alone are sealed.
-                "selected_rule_ids": (
-                    sorted(ref.rule_selection.selected_rule_ids)
-                    if ref.rule_selection is not None
-                    else None
-                ),
-                "total_rules": (
-                    ref.rule_selection.total_rules if ref.rule_selection is not None else None
-                ),
-            }
+            _sealed_policy_entry(ref)
             for ref in envelope.considered
         ),
         key=lambda entry: str(entry["provision_key"]),

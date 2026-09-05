@@ -158,7 +158,20 @@ DOMAIN_WORDS = (
 #: measured version, and the two character counts that were reported. A literal
 #: equal to one of these in executable code is a branch fitted to what was
 #: observed rather than a bound chosen for a reason.
-MEASURED_MAGNITUDES = frozenset({74, 280, 229, 188_000, 229_389})
+#:
+#: `1.914` joins them from a later incident: it is a reranker score read off one
+#: evaluation run, for one document, in one corpus. A score is the most tempting
+#: magnitude of all to paste into a threshold, because doing so makes exactly the
+#: observed case pass — which is the definition of fitting the corpus rather than
+#: choosing a bound. It is a float, and floats were previously unchecked here;
+#: that gap is closed below.
+#:
+#: What is deliberately *not* listed: the ranks and small counts from the same
+#: run. A value like 10 is a rank in one measurement and a legitimate ceiling
+#: everywhere else, so banning it would condemn correct code that never saw the
+#: measurement. This set holds magnitudes distinctive enough that carrying one is
+#: itself evidence of where it came from.
+MEASURED_MAGNITUDES = frozenset({74, 280, 229, 188_000, 229_389, 1.914})
 
 #: The only symbols allowed to carry the processing language's name. It *is*
 #: named in code, once, deliberately: the whole design turns on there being one
@@ -521,14 +534,59 @@ def test_no_authored_module_branches_on_a_measured_magnitude(module):
     Every number in these modules is a budget, a ceiling, a batch size or a
     published constant, and each is documented as such where it is declared.
     None of them is the size of anything that was observed.
+
+    Floats are checked alongside integers because the magnitudes most likely to
+    be pasted from a run are scores and thresholds, and those are never integers.
+    Reading only `int` left the half of this rule that matters most unenforced.
+    `bool` is excluded because it is an `int` subclass and `True` is not a
+    magnitude.
     """
 
     for node in ast.walk(_tree(module)):
-        if isinstance(node, ast.Constant) and isinstance(node.value, int):
+        if (
+            isinstance(node, ast.Constant)
+            and isinstance(node.value, (int, float))
+            and not isinstance(node.value, bool)
+        ):
             assert node.value not in MEASURED_MAGNITUDES, (
                 f"{module.__name__} carries the measured magnitude {node.value}, "
                 "which is a corpus fitted into code"
             )
+
+
+def test_the_measured_magnitude_check_actually_reads_floats():
+    """The control for the assertion above, because it passes either way.
+
+    No shipped module carries a measured float today, so the check above would
+    report success whether or not it looks at floats at all. That is the shape of
+    a guard that has quietly stopped guarding. This proves the float branch by
+    running the same predicate over constants parsed from source: one measured
+    float must be caught, and the ordinary thresholds that live in these modules
+    must not be — a refusal and a control, not just a refusal.
+    """
+
+    def offending(source: str) -> list[object]:
+        return [
+            node.value
+            for node in ast.walk(ast.parse(source))
+            if isinstance(node, ast.Constant)
+            and isinstance(node.value, (int, float))
+            and not isinstance(node.value, bool)
+            and node.value in MEASURED_MAGNITUDES
+        ]
+
+    caught = offending("threshold = 1.914")
+    assert caught == [1.914], (
+        "the measured-magnitude check no longer reads floats, so a score pasted "
+        "out of a run would reach a threshold unchallenged"
+    )
+
+    # The bounds these modules legitimately declare, and a boolean, which is an
+    # `int` subclass and must not be read as a magnitude.
+    assert not offending("a = 0.15\nb = 1.75\nc = 0.3\nd = 2.5\ne = True\nf = 1.0"), (
+        "the check now refuses ordinary chosen bounds, which would make it "
+        "unusable and force the guard to be deleted rather than obeyed"
+    )
 
 
 @pytest.mark.parametrize("module", AUTHORED, ids=lambda m: m.__name__)

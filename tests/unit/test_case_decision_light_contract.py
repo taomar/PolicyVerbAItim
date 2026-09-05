@@ -115,7 +115,7 @@ def test_v2_light_response_keeps_only_essential_decision_fields() -> None:
             ],
             "citations": [_citation()],
             "grounding": {
-                "plan_profile": "case-plan-v3",
+                "plan_profile": "case-plan-v4",
                 "selector_catalogue_version": "case-selectors-v1",
             },
         },
@@ -156,7 +156,7 @@ def test_v2_light_response_keeps_only_essential_decision_fields() -> None:
     assert light["verdict"]["verification_requirements"][0]["fact"] == "recorded-balance"
     assert [policy["provision_key"] for policy in light["policies"]] == ["entitlement"]
     assert light["citations"][0]["serves"] == ["information", "verdict"]
-    assert light["trace"]["plan_profile"] == "case-plan-v3"
+    assert light["trace"]["plan_profile"] == "case-plan-v4"
     assert light["trace"]["stage_latency_ms"] == {"policy_search": 125, "gather_wall": 900}
     assert light["trace"]["token_usage"]["total_tokens"] == 150
     assert light["latency_ms"] == 1200
