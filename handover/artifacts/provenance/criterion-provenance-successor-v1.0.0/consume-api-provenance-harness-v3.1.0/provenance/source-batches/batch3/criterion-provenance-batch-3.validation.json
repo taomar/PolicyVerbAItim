@@ -1,0 +1,78 @@
+{
+  "schema_version": "criterion-provenance-batch-validation/1",
+  "batch_id": "criterion-provenance-batch-3",
+  "status": "passed",
+  "validation_scope": {
+    "checks_run": 236,
+    "criteria_total": 128,
+    "base_unscorable_total": 113,
+    "slice_start_1_based": 77,
+    "slice_end_1_based": 113,
+    "slice_count": 37
+  },
+  "classification_counts": {
+    "mechanically_source_supported": 1,
+    "semantic_support_pending_human_confirmation": 3,
+    "unsupported_or_contradicted_rubric": 0,
+    "structural_harness_not_product_law": 33,
+    "unavailable_evidence": 0,
+    "product_decision_required": 0
+  },
+  "merge_simulation": {
+    "base_scorable": 15,
+    "base_unscorable": 113,
+    "successor_scorable": 16,
+    "successor_unscorable": 112,
+    "newly_scorable_criterion_ids": [
+      "HW-08:manual-1"
+    ],
+    "provenance_preflight": "passed"
+  },
+  "assertions": {
+    "canonical_bundle_payload_hash": "passed",
+    "canonical_inventory_file_hashes": "passed",
+    "deterministic_filter_total_113": "passed",
+    "exact_slice_membership": "passed",
+    "no_duplicate_criterion_ids": "passed",
+    "classification_partition": "passed",
+    "all_criterion_pointer_hashes": "passed",
+    "all_provision_pointer_hashes": "passed",
+    "all_rule_pointer_hashes": "passed",
+    "all_body_segment_hashes": "passed",
+    "overlay_expected_base_hash": "passed",
+    "replacement_schema_and_provenance_contract": "passed",
+    "canonical_guard_hashes_unchanged": "passed",
+    "provenance_guard_corpus_neutral": "passed",
+    "no_out_of_slice_updates": "passed",
+    "ai_review_not_human_confirmation": "passed"
+  },
+  "artifact_sha256": {
+    "criterion-provenance-batch-3.overlay.json": "4879337d894ff7e90653e248742c46a3f933abae2483209bfca6f7d66030495d",
+    "criterion-provenance-batch-3.ledger.jsonl": "8c832a98ac7207c146ef328c56342e8e3dc75f29c429709e4b14431a6616946a",
+    "criterion-provenance-batch-3.source-hashes.json": "178630c61ff91e4083776c0ad765d1ae42e77d88534483fa0a5f31e4e5e1663d",
+    "criterion-provenance-batch-3.merge-instructions.md": "a3f8df45954742d3c3f6ac61ccc0cb00825161384dffd7e6d988e7cb20491b35"
+  },
+  "blockers": [
+    {
+      "criterion_ids": [
+        "HW-05:manual-1",
+        "HW-07:manual-1",
+        "HW-09:manual-1"
+      ],
+      "type": "human_confirmation_required",
+      "detail": "Positive local body evidence is hash-attested, but normalized rules do not mechanically encode the full semantics and AI review is not human confirmation."
+    },
+    {
+      "criterion_count": 33,
+      "type": "schema_channel_required",
+      "detail": "Structural and response-contract checks need a non-product-law result channel if the successor harness continues to execute them."
+    }
+  ],
+  "non_mutation": {
+    "repository": "unchanged",
+    "canonical_bundle": "unchanged",
+    "normative_sources": "unchanged",
+    "live_services": "not_accessed",
+    "network_api_model_database_search_azure": "not_mutated"
+  }
+}

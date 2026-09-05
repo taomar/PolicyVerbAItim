@@ -1,0 +1,23 @@
+{
+  "schema_version": "six_unit_whitespace_assessment_v1",
+  "mandated_apply_hash_tests_exclusions": "passed",
+  "strict_error_all": {
+    "passed_ordinals": [
+      "00",
+      "01a",
+      "02",
+      "03",
+      "04"
+    ],
+    "warning_ordinal": "01",
+    "warning": "one new blank line at EOF in tests/unit/test_policy_case_project.py",
+    "source_disclosure": "The supplied Rule reconstruction explicitly records this sole frozen-target warning."
+  },
+  "private_diff_check": {
+    "artifact": "DIFF_CHECK.txt",
+    "sha256": "b2b06eadf52d9fa91c9864733bc4d48dfbfd6a237ee5821a86f487c7825e448c",
+    "interpretation": "Ordinal-00 test_the_corpus file is Git-classified -text and preserves CRLF bytes, so private staged diff reports CR as trailing whitespace even though ordinal 00 passes git apply --check --whitespace=error-all. The only patch-parser whitespace error is ordinal 01 blank EOF."
+  },
+  "blocking": false,
+  "condition": "If the committer enforces zero git diff --check findings as policy, clean/rebase ordinals 01 and 02 together and rerun all gates; otherwise exact supplied Rule bytes are commit-ready."
+}

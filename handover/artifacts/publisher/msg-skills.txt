@@ -1,0 +1,13 @@
+Carry the ignored skill assets into the archive
+
+.gitignore excludes every directory named skills, so these developer assets
+have only ever existed on one machine. An archive meant to let another host
+resume has to carry them, and they are committed on their own so that what
+was pulled past an ignore rule is auditable in one place rather than mixed
+into a source snapshot.
+
+Three skills, with their reference notes, helper scripts, and the fonts and
+licence files they render with. The generated coverage output that sat
+beside the scripts is left behind; .gitignore is unchanged.
+
+Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>

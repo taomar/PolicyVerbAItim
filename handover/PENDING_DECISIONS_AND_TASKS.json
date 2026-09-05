@@ -1,0 +1,356 @@
+{
+  "schema": "policyverbatim_portable_pending_tasks/2",
+  "supersedes": "policyverbatim_host_migration_pending_tasks/1",
+  "historical_snapshot": "handover/artifacts/historical/PENDING_DECISIONS_AND_TASKS.json",
+  "generated_utc": "2026-09-05T07:16:00Z",
+  "audience": "target host operating from a clean clone of the private archival repository",
+  "portability": "No task in this file requires the source host, any session-state directory, or any old local checkout. Absolute source-host paths appear only in 'historical_reference' fields and are NON-ACTIONABLE.",
+
+  "lock": {
+    "state": "ALL FEATURE DEVELOPMENT IS STOPPED",
+    "in_force": true,
+    "lifted_by": "explicit human owner instruction only",
+    "prohibited_without_new_authorization": [
+      "editing repository source",
+      "git push to any remote",
+      "Azure deployment, IaC apply, Key Vault mutation",
+      "database migration",
+      "live Azure AI Search index build or upload",
+      "live model or API calls against production endpoints",
+      "provenance harness execution"
+    ],
+    "permitted_now": ["clone", "read", "hash", "verify"]
+  },
+
+  "ordering_rule": "Work T-01 upward. Each gate must pass before the next begins.",
+
+  "tasks": [
+    {
+      "id": "T-01",
+      "phase": "verify",
+      "title": "Clone and verify the archival repository",
+      "status": "pending",
+      "authorization_required": false,
+      "gate": true,
+      "actions": [
+        "Authenticate to GitHub as user 'taomar'. The repository is private and owned by taomar; an ambient GH_TOKEN belonging to 'taomar_microsoft' receives a 404 that is indistinguishable from a missing repository. Use the keyring token for 'taomar'.",
+        "git clone https://github.com/taomar/PolicyVerbAItim",
+        "git rev-parse HEAD and git log --oneline -12; record the SHA actually cloned.",
+        "git status --porcelain=v1 must be clean.",
+        "Verify handover/HANDOVER_HASHES.sha256 recursively; mismatches must be 0.",
+        "Verify handover/artifacts/BUNDLED_ARTIFACTS.json: every declared path exists and hashes match."
+      ],
+      "on_failure": "STOP. A 'Repository not found' error most likely means you are authenticated as the wrong GitHub identity, not that the repository is missing.",
+      "success_criteria": "clean tree, 0 checksum mismatches, 0 missing bundled artifacts"
+    },
+    {
+      "id": "T-02",
+      "phase": "verify",
+      "title": "Reconcile the recorded publication chain with what was actually cloned",
+      "status": "pending",
+      "blocked_on": "nothing on the target host; requires comparing against the recorded chain",
+      "authorization_required": false,
+      "context": "This package was written while the archival publication was still in flight. It deliberately asserts no final remote SHA. handover/GIT_AND_WORKTREE_LEDGER.json carries publication.final_remote_sha=null and push_status=UNVERIFIED.",
+      "recorded_chain": [
+        "cf2d0f104c55f5a961d4634e692b9ebbe49e2aa7  Capture the in-flight working tree as archival source (parent 3414811752cc2cb08bf26b87dd8d8fa2c22baf65)",
+        "b13f168db44f2dd0218b3deea0bba1bf186fb27e  Reconcile the in-flight archive with the adopted feature commits (merge of d3bb0f94d58d1810a1ff24cacf8118d82f9c554f and cf2d0f10)",
+        "8bc0657a7076e8bf85b0a5f1b5ea009911829040  Carry the ignored skill assets into the archive"
+      ],
+      "actions": [
+        "Confirm the cloned history contains the recorded chain, or record precisely how it differs.",
+        "Confirm the six-unit line c0972c8 -> e689bf7 -> 5d731b6 -> acff6e8 -> b845918 -> be26081 -> 3414811 -> 3da502f -> d3bb0f9 is present.",
+        "Write the observed final SHA into your own operating notes; do not edit this package in place without re-running checksums."
+      ],
+      "success_criteria": "the archival history is explained; any divergence is documented before further work"
+    },
+    {
+      "id": "T-03",
+      "phase": "verify",
+      "title": "Confirm off-main content that does not travel on main",
+      "status": "pending",
+      "authorization_required": false,
+      "detail": "The Azure production local-auth commit 381586688f0337be15dcc1d42d2be7d4b0fe4936 is off-main and is NOT expected in the archival main. Its content travels only as a patch.",
+      "actions": [
+        "Confirm handover/artifacts/azure/AZURE_3815866.patch is present and hash-verified.",
+        "Confirm handover/artifacts/azure/AZURE_OVERLAP_ANALYSIS.json is present.",
+        "Do NOT apply, deploy, push, or merge it."
+      ]
+    },
+    {
+      "id": "T-04",
+      "phase": "restore",
+      "title": "Decide whether the system must actually run",
+      "status": "pending",
+      "authorization_required": false,
+      "gate": true,
+      "detail": "Reading, reviewing and auditing require nothing further. Only executing the system requires T-05 and T-06.",
+      "actions": ["Record the decision. If read-only, skip to T-09."]
+    },
+    {
+      "id": "T-05",
+      "phase": "restore",
+      "title": "Restore secrets and runtime data out of band",
+      "status": "pending",
+      "authorization_required": true,
+      "condition": "only if T-04 chose to run the system",
+      "rule": "Obtain from the owner over a secure channel or regenerate. NEVER commit any of these.",
+      "classes": {
+        "environment_secrets": [".env", ".env.*", "*.env", "apps/web/.env", "apps/consume-demo/.env.local", "services/policy-decision-api/.env", "infra/parameters/baseline.env"],
+        "local_credential_store": [".local-accounts.txt", "local-accounts*", "*.local-accounts*"],
+        "token_signing_key": [".local-signing-key*"],
+        "certificates_private_keys": ["*.pem"],
+        "file_borne_tokens": ["*token*.txt", "*token*.json", "*.token", ".token", ".tokens"],
+        "azure_cli_local_env": [".azure/*"],
+        "runtime_corpus": ["data/documents/", "data/backups/", "App_Data/"]
+      },
+      "note": "Restoring data/documents/ is what makes the 12 baseline errors disappear. Leaving it absent is a valid choice; record it."
+    },
+    {
+      "id": "T-06",
+      "phase": "restore",
+      "title": "Recreate language environments",
+      "status": "pending",
+      "authorization_required": false,
+      "condition": "only if T-04 chose to run the system",
+      "actions": [
+        "Create the Python virtual environment and install backend dependencies.",
+        "Install Node dependencies for apps/web and apps/consume-demo.",
+        "Do not commit any of .venv, node_modules, dist, build, *.egg-info, __pycache__, .pytest_cache."
+      ],
+      "package_feeds": {
+        "pypi": "packagefeedproxy.microsoft.io/pypi/simple",
+        "nuget": "packagefeedproxy.microsoft.io/nuget/v3/index.json"
+      }
+    },
+    {
+      "id": "T-07",
+      "phase": "validate",
+      "title": "Establish the baseline in a real worktree",
+      "status": "pending",
+      "authorization_required": false,
+      "condition": "requires T-06",
+      "expected_on_complete_environment": { "failed": 9, "skipped": 23, "errors": 12 },
+      "interpretation": {
+        "12_errors": "gitignored runtime document store absent - expected by design",
+        "9_failures": "HTTP 503; caused by the real test-harness defect in T-08; pre-existing and unrelated to this programme"
+      },
+      "method_rules": [
+        "Take the baseline in a REAL worktree. Never use git archive: it strips .git and two publication tests shell out to git check-ignore, producing a false 57-failure result.",
+        "Do not run the backend suite and both frontend suites concurrently - vitest worker startup timeouts occur under CPU contention.",
+        "Long test runs must print progress; avoid buffered pipelines that withhold output.",
+        "Compare failing and erroring node IDs, not just counts."
+      ],
+      "reference_numbers": {
+        "candidate_six_unit_backend": "5,192 passed / 23 skipped across 246 test files in 9 shards",
+        "focused": "foundation+01a 231, rule 524, payload 448",
+        "consume": "260/260 in bounded shards; TypeScript passed"
+      }
+    },
+    {
+      "id": "T-08",
+      "phase": "fix",
+      "title": "Fix the test-harness defect in src/policy_platform/api/routers/ai.py",
+      "status": "pending",
+      "authorization_required": true,
+      "classification": "real defect; pre-existing; deliberately left unfixed under scope discipline",
+      "root_cause": "The test harness never patches get_settings on the api.routers.ai module, so the affected tests read ambient environment configuration and fail with HTTP 503 from Azure OpenAI.",
+      "fix_direction": "Patch get_settings on the api.routers.ai module inside the fixture so the tests stop depending on ambient environment.",
+      "constraints": [
+        "Own commit, own review.",
+        "Do NOT fold into feature work.",
+        "Do NOT dismiss the 9 failures as merely environmental - the standing rule is to check ambient environment inheritance before calling a failure environmental, and that is exactly what exposed this."
+      ]
+    },
+    {
+      "id": "T-09",
+      "phase": "decide",
+      "title": "Decide the canonical origin remote",
+      "status": "pending",
+      "authorization_required": true,
+      "decision_owner": "human owner",
+      "detail": "On the source host, origin had been repointed to a secondary repository to satisfy a tooling constraint and was never restored. The archival clone starts clean; decide deliberately which upstream, if any, this repository should track.",
+      "historical_reference": "handover/artifacts/historical/GIT_AND_WORKTREE_LEDGER.json -> remotes",
+      "note": "Do not add or change a remote silently."
+    },
+    {
+      "id": "T-10",
+      "phase": "decide",
+      "title": "Resolve the residual in-flight source that was archived rather than productised",
+      "status": "pending",
+      "authorization_required": true,
+      "detail": "The archival main contains previously uncommitted in-flight bytes merged in as one-sided additions. Some of it is finished product work; some is not.",
+      "must_decide_explicitly": [
+        "src/policy_platform/infrastructure/projection/llm_reasoning_view.py - WITHDRAWN experiment; must not ship as product",
+        "tests/unit/test_the_model_reads_a_reasoning_view.py - WITHDRAWN"
+      ],
+      "mixed_paths_requiring_hunk_level_care": [
+        "src/policy_platform/api/app.py",
+        "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "src/policy_platform/infrastructure/search/policy_index.py",
+        "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "tests/unit/test_the_corpus_is_indexed_in_one_language.py"
+      ],
+      "reconciliation_rules": [
+        "If you ever re-derive or re-split this history, the merge base MUST be 3414811752cc2cb08bf26b87dd8d8fa2c22baf65.",
+        "Reconcile by hunk, never by wholesale replacement.",
+        "Never delete a feature file to resolve an apparent deletion."
+      ],
+      "evidence": [
+        "handover/artifacts/publisher/safe-inflight-paths.txt",
+        "handover/artifacts/publisher/msg-snapshot.txt",
+        "handover/artifacts/publisher/msg-merge.txt",
+        "handover/artifacts/publisher/msg-skills.txt"
+      ]
+    },
+    {
+      "id": "T-11",
+      "phase": "decide",
+      "title": "Decide on the pending database migration",
+      "status": "pending",
+      "authorization_required": true,
+      "detail": "The application's Alembic head is one revision ahead of the revision that was current on the source host's local database. No migration was ever applied.",
+      "actions": [
+        "Determine the current revision of whatever database this host will use.",
+        "Decide deliberately whether to upgrade.",
+        "Do not migrate any live database without explicit authorization."
+      ]
+    },
+    {
+      "id": "T-12",
+      "phase": "decide",
+      "title": "Complete the human provenance review",
+      "status": "BLOCKED",
+      "blocked_on": "independent human confirmation - AI review must NEVER be represented as human semantic confirmation",
+      "authorization_required": true,
+      "package": "handover/artifacts/provenance/criterion-provenance-successor-v1.0.0/",
+      "versions": { "harness": "consume-api-provenance-harness/3.1.0", "rubric": "3.1.0", "manifest": "2.1.0" },
+      "canonical_bundle_sha256": "037a40264acdde60c2b769f37e3eba5fe4af01dc980292d90fd4cab03c569c75",
+      "counts": { "criteria_total": 128, "scorable": 20, "unscorable": 95, "unresolved": 13, "findings": 108 },
+      "open_items": [
+        "19 semantic-pending criteria require independent human confirmation (12 unresolved + 7 unscorable)",
+        "HW-03:manual-1 remains unsupported/contradicted and unresolved",
+        "2 criteria require authoritative product decisions (8 are classified product-decision-required overall)"
+      ],
+      "execution": "DISABLED - execution.enabled=false, pending_manifest_authorized=false. Do not run the matrix without new authorization.",
+      "invariant": "Partition validation must precede semantic overlay application. The predecessor merge correctly failed closed on a partition overlap; that refusal package is preserved."
+    },
+    {
+      "id": "T-13",
+      "phase": "hold",
+      "title": "Azure remains halted",
+      "status": "standing prohibition",
+      "authorization_required": true,
+      "rules": [
+        "NEVER deploy, push, or merge the preserved Azure production local-auth commit 381586688f0337be15dcc1d42d2be7d4b0fe4936.",
+        "No IaC apply, no Key Vault mutation, no live Search index build or upload.",
+        "Live infrastructure facts recorded in this package are HISTORICAL. Re-verify read-only before trusting any of them, and only when authorized."
+      ],
+      "future_merge_constraint": "Any future Azure/application merge must preserve one async _headers definition and its eight awaited callers while retaining Search retry behaviour."
+    },
+    {
+      "id": "T-14",
+      "phase": "validate",
+      "title": "Close the outstanding validation gaps",
+      "status": "pending",
+      "authorization_required": true,
+      "gaps": [
+        "No live native-rule retrieval evaluation rerun has occurred.",
+        "No client-side live HTTP arm-F run has occurred.",
+        "The full combined backend plus both frontend suites have not been run against the current archival main on a complete environment."
+      ]
+    },
+    {
+      "id": "T-15",
+      "phase": "optional",
+      "title": "Optional whitespace cleanup of ordinals 01 and 02",
+      "status": "pending",
+      "authorization_required": true,
+      "detail": "The ordinal-01 artifact adds one blank line at EOF in test_policy_case_project.py. 'git apply --whitespace=error-all' reports exactly that one line. Normal apply, exact hashes, imports, focused tests and the full backend suite all pass.",
+      "action_if_enforced": "Clean and rebase ordinals 01 and 02 TOGETHER, then re-run every gate.",
+      "artifacts": [
+        "handover/artifacts/six-unit/final-artifacts/01-rule-retrieval.patch",
+        "handover/artifacts/six-unit/final-artifacts/02-payload.patch",
+        "handover/artifacts/six-unit/final-artifacts/WHITESPACE_ASSESSMENT.json"
+      ]
+    },
+    {
+      "id": "T-16",
+      "phase": "process",
+      "title": "Fix the review-session seeding defect before commissioning any new review workflow",
+      "status": "pending",
+      "authorization_required": false,
+      "detail": "Both independent feature reviewers found their review branches had been cut several commits behind the asserted base. Because the actual base was an ancestor, a fast-forward still succeeded and silently swept in the intervening commits. The outcome happened to be correct; the asserted precondition was false.",
+      "risk": "Had any swept-in commit been unreviewed, it would have been adopted without review.",
+      "action": "Assert and verify the exact base SHA when seeding a review workspace; refuse to proceed on mismatch."
+    },
+    {
+      "id": "T-17",
+      "phase": "gate",
+      "title": "Any push of product history requires new authorization",
+      "status": "pending",
+      "authorization_required": true,
+      "detail": "The prior one-push authorization applied to the source host's archival publication only and does not transfer."
+    }
+  ],
+
+  "status_summary": {
+    "completed": [
+      "oversight migration and handover preservation",
+      "evaluation matrix execution and final adjudication (27 product failures / 11 rubric errors / 0 unresolved / 0 proven regressions)",
+      "independent failure audit and historical comparison showing no measured regression",
+      "fail-closed rubric provenance guard and versioned harness 3.0.0 then 3.1.0",
+      "native rule-only retrieval with separate envelopes, receipts, citations, hashes and 503 outage propagation",
+      "Consume Demo request mode plus native rule parser and renderer",
+      "Azure production local-auth implementation preserved in an isolated off-main commit",
+      "prompt-v16 / case-plan-v4 evidence-completeness contract",
+      "entitlement-versus-present-approval correction",
+      "property-derived coverage expansion",
+      "read-only commit-decomposition audit and six-unit reconstruction",
+      "ordinal-00 and ordinal-03 reconstructions with authorship evidence and narrow retroactive approval",
+      "canonical table-structure carrier, independently reviewed and adopted",
+      "ranking-component telemetry, independently reviewed, rebased and adopted",
+      "criterion provenance successor v1.0.0 built, validated and archived",
+      "in-flight working tree captured and reconciled into the archival publication"
+    ],
+    "pending": [
+      "clone verification on the target host",
+      "publication chain reconciliation",
+      "environment recreation",
+      "baseline and full validation",
+      "ai.py test-harness fix",
+      "origin decision",
+      "residual in-flight source disposition",
+      "database migration decision",
+      "live evaluation rerun and client-side arm-F run"
+    ],
+    "blocked": [
+      "19 semantic-pending provenance criteria - require independent human confirmation",
+      "HW-03:manual-1 - unsupported/contradicted and unresolved",
+      "2 criteria requiring authoritative product decisions"
+    ],
+    "withdrawn": [
+      "llm_reasoning_view experiment and its test - archived as in-flight source, must not ship as product",
+      "score-scale disclosure - incomplete and unverified; not authority to change selection"
+    ],
+    "containment": [
+      "composition disclosure-only patch - superseded by the prompt-v16 evidence-completeness contract",
+      "one-replica local-mode enforcement - horizontal scaling requires shared transactional lockout state"
+    ],
+    "architectural_resolutions": [
+      "native rule retrieval replaces rule-first parent-policy expansion",
+      "total evidence-disposition validation failing closed to not_settled_by_rules with no new verdict status",
+      "entitlement does not imply present approval; settles_requested_decision read only as a real boolean",
+      "coverage eligibility derived from a property, not an enumerated mode list",
+      "all-published-rule index/projection foundation extracted as a prerequisite commit",
+      "response compression and search projection narrowing re-owned into their own ordinal",
+      "provenance partition validation precedes overlay application; AI is never human confirmation",
+      "canonical table carrier: covered_columns moved into the contract so graph and carrier cannot disagree",
+      "ranking telemetry: failure guard placed inside the recorder because the success call site has no try/except"
+    ],
+    "known_defects_not_fixed": [
+      "T-08 test harness never patches get_settings on api/routers/ai.py",
+      "T-16 review workspaces seeded behind the asserted base",
+      "T-15 single EOF blank-line whitespace warning in ordinal 01"
+    ]
+  }
+}

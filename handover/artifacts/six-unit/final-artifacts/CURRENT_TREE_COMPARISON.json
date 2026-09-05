@@ -1,0 +1,392 @@
+{
+  "checked": 48,
+  "matching": 43,
+  "documented_mixed_mismatches": 5,
+  "unexpected_mismatches": 0,
+  "entries": [
+    {
+      "path": "apps/consume-demo/src/App.test.tsx",
+      "candidate_sha256": "a4a8434e5e42f92a8488daf6dd4d59b6f21e7f8c20822397a9d03fb8a74af157",
+      "current_sha256": "a4a8434e5e42f92a8488daf6dd4d59b6f21e7f8c20822397a9d03fb8a74af157",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/App.tsx",
+      "candidate_sha256": "e7f4a837a6b8d7396c64436cf03f2aa6dfb3109b1cbf67e5c939670c2495f5f6",
+      "current_sha256": "e7f4a837a6b8d7396c64436cf03f2aa6dfb3109b1cbf67e5c939670c2495f5f6",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/components/RequestDocket.tsx",
+      "candidate_sha256": "21932afeffcc97a35ea50bae56cf02bf901de1245fc74d67e92430f23dea291a",
+      "current_sha256": "21932afeffcc97a35ea50bae56cf02bf901de1245fc74d67e92430f23dea291a",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/components/RuleRetrievalResult.tsx",
+      "candidate_sha256": "64ba52e6c0c0732e0f2422c187198f763343b50c4ff7dfb4caa1690f20d4f3b9",
+      "current_sha256": "64ba52e6c0c0732e0f2422c187198f763343b50c4ff7dfb4caa1690f20d4f3b9",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/contracts/caseDecision.ts",
+      "candidate_sha256": "3912d53bb5684d64e9b898e8a37d318f46e483ef3793d028a876e62172c72cac",
+      "current_sha256": "3912d53bb5684d64e9b898e8a37d318f46e483ef3793d028a876e62172c72cac",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/copy/strings.ts",
+      "candidate_sha256": "df3627fdf51852f87dadc93f61743f8336b16537e3d955e17a161320aa4a0a55",
+      "current_sha256": "df3627fdf51852f87dadc93f61743f8336b16537e3d955e17a161320aa4a0a55",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/lib/apiClient.ts",
+      "candidate_sha256": "c5f2b51ac211ac85eeb6c1e96e396568f3cfec00eb7a3f2b8bf2a8e8eea46a53",
+      "current_sha256": "c5f2b51ac211ac85eeb6c1e96e396568f3cfec00eb7a3f2b8bf2a8e8eea46a53",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/lib/canonicalHash.test.ts",
+      "candidate_sha256": "502702ce81888a62caf78c3b5f7c7574663f95d1f25948418cbaa77014943903",
+      "current_sha256": "502702ce81888a62caf78c3b5f7c7574663f95d1f25948418cbaa77014943903",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/lib/canonicalHash.ts",
+      "candidate_sha256": "0f2ebb2001fa50f9151ee508cc189000870cc2bcac4c404238663f192a2142bb",
+      "current_sha256": "0f2ebb2001fa50f9151ee508cc189000870cc2bcac4c404238663f192a2142bb",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/lib/errors.ts",
+      "candidate_sha256": "1731ffabfbae1d6038ba96b30c3fb9e1a9f027832944cf70d9dab5fd24ee04a9",
+      "current_sha256": "1731ffabfbae1d6038ba96b30c3fb9e1a9f027832944cf70d9dab5fd24ee04a9",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/lib/requestBody.test.ts",
+      "candidate_sha256": "c2eb2406f351e4dfc2a94fad4b22ec11446b4d1d9012366c21b49455af91d63b",
+      "current_sha256": "c2eb2406f351e4dfc2a94fad4b22ec11446b4d1d9012366c21b49455af91d63b",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/lib/requestBody.ts",
+      "candidate_sha256": "2f29d7b94e469617d6bdf749713ee0c72e2ff07931ace0e2724cb467dfaaa0cd",
+      "current_sha256": "2f29d7b94e469617d6bdf749713ee0c72e2ff07931ace0e2724cb467dfaaa0cd",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/playground.css",
+      "candidate_sha256": "f995315c2703b0f8d6494af2a6d0b790cec3758743393918059435766afa63e4",
+      "current_sha256": "f995315c2703b0f8d6494af2a6d0b790cec3758743393918059435766afa63e4",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "candidate_sha256": "9ec9d8d3bf9925aad602a89c0df8c57b4e556f7e1da98fe110052a78f99d722a",
+      "current_sha256": "9ec9d8d3bf9925aad602a89c0df8c57b4e556f7e1da98fe110052a78f99d722a",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/api/app.py",
+      "candidate_sha256": "80d7ca0e2c9a4d6496c3e26e6506079f5991ac9a63808ccfcbe0d7602b3ea510",
+      "current_sha256": "04f10d771316cc15261334c2c7a19930dbbe2cc2443a40aee7835376442ab93d",
+      "matches_current": false,
+      "expected_mixed": true,
+      "disposition": "candidate intentionally excludes other dirty hunks"
+    },
+    {
+      "path": "src/policy_platform/api/routers/policy_decisions.py",
+      "candidate_sha256": "c259d154b867e4742b89b4d041f9e6bc02b42ac9060b9bc171d525eacf833249",
+      "current_sha256": "c259d154b867e4742b89b4d041f9e6bc02b42ac9060b9bc171d525eacf833249",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/application/policy_case_decision.py",
+      "candidate_sha256": "4c26dfa4382e27d10487180191f73942df44839f0c44f1e5397265b846f760a5",
+      "current_sha256": "4c26dfa4382e27d10487180191f73942df44839f0c44f1e5397265b846f760a5",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/contracts/case_decision.py",
+      "candidate_sha256": "07e8e83d2936dca6ca1704b23d588857229be09b169595936ec502a5689fb774",
+      "current_sha256": "07e8e83d2936dca6ca1704b23d588857229be09b169595936ec502a5689fb774",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/contracts/case_decision_light.py",
+      "candidate_sha256": "91d179d4aa37ee0e180f0f4852f8784e8a29450cca4a1cdd4a9b1861c254c0ac",
+      "current_sha256": "91d179d4aa37ee0e180f0f4852f8784e8a29450cca4a1cdd4a9b1861c254c0ac",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/contracts/policy_retrieval.py",
+      "candidate_sha256": "55ae5a145e5c7bc27d0d2842f1aa4b83ae57c89033d7c9e03276c35c6e61e355",
+      "current_sha256": "55ae5a145e5c7bc27d0d2842f1aa4b83ae57c89033d7c9e03276c35c6e61e355",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_evidence_accounting.py",
+      "candidate_sha256": "6f64cc74e099f3e3d0982d035e03c76141d52fcaca698b1481de747f56ac072f",
+      "current_sha256": "6f64cc74e099f3e3d0982d035e03c76141d52fcaca698b1481de747f56ac072f",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+      "candidate_sha256": "e59bf05b15acf0a3d062e54e5752a092c96d402f4c80080a201c8720ce97c55d",
+      "current_sha256": "e59bf05b15acf0a3d062e54e5752a092c96d402f4c80080a201c8720ce97c55d",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_plan.py",
+      "candidate_sha256": "5a5d0ea0ffdd74c7692505e8c162e6330e27c7c0ca83d4216b8bde97b990f0fa",
+      "current_sha256": "5a5d0ea0ffdd74c7692505e8c162e6330e27c7c0ca83d4216b8bde97b990f0fa",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+      "candidate_sha256": "a49004c761c601a09bc81d8b58d366d4895af280efeca16660c4966fe61d3cd4",
+      "current_sha256": "a49004c761c601a09bc81d8b58d366d4895af280efeca16660c4966fe61d3cd4",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+      "candidate_sha256": "fef24501dc437ed48d53f326c1dc2c82f5aae51a0a2b1030ecb2197b70a9ddae",
+      "current_sha256": "6de5c90a76b6a45fda07e28bc068324e17758ffcf2f7fd75ed6e01abb5613ffa",
+      "matches_current": false,
+      "expected_mixed": true,
+      "disposition": "candidate intentionally excludes other dirty hunks"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/quality/projection_faithfulness.py",
+      "candidate_sha256": "2bcb7415d5ac630711acc82b67f3c4a7f8e7f9d6141f27a4fd750ee8e0477428",
+      "current_sha256": "2bcb7415d5ac630711acc82b67f3c4a7f8e7f9d6141f27a4fd750ee8e0477428",
+      "matches_current": true,
+      "expected_mixed": true,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/search/policy_index.py",
+      "candidate_sha256": "ddd6d7b02a2ab179cb187b932a36f6dac76daf8c5014e5c3fa6c7d15e66f2e61",
+      "current_sha256": "83f251adbf2af665ed845af9593d5118d1877af91ca8112dcdb7065e82075809",
+      "matches_current": false,
+      "expected_mixed": true,
+      "disposition": "candidate intentionally excludes other dirty hunks"
+    },
+    {
+      "path": "tests/unit/test_a_case_asks_for_information_a_verdict_or_both.py",
+      "candidate_sha256": "a0dc63cefefbbf2d520fe8c07b54c28df06ea9cf83d3a4ad140cd31312264d95",
+      "current_sha256": "a0dc63cefefbbf2d520fe8c07b54c28df06ea9cf83d3a4ad140cd31312264d95",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_a_conferred_entitlement_is_not_an_approval.py",
+      "candidate_sha256": "99f80d1cb605af3835596fbe38aa3214cc80d42ffdfc004e203c0f9709da580a",
+      "current_sha256": "99f80d1cb605af3835596fbe38aa3214cc80d42ffdfc004e203c0f9709da580a",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_a_missing_selector_is_a_missing_fact_in_any_domain.py",
+      "candidate_sha256": "e8c086df7ea0a2f28755221cb6df0446ca1c3b314764f67b670ce311156975da",
+      "current_sha256": "e8c086df7ea0a2f28755221cb6df0446ca1c3b314764f67b670ce311156975da",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_a_project_case_decision_carries_its_own_receipt.py",
+      "candidate_sha256": "b9aa19b0c7d35fad9b0d475078d5f59f8bc5e585569dbcd5fa219d0c4dad3921",
+      "current_sha256": "b9aa19b0c7d35fad9b0d475078d5f59f8bc5e585569dbcd5fa219d0c4dad3921",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_a_projection_is_checked_against_what_it_renders.py",
+      "candidate_sha256": "bc54a35407d10dccb1b771a050a0520acee66a197834f347fd41bc79f07abe0c",
+      "current_sha256": "bc54a35407d10dccb1b771a050a0520acee66a197834f347fd41bc79f07abe0c",
+      "matches_current": true,
+      "expected_mixed": true,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_a_reply_accounts_for_the_evidence_it_was_given.py",
+      "candidate_sha256": "d33f550410d0f84e3963a600216efb9d2f76abcbb82fd007239b791d776a99e6",
+      "current_sha256": "d33f550410d0f84e3963a600216efb9d2f76abcbb82fd007239b791d776a99e6",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "candidate_sha256": "015aaa3ea5db1baf6efd1a18b9d2afb1cdad2cb1cb06b14965b8413c2ec14e7e",
+      "current_sha256": "015aaa3ea5db1baf6efd1a18b9d2afb1cdad2cb1cb06b14965b8413c2ec14e7e",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_case_decision_light_contract.py",
+      "candidate_sha256": "a679e8411700ee03383dce715710734d4a5fefef8126f205e0999b0bec3fbfc7",
+      "current_sha256": "a679e8411700ee03383dce715710734d4a5fefef8126f205e0999b0bec3fbfc7",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+      "candidate_sha256": "f71652c360c1b72a7cbdebab486d26a4bad779af8891a8181603c7b067de0c0f",
+      "current_sha256": "f71652c360c1b72a7cbdebab486d26a4bad779af8891a8181603c7b067de0c0f",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_english_is_the_only_internal_language.py",
+      "candidate_sha256": "9db0ca1f30c89d753cb7004746d570b410704bfdbb721d1fe7d99f4e151281c0",
+      "current_sha256": "9db0ca1f30c89d753cb7004746d570b410704bfdbb721d1fe7d99f4e151281c0",
+      "matches_current": true,
+      "expected_mixed": true,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_external_policy_retrieval_returns_filtered_json.py",
+      "candidate_sha256": "468f314aba745f2a620350e3dd20cd139322ad2ca446ce49f556512e6b2b4fe0",
+      "current_sha256": "468f314aba745f2a620350e3dd20cd139322ad2ca446ce49f556512e6b2b4fe0",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_held_evidence_is_accounted_for.py",
+      "candidate_sha256": "74afd32c82c4b512628f4d3fb56291ad9ee5c91e0180b52b2c710c5c635f4d89",
+      "current_sha256": "74afd32c82c4b512628f4d3fb56291ad9ee5c91e0180b52b2c710c5c635f4d89",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_large_responses_are_compressed.py",
+      "candidate_sha256": "a3f950e42a548c58be2fe2ddd7cd33781e5342b86d2556cb8533c98f08cb8848",
+      "current_sha256": "a3f950e42a548c58be2fe2ddd7cd33781e5342b86d2556cb8533c98f08cb8848",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+      "candidate_sha256": "5460de849f61f1c8e330f8f27f684a0aff43335cbcd9baf7d504fd8facb15af3",
+      "current_sha256": "7c8561bcd414aa14fd3a4f890e6a7a1654c6914332cdaaeb1402ae98ca4273fd",
+      "matches_current": false,
+      "expected_mixed": true,
+      "disposition": "candidate intentionally excludes other dirty hunks"
+    },
+    {
+      "path": "tests/unit/test_p0_rest_telemetry_closes_measurement_blind_spots.py",
+      "candidate_sha256": "00a2b862df4ecb47adf762f938ff43c7e613ad7549595ecdeb778e7a3ecfbb78",
+      "current_sha256": "00a2b862df4ecb47adf762f938ff43c7e613ad7549595ecdeb778e7a3ecfbb78",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_policy_case_project.py",
+      "candidate_sha256": "4eda5b467dbc7befbbc97dc602b2a5f3c81255542a93cc06edd2fbe81e7b4de7",
+      "current_sha256": "4eda5b467dbc7befbbc97dc602b2a5f3c81255542a93cc06edd2fbe81e7b4de7",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_rule_mode_returns_rules_not_policies.py",
+      "candidate_sha256": "05fa859707cadbcb1456e464d3308539d4b805b1fdf3cfb688bb80de6a5d29cd",
+      "current_sha256": "05fa859707cadbcb1456e464d3308539d4b805b1fdf3cfb688bb80de6a5d29cd",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+      "candidate_sha256": "1d0082c3aa870f9557a5922f2dd97c91690f18dcf8049e3c89333bde7a0f1890",
+      "current_sha256": "1d0082c3aa870f9557a5922f2dd97c91690f18dcf8049e3c89333bde7a0f1890",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_the_corpus_is_indexed_in_one_language.py",
+      "candidate_sha256": "b77ebeda9ab555711c543290c72f4ad76dcec6f6a28f88474af476015848c202",
+      "current_sha256": "0f7f36300f1c7c86cdfbc1af59806a7ef2ac9be92de9b4b9a389132fd4caa062",
+      "matches_current": false,
+      "expected_mixed": true,
+      "disposition": "candidate intentionally excludes other dirty hunks"
+    },
+    {
+      "path": "tests/unit/test_the_plan_decides_and_the_prose_explains.py",
+      "candidate_sha256": "ba25c5ea2331fc2c68f34fa7ff7d02e581fd17dfdf0de33a5fbc277f1d8c6b74",
+      "current_sha256": "ba25c5ea2331fc2c68f34fa7ff7d02e581fd17dfdf0de33a5fbc277f1d8c6b74",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    },
+    {
+      "path": "tests/unit/test_the_retrieval_route_answers_in_the_shape_the_mode_asked_for.py",
+      "candidate_sha256": "7a178bedf0cd760eb84c07520049961ed8c2ec05eeb70d4c7036adad016b7fcf",
+      "current_sha256": "7a178bedf0cd760eb84c07520049961ed8c2ec05eeb70d4c7036adad016b7fcf",
+      "matches_current": true,
+      "expected_mixed": false,
+      "disposition": "full final content matches current"
+    }
+  ]
+}

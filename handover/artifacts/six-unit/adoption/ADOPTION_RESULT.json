@@ -1,0 +1,776 @@
+{
+  "schema_version": "six_unit_atomic_adoption_result_v1",
+  "success": true,
+  "adopted_at_utc": "2026-09-05T03:14:45.841744+00:00",
+  "old_main": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "new_main": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+  "final_tree": "5ade3ef636fd71c0a7c87b3ba9b69393f47d9e94",
+  "checks": {
+    "main_is_expected_old": true,
+    "head_is_expected_old": true,
+    "branch_is_main": true,
+    "cached_diff_empty": true,
+    "stash_empty": true,
+    "commit_chain_final_tree": true,
+    "final_head": true,
+    "final_main": true,
+    "branch_main": true,
+    "final_tree": true,
+    "shared_index_tree": true,
+    "cached_diff_empty_after": true,
+    "stash_empty_after": true,
+    "chain_parents_trees_subjects_trailers": true,
+    "other_refs_unchanged": true,
+    "main_only_ref_changed": true,
+    "normal_status_count_77": true,
+    "exhaustive_status_count_78": true,
+    "tracked_modified_count_42": true,
+    "untracked_file_count_36": true,
+    "residual_path_set": true,
+    "mixed_residual_path_set": true,
+    "cleaned_target_count_43": true,
+    "working_tree_bytes_unchanged": true,
+    "repository_content_tree_unchanged": true
+  },
+  "chain": [
+    {
+      "ordinal": "00",
+      "commit": "e689bf77ca900b69269e0ae3334b41d7608dda81",
+      "expected_parent": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "actual_parent": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "parent_match": true,
+      "expected_tree": "3fe60a8cab64448bcb99c339ca9a2f1cee864ee8",
+      "actual_tree": "3fe60a8cab64448bcb99c339ca9a2f1cee864ee8",
+      "tree_match": true,
+      "expected_subject": "Build all-published rule index foundation",
+      "actual_subject": "Build all-published rule index foundation",
+      "subject_match": true,
+      "trailer_match": true,
+      "path_count": 7,
+      "expected_path_count": 7
+    },
+    {
+      "ordinal": "01",
+      "commit": "5d731b69c3e5c56ad8e9b0c92e7f3db402172eb7",
+      "expected_parent": "e689bf77ca900b69269e0ae3334b41d7608dda81",
+      "actual_parent": "e689bf77ca900b69269e0ae3334b41d7608dda81",
+      "parent_match": true,
+      "expected_tree": "a3e851c8aaa1a8a8e1fdd104b1fe2dd32e24fa7d",
+      "actual_tree": "a3e851c8aaa1a8a8e1fdd104b1fe2dd32e24fa7d",
+      "tree_match": true,
+      "expected_subject": "Implement native rule retrieval",
+      "actual_subject": "Implement native rule retrieval",
+      "subject_match": true,
+      "trailer_match": true,
+      "path_count": 17,
+      "expected_path_count": 17
+    },
+    {
+      "ordinal": "01a",
+      "commit": "acff6e8daa16dfb7a1fe8c65f584d3476194ee43",
+      "expected_parent": "5d731b69c3e5c56ad8e9b0c92e7f3db402172eb7",
+      "actual_parent": "5d731b69c3e5c56ad8e9b0c92e7f3db402172eb7",
+      "parent_match": true,
+      "expected_tree": "28731a3c17be828a7a9f78b2959c69ab14f05cee",
+      "actual_tree": "28731a3c17be828a7a9f78b2959c69ab14f05cee",
+      "tree_match": true,
+      "expected_subject": "Optimize response compression and search projection",
+      "actual_subject": "Optimize response compression and search projection",
+      "subject_match": true,
+      "trailer_match": true,
+      "path_count": 4,
+      "expected_path_count": 4
+    },
+    {
+      "ordinal": "02",
+      "commit": "b8459180aebaf1c8252000ef07402ac9871b47d8",
+      "expected_parent": "acff6e8daa16dfb7a1fe8c65f584d3476194ee43",
+      "actual_parent": "acff6e8daa16dfb7a1fe8c65f584d3476194ee43",
+      "parent_match": true,
+      "expected_tree": "5bc79b297f087db359ffd3e67f9d03e6c38571ce",
+      "actual_tree": "5bc79b297f087db359ffd3e67f9d03e6c38571ce",
+      "tree_match": true,
+      "expected_subject": "Enforce evidence-complete case decisions",
+      "actual_subject": "Enforce evidence-complete case decisions",
+      "subject_match": true,
+      "trailer_match": true,
+      "path_count": 18,
+      "expected_path_count": 18
+    },
+    {
+      "ordinal": "03",
+      "commit": "be2608140d824e42a6d66cf9fbac07dae4792f1f",
+      "expected_parent": "b8459180aebaf1c8252000ef07402ac9871b47d8",
+      "actual_parent": "b8459180aebaf1c8252000ef07402ac9871b47d8",
+      "parent_match": true,
+      "expected_tree": "8449ef7308598553e524d9730fdf9def1546d024",
+      "actual_tree": "8449ef7308598553e524d9730fdf9def1546d024",
+      "tree_match": true,
+      "expected_subject": "Add Consume rule retrieval request mode",
+      "actual_subject": "Add Consume rule retrieval request mode",
+      "subject_match": true,
+      "trailer_match": true,
+      "path_count": 10,
+      "expected_path_count": 10
+    },
+    {
+      "ordinal": "04",
+      "commit": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+      "expected_parent": "be2608140d824e42a6d66cf9fbac07dae4792f1f",
+      "actual_parent": "be2608140d824e42a6d66cf9fbac07dae4792f1f",
+      "parent_match": true,
+      "expected_tree": "5ade3ef636fd71c0a7c87b3ba9b69393f47d9e94",
+      "actual_tree": "5ade3ef636fd71c0a7c87b3ba9b69393f47d9e94",
+      "tree_match": true,
+      "expected_subject": "Render native rule retrieval responses",
+      "actual_subject": "Render native rule retrieval responses",
+      "subject_match": true,
+      "trailer_match": true,
+      "path_count": 8,
+      "expected_path_count": 8
+    }
+  ],
+  "status": {
+    "normal_entries": 77,
+    "exhaustive_entries": 78,
+    "tracked_modified": 42,
+    "untracked_files": 36,
+    "cleaned_target_paths": [
+      "apps/consume-demo/src/App.test.tsx",
+      "apps/consume-demo/src/App.tsx",
+      "apps/consume-demo/src/components/RequestDocket.tsx",
+      "apps/consume-demo/src/components/RuleRetrievalResult.tsx",
+      "apps/consume-demo/src/contracts/caseDecision.ts",
+      "apps/consume-demo/src/copy/strings.ts",
+      "apps/consume-demo/src/lib/apiClient.ts",
+      "apps/consume-demo/src/lib/canonicalHash.test.ts",
+      "apps/consume-demo/src/lib/canonicalHash.ts",
+      "apps/consume-demo/src/lib/errors.ts",
+      "apps/consume-demo/src/lib/requestBody.test.ts",
+      "apps/consume-demo/src/lib/requestBody.ts",
+      "apps/consume-demo/src/playground.css",
+      "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "src/policy_platform/api/routers/policy_decisions.py",
+      "src/policy_platform/application/policy_case_decision.py",
+      "src/policy_platform/contracts/case_decision.py",
+      "src/policy_platform/contracts/case_decision_light.py",
+      "src/policy_platform/contracts/policy_retrieval.py",
+      "src/policy_platform/infrastructure/assistants/ai_case_evidence_accounting.py",
+      "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+      "src/policy_platform/infrastructure/assistants/ai_case_plan.py",
+      "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+      "src/policy_platform/infrastructure/quality/projection_faithfulness.py",
+      "tests/unit/test_a_case_asks_for_information_a_verdict_or_both.py",
+      "tests/unit/test_a_conferred_entitlement_is_not_an_approval.py",
+      "tests/unit/test_a_missing_selector_is_a_missing_fact_in_any_domain.py",
+      "tests/unit/test_a_project_case_decision_carries_its_own_receipt.py",
+      "tests/unit/test_a_projection_is_checked_against_what_it_renders.py",
+      "tests/unit/test_a_reply_accounts_for_the_evidence_it_was_given.py",
+      "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "tests/unit/test_case_decision_light_contract.py",
+      "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+      "tests/unit/test_english_is_the_only_internal_language.py",
+      "tests/unit/test_external_policy_retrieval_returns_filtered_json.py",
+      "tests/unit/test_held_evidence_is_accounted_for.py",
+      "tests/unit/test_large_responses_are_compressed.py",
+      "tests/unit/test_p0_rest_telemetry_closes_measurement_blind_spots.py",
+      "tests/unit/test_policy_case_project.py",
+      "tests/unit/test_rule_mode_returns_rules_not_policies.py",
+      "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+      "tests/unit/test_the_plan_decides_and_the_prose_explains.py",
+      "tests/unit/test_the_retrieval_route_answers_in_the_shape_the_mode_asked_for.py"
+    ],
+    "cleaned_target_count": 43,
+    "candidate_mixed_residual_paths": [
+      "src/policy_platform/api/app.py",
+      "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+      "src/policy_platform/infrastructure/search/policy_index.py",
+      "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+      "tests/unit/test_the_corpus_is_indexed_in_one_language.py"
+    ],
+    "candidate_mixed_residual_count": 5,
+    "excluded_residual_paths": [
+      ".env.example",
+      ".serena/.gitignore",
+      ".serena/project.yml",
+      "alembic/versions/a1c5f0b3e284_policy_index_builds.py",
+      "alembic/versions/f4b8c2e97d31_api_subscription_keys.py",
+      "apps/web/src/App.tsx",
+      "apps/web/src/IntegrationPage.test.tsx",
+      "apps/web/src/IntegrationPage.tsx",
+      "apps/web/src/PolicyIndexConsolePage.test.tsx",
+      "apps/web/src/PolicyIndexConsolePage.tsx",
+      "apps/web/src/api.ts",
+      "apps/web/src/components/DocumentsPage.contentAlreadyPresent.test.tsx",
+      "apps/web/src/components/DocumentsPage.tsx",
+      "apps/web/src/components/DocumentsPage.upload.test.tsx",
+      "apps/web/src/components/DocumentsPage.validation.test.tsx",
+      "apps/web/src/components/PolicyIndexBuildHistoryTable.tsx",
+      "apps/web/src/components/PolicyIndexProgressPanel.test.tsx",
+      "apps/web/src/components/PolicyIndexProgressPanel.tsx",
+      "apps/web/src/components/ProjectOverviewTab.tsx",
+      "apps/web/src/components/UploadProgressPanel.test.tsx",
+      "apps/web/src/components/UploadProgressPanel.tsx",
+      "apps/web/src/components/everyLongRequestAnnouncesItself.test.tsx",
+      "apps/web/src/integrationCapabilityIsAskedOnlyAfterSignIn.test.tsx",
+      "apps/web/src/operationId.ts",
+      "apps/web/src/policyIndexSurfaceScope.test.tsx",
+      "apps/web/src/rbac.test.ts",
+      "apps/web/src/rbac.ts",
+      "docs/api.md",
+      "docs/configuration.md",
+      "docs/known-limitations.md",
+      "src/policy_platform/api/authz.py",
+      "src/policy_platform/api/routers/candidate_rules.py",
+      "src/policy_platform/api/routers/documents.py",
+      "src/policy_platform/api/routers/integration.py",
+      "src/policy_platform/api/routers/policy_index_console.py",
+      "src/policy_platform/api/routers/policy_sets.py",
+      "src/policy_platform/api/schemas.py",
+      "src/policy_platform/contracts/canonical_document.py",
+      "src/policy_platform/domain/models.py",
+      "src/policy_platform/infrastructure/ai/openai_client.py",
+      "src/policy_platform/infrastructure/errors.py",
+      "src/policy_platform/infrastructure/ingestion/canonical_fidelity.py",
+      "src/policy_platform/infrastructure/ingestion/canonical_rebuild.py",
+      "src/policy_platform/infrastructure/ingestion/document_extraction.py",
+      "src/policy_platform/infrastructure/ingestion/mixed_script_text.py",
+      "src/policy_platform/infrastructure/ingestion/upload_progress.py",
+      "src/policy_platform/infrastructure/ingestion/visual_page_reading.py",
+      "src/policy_platform/infrastructure/persistence/policy_set_teardown.py",
+      "src/policy_platform/infrastructure/persistence/subscription_keys.py",
+      "src/policy_platform/infrastructure/projection/llm_reasoning_view.py",
+      "src/policy_platform/infrastructure/search/english_projection.py",
+      "src/policy_platform/infrastructure/search/policy_index_build_progress.py",
+      "src/policy_platform/infrastructure/search/search_client.py",
+      "src/policy_platform/infrastructure/settings.py",
+      "tests/unit/test_a_flagged_page_is_read_again.py",
+      "tests/unit/test_a_generated_key_survives_a_rendering.py",
+      "tests/unit/test_a_literal_survives_a_rendering.py",
+      "tests/unit/test_a_number_survives_a_rendering.py",
+      "tests/unit/test_a_recovered_reading_order_is_replayable.py",
+      "tests/unit/test_a_stall_does_not_cost_the_run.py",
+      "tests/unit/test_a_subscription_key_is_a_credential_not_a_hint.py",
+      "tests/unit/test_an_administrator_can_issue_an_api_key.py",
+      "tests/unit/test_an_upload_reports_its_own_progress.py",
+      "tests/unit/test_capabilities_are_reachable.py",
+      "tests/unit/test_error_descriptions.py",
+      "tests/unit/test_interleaved_extraction_is_reported.py",
+      "tests/unit/test_one_index_build_runs_at_a_time.py",
+      "tests/unit/test_policy_index.py",
+      "tests/unit/test_policy_set_policy_index_routes.py",
+      "tests/unit/test_publishing_reruns_active_guards.py",
+      "tests/unit/test_search_client_index_management.py",
+      "tests/unit/test_the_case_decision_migration_matches_its_model.py",
+      "tests/unit/test_the_model_reads_a_reasoning_view.py"
+    ],
+    "excluded_residual_count": 73,
+    "all_residual_paths": [
+      {
+        "xy": " M",
+        "path": ".env.example",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/App.tsx",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/api.ts",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/components/DocumentsPage.contentAlreadyPresent.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/components/DocumentsPage.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/components/DocumentsPage.upload.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/components/DocumentsPage.validation.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/components/ProjectOverviewTab.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/components/everyLongRequestAnnouncesItself.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/rbac.test.ts",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "apps/web/src/rbac.ts",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "docs/api.md",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "docs/configuration.md",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "docs/known-limitations.md",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/api/app.py",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": true
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/api/authz.py",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/api/routers/candidate_rules.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/api/routers/documents.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/api/routers/policy_sets.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/api/schemas.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/contracts/canonical_document.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/domain/models.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/ai/openai_client.py",
+        "initial_classification": "unknown/mixed",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/ingestion/canonical_fidelity.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/ingestion/canonical_rebuild.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/ingestion/document_extraction.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/persistence/policy_set_teardown.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "initial_classification": "unknown/mixed",
+        "candidate_mixed_residual": true
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/search/english_projection.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/search/policy_index.py",
+        "initial_classification": "unknown/mixed",
+        "candidate_mixed_residual": true
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/search/search_client.py",
+        "initial_classification": "unknown/mixed",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "src/policy_platform/infrastructure/settings.py",
+        "initial_classification": "Azure-overlap/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_a_stall_does_not_cost_the_run.py",
+        "initial_classification": "unknown/mixed",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_a_subscription_key_is_a_credential_not_a_hint.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_capabilities_are_reachable.py",
+        "initial_classification": "withdrawn/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "initial_classification": "unknown/mixed",
+        "candidate_mixed_residual": true
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_policy_index.py",
+        "initial_classification": "unknown/mixed",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_policy_set_policy_index_routes.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_publishing_reruns_active_guards.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_search_client_index_management.py",
+        "initial_classification": "unknown/mixed",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_the_case_decision_migration_matches_its_model.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": " M",
+        "path": "tests/unit/test_the_corpus_is_indexed_in_one_language.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": true
+      },
+      {
+        "xy": "??",
+        "path": ".serena/.gitignore",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": ".serena/project.yml",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "alembic/versions/a1c5f0b3e284_policy_index_builds.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "alembic/versions/f4b8c2e97d31_api_subscription_keys.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/IntegrationPage.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/IntegrationPage.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/PolicyIndexConsolePage.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/PolicyIndexConsolePage.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/components/PolicyIndexBuildHistoryTable.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/components/PolicyIndexProgressPanel.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/components/PolicyIndexProgressPanel.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/components/UploadProgressPanel.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/components/UploadProgressPanel.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/integrationCapabilityIsAskedOnlyAfterSignIn.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/operationId.ts",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "apps/web/src/policyIndexSurfaceScope.test.tsx",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/api/routers/integration.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/api/routers/policy_index_console.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/infrastructure/errors.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/infrastructure/ingestion/mixed_script_text.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/infrastructure/ingestion/upload_progress.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/infrastructure/ingestion/visual_page_reading.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/infrastructure/persistence/subscription_keys.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/infrastructure/projection/llm_reasoning_view.py",
+        "initial_classification": "withdrawn/excluded",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "src/policy_platform/infrastructure/search/policy_index_build_progress.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_a_flagged_page_is_read_again.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_a_generated_key_survives_a_rendering.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_a_literal_survives_a_rendering.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_a_number_survives_a_rendering.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_a_recovered_reading_order_is_replayable.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_an_administrator_can_issue_an_api_key.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_an_upload_reports_its_own_progress.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_error_descriptions.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_interleaved_extraction_is_reported.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_one_index_build_runs_at_a_time.py",
+        "initial_classification": "unrelated-owned",
+        "candidate_mixed_residual": false
+      },
+      {
+        "xy": "??",
+        "path": "tests/unit/test_the_model_reads_a_reasoning_view.py",
+        "initial_classification": "withdrawn/excluded",
+        "candidate_mixed_residual": false
+      }
+    ]
+  },
+  "bytes": {
+    "dirty_files_checked": 121,
+    "dirty_file_mismatches": [],
+    "content_tree": {
+      "files": 37199,
+      "bytes": 553349103,
+      "sha256": "a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28"
+    }
+  },
+  "refs": {
+    "before_main": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+    "after_main": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+    "other_refs_unchanged": true
+  },
+  "rollback": {
+    "record": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\ROLLBACK_RECORD.json",
+    "record_sha256": "95a38120d17650c3f18e6be3ea3d734e385f0a8ffe6e414d582d5e30d55eca5d",
+    "index_backup": {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\shared-index-before.bin",
+      "bytes": 120664,
+      "sha256": "bdc2eb8cbd6d29e03595b8f6c60159ae68432f865293f1c74a63456536152bb2"
+    },
+    "used": false
+  },
+  "temporary_worktree": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\detached-worktree",
+    "removed": true
+  },
+  "final_quick": {
+    "head": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+    "branch": "main",
+    "index_tree": "5ade3ef636fd71c0a7c87b3ba9b69393f47d9e94",
+    "cached_diff_bytes": 0,
+    "stash_bytes": 0,
+    "normal_status_entries": 77,
+    "exhaustive_status_entries": 78
+  }
+}

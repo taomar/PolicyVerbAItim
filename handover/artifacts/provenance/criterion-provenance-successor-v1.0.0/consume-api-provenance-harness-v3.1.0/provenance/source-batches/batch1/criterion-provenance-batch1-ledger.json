@@ -1,0 +1,820 @@
+{
+  "schema_version": "consume-api-normative-provenance-ledger/1",
+  "batch_id": "batch-1",
+  "criterion_count": 38,
+  "classification_counts": {
+    "mechanically_source_supported": 4,
+    "semantic_support_pending_human_confirmation": 4,
+    "unsupported_or_contradicted_rubric": 0,
+    "structural_harness_non_product_law": 24,
+    "unavailable_evidence": 0,
+    "product_decision_required": 6
+  },
+  "criteria": [
+    {
+      "slice_index": 1,
+      "criterion_id": "AIS-01:R1",
+      "rubric_id": "AIS-01",
+      "question_id": "ais-annual-vacation",
+      "current": {
+        "active": true,
+        "criterion_provenance": "heading_path",
+        "provenance_kind": "heading_derived",
+        "validation_state": "unverified"
+      },
+      "classification": "mechanically_source_supported",
+      "action": "replace_criterion_provenance",
+      "bounded_rationale": "The hash-bound retrieval payload contains the declared annual-leave provision and its complete rule set; authority identity is mechanical.",
+      "evidence": [
+        {
+          "source_id": "ais_e_annual_vacation_r1",
+          "source_provision_ids": [
+            "ab87a692f3a20e95c545a0ce7718ba61"
+          ],
+          "source_rule_ids": [
+            "AI-0d3f567dc0",
+            "AI-1e6a87d232",
+            "AI-32041fedd2",
+            "AI-32e998f0c0",
+            "AI-57760a678a",
+            "AI-6da44f8da1",
+            "AI-73de523932",
+            "AI-824e6298af",
+            "AI-8af5f2ba84",
+            "AI-a5ecfab674",
+            "AI-ebe8b2ae57"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "bce2c5afd7f4249717db185b14bfc212d7aa53ab369c871388deb65023527f79",
+          "source_file_sha256": "c0567c8cbf547b44734fb5588bada9f3bd107f8ba94677352f994f470cafc20c"
+        }
+      ],
+      "candidate_outcome": null,
+      "human_confirmation": "not_required_mechanical"
+    },
+    {
+      "slice_index": 2,
+      "criterion_id": "AIS-01:R3",
+      "rubric_id": "AIS-01",
+      "question_id": "ais-annual-vacation",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Whether the API must expose the declared answer-track statuses is a product contract choice; normative policy text cannot determine response-shape semantics.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 3,
+      "criterion_id": "AIS-01:R4",
+      "rubric_id": "AIS-01",
+      "question_id": "ais-annual-vacation",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Internal consistency of verdict metadata is a harness and API-contract invariant, not a product-law proposition.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 4,
+      "criterion_id": "AIS-01:R5",
+      "rubric_id": "AIS-01",
+      "question_id": "ais-annual-vacation",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Safe refusal of irrelevant questions is a platform safety behavior, not a norm in the policy corpus.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 5,
+      "criterion_id": "AIS-01:R9",
+      "rubric_id": "AIS-01",
+      "question_id": "ais-annual-vacation",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "For this single-authority question, composition completeness is a harness source-selection check rather than an independent product-law norm.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 6,
+      "criterion_id": "AIS-01:manual-1",
+      "rubric_id": "AIS-01",
+      "question_id": "ais-annual-vacation",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "This checks consistency between supplied case facts and missing-information output; policy rules inform the evaluation but the criterion is a harness invariant.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 7,
+      "criterion_id": "AIS-02:R4",
+      "rubric_id": "AIS-02",
+      "question_id": "ais-sick-surgery",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Internal consistency of verdict metadata is a harness and API-contract invariant, not a product-law proposition.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 8,
+      "criterion_id": "AIS-02:R5",
+      "rubric_id": "AIS-02",
+      "question_id": "ais-sick-surgery",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Safe refusal of irrelevant questions is a platform safety behavior, not a norm in the policy corpus.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 9,
+      "criterion_id": "AIS-02:R9",
+      "rubric_id": "AIS-02",
+      "question_id": "ais-sick-surgery",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "For this single-authority question, composition completeness is a harness source-selection check rather than an independent product-law norm.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 10,
+      "criterion_id": "AIS-02:manual-1",
+      "rubric_id": "AIS-02",
+      "question_id": "ais-sick-surgery",
+      "current": {
+        "active": false,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "unsupported_expectation",
+        "validation_state": "validated_unsupported"
+      },
+      "classification": "semantic_support_pending_human_confirmation",
+      "action": "retain_unscorable",
+      "bounded_rationale": "The body and rules place report submission after return, suggesting that a current-certificate prerequisite is unsupported; the temporal interpretation requires human confirmation.",
+      "evidence": [
+        {
+          "source_id": "ais_e_sick_surgery_r1",
+          "source_provision_ids": [
+            "28334f1a0b3c389682647d43c89d554f"
+          ],
+          "source_rule_ids": [
+            "AI-7336476841",
+            "AI-b4226cc420"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "21eef0c74aaa4a291873fb6aa0a7fea20f9b6a8a97898ced08491f73204da2a7",
+          "source_file_sha256": "21b1114070fcaeff604516b729c8434b754b3c9a7722cdfec1a4a38750d9e0eb"
+        }
+      ],
+      "candidate_outcome": "unsupported_or_contradicted_rubric",
+      "human_confirmation": "required_not_provided"
+    },
+    {
+      "slice_index": 11,
+      "criterion_id": "AIS-02:manual-2",
+      "rubric_id": "AIS-02",
+      "question_id": "ais-sick-surgery",
+      "current": {
+        "active": false,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "unsupported_expectation",
+        "validation_state": "validated_unsupported"
+      },
+      "classification": "semantic_support_pending_human_confirmation",
+      "action": "retain_unscorable",
+      "bounded_rationale": "The body and rules separate sick-leave entitlement from post-return report submission, suggesting the certificate-based failure rule is unsupported; the interpretation requires human confirmation.",
+      "evidence": [
+        {
+          "source_id": "ais_e_sick_surgery_r1",
+          "source_provision_ids": [
+            "28334f1a0b3c389682647d43c89d554f"
+          ],
+          "source_rule_ids": [
+            "AI-7336476841",
+            "AI-b4226cc420"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "21eef0c74aaa4a291873fb6aa0a7fea20f9b6a8a97898ced08491f73204da2a7",
+          "source_file_sha256": "21b1114070fcaeff604516b729c8434b754b3c9a7722cdfec1a4a38750d9e0eb"
+        }
+      ],
+      "candidate_outcome": "unsupported_or_contradicted_rubric",
+      "human_confirmation": "required_not_provided"
+    },
+    {
+      "slice_index": 12,
+      "criterion_id": "AIS-03:R4",
+      "rubric_id": "AIS-03",
+      "question_id": "ais-absence-penalty",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Internal consistency of verdict metadata is a harness and API-contract invariant, not a product-law proposition.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 13,
+      "criterion_id": "AIS-03:R5",
+      "rubric_id": "AIS-03",
+      "question_id": "ais-absence-penalty",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Safe refusal of irrelevant questions is a platform safety behavior, not a norm in the policy corpus.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 14,
+      "criterion_id": "AIS-03:R9",
+      "rubric_id": "AIS-03",
+      "question_id": "ais-absence-penalty",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "For this single-authority question, composition completeness is a harness source-selection check rather than an independent product-law norm.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 15,
+      "criterion_id": "AIS-04:R3",
+      "rubric_id": "AIS-04",
+      "question_id": "ais-conflict-vendor",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Whether the API must expose the declared answer-track statuses is a product contract choice; normative policy text cannot determine response-shape semantics.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 16,
+      "criterion_id": "AIS-04:R4",
+      "rubric_id": "AIS-04",
+      "question_id": "ais-conflict-vendor",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Internal consistency of verdict metadata is a harness and API-contract invariant, not a product-law proposition.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 17,
+      "criterion_id": "AIS-04:R5",
+      "rubric_id": "AIS-04",
+      "question_id": "ais-conflict-vendor",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Safe refusal of irrelevant questions is a platform safety behavior, not a norm in the policy corpus.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 18,
+      "criterion_id": "AIS-04:R9",
+      "rubric_id": "AIS-04",
+      "question_id": "ais-conflict-vendor",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "For this single-authority question, composition completeness is a harness source-selection check rather than an independent product-law norm.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 19,
+      "criterion_id": "AIS-05:R1",
+      "rubric_id": "AIS-05",
+      "question_id": "ais-maternity-leave",
+      "current": {
+        "active": true,
+        "criterion_provenance": "heading_path",
+        "provenance_kind": "heading_derived",
+        "validation_state": "unverified"
+      },
+      "classification": "mechanically_source_supported",
+      "action": "replace_criterion_provenance",
+      "bounded_rationale": "The hash-bound retrieval payload contains the declared maternity provision and its complete rule set; authority identity is mechanical.",
+      "evidence": [
+        {
+          "source_id": "ais_e_maternity_leave_r1",
+          "source_provision_ids": [
+            "01309aeb409607211e4115e044bd8ac3"
+          ],
+          "source_rule_ids": [
+            "AI-18fe024f6d",
+            "AI-f2d7cdc964",
+            "AI-f5e995fb85"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "ba090a40bfc9f54af382a2ec0e0f3156f322a48cbd922d8e3efd25329aa22c5e",
+          "source_file_sha256": "92cc35e1352ad734ca6a6584dd8ee5ac3f21b22c8e31ce1c35dab841ea916f55"
+        }
+      ],
+      "candidate_outcome": null,
+      "human_confirmation": "not_required_mechanical"
+    },
+    {
+      "slice_index": 20,
+      "criterion_id": "AIS-05:R3",
+      "rubric_id": "AIS-05",
+      "question_id": "ais-maternity-leave",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Whether the API must expose the declared answer-track statuses is a product contract choice; normative policy text cannot determine response-shape semantics.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 21,
+      "criterion_id": "AIS-05:R4",
+      "rubric_id": "AIS-05",
+      "question_id": "ais-maternity-leave",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Internal consistency of verdict metadata is a harness and API-contract invariant, not a product-law proposition.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 22,
+      "criterion_id": "AIS-05:R5",
+      "rubric_id": "AIS-05",
+      "question_id": "ais-maternity-leave",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Safe refusal of irrelevant questions is a platform safety behavior, not a norm in the policy corpus.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 23,
+      "criterion_id": "AIS-05:R9",
+      "rubric_id": "AIS-05",
+      "question_id": "ais-maternity-leave",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "For this single-authority question, composition completeness is a harness source-selection check rather than an independent product-law norm.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 24,
+      "criterion_id": "AIS-05:manual-1",
+      "rubric_id": "AIS-05",
+      "question_id": "ais-maternity-leave",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "This requires any claimed submission duty to be citation-grounded; it is a non-fabrication and evidence-accounting invariant, not an independent policy norm.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 25,
+      "criterion_id": "AIS-06:R3",
+      "rubric_id": "AIS-06",
+      "question_id": "ais-overtime-weekend",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Whether the API must expose the declared answer-track statuses is a product contract choice; normative policy text cannot determine response-shape semantics.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 26,
+      "criterion_id": "AIS-06:R4",
+      "rubric_id": "AIS-06",
+      "question_id": "ais-overtime-weekend",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Internal consistency of verdict metadata is a harness and API-contract invariant, not a product-law proposition.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 27,
+      "criterion_id": "AIS-06:R5",
+      "rubric_id": "AIS-06",
+      "question_id": "ais-overtime-weekend",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Safe refusal of irrelevant questions is a platform safety behavior, not a norm in the policy corpus.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 28,
+      "criterion_id": "AIS-06:R9",
+      "rubric_id": "AIS-06",
+      "question_id": "ais-overtime-weekend",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "For this single-authority question, composition completeness is a harness source-selection check rather than an independent product-law norm.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 29,
+      "criterion_id": "AIS-06:manual-1",
+      "rubric_id": "AIS-06",
+      "question_id": "ais-overtime-weekend",
+      "current": {
+        "active": false,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "unsupported_expectation",
+        "validation_state": "validated_unsupported"
+      },
+      "classification": "semantic_support_pending_human_confirmation",
+      "action": "retain_unscorable",
+      "bounded_rationale": "The body and rules assign approval and control to named authorities without encoding a documentary form, suggesting the written-approval criterion is unsupported; human confirmation is required.",
+      "evidence": [
+        {
+          "source_id": "ais_e_overtime_weekend_r1",
+          "source_provision_ids": [
+            "4094ad6b422dbb097ec11368c525b5a6"
+          ],
+          "source_rule_ids": [
+            "AI-5dca015982",
+            "AI-ca3d9b8901"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "a1664fd84afeb2c1092551229c9421ecb8ea30931ba349d7b4bd7d87ec494502",
+          "source_file_sha256": "369175ab77079933c47d21a40ed5753cda4ad52626b578c4b51798f8b58ed54c"
+        }
+      ],
+      "candidate_outcome": "unsupported_or_contradicted_rubric",
+      "human_confirmation": "required_not_provided"
+    },
+    {
+      "slice_index": 30,
+      "criterion_id": "AIS-06:manual-2",
+      "rubric_id": "AIS-06",
+      "question_id": "ais-overtime-weekend",
+      "current": {
+        "active": false,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "unsupported_expectation",
+        "validation_state": "validated_unsupported"
+      },
+      "classification": "semantic_support_pending_human_confirmation",
+      "action": "retain_unscorable",
+      "bounded_rationale": "The normative requirement concerns approval and control rather than a written instrument, suggesting this automatic failure rule is unsupported; human confirmation is required.",
+      "evidence": [
+        {
+          "source_id": "ais_e_overtime_weekend_r1",
+          "source_provision_ids": [
+            "4094ad6b422dbb097ec11368c525b5a6"
+          ],
+          "source_rule_ids": [
+            "AI-5dca015982",
+            "AI-ca3d9b8901"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "a1664fd84afeb2c1092551229c9421ecb8ea30931ba349d7b4bd7d87ec494502",
+          "source_file_sha256": "369175ab77079933c47d21a40ed5753cda4ad52626b578c4b51798f8b58ed54c"
+        }
+      ],
+      "candidate_outcome": "unsupported_or_contradicted_rubric",
+      "human_confirmation": "required_not_provided"
+    },
+    {
+      "slice_index": 31,
+      "criterion_id": "AIS-07:R1",
+      "rubric_id": "AIS-07",
+      "question_id": "ais-tuition-child",
+      "current": {
+        "active": true,
+        "criterion_provenance": "heading_path",
+        "provenance_kind": "heading_derived",
+        "validation_state": "unverified"
+      },
+      "classification": "mechanically_source_supported",
+      "action": "replace_criterion_provenance",
+      "bounded_rationale": "The hash-bound retrieval payload contains the declared tuition provision and its complete rule set; authority identity is mechanical.",
+      "evidence": [
+        {
+          "source_id": "ais_e_tuition_child_r1",
+          "source_provision_ids": [
+            "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+          ],
+          "source_rule_ids": [
+            "AI-c3c7e28449"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "f71d7c36fd676415a8714c869396dfd0444c52a555ce4a594e75a1a577349312",
+          "source_file_sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23"
+        }
+      ],
+      "candidate_outcome": null,
+      "human_confirmation": "not_required_mechanical"
+    },
+    {
+      "slice_index": 32,
+      "criterion_id": "AIS-07:R3",
+      "rubric_id": "AIS-07",
+      "question_id": "ais-tuition-child",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Whether the API must expose the declared answer-track statuses is a product contract choice; normative policy text cannot determine response-shape semantics.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 33,
+      "criterion_id": "AIS-07:R4",
+      "rubric_id": "AIS-07",
+      "question_id": "ais-tuition-child",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Internal consistency of verdict metadata is a harness and API-contract invariant, not a product-law proposition.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 34,
+      "criterion_id": "AIS-07:R5",
+      "rubric_id": "AIS-07",
+      "question_id": "ais-tuition-child",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Safe refusal of irrelevant questions is a platform safety behavior, not a norm in the policy corpus.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 35,
+      "criterion_id": "AIS-07:R9",
+      "rubric_id": "AIS-07",
+      "question_id": "ais-tuition-child",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "For this single-authority question, composition completeness is a harness source-selection check rather than an independent product-law norm.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 36,
+      "criterion_id": "AIS-07:manual-1",
+      "rubric_id": "AIS-07",
+      "question_id": "ais-tuition-child",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "mechanically_source_supported",
+      "action": "replace_criterion_provenance",
+      "bounded_rationale": "The hash-bound tuition provision and its sole rule establish the required subject-matter authority, so omission is mechanically testable.",
+      "evidence": [
+        {
+          "source_id": "ais_e_tuition_child_r1",
+          "source_provision_ids": [
+            "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+          ],
+          "source_rule_ids": [
+            "AI-c3c7e28449"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "f71d7c36fd676415a8714c869396dfd0444c52a555ce4a594e75a1a577349312",
+          "source_file_sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23"
+        }
+      ],
+      "candidate_outcome": null,
+      "human_confirmation": "not_required_mechanical"
+    },
+    {
+      "slice_index": 37,
+      "criterion_id": "AIS-08:R3",
+      "rubric_id": "AIS-08",
+      "question_id": "ais-info-probation-evaluation",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Whether the API must expose the declared answer-track statuses is a product contract choice; normative policy text cannot determine response-shape semantics.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "slice_index": 38,
+      "criterion_id": "AIS-08:R4",
+      "rubric_id": "AIS-08",
+      "question_id": "ais-info-probation-evaluation",
+      "current": {
+        "active": true,
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "bounded_rationale": "Internal consistency of verdict metadata is a harness and API-contract invariant, not a product-law proposition.",
+      "evidence": [],
+      "candidate_outcome": null,
+      "human_confirmation": "not_applicable"
+    }
+  ],
+  "confidential_source_text_included": false
+}

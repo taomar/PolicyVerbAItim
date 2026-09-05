@@ -1,0 +1,109 @@
+{
+  "schema_version": "approval_repository_non_mutation_proof_v1",
+  "baseline_source": "END_BINDING.json from the pre-approval reconstruction",
+  "all_match": true,
+  "checks": [
+    {
+      "field": "head",
+      "baseline": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "approval_end": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "match": true
+    },
+    {
+      "field": "branch",
+      "baseline": "main",
+      "approval_end": "main",
+      "match": true
+    },
+    {
+      "field": "default_status_count",
+      "baseline": 120,
+      "approval_end": 120,
+      "match": true
+    },
+    {
+      "field": "default_modified_count",
+      "baseline": 73,
+      "approval_end": 73,
+      "match": true
+    },
+    {
+      "field": "default_untracked_count",
+      "baseline": 47,
+      "approval_end": 47,
+      "match": true
+    },
+    {
+      "field": "exhaustive_status_record_count",
+      "baseline": 121,
+      "approval_end": 121,
+      "match": true
+    },
+    {
+      "field": "cached_diff_bytes",
+      "baseline": 0,
+      "approval_end": 0,
+      "match": true
+    },
+    {
+      "field": "stash_bytes",
+      "baseline": 0,
+      "approval_end": 0,
+      "match": true
+    },
+    {
+      "field": "content_tree_file_count",
+      "baseline": 37199,
+      "approval_end": 37199,
+      "match": true
+    },
+    {
+      "field": "content_tree_sha256",
+      "baseline": "e0d88609098784a6c19e0e4943e53bf2d8f2b6325cabf40e0471caf68956ba7d",
+      "approval_end": "e0d88609098784a6c19e0e4943e53bf2d8f2b6325cabf40e0471caf68956ba7d",
+      "match": true
+    },
+    {
+      "field": "index_entries_sha256",
+      "baseline": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287",
+      "approval_end": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287",
+      "match": true
+    },
+    {
+      "field": "status_v2_sha256",
+      "baseline": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9",
+      "approval_end": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9",
+      "match": true
+    },
+    {
+      "field": "cached_diff_sha256",
+      "baseline": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "approval_end": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "field": "refs_sha256",
+      "baseline": "dbb57b545dd88d6949f57425eee5a546daf790e51a3ab9c7eb9cc9e9bb8e3ad8",
+      "approval_end": "dbb57b545dd88d6949f57425eee5a546daf790e51a3ab9c7eb9cc9e9bb8e3ad8",
+      "match": true
+    },
+    {
+      "field": "stash_sha256",
+      "baseline": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "approval_end": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "match": true
+    },
+    {
+      "field": "approval_start_to_end_status",
+      "baseline": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9",
+      "approval_end": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9",
+      "match": true
+    },
+    {
+      "field": "approval_start_to_end_index",
+      "baseline": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287",
+      "approval_end": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287",
+      "match": true
+    }
+  ]
+}

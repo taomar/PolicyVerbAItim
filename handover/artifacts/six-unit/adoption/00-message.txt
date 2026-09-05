@@ -1,0 +1,3 @@
+Build all-published rule index foundation
+
+Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>

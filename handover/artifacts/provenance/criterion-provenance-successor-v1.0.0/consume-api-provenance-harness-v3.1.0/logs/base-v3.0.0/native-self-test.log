@@ -1,0 +1,30 @@
+{
+  "status": "self-test-passed",
+  "harness_version": "consume-api-provenance-harness/3.0.0",
+  "manifest_version": "2.0.0",
+  "rubric_version": "3.0.0",
+  "network_calls": 0,
+  "primary_job_count": 360,
+  "jobs_per_arm": {
+    "A": 60,
+    "B": 60,
+    "C": 60,
+    "D": 60,
+    "E": 60,
+    "F": 60
+  },
+  "order_position_balance": 10,
+  "stable_idempotency_keys": 240,
+  "watchdog_timeout_test": "pass",
+  "atomic_resume_test": "pass",
+  "expected_evidence_miss_test": "pass",
+  "execution_gates": {
+    "endpoint_contract_stabilized": true,
+    "questions_finalized": true,
+    "rubric_finalized": true,
+    "source_snapshot_frozen": true,
+    "rule_retrieval_stable": true,
+    "parent_authorized": false,
+    "rubric_provenance_validated": true
+  }
+}

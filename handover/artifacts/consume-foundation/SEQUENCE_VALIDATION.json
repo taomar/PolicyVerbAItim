@@ -1,0 +1,177 @@
+{
+  "schema_version": "consume_sequence_validation_v1",
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "private_only": true,
+  "foundation": {
+    "source_hashes_match": true,
+    "changed_path_count": 10,
+    "exact_path_set": true,
+    "evidence_patch": {
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "bytes": 27171,
+      "regeneration_passes": 2,
+      "regeneration_match": true,
+      "git_apply_check": "passed",
+      "git_apply": "passed",
+      "published": true,
+      "blocked_reason": null,
+      "path": "03-consume-request-mode-foundation.patch"
+    },
+    "validation": [
+      {
+        "command": "vitest run src/lib/requestBody.test.ts src/lib/canonicalHash.test.ts",
+        "result": "32 passed",
+        "evidence_log": "private-validation\\foundation-targeted-tests.log",
+        "evidence_sha256": "b39a443cb5c1d5b1513daf92d894378e665dbdb7f40ee3d4bde04fa5c8538817",
+        "note": "The same invocation attempted App.test.tsx with the default fork pool; that worker timed out before starting. The App group was rerun with the thread pool."
+      },
+      {
+        "command": "vitest run src/App.test.tsx -t \"the retrieval mode control\" --pool=threads --no-file-parallelism --reporter=verbose",
+        "result": "5 passed, 138 skipped",
+        "evidence_log": "private-validation\\foundation-app-tests.log",
+        "evidence_sha256": "04e67a3b93d91f033a913f82a7b3a1a7a73a77c14a1d6a077ed193f58523859b"
+      },
+      {
+        "command": "vitest run --pool=threads --no-file-parallelism --reporter=dot",
+        "result": "8 files passed, 241 tests passed",
+        "evidence_log": "private-validation\\foundation-full-tests.log",
+        "evidence_sha256": "2ee94360c647cb7c7171058393f264106d2cf42516c5bddf29bfc5b0ebbc92c1"
+      },
+      {
+        "command": "tsc --noEmit --pretty false",
+        "result": "exit 0",
+        "evidence_log": "private-validation\\foundation-tsc.log",
+        "evidence_sha256": "49fa8b6e68e4e84f5d9a9c2d63aff8a388dbbcdf63a47d197e7707b56efc929a"
+      }
+    ],
+    "attribution_and_approval": {
+      "authorship_proven": true,
+      "session_id": "d99011fe-a8c3-4032-872b-1643baaef994",
+      "agent_id": "call_NXSiPU3O1bwlEaxo3A1CGhoz",
+      "edit_event_lines": [
+        3412,
+        3419,
+        3441,
+        3450,
+        3459,
+        3466,
+        3487,
+        3494,
+        3508,
+        3515,
+        3522,
+        3543,
+        3550,
+        3564,
+        3578,
+        3585,
+        3606,
+        3641,
+        3662,
+        3683
+      ],
+      "historical_authorization_breach": true,
+      "warning_event_lines": [
+        3866,
+        3867
+      ],
+      "narrow_retroactive_approval": true
+    }
+  },
+  "native": {
+    "patch": {
+      "path": "04-consume-native-parser-renderer.patch",
+      "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+      "bytes": 35998,
+      "git_apply_check_after_foundation": "passed",
+      "git_apply_after_foundation": "passed",
+      "all_8_final_hashes_match": true
+    },
+    "combined_changed_path_count": 14,
+    "combined_exact_path_set": true,
+    "validation": [
+      {
+        "command": "vitest run src/retrievalEnvelopeIsParsedByTag.test.tsx --pool=threads --no-file-parallelism --reporter=verbose",
+        "result": "19 passed",
+        "evidence_log": "private-validation\\combined-parser-tests.log",
+        "evidence_sha256": "9f3f324c68f279c2067810c9c1df43d79a7dee88e9f7b0057c4d11d27174b58f"
+      },
+      {
+        "command": "vitest run --pool=threads --no-file-parallelism --reporter=dot",
+        "result": "9 files passed, 260 tests passed",
+        "evidence_log": "private-validation\\combined-full-tests.log",
+        "evidence_sha256": "399cb014768c1ee2ed99e1c70c1cd85f0c876527f497863aaebc0eb64ea7d6ef"
+      },
+      {
+        "command": "tsc --noEmit --pretty false",
+        "result": "exit 0",
+        "evidence_log": "private-validation\\combined-tsc.log",
+        "evidence_sha256": "49fa8b6e68e4e84f5d9a9c2d63aff8a388dbbcdf63a47d197e7707b56efc929a"
+      },
+      {
+        "command": "temporary tag-only classifyRetrieval mutation, then focused Vitest",
+        "result": "expected 5 failed / 14 passed",
+        "evidence_log": "private-validation\\mutation-parser-tests.log",
+        "evidence_sha256": "9adf38fffad23e113e4c8ada1e06e9c70a694c0a4dce4f5b27dc577c63fe6f5a"
+      },
+      {
+        "command": "restore exact parser hash, then focused Vitest",
+        "result": "19 passed",
+        "restored_contract_sha256": "3912d53bb5684d64e9b898e8a37d318f46e483ef3793d028a876e62172c72cac",
+        "evidence_log": "private-validation\\mutation-restored-tests.log",
+        "evidence_sha256": "1fe27150332da36ba4c266571670d8f4f71408dd0404d8a2bd34d936416687f0"
+      }
+    ]
+  },
+  "security": {
+    "high_confidence_secret_hits": 0,
+    "raw_source_policy_or_live_corpus_text_hits": 0,
+    "structural_error_body_serialization_found": false,
+    "evidence": "CONTENT_LEAK_REVIEW.json"
+  },
+  "live_http_or_external_service_calls": false,
+  "dependencies_installed": false,
+  "approval_revalidation": {
+    "ordinal03_regeneration": {
+      "result": "byte-identical",
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "log": "approval-validation\\03-regenerated.patch"
+    },
+    "apply_order": {
+      "ordinal03_check": "passed",
+      "ordinal03_apply": "passed",
+      "ordinal04_check_after_03": "passed",
+      "ordinal04_apply": "passed",
+      "native_final_hashes": "8/8 matched"
+    },
+    "foundation_tests": {
+      "non_app_files": "7 files, 98 tests passed",
+      "app_file": "143 tests passed",
+      "total": "241/241 passed in bounded shards",
+      "typescript": "passed",
+      "worker_note": "One all-files attempt timed out starting the App worker; no test failed, and bounded shards executed all 241 tests."
+    },
+    "combined_tests": {
+      "parser": "19 passed",
+      "app": "143 passed",
+      "other": "7 files, 98 passed",
+      "total": "260/260 passed in bounded shards",
+      "typescript": "passed"
+    },
+    "exclusions": "passed",
+    "content_leak_scan": "passed"
+  },
+  "approval_repository_non_mutation": {
+    "all_match": true,
+    "evidence": "APPROVAL_NON_MUTATION_PROOF.json",
+    "evidence_sha256": "e6118c13c133f02f268e4448b7710b083d11c85694f336eb12e3c55dc688bd7e",
+    "content_tree_sha256": "e0d88609098784a6c19e0e4943e53bf2d8f2b6325cabf40e0471caf68956ba7d",
+    "content_tree_files": 37199,
+    "status_v2_sha256": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9",
+    "index_sha256": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287",
+    "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+    "branch": "main",
+    "cached_diff_bytes": 0,
+    "stash_bytes": 0
+  }
+}

@@ -1,0 +1,21 @@
+Reconcile the in-flight archive with the adopted feature commits
+
+Merges the archival snapshot, written against 3414811, into main after it
+adopted the canonical table carrier and the ranking telemetry. Taking the
+merge base as 3414811 is what makes this a reconciliation rather than a
+replacement: the feature files are additions on one side only, so they
+survive untouched instead of reading as deletions.
+
+Four files were resolved by hand, all of them additive on both sides:
+
+- canonical_rebuild: the table carrier generalised sidecar handling to any
+  namespaced provenance entry, which is exactly what the reading-order
+  record is, so the recovered order now travels through the general filter
+  and both the grid and the replay proof come back on rebuild.
+- document_extraction: a clause appends both records to its provenance.
+- search_client: keeps the retry helper and the serving path's deliberate
+  refusal to use it, and keeps the ranking record around that same call,
+  which the code below the merge already depended on.
+- the corpus-shape guard lists every newly authored module from both sides.
+
+Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>

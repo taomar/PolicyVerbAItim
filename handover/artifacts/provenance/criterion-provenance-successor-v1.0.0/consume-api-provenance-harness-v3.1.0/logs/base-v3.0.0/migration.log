@@ -1,0 +1,8 @@
+{
+  "status": "migrated",
+  "rubric_out": "evaluation-rubric.json",
+  "rubric_sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+  "manifest_out": "manifest.pending.json",
+  "manifest_sha256": "423dc480a9715058fe15528617cb1c47bbd0b9427818f1d3f17945074c14fa45",
+  "source_inputs_modified": false
+}

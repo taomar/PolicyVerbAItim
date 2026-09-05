@@ -1,0 +1,101 @@
+{
+  "schema_version": "consume-api-normative-provenance-validation/1",
+  "status": "passed_with_human_and_rule_body_blockers",
+  "authoritative_inputs": {
+    "bundle_payload_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+    "rubric_sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+    "source_snapshot_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+    "hw_document_sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+    "hw_rule_receipt_sha256": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689"
+  },
+  "selection_validation": {
+    "canonical_criterion_count": 128,
+    "canonical_finding_count": 113,
+    "expected_finding_count": 113,
+    "selected_count": 38,
+    "selected_ids_sha256": "0af8f69bf306e0c0fbc046fa875b549dd6a7a4ee1f7725711cfd21e0162c7f61",
+    "first_criterion_id": "AIS-08:manual-2",
+    "last_criterion_id": "HW-05:R4",
+    "duplicate_ids": 0,
+    "outside_slice_updates": 0,
+    "passed": true
+  },
+  "pointer_and_hash_validation": {
+    "attested_provisions": 5,
+    "source_snapshot_pointers_verified": 5,
+    "normative_body_hashes_verified": 5,
+    "rule_metadata_pointers_verified": 5,
+    "overlay_attestation_pointers_verified": 13,
+    "passed": true
+  },
+  "schema_validation": {
+    "overlay_schema": "passed",
+    "ledger_schema": "passed",
+    "attestation_schema": "passed",
+    "canonical_rubric_schema_after_candidate_merge": "passed",
+    "candidate_criterion_count": 128,
+    "candidate_finding_count": 113,
+    "candidate_dispositions": {
+      "unresolved": 13,
+      "unscorable": 100
+    }
+  },
+  "classification_counts": {
+    "product_decision_required": 2,
+    "semantic_support_pending_human_confirmation": 12,
+    "structural_harness_not_product_law": 23,
+    "unsupported_or_contradicted_rubric": 1
+  },
+  "safety_validation": {
+    "criteria_made_scorable": 0,
+    "human_confirmation_claims": 0,
+    "benchmark_specific_production_guard_logic_added": false,
+    "canonical_bundle_modified": false,
+    "repository_modified": false,
+    "source_artifacts_modified": false,
+    "live_network_api_model_database_search_azure_operations": 0
+  },
+  "source_nonmutation": {
+    "before": {
+      "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evaluation-rubric.json": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+      "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+      "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689"
+    },
+    "after": {
+      "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evaluation-rubric.json": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+      "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+      "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689"
+    },
+    "passed": true
+  },
+  "artifact_hashes": {
+    "normative-provenance-batch2.source-attestations.json": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+    "normative-provenance-batch2.ledger.json": "c7cd8155b58d129625ced534a17e671cb629f5347988ad1ef2cd52a36de85019",
+    "normative-provenance-batch2.overlay.json": "d7c0de9ae27187b3482350d001fa6a66632c65b82cf20ee4735029af141b660e",
+    "normative-provenance-batch2.MERGE.md": "5946dccc6396753bf127685531bbd93e0359620d434bd44e7fda3d9810e39c3b"
+  },
+  "blockers": [
+    {
+      "kind": "human_confirmation_required",
+      "criterion_count": 12,
+      "detail": "Source bodies are hash-bound and semantically reviewed, but AI review is not human confirmation."
+    },
+    {
+      "kind": "rubric_reconciliation_required",
+      "criterion_count": 1,
+      "detail": "One blanket BYOD expectation conflicts with a constrained allowance."
+    },
+    {
+      "kind": "product_contract_required",
+      "criterion_count": 2,
+      "detail": "Out-of-domain refusal and empty-response shape are not settled by normative policy."
+    },
+    {
+      "kind": "complete_rule_body_export_unavailable",
+      "criterion_count": 5,
+      "detail": "Frozen rule metadata is incomplete for semantic rule-body validation; source-body provenance is used instead."
+    }
+  ]
+}

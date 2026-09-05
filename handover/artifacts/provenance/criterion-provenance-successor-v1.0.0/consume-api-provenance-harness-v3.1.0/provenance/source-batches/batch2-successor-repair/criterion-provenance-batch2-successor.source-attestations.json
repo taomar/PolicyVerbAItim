@@ -1,0 +1,271 @@
+{
+  "schema_version": "consume-api-provenance-partition-correction-source-attestations/1",
+  "compatible_rubric_schema": "consume-api-evaluation-rubric/3",
+  "compatible_overlay_schema": "consume-api-normative-provenance-overlay/1",
+  "quote_free": true,
+  "reviewer_kind": "ai",
+  "human_confirmation": false,
+  "canonical_bundle": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0",
+    "payload_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+    "rubric_sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+    "source_snapshot_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+    "rubric_v1_sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc"
+  },
+  "criterion_attestation": {
+    "criterion_id": "AIS-08:R5",
+    "canonical_position_1_based": 39,
+    "question_id": "ais-info-probation-evaluation",
+    "canonical_pointer": "/questions/7/criteria/3",
+    "canonical_record_sha256": "cf4044e597dd4713b11c7336f22ef2b18d2c5a786f509c53ad5d488fd6dcc290",
+    "canonical_state": {
+      "criterion_provenance": "question_only",
+      "provenance_kind": "question_inferred",
+      "validation_state": "unverified",
+      "source_provision_ids": [],
+      "source_rule_ids": [],
+      "supporting_provision_count": 0,
+      "supporting_rule_count": 0
+    },
+    "frozen_expectation": {
+      "source_id": "rubric_v1",
+      "file_sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "pointer": "/questions/7/irrelevant",
+      "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+      "boolean_value": false,
+      "semantic_confirmation": false
+    },
+    "source_snapshot": {
+      "file_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "contextual_identities": [
+        {
+          "source_provision_id": "39e08eda7e9f169c6e2e1a936911c023",
+          "pointer": "/provisions/6",
+          "pointer_sha256": "caf976b52f521fb8eb0fcf9ed067650a8854a7b9e63a61dd1fb839e376955dc7",
+          "relationship": "contextual_identity_only_not_criterion_support",
+          "body_present_in_snapshot": false
+        },
+        {
+          "source_provision_id": "05cde987d85627d03bdfddaceb46140f",
+          "pointer": "/provisions/7",
+          "pointer_sha256": "6222443ee0e8e619f9b754af8c006a245b34fcbe2557ddbe37298572dc6c1390",
+          "relationship": "contextual_identity_only_not_criterion_support",
+          "body_present_in_snapshot": false
+        }
+      ],
+      "normative_body_hash_available": false,
+      "normative_rule_hash_available": false
+    },
+    "classification": "structural_harness_not_product_law",
+    "classification_basis": "response_contract_not_product_law",
+    "scorable": false,
+    "normative_evidence": null,
+    "candidate_rubric_fields": null,
+    "human_confirmation": false,
+    "reviewer_kind": "ai",
+    "exact_pointers_are_semantic_confirmation": false
+  },
+  "overlap_attestation": {
+    "criterion_id": "HW-05:R4",
+    "canonical_position_1_based": 77,
+    "canonical_pointer": "/questions/14/criteria/2",
+    "canonical_record_sha256": "af1560e0fc19fbc6f3538c8fa9ba82b02de257b6bcd55bf040318d9e0681cb09",
+    "batch2_record_sha256": "bd724b55acfc683348b775311f38d73552ae9d80c3fac84b430ac61d496a7dd4",
+    "batch3_record_sha256": "fe8f600ca5ef46bc570c7331878a26f8a4ac6f6154049397b3135bf4d1927edc",
+    "batch2_rationale_sha256": "795a5e8247b4ae7b806819782aca1b583fc325cf7863893fbeb8f40846279421",
+    "batch3_rationale_sha256": "788d76c094aaaf4c6cd0bbf3f1c1bd9570009041c77020854b12eb6fa7e3ea79",
+    "rationale_wording_equal": false,
+    "rationale_materially_consistent": true,
+    "field_checks": {
+      "criterion_id": true,
+      "canonical_position": true,
+      "canonical_pointer": true,
+      "canonical_pointer_sha256": true,
+      "question_identity": true,
+      "rubric_identity": true,
+      "project_identity": true,
+      "canonical_state": true,
+      "classification": true,
+      "scorable_effect": true,
+      "normative_evidence": true,
+      "candidate_replacement": true,
+      "human_confirmation": true,
+      "criterion_specific_attestation": true
+    },
+    "material_conflict": false,
+    "canonical_owner": "criterion-provenance-batch-3",
+    "resolution": "remove_from_batch2_successor_retain_batch3",
+    "evidence_loss": false
+  },
+  "original_batch2_evidence_source": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.source-attestations.json",
+    "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+    "unchanged_and_still_required": true
+  },
+  "preservation": {
+    "unchanged_record_count": 37,
+    "record_hash_manifest_sha256": "8afd2d3a5ea6ad8b5139802e56aa3111d3f14d7ed3fb407c08b4aeb231d01914"
+  },
+  "pivotal_input_hashes": [
+    {
+      "label": "base/FILE_INVENTORY.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\FILE_INVENTORY.json",
+      "sha256": "4951c491390ac692f70eabb0aae81bcc131d9309892004e8c0b0080384fd41a9",
+      "bytes": 8193,
+      "read_only": true
+    },
+    {
+      "label": "base/evaluation-rubric.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evaluation-rubric.json",
+      "sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+      "bytes": 176692,
+      "read_only": true
+    },
+    {
+      "label": "base/evidence/rubric-v1.snapshot.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\rubric-v1.snapshot.json",
+      "sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "bytes": 21872,
+      "read_only": true
+    },
+    {
+      "label": "base/evidence/source.snapshot.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json",
+      "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "bytes": 32682,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch1-overlay.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-overlay.json",
+      "sha256": "36ae59123a4c5cd9d19283747535a5fd9d6f0743c9554d829d6d2d664032629a",
+      "bytes": 18671,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch1-ledger.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-ledger.json",
+      "sha256": "690ffe65dc7d01faba6d61e6247bd8222b20ddf84080f4abaa701684753ce720",
+      "bytes": 31737,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch1-validation.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-validation.json",
+      "sha256": "bd3571e2923081869883595385bcc32be56c6c4364862d232a2c08cf5f90b0cc",
+      "bytes": 3718,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch1-source-attestations.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-source-attestations.json",
+      "sha256": "3e38fbde8c546f741d3e821a89024cf51fbb1917c87f083b540695a90585f307",
+      "bytes": 21929,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch1-MERGE.md",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-MERGE.md",
+      "sha256": "5d576d52e4316ba78a0bcdfc64cf54d56c2cebb7ee59547c6c9640d5176d61d3",
+      "bytes": 1615,
+      "read_only": true
+    },
+    {
+      "label": "session-state/normative-provenance-batch2.overlay.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.overlay.json",
+      "sha256": "d7c0de9ae27187b3482350d001fa6a66632c65b82cf20ee4735029af141b660e",
+      "bytes": 37276,
+      "read_only": true
+    },
+    {
+      "label": "session-state/normative-provenance-batch2.ledger.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.ledger.json",
+      "sha256": "c7cd8155b58d129625ced534a17e671cb629f5347988ad1ef2cd52a36de85019",
+      "bytes": 58020,
+      "read_only": true
+    },
+    {
+      "label": "session-state/normative-provenance-batch2.validation.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.validation.json",
+      "sha256": "ff08208486ec4103eb8920b72ecba0621a1ffe1a343b9d01fbf2d793630ae0ae",
+      "bytes": 5467,
+      "read_only": true
+    },
+    {
+      "label": "session-state/normative-provenance-batch2.source-attestations.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.source-attestations.json",
+      "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+      "bytes": 11879,
+      "read_only": true
+    },
+    {
+      "label": "session-state/normative-provenance-batch2.MERGE.md",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.MERGE.md",
+      "sha256": "5946dccc6396753bf127685531bbd93e0359620d434bd44e7fda3d9810e39c3b",
+      "bytes": 2709,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch-3.overlay.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.overlay.json",
+      "sha256": "4879337d894ff7e90653e248742c46a3f933abae2483209bfca6f7d66030495d",
+      "bytes": 7321,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch-3.ledger.jsonl",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.ledger.jsonl",
+      "sha256": "8c832a98ac7207c146ef328c56342e8e3dc75f29c429709e4b14431a6616946a",
+      "bytes": 14367,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch-3.source-hashes.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.source-hashes.json",
+      "sha256": "178630c61ff91e4083776c0ad765d1ae42e77d88534483fa0a5f31e4e5e1663d",
+      "bytes": 7005,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch-3.validation.json",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.validation.json",
+      "sha256": "960d354038acf33f3b7209ee72f274308948896ab311931bc4913bf04336161e",
+      "bytes": 3035,
+      "read_only": true
+    },
+    {
+      "label": "session-state/criterion-provenance-batch-3.merge-instructions.md",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.merge-instructions.md",
+      "sha256": "a3f8df45954742d3c3f6ac61ccc0cb00825161384dffd7e6d988e7cb20491b35",
+      "bytes": 1922,
+      "read_only": true
+    },
+    {
+      "label": "batch1-evidence/ais_e_annual_vacation_r1",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-annual-vacation__r1.decoded",
+      "sha256": "c0567c8cbf547b44734fb5588bada9f3bd107f8ba94677352f994f470cafc20c",
+      "bytes": 27560,
+      "read_only": true
+    },
+    {
+      "label": "batch1-evidence/ais_e_maternity_leave_r1",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-maternity-leave__r1.decoded",
+      "sha256": "92cc35e1352ad734ca6a6584dd8ee5ac3f21b22c8e31ce1c35dab841ea916f55",
+      "bytes": 11627,
+      "read_only": true
+    },
+    {
+      "label": "batch1-evidence/ais_e_tuition_child_r1",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-tuition-child__r1.decoded",
+      "sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23",
+      "bytes": 5930,
+      "read_only": true
+    }
+  ],
+  "limitations": [
+    "Exact identity and frozen-expectation pointers are not semantic confirmation.",
+    "No normative body or rule hash supports the added structural criterion.",
+    "AI review is not human confirmation.",
+    "This attestation is correction audit evidence and is not a rubric evidence source."
+  ]
+}

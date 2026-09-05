@@ -1,0 +1,361 @@
+{
+  "added_to_rule": [
+    {
+      "base_sha256": "ce073b192c037b5d5ce2847f1185769c73081c02ef92385ce9a0200ecefcea85",
+      "hunks": [
+        {
+          "added_lines": 10,
+          "bytes": 1042,
+          "deleted_lines": 3,
+          "header": "@@ -64,11 +64,18 @@",
+          "ordinal": 1,
+          "sha256": "f456e6453568cd88e72185bb2f8584502e1cbb7c01952a2c382a6c26d90e119c"
+        },
+        {
+          "added_lines": 4,
+          "bytes": 223,
+          "deleted_lines": 0,
+          "header": "@@ -95,6 +102,10 @@",
+          "ordinal": 2,
+          "sha256": "5b855b6c962e8eba416f9e26124776c0e8c3ec2da0e3936bbd421dadbe9adc9a"
+        }
+      ],
+      "path": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+      "reason": "Rule-only module registrations omitted by the frozen subset.",
+      "result_sha256": "170f8e7c8bdc88dc28a627949f8f4e19db565b0f819c8c33a465176e477143aa"
+    }
+  ],
+  "common_path_delta": [
+    {
+      "base_changed": false,
+      "new_base_sha256": "8e8c1c75b805301df7c929ff7c0b39da2894421eff4533c9e943033f8a6578bd",
+      "new_patch_section_sha256": "2c2f2663944bf9a67399d558d56e03226343392a7fbd760b2dd8bf241d1a5518",
+      "new_result_sha256": "c259d154b867e4742b89b4d041f9e6bc02b42ac9060b9bc171d525eacf833249",
+      "old_base_sha256": "8e8c1c75b805301df7c929ff7c0b39da2894421eff4533c9e943033f8a6578bd",
+      "old_patch_section_sha256": "d96062932d3c822ada476a61aa5582d58b12d380421293e2838633aec8a1bf1d",
+      "old_result_sha256": "c259d154b867e4742b89b4d041f9e6bc02b42ac9060b9bc171d525eacf833249",
+      "path": "src/policy_platform/api/routers/policy_decisions.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "c9a42bf63c34c8185569a90fe1fb30dd04219501d238d232547c8fddf97f75f1",
+      "new_patch_section_sha256": "977bdd6985a97e6206c74e71570d1c69ae81d36f616d3960b5caed042ce59105",
+      "new_result_sha256": "f51fcd35838b3e146973714db4405bbe5f836c68cc8d893fdf086f3a43280440",
+      "old_base_sha256": "c9a42bf63c34c8185569a90fe1fb30dd04219501d238d232547c8fddf97f75f1",
+      "old_patch_section_sha256": "bab8f771184c6d7416f15dc26712aa24e0c14fdcf0045604e4d04a530d2ec94c",
+      "old_result_sha256": "f51fcd35838b3e146973714db4405bbe5f836c68cc8d893fdf086f3a43280440",
+      "path": "src/policy_platform/application/policy_case_decision.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "38842eeeffe53b684edfe935c861fbd43a845822f4431cc5798075ab8df4dbca",
+      "new_patch_section_sha256": "66e1e0fac2e5b3488d87f1248d87af63b1e8e8fc32eb4c1899736a10970d62f3",
+      "new_result_sha256": "734dcd3cff33bb33ea4e7cb12eae038efb64947b3c0e850ca78c506032735a28",
+      "old_base_sha256": "38842eeeffe53b684edfe935c861fbd43a845822f4431cc5798075ab8df4dbca",
+      "old_patch_section_sha256": "81244d972f6c11b29b3c27ab45560cbac3533028f443e3fb21c96529632b2d4e",
+      "old_result_sha256": "734dcd3cff33bb33ea4e7cb12eae038efb64947b3c0e850ca78c506032735a28",
+      "path": "src/policy_platform/contracts/case_decision.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "58c509ff235d0db6f1bc898ffa976caec19ea6654b68bbcb64c6fb748bab35cf",
+      "new_patch_section_sha256": "248f44df4c423f31cc468341d537be870ca53ea10f7d4b86b1e3a049a9fc58ac",
+      "new_result_sha256": "91d179d4aa37ee0e180f0f4852f8784e8a29450cca4a1cdd4a9b1861c254c0ac",
+      "old_base_sha256": "58c509ff235d0db6f1bc898ffa976caec19ea6654b68bbcb64c6fb748bab35cf",
+      "old_patch_section_sha256": "81cc40f2db856491a19877f2bff5859d94c1d36f974ef323dd0306f1bfcad800",
+      "old_result_sha256": "91d179d4aa37ee0e180f0f4852f8784e8a29450cca4a1cdd4a9b1861c254c0ac",
+      "path": "src/policy_platform/contracts/case_decision_light.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "ea33e40e46e6aeec6d45bffa6dfa59f97e57d0051a5a0e7968a87354102bf2a1",
+      "new_patch_section_sha256": "aeae16389c15499d456540d55ebdb5179c9ae2f662c96f8b11b320b3dec58f7a",
+      "new_result_sha256": "55ae5a145e5c7bc27d0d2842f1aa4b83ae57c89033d7c9e03276c35c6e61e355",
+      "old_base_sha256": "ea33e40e46e6aeec6d45bffa6dfa59f97e57d0051a5a0e7968a87354102bf2a1",
+      "old_patch_section_sha256": "91183ed86f7844e05b2a24eab65d1dc58481ecbc56438c43ef7b379c9f87d53d",
+      "old_result_sha256": "55ae5a145e5c7bc27d0d2842f1aa4b83ae57c89033d7c9e03276c35c6e61e355",
+      "path": "src/policy_platform/contracts/policy_retrieval.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "e0f655c03efbe1f458e70e46ae8e02f4b0e1ebaf23038e882b4659e988e30846",
+      "new_patch_section_sha256": "70b9610e0f72aeac161c101fe731941236e2cf2f80819afb193f71a70b6988aa",
+      "new_result_sha256": "84fedebd9b1741322cfc6849168e306bae545ffe98c3020c7707974f56f9f086",
+      "old_base_sha256": "e0f655c03efbe1f458e70e46ae8e02f4b0e1ebaf23038e882b4659e988e30846",
+      "old_patch_section_sha256": "2cb27395d45a6c7343551dcd1d3703d01276354ab796793c128e96e044c7f5da",
+      "old_result_sha256": "84fedebd9b1741322cfc6849168e306bae545ffe98c3020c7707974f56f9f086",
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": true,
+      "new_base_sha256": "2d79647771c463f47683c95ef2fadaf73a9c4a083c28335d1a94f3c2fb01ff92",
+      "new_patch_section_sha256": "eeeed8982641dba413c8b759c2e963cfcc520662c87933b71af372989106a095",
+      "new_result_sha256": "a26379de4e0bad9da508d2eb355afe26b057584c256fd6d8dc6853fa4c6a75eb",
+      "old_base_sha256": "2987319b14889d5199060acebb56666cb70e06e4536cc5b46696bae6b33bb830",
+      "old_patch_section_sha256": "ffdec5f44c56e176ea09f5f56c477e12571a2f026df835b5168fa6453b56d0e4",
+      "old_result_sha256": "89acda62d16c7d6c9988dd463884ec2860d1078b0a9add94605cd9a290d62a31",
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+      "result_changed": true
+    },
+    {
+      "base_changed": true,
+      "new_base_sha256": "254eef80e74b6758425898e9329402b39abea542eefb12b2cc38666f2a630c9f",
+      "new_patch_section_sha256": "e855bb4d8d32ecf7a9d9e78be3ca04a980cbbc9ed93d720af11a4c7e7dee1091",
+      "new_result_sha256": "fef24501dc437ed48d53f326c1dc2c82f5aae51a0a2b1030ecb2197b70a9ddae",
+      "old_base_sha256": "9777cc5791944f32cad38bc43c06cc309954e686eaaf073e054ac5d80359164e",
+      "old_patch_section_sha256": "75d2f672f592d5a225c4e8cac38349b8d4babf07cb77ec8b3700c6449d45edba",
+      "old_result_sha256": "aac0af268ff1da65fce8d3f4c89647af9ad7eae3350e5f8759503f540ad97776",
+      "path": "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+      "result_changed": true
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "47522f46497c728a69bbc9665e3353ac2b0dd9d6efa9ba7191414011ce178721",
+      "new_patch_section_sha256": "e4c03136b9b2e420bdb9ed40cfc796c5ede3aa7c5f9a3f8da68879d2ad2cbbc9",
+      "new_result_sha256": "b9aa19b0c7d35fad9b0d475078d5f59f8bc5e585569dbcd5fa219d0c4dad3921",
+      "old_base_sha256": "47522f46497c728a69bbc9665e3353ac2b0dd9d6efa9ba7191414011ce178721",
+      "old_patch_section_sha256": "b92351f5be91d7dacfacdcf70683253f50573c77b23894263b618950a99754bb",
+      "old_result_sha256": "b9aa19b0c7d35fad9b0d475078d5f59f8bc5e585569dbcd5fa219d0c4dad3921",
+      "path": "tests/unit/test_a_project_case_decision_carries_its_own_receipt.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "f2fb1ee7cfa2c7af6818be22f8267919af6c21ccebd8c541883febfbf737fbc9",
+      "new_patch_section_sha256": "769bdc90d8f9b814026b4d5b4cd19933bee775797bb7a8ed2ab3cef35e031fac",
+      "new_result_sha256": "bc0cc646f253aba2b5911b24ad15111b9e4cef232ab856c061a3678db344b760",
+      "old_base_sha256": "f2fb1ee7cfa2c7af6818be22f8267919af6c21ccebd8c541883febfbf737fbc9",
+      "old_patch_section_sha256": "814ef57c028fff83d5995095422cd67552dada69c0bb988a08e62007aabf05f7",
+      "old_result_sha256": "bc0cc646f253aba2b5911b24ad15111b9e4cef232ab856c061a3678db344b760",
+      "path": "tests/unit/test_case_decision_light_contract.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "b6c92fcb653f88b1c6ca7ba4183fb877ed31f8540ddbfd282fbdae8fac89a1f5",
+      "new_patch_section_sha256": "2566720d92683b90ed5521f434c01f57d0a97860ca457a37bcfbb0a7f15134b7",
+      "new_result_sha256": "468f314aba745f2a620350e3dd20cd139322ad2ca446ce49f556512e6b2b4fe0",
+      "old_base_sha256": "b6c92fcb653f88b1c6ca7ba4183fb877ed31f8540ddbfd282fbdae8fac89a1f5",
+      "old_patch_section_sha256": "ef069814617ad2cf4493a2561c31c3abb9433ccf299581cdcb16741ed73799b3",
+      "old_result_sha256": "468f314aba745f2a620350e3dd20cd139322ad2ca446ce49f556512e6b2b4fe0",
+      "path": "tests/unit/test_external_policy_retrieval_returns_filtered_json.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "b96d5baf28462155b59ac605044a7b9a0f3695b82561d5463ca089c1c6949746",
+      "new_patch_section_sha256": "c39888edf4832e7267cc152e754e7f8455c0e859821a008c65180826b83713a9",
+      "new_result_sha256": "00a2b862df4ecb47adf762f938ff43c7e613ad7549595ecdeb778e7a3ecfbb78",
+      "old_base_sha256": "b96d5baf28462155b59ac605044a7b9a0f3695b82561d5463ca089c1c6949746",
+      "old_patch_section_sha256": "ed497f6c7480328cc5d9f97d63d1bbe5c1eea8c28f7ce44efdd650cc9f46014c",
+      "old_result_sha256": "00a2b862df4ecb47adf762f938ff43c7e613ad7549595ecdeb778e7a3ecfbb78",
+      "path": "tests/unit/test_p0_rest_telemetry_closes_measurement_blind_spots.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": "0cc05f8402eca9ff4731f9d10e9cd9759681b180e0cc2bfe4cd9215e434c9553",
+      "new_patch_section_sha256": "63aa0332f42837ccb30a1352c55b1c7460526e6758eadb99e863876325b4c45d",
+      "new_result_sha256": "5715f1fd7817ea1aea4bc43d9865da67fc2fbee44e028f8596f66fe3c3d95d43",
+      "old_base_sha256": "0cc05f8402eca9ff4731f9d10e9cd9759681b180e0cc2bfe4cd9215e434c9553",
+      "old_patch_section_sha256": "433bcb3983284e643bac6915908964eb244c551a958f93bf8b5ff48467be1dc0",
+      "old_result_sha256": "5715f1fd7817ea1aea4bc43d9865da67fc2fbee44e028f8596f66fe3c3d95d43",
+      "path": "tests/unit/test_policy_case_project.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": null,
+      "new_patch_section_sha256": "bd581e4657e1d5f1ee935bdebf13a8bc0f10b8b58aedb8d103f061084161b8c3",
+      "new_result_sha256": "05fa859707cadbcb1456e464d3308539d4b805b1fdf3cfb688bb80de6a5d29cd",
+      "old_base_sha256": null,
+      "old_patch_section_sha256": "ed783ae4964ffc3364b2e84e093076852c74fc6a0fdb815ce51431b372c9abe3",
+      "old_result_sha256": "05fa859707cadbcb1456e464d3308539d4b805b1fdf3cfb688bb80de6a5d29cd",
+      "path": "tests/unit/test_rule_mode_returns_rules_not_policies.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": null,
+      "new_patch_section_sha256": "ce243399a31d091b646d7f4eb5a23c97cd05b53ddf89a3f00473fb0d1031a3d7",
+      "new_result_sha256": "119c300ea52250bd3c0d1fc37cd6902b6000ef021a11394fc7dc732d49e99943",
+      "old_base_sha256": null,
+      "old_patch_section_sha256": "8927f2ade617346e21492472debc8bd5c936a4a00ef30fc252ba4de457ebcee0",
+      "old_result_sha256": "119c300ea52250bd3c0d1fc37cd6902b6000ef021a11394fc7dc732d49e99943",
+      "path": "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+      "result_changed": false
+    },
+    {
+      "base_changed": false,
+      "new_base_sha256": null,
+      "new_patch_section_sha256": "7da8c28c7158134c9c87979ee32cbd824d0f017e1f1d9cb89537a4260e2e9fdd",
+      "new_result_sha256": "7a178bedf0cd760eb84c07520049961ed8c2ec05eeb70d4c7036adad016b7fcf",
+      "old_base_sha256": null,
+      "old_patch_section_sha256": "aa58cb7a39d9a1d3ef2068681ea8a7a0a5d8c59b5a3edd323b8b7b56507b5c53",
+      "old_result_sha256": "7a178bedf0cd760eb84c07520049961ed8c2ec05eeb70d4c7036adad016b7fcf",
+      "path": "tests/unit/test_the_retrieval_route_answers_in_the_shape_the_mode_asked_for.py",
+      "result_changed": false
+    }
+  ],
+  "earlier_payload_sequence_gap": {
+    "blocks_preserving_all_accepted_earlier_payload_optimizations": true,
+    "does_not_block_ordinal_00_or_rebased_rule": true,
+    "gzip_production_dependency": {
+      "gzip_hunks": [
+        {
+          "added_lines": 1,
+          "bytes": 288,
+          "deleted_lines": 0,
+          "header": "@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager",
+          "ordinal": 1,
+          "sha256": "4fdfa505f59543ee7ebeb784751ec46c1fd7e77e98483fb2c437e085444b33b0"
+        },
+        {
+          "added_lines": 6,
+          "bytes": 568,
+          "deleted_lines": 0,
+          "header": "@@ -31,6 +34,12 @@ from policy_platform.infrastructure.settings import get_settings",
+          "ordinal": 3,
+          "sha256": "01b62e39b601cdf8fd20327090d22283aea5219b025a28f3b243d806dfbf1537"
+        },
+        {
+          "added_lines": 18,
+          "bytes": 1541,
+          "deleted_lines": 0,
+          "header": "@@ -132,6 +141,24 @@ def create_app() -> FastAPI:",
+          "ordinal": 4,
+          "sha256": "37227258c07fb523e8d74b861b8d82926393aa41361abf270cd774e0e5234417"
+        }
+      ],
+      "mixed_path_patch": {
+        "bytes": 3325,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\path-diffs-v4\\src__policy_platform__api__app.py.patch",
+        "sha256": "6fec5392cf93799bd3ff75690eb4cd6bbaa8ac995287b9823fb01b74939f1455"
+      },
+      "other_app_hunks_excluded": "integration and policy-index-console imports/router registration",
+      "path": "src/policy_platform/api/app.py"
+    },
+    "payload_ordinal_02": {
+      "contains_app_py": false,
+      "contains_gzip_test": false,
+      "contains_search_select_test": false,
+      "manifest": {
+        "bytes": 16045,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\02-payload.manifest.json",
+        "sha256": "c41bbee6ea4b7214b0eebb2883fc9770b5e08373c5701ea9f94f9c4389c93c47"
+      },
+      "patch": {
+        "bytes": 86466,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\02-payload.blocked-reconstruction.patch",
+        "sha256": "d2c9594603899ff9561cef8534ca51837cfa311e2c08e8c133323cee44b889a6"
+      }
+    },
+    "smallest_safe_unblock": "Create a separate earlier-Payload optimization commit containing only app.py gzip hunks 1, 3, and 4 plus the gzip test, and only the ai_case_project select-list narrowing hunks plus its focused test. Hunk-review app.py against Azure commit 3815866. Do not put either optimization back into Rule or ordinal 0.",
+    "status": "open"
+  },
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "policy_index_rule_delta": {
+    "finding": "No Rule-only policy_index hunk remains. Ordinal 0 owns the complete scope/filter/manifest/readiness contract; Rule consumes it.",
+    "path_present": false
+  },
+  "prior_path_count": 18,
+  "prior_rule_manifest": {
+    "bytes": 32416,
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\01-rule-retrieval.manifest.json",
+    "sha256": "529b763db020b4eb41fb439ca3ffc0bb359413b75bebb346e05170af6bc09b30"
+  },
+  "prior_rule_patch": {
+    "bytes": 344426,
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\01-rule-retrieval.blocked-proven-subset.patch",
+    "sha256": "d5eea76e93425fb1a8c52f08232c960ecfacdf73003d42c75a32209544dbfc82"
+  },
+  "rebased_path_count": 17,
+  "rebased_rule_patch": {
+    "bytes": 316091,
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\01-rule-retrieval.rebased-on-foundation.patch",
+    "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1"
+  },
+  "removed_from_rule": [
+    {
+      "content_sha256": "a3f950e42a548c58be2fe2ddd7cd33781e5342b86d2556cb8533c98f08cb8848",
+      "hunks": [
+        {
+          "added_lines": 221,
+          "bytes": 9225,
+          "deleted_lines": 0,
+          "header": "@@ -0,0 +1,221 @@",
+          "ordinal": 1,
+          "sha256": "ee6fd967d9d0cdf40c2a39da3dbead9fc4e7b3b74835efb953f37a8f71d66963"
+        }
+      ],
+      "path": "tests/unit/test_large_responses_are_compressed.py",
+      "path_patch": {
+        "bytes": 9520,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\path-diffs-v4\\tests__unit__test_large_responses_are_compressed.py.patch",
+        "sha256": "990cf9a788cb2a1c1df051ad52a24f0b0711815a5bfc56310cbf467f282ed2a5"
+      },
+      "reason": "The test covers HTTP gzip only and imports api.app.RESPONSE_COMPRESSION_MIN_BYTES. The production gzip implementation is not in Rule and is explicitly owned by the earlier Payload optimization."
+    },
+    {
+      "associated_ai_case_project_hunks": [
+        {
+          "added_lines": 47,
+          "bytes": 3846,
+          "deleted_lines": 9,
+          "header": "@@ -294,17 +485,55 @@ DECISION_RULE_RESCUE_MARGIN = 0.3",
+          "ordinal": 6,
+          "sha256": "11cd57fd576a8c425007c9e5b10f422d0e0541ab2314192b749a1d81487a7010"
+        },
+        {
+          "added_lines": 6,
+          "bytes": 837,
+          "deleted_lines": 1,
+          "header": "@@ -2210,13 +3110,18 @@ async def _answer_project_scope(",
+          "ordinal": 38,
+          "sha256": "92b672606b0767ccb66ea6f29c58167b73ba6c1d206f4c6eae8a6f719f3fe60a"
+        },
+        {
+          "added_lines": 19,
+          "bytes": 2195,
+          "deleted_lines": 5,
+          "header": "@@ -2233,18 +3138,32 @@ async def _answer_project_scope(",
+          "ordinal": 39,
+          "sha256": "f6b57665ddbf971986dfe835ebef364ca8f12999a692c80d3ef450a78166b092"
+        },
+        {
+          "added_lines": 1,
+          "bytes": 380,
+          "deleted_lines": 1,
+          "header": "@@ -2810,7 +3991,7 @@ async def _rank_rules_for_retained(",
+          "ordinal": 45,
+          "sha256": "1400f293993693f2834fbbce6a64d90e6c02e636464d86b80f38a1f0061b2094"
+        }
+      ],
+      "content_sha256": "015aaa3ea5db1baf6efd1a18b9d2afb1cdad2cb1cb06b14965b8413c2ec14e7e",
+      "hunks": [
+        {
+          "added_lines": 351,
+          "bytes": 13806,
+          "deleted_lines": 0,
+          "header": "@@ -0,0 +1,351 @@",
+          "ordinal": 1,
+          "sha256": "b0ff18c2bf6ab9cf7a8f498bc35f678a6da47ae85fd70815a1ac726a65336ba8"
+        }
+      ],
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "path_patch": {
+        "bytes": 14134,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\path-diffs-v4\\tests__unit__test_a_search_result_carries_only_what_is_read.py.patch",
+        "sha256": "14c012f14f63cf0265ef394af97145cd3aa26d32acd8a211c0f0dc78e596dbe0"
+      },
+      "reason": "The test and its four select-list code hunks are the measured Azure AI Search response-field narrowing owned by the earlier Payload optimization, not Native Rule Retrieval."
+    }
+  ],
+  "schema_version": "rule_rebase_delta_manifest_v1"
+}

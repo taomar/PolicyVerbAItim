@@ -1,0 +1,99 @@
+{
+  "schema_version": "consume-api-controlled-adoption-source-lock/1",
+  "authoritative_harness": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\32337711-c949-40cc-a21e-78f430842ec7\\files\\real-harness-integration\\baseline",
+    "identified_by_report": "C:\\Users\\taomar\\.copilot\\session-state\\32337711-c949-40cc-a21e-78f430842ec7\\files\\real-harness-integration\\INTEGRATION_READINESS_REPORT.md",
+    "report_description": "baseline\\ is the fresh untouched source copy",
+    "tree_hash_definition": "SHA-256 of sorted UTF-8 relative-path + NUL + lowercase file SHA-256 + LF records",
+    "tree_sha256_all_files": "1b2d46cd1b3133f97e5949c3fcaace5bcaff73e17355b9d710caba861348a61c",
+    "all_file_count": 9,
+    "all_files": {
+      "__pycache__/consume_matrix_runner.cpython-311.pyc": "da073b5201e58cc7e57bee7dfe8d40deead74144d399523ca939244145dc0fdb",
+      "AGENT_PROGRESS.md": "ce838d849b8f6e76aa7d185a6b9722b833f71e02cf200507a3f541f4bee572dd",
+      "consume_matrix_runner.py": "e11de06b69eb70c621bec788f13824c0de1491dd9d84d0b9e800d9a5115ad0c8",
+      "evaluation-rubric.json": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "HARNESS_DESIGN.md": "55004b1e326fbe3cd4c050ca5f77ec346c678569124c8d016226fe4b65811d58",
+      "INVENTORY.md": "2575932e6e70922769cc4670871ef633038453986d04548cefa89b59f0666181",
+      "manifest.pending.json": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+      "schemas/derived-result.schema.json": "4fdff4d40913d83ce53795bbf7c8ed5236d982baf15ae6b61496562c485ddd26",
+      "schemas/raw-result.schema.json": "ae36bd89b7757862e9834d15bcb20ad179b8e8e11e1528c19b19184c78a402e7"
+    },
+    "operational_source_file_count": 8,
+    "operational_source_files": {
+      "AGENT_PROGRESS.md": "ce838d849b8f6e76aa7d185a6b9722b833f71e02cf200507a3f541f4bee572dd",
+      "consume_matrix_runner.py": "e11de06b69eb70c621bec788f13824c0de1491dd9d84d0b9e800d9a5115ad0c8",
+      "evaluation-rubric.json": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "HARNESS_DESIGN.md": "55004b1e326fbe3cd4c050ca5f77ec346c678569124c8d016226fe4b65811d58",
+      "INVENTORY.md": "2575932e6e70922769cc4670871ef633038453986d04548cefa89b59f0666181",
+      "manifest.pending.json": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+      "schemas/derived-result.schema.json": "4fdff4d40913d83ce53795bbf7c8ed5236d982baf15ae6b61496562c485ddd26",
+      "schemas/raw-result.schema.json": "ae36bd89b7757862e9834d15bcb20ad179b8e8e11e1528c19b19184c78a402e7"
+    },
+    "generated_cache_not_adopted": [
+      "__pycache__/consume_matrix_runner.cpython-311.pyc"
+    ]
+  },
+  "source_artifacts": {
+    "rubric_provenance_guard": {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\32337711-c949-40cc-a21e-78f430842ec7\\files\\rubric-provenance-guard",
+      "file_count": 9,
+      "tree_sha256": "fd844112b96fd17cb3641d9005d1a9576815214193cc936262ffb8aa92676f5a"
+    },
+    "real_harness_integration": {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\32337711-c949-40cc-a21e-78f430842ec7\\files\\real-harness-integration",
+      "file_count": 50,
+      "tree_sha256": "2af356834c1bc69b41c73938f0197251927bf9b7f129194aaf4a4bd83d2a24eb"
+    }
+  },
+  "patch": {
+    "source_path": "C:\\Users\\taomar\\.copilot\\session-state\\32337711-c949-40cc-a21e-78f430842ec7\\files\\real-harness-integration\\real-harness-provenance-guard.patch",
+    "bundled_path": "provenance/real-harness-provenance-guard.patch",
+    "sha256": "2dfcdd21a4c6def599d0e06f55fc42e6fd5e3dd94800c49ca375a4cffdb81345",
+    "diff_file_count": 16
+  },
+  "overlay": {
+    "source_path": "C:\\Users\\taomar\\.copilot\\session-state\\32337711-c949-40cc-a21e-78f430842ec7\\files\\real-harness-integration\\overlay",
+    "file_count": 16,
+    "files": {
+      "consume_matrix_runner.py": "ce205bc47d88f38d3f75c4f7f6e752b4ed94e5ef325b738b3c8baf744889d273",
+      "evaluation-rubric.json": "00c7397a76d08d7f431994c649a1ace6384b0a663a0f46a66065bf52041e63ed",
+      "evidence/ACTIONABLE_POLICY_FAILURE_AUDIT.md": "a46099c8a187fbca985300097f962561c5d6c2c9b6fe4b921b03c7a436e6923a",
+      "evidence/AIS02_SEMANTIC_DECISION.json": "21554676fd12f95a1dc9fddb044aa74da4351897e40e021d484e6698000b8912",
+      "evidence/manifest-v1.snapshot.json": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+      "evidence/rubric-v1.snapshot.json": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "evidence/source.snapshot.json": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "manifest.pending.json": "82cfaa7a4e91031f8b7b2e441d0aba91f7ced2e323eb7a2552846116f7bd73bf",
+      "migrate_rubric_provenance.py": "ec21d0b464772ab3d01f8128da71ed90b5263f51f52c889fb6e7321b7e01b8c8",
+      "PROVENANCE_INTEGRATION.md": "f22d4312e7c7728f091d0152990f71946407a1f34289776a97015fe97bfea11a",
+      "RUBRIC_MIGRATION_V2.md": "d12f6f3082c65781069b5e6b012c6d233f896309e75cb74f21c83861c1f6ec40",
+      "rubric_provenance.py": "b61feba7078168fc3edf22abd85cdd0e31ad31c665271c85ce89f617fa60a267",
+      "schemas/derived-result.schema.json": "ec709090d70b03a5a7da77fc444f4416a8d82d3c0e2e81b37beea837f18d7167",
+      "SOURCE_LOCK.json": "8b4513778fafb370c2f925a7b1823e59a6c73c866e429994b9ee26d2433fb0e7",
+      "tests/test_rubric_provenance_integration.py": "e2f5979a52b6b02744bce952c3ab269c7b172085b73cf3df93b4d1fc5aa85e7e",
+      "verify_source_lock.py": "37a7da3e69e21fb90879cddc5f525b5f23633ef2296eda928183dd3ee3497e75"
+    }
+  },
+  "immutable_migration_inputs": {
+    "evidence/rubric-v1.snapshot.json": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+    "evidence/manifest-v1.snapshot.json": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+    "evidence/source.snapshot.json": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+    "evidence/ACTIONABLE_POLICY_FAILURE_AUDIT.md": "a46099c8a187fbca985300097f962561c5d6c2c9b6fe4b921b03c7a436e6923a",
+    "evidence/AIS02_SEMANTIC_DECISION.json": "21554676fd12f95a1dc9fddb044aa74da4351897e40e021d484e6698000b8912",
+    "evidence/rubric-v2.overlay.snapshot.json": "00c7397a76d08d7f431994c649a1ace6384b0a663a0f46a66065bf52041e63ed",
+    "evidence/manifest-v1.overlay.snapshot.json": "82cfaa7a4e91031f8b7b2e441d0aba91f7ced2e323eb7a2552846116f7bd73bf"
+  },
+  "successor_primary_outputs": {
+    "consume_matrix_runner.py": "6d5c5b43585ccbdb85fb3f2637356fcede95d24cb70b403326c3a4c88e856190",
+    "rubric_provenance.py": "1298c04b99cf6b9ba3d87ae9eac09a4dbd0d9d4f78a622ff87d4287c82e96507",
+    "migrate_rubric_provenance.py": "63d060ed069f9b34c0903c0a68058020876cfb2b421499cba0124ca916b4fdc7",
+    "evaluation-rubric.json": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+    "manifest.pending.json": "423dc480a9715058fe15528617cb1c47bbd0b9427818f1d3f17945074c14fa45",
+    "schemas/derived-result.schema.json": "ec709090d70b03a5a7da77fc444f4416a8d82d3c0e2e81b37beea837f18d7167",
+    "schemas/raw-result.schema.json": "ae36bd89b7757862e9834d15bcb20ad179b8e8e11e1528c19b19184c78a402e7"
+  },
+  "source_mutation": {
+    "status": "passed",
+    "rubric_provenance_guard_pre_post_tree_sha256": "fd844112b96fd17cb3641d9005d1a9576815214193cc936262ffb8aa92676f5a",
+    "real_harness_integration_pre_post_tree_sha256": "2af356834c1bc69b41c73938f0197251927bf9b7f129194aaf4a4bd83d2a24eb"
+  }
+}

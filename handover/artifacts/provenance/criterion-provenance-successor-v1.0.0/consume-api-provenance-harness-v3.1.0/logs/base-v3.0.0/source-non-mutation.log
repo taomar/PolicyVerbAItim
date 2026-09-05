@@ -1,0 +1,8 @@
+SOURCE_TREE C:\Users\taomar\.copilot\session-state\32337711-c949-40cc-a21e-78f430842ec7\files\rubric-provenance-guard
+files_before=9 files_after=9 pre_tree_sha256=fd844112b96fd17cb3641d9005d1a9576815214193cc936262ffb8aa92676f5a post_tree_sha256=fd844112b96fd17cb3641d9005d1a9576815214193cc936262ffb8aa92676f5a
+missing=0 added=0 changed=0
+SOURCE_TREE C:\Users\taomar\.copilot\session-state\32337711-c949-40cc-a21e-78f430842ec7\files\real-harness-integration
+files_before=50 files_after=50 pre_tree_sha256=2af356834c1bc69b41c73938f0197251927bf9b7f129194aaf4a4bd83d2a24eb post_tree_sha256=2af356834c1bc69b41c73938f0197251927bf9b7f129194aaf4a4bd83d2a24eb
+missing=0 added=0 changed=0
+AUTHORITATIVE_BASELINE files=9 tree_sha256=1b2d46cd1b3133f97e5949c3fcaace5bcaff73e17355b9d710caba861348a61c
+SOURCE_NON_MUTATION=passed all_source_trees_byte_identical

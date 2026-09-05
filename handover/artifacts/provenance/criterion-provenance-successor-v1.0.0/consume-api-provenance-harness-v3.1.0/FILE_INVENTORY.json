@@ -1,0 +1,517 @@
+{
+  "schema_version": "sha256-file-inventory/1",
+  "root": ".",
+  "generated_file_excluded_from_own_inventory": "FILE_INVENTORY.json",
+  "canonical_bundle_sha256": "037a40264acdde60c2b769f37e3eba5fe4af01dc980292d90fd4cab03c569c75",
+  "canonical_hash_definition": {
+    "algorithm": "sha256",
+    "value": "037a40264acdde60c2b769f37e3eba5fe4af01dc980292d90fd4cab03c569c75",
+    "record_format": "sorted UTF-8 relative-path + NUL + lowercase file SHA-256 + LF",
+    "included_file_count": 80,
+    "included_bytes": 2068536,
+    "excluded_paths": [
+      "BUNDLE_MANIFEST.json",
+      "FILE_INVENTORY.json",
+      "READINESS_IMPLEMENTATION_REPORT.md",
+      "work/**",
+      "runs/**",
+      "**/__pycache__/**",
+      "**/*.pyc"
+    ]
+  },
+  "file_count_excluding_inventory_self": 82,
+  "files": [
+    {
+      "path": "ADOPTION_AND_ROLLBACK.md",
+      "bytes": 975,
+      "sha256": "f579d041b5a0325b52fb40ab09ff8abf98f2a89260d7d7fe537ae44f6009c174",
+      "canonical_payload": true
+    },
+    {
+      "path": "AGENT_PROGRESS.md",
+      "bytes": 1680,
+      "sha256": "c71a0acc71359d92376d3da48f0cfbd51123a3b0ce4bcd099c4f16bb4964df53",
+      "canonical_payload": true
+    },
+    {
+      "path": "BUNDLE_MANIFEST.json",
+      "bytes": 5425,
+      "sha256": "341337bc303880c3637069e51192ce2db36c55dfd13d51168157b6828e4705f0",
+      "canonical_payload": false
+    },
+    {
+      "path": "HARNESS_DESIGN.md",
+      "bytes": 9935,
+      "sha256": "55004b1e326fbe3cd4c050ca5f77ec346c678569124c8d016226fe4b65811d58",
+      "canonical_payload": true
+    },
+    {
+      "path": "INVENTORY.md",
+      "bytes": 11965,
+      "sha256": "2575932e6e70922769cc4670871ef633038453986d04548cefa89b59f0666181",
+      "canonical_payload": true
+    },
+    {
+      "path": "MERGE_VALIDATION_REPORT.md",
+      "bytes": 2928,
+      "sha256": "14e6162d2ed85ca00ca0a4b3a624390dc9064aa3f230329e8a917228f80325eb",
+      "canonical_payload": true
+    },
+    {
+      "path": "PROVENANCE_INTEGRATION.md",
+      "bytes": 1180,
+      "sha256": "379cf8a70e0aece297ebd7eae6c4a1439dcaf71cbe941ab66a3a2882185c2cb5",
+      "canonical_payload": true
+    },
+    {
+      "path": "READINESS_IMPLEMENTATION_REPORT.md",
+      "bytes": 1481,
+      "sha256": "c0dcb5299ffd99a3b678a8a3adf855910c3c70de7f749ac5dfaa33ca6c53d2a8",
+      "canonical_payload": false
+    },
+    {
+      "path": "RUBRIC_MIGRATION_V2.md",
+      "bytes": 1413,
+      "sha256": "d12f6f3082c65781069b5e6b012c6d233f896309e75cb74f21c83861c1f6ec40",
+      "canonical_payload": true
+    },
+    {
+      "path": "RUBRIC_MIGRATION_V3.md",
+      "bytes": 1197,
+      "sha256": "95542aa524f6358baa5e4949a11ad2e9bded318ce70e3aa3a72a7f52d5d07cee",
+      "canonical_payload": true
+    },
+    {
+      "path": "RUBRIC_MIGRATION_V3_1.md",
+      "bytes": 1411,
+      "sha256": "d1edb3b329a3348e35fab745da2f10a00700eb42ec2bb6bd812402e70d8f85aa",
+      "canonical_payload": true
+    },
+    {
+      "path": "SOURCE_LOCK.json",
+      "bytes": 1401,
+      "sha256": "8b4513778fafb370c2f925a7b1823e59a6c73c866e429994b9ee26d2433fb0e7",
+      "canonical_payload": true
+    },
+    {
+      "path": "consume_matrix_runner.py",
+      "bytes": 96951,
+      "sha256": "58c6c180e4e49f4a1cc8213ef4bbfc3c8cd0771d5120b1bf3867675007651aba",
+      "canonical_payload": true
+    },
+    {
+      "path": "evaluation-rubric.json",
+      "bytes": 186031,
+      "sha256": "a2b547b74b8d7e44d853c128593aa45e475140929b55e127a2e56ad2fd3a7792",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/ACTIONABLE_POLICY_FAILURE_AUDIT.md",
+      "bytes": 13746,
+      "sha256": "a46099c8a187fbca985300097f962561c5d6c2c9b6fe4b921b03c7a436e6923a",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/AIS02_SEMANTIC_DECISION.json",
+      "bytes": 2507,
+      "sha256": "21554676fd12f95a1dc9fddb044aa74da4351897e40e021d484e6698000b8912",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/manifest-v1.overlay.snapshot.json",
+      "bytes": 5909,
+      "sha256": "82cfaa7a4e91031f8b7b2e441d0aba91f7ced2e323eb7a2552846116f7bd73bf",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/manifest-v1.snapshot.json",
+      "bytes": 6190,
+      "sha256": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/normative/ais_e_annual_vacation_r1.json",
+      "bytes": 27560,
+      "sha256": "c0567c8cbf547b44734fb5588bada9f3bd107f8ba94677352f994f470cafc20c",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/normative/ais_e_maternity_leave_r1.json",
+      "bytes": 11627,
+      "sha256": "92cc35e1352ad734ca6a6584dd8ee5ac3f21b22c8e31ce1c35dab841ea916f55",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/normative/ais_e_tuition_child_r1.json",
+      "bytes": 5930,
+      "sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/normative/hardware-policy-v3.3.rules.json",
+      "bytes": 15000,
+      "sha256": "0fb6a1298d13f4d3b82da8c3571e189076bd56fec943be0e871036d0875ecfbf",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/normative/normative-provenance-batch2.source-attestations.json",
+      "bytes": 11879,
+      "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/rubric-v1.snapshot.json",
+      "bytes": 21872,
+      "sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/rubric-v2.overlay.snapshot.json",
+      "bytes": 176428,
+      "sha256": "00c7397a76d08d7f431994c649a1ace6384b0a663a0f46a66065bf52041e63ed",
+      "canonical_payload": true
+    },
+    {
+      "path": "evidence/source.snapshot.json",
+      "bytes": 32682,
+      "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/copied-harness-tests.log",
+      "bytes": 3511,
+      "sha256": "e1584601a408c0e26b54866c5fabcd58c9fe6a7babe6ffd66459fd2b438544c6",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/deterministic-regeneration.log",
+      "bytes": 1120,
+      "sha256": "1536f60d36fb903c720f3f7a61c1b252ac5fbbc686676d6ab8bb833453bf2991",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/leakage-scan.log",
+      "bytes": 300,
+      "sha256": "84318de6e417f14220870b17b3df430a05ad7f85abd6808cb70ad2561a0d01d5",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/migration.log",
+      "bytes": 331,
+      "sha256": "2c58bdbc40d89259909ce5047f892b8aee63403e04a1a8dc62d920965deb0f77",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/mutation-negative-controls.log",
+      "bytes": 1778,
+      "sha256": "6754c80b3a702e0ac6451b7f1396fbf1816a75ddcb3a4b4e7eb6b10603fda78a",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/native-self-test.log",
+      "bytes": 788,
+      "sha256": "5c94664ed1a8dbce923a76c88612a4d9e28e76ab3bf5adc22b1fa9c9e25cbd2f",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/native-validate.log",
+      "bytes": 1769,
+      "sha256": "775aa8fa31277fb09464a9d09bf2150b71c313c60b3ed634468353fb8ef717cc",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/overlay-adoption.log",
+      "bytes": 3581,
+      "sha256": "03ee08694dd519731cc96b7233c98aff243a3978e7d2c82702fa9072a6d409da",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/source-artifact-read.log",
+      "bytes": 12586,
+      "sha256": "f1a0927ca4425b1f0a09f0b1849aee58c5d6b0e4cd1dab9b87813656c958ba92",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/base-v3.0.0/source-non-mutation.log",
+      "bytes": 854,
+      "sha256": "03babf9b65c433d2e612b450bc331a8c173c674270cd5f9958c72428cca6b33c",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/leakage-scan.json",
+      "bytes": 299,
+      "sha256": "d75692371eb0db3ab1315e45f652766ec2612c54a6384d8f55a782da8a53c1d0",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/mutation-negative-controls.json",
+      "bytes": 976,
+      "sha256": "e455511a920b7e935499c975a568e5f5ddfc225c78b454f3858cc057ad6a7fdd",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/native-self-test.json",
+      "bytes": 100,
+      "sha256": "e21376012ea0f639efe4517e8dae6fd54f96b59343e70bc31bd7f3486bfc5865",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/native-validate.json",
+      "bytes": 125,
+      "sha256": "808ee20cb5e360b96cd3da1eed468f6fd5f25aea7ba4d1e2d83e1c3e464d96df",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/unit-tests.json",
+      "bytes": 56,
+      "sha256": "c592104eb01bae349a5af9816f51d43a62419249cc9dfb42cfbdfc882763c16d",
+      "canonical_payload": true
+    },
+    {
+      "path": "logs/validation-summary.json",
+      "bytes": 2642,
+      "sha256": "a3c25e9c524948ffef28da910f92bd1b1a1e9a9830cc10ef3eade92da6816221",
+      "canonical_payload": true
+    },
+    {
+      "path": "manifest.pending.json",
+      "bytes": 6043,
+      "sha256": "3e7c24a0e6c93bf3205874d63361e0fa1dbe3e52405887a983d3d1efb34cb80b",
+      "canonical_payload": true
+    },
+    {
+      "path": "migrate_rubric_provenance.py",
+      "bytes": 26966,
+      "sha256": "63d060ed069f9b34c0903c0a68058020876cfb2b421499cba0124ca916b4fdc7",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/ADOPTION_SOURCE_LOCK.json",
+      "bytes": 7403,
+      "sha256": "a81f9e6894863035e8bff1851c3fb8c50de0e4264ef7b636e8a6b6e63b726a4d",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/INPUT_HASH_MANIFEST.json",
+      "bytes": 14526,
+      "sha256": "0caa125fb500f127109cb2f8199391a2d8aaff0c0bf0a4dd7e385b04480918f3",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/SOURCE_NON_MUTATION.json",
+      "bytes": 68199,
+      "sha256": "43c0e9dd97b5c4248998d9af39b286f5d624dac7bb06e387a12faaeef91396b9",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/build_criterion_provenance_successor.py",
+      "bytes": 127757,
+      "sha256": "348eca7f998424d2267e2f1b667a407d6b35d75e63e102d86be9dc1cb80b9719",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/criterion-provenance-merged-ledger.json",
+      "bytes": 63022,
+      "sha256": "80f785a0f989b25f490c84bd0b1b32f98622c3d64da818a42aed061c6e15f185",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/criterion-provenance-merged-overlay.json",
+      "bytes": 52230,
+      "sha256": "41b66da713ca9c49b454c7958b94fb229a4f7b7d0420c2b471be50ba05ec8e88",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/real-harness-provenance-guard.patch",
+      "bytes": 398738,
+      "sha256": "2dfcdd21a4c6def599d0e06f55fc42e6fd5e3dd94800c49ca375a4cffdb81345",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch1/build_batch1_provenance.py",
+      "bytes": 36210,
+      "sha256": "01f77bee569eb44c3d304254adcd360006a9d2965713624a3ac153a31471f915",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch1/criterion-provenance-batch1-MERGE.md",
+      "bytes": 1615,
+      "sha256": "5d576d52e4316ba78a0bcdfc64cf54d56c2cebb7ee59547c6c9640d5176d61d3",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch1/criterion-provenance-batch1-ledger.json",
+      "bytes": 31737,
+      "sha256": "690ffe65dc7d01faba6d61e6247bd8222b20ddf84080f4abaa701684753ce720",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch1/criterion-provenance-batch1-overlay.json",
+      "bytes": 18671,
+      "sha256": "36ae59123a4c5cd9d19283747535a5fd9d6f0743c9554d829d6d2d664032629a",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch1/criterion-provenance-batch1-source-attestations.json",
+      "bytes": 21929,
+      "sha256": "3e38fbde8c546f741d3e821a89024cf51fbb1917c87f083b540695a90585f307",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch1/criterion-provenance-batch1-validation.json",
+      "bytes": 3718,
+      "sha256": "bd3571e2923081869883595385bcc32be56c6c4364862d232a2c08cf5f90b0cc",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-original-predecessor/build_batch2_artifacts.py",
+      "bytes": 40422,
+      "sha256": "bc1a8ae553438b006b6fa2de1dbfb7ac18481be64608b719231e83f05446bff1",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.MERGE.md",
+      "bytes": 2709,
+      "sha256": "5946dccc6396753bf127685531bbd93e0359620d434bd44e7fda3d9810e39c3b",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.ledger.json",
+      "bytes": 58020,
+      "sha256": "c7cd8155b58d129625ced534a17e671cb629f5347988ad1ef2cd52a36de85019",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.overlay.json",
+      "bytes": 37276,
+      "sha256": "d7c0de9ae27187b3482350d001fa6a66632c65b82cf20ee4735029af141b660e",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.source-attestations.json",
+      "bytes": 11879,
+      "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.validation.json",
+      "bytes": 5467,
+      "sha256": "ff08208486ec4103eb8920b72ecba0621a1ffe1a343b9d01fbf2d793630ae0ae",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-successor-repair/AGENT_PROGRESS.md",
+      "bytes": 8258,
+      "sha256": "caefceef6c1d9be5c9783904b6f20d6b086aa9c496ca2562316a6b2103331c20",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-successor-repair/build_provenance_partition_correction.py",
+      "bytes": 75185,
+      "sha256": "f89dcbbec5da3fd0336d350ba39f680a7e98e05582930231aceb439a9a856c8b",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-successor-repair/criterion-provenance-batch2-successor.ledger.json",
+      "bytes": 58095,
+      "sha256": "ae7e00d8ecf9f3916f4ff2c0424eee9392baf00aa925fafcf113838b96ac0887",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-successor-repair/criterion-provenance-batch2-successor.overlay.json",
+      "bytes": 37276,
+      "sha256": "5d0d9bbb374bd7ec3c3f7e5617494da3e2dd62dcd1809889d99a52aa5de9167a",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-successor-repair/criterion-provenance-batch2-successor.source-attestations.json",
+      "bytes": 13565,
+      "sha256": "87e18c82c7418e16e2296e4188d9045653cafed056680bc277e698997e434237",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-successor-repair/criterion-provenance-partition-correction.MERGE.md",
+      "bytes": 2482,
+      "sha256": "6cc82d9c457b328ab48713396a22b786d1c94c12aa611df53e593286a13a1b54",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-successor-repair/criterion-provenance-partition-correction.manifest.json",
+      "bytes": 21866,
+      "sha256": "c49148190ba637a85c0f8d3d2d565aa616642107a0d9e88162ae05f1a36661c0",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch2-successor-repair/criterion-provenance-partition-correction.validation.json",
+      "bytes": 9445,
+      "sha256": "092557d1bf4b7f694cb479ae95a15f23e21463d30585752c423f969a2ff905f5",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch3/criterion-provenance-batch-3.ledger.jsonl",
+      "bytes": 14367,
+      "sha256": "8c832a98ac7207c146ef328c56342e8e3dc75f29c429709e4b14431a6616946a",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch3/criterion-provenance-batch-3.merge-instructions.md",
+      "bytes": 1922,
+      "sha256": "a3f8df45954742d3c3f6ac61ccc0cb00825161384dffd7e6d988e7cb20491b35",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch3/criterion-provenance-batch-3.overlay.json",
+      "bytes": 7321,
+      "sha256": "4879337d894ff7e90653e248742c46a3f933abae2483209bfca6f7d66030495d",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch3/criterion-provenance-batch-3.source-hashes.json",
+      "bytes": 7005,
+      "sha256": "178630c61ff91e4083776c0ad765d1ae42e77d88534483fa0a5f31e4e5e1663d",
+      "canonical_payload": true
+    },
+    {
+      "path": "provenance/source-batches/batch3/criterion-provenance-batch-3.validation.json",
+      "bytes": 3035,
+      "sha256": "960d354038acf33f3b7209ee72f274308948896ab311931bc4913bf04336161e",
+      "canonical_payload": true
+    },
+    {
+      "path": "rubric_provenance.py",
+      "bytes": 27420,
+      "sha256": "1298c04b99cf6b9ba3d87ae9eac09a4dbd0d9d4f78a622ff87d4287c82e96507",
+      "canonical_payload": true
+    },
+    {
+      "path": "schemas/derived-result.schema.json",
+      "bytes": 17155,
+      "sha256": "ec709090d70b03a5a7da77fc444f4416a8d82d3c0e2e81b37beea837f18d7167",
+      "canonical_payload": true
+    },
+    {
+      "path": "schemas/raw-result.schema.json",
+      "bytes": 21431,
+      "sha256": "ae36bd89b7757862e9834d15bcb20ad179b8e8e11e1528c19b19184c78a402e7",
+      "canonical_payload": true
+    },
+    {
+      "path": "tests/test_criterion_provenance_successor.py",
+      "bytes": 4851,
+      "sha256": "1d81b156465b27a30a55ff64bb54f00acd6d58d7160e5b3ae4e2954759077ffd",
+      "canonical_payload": true
+    },
+    {
+      "path": "tests/test_rubric_provenance_integration.py",
+      "bytes": 22027,
+      "sha256": "c1fff2d48b227c819bbe1a9177c5b5dced23d6800e84f5bcacf8dd40b38d6d70",
+      "canonical_payload": true
+    },
+    {
+      "path": "verify_source_lock.py",
+      "bytes": 2080,
+      "sha256": "37a7da3e69e21fb90879cddc5f525b5f23633ef2296eda928183dd3ee3497e75",
+      "canonical_payload": true
+    }
+  ]
+}

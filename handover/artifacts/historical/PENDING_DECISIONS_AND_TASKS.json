@@ -1,0 +1,362 @@
+{
+  "schema": "policyverbatim_host_migration_pending_tasks/1",
+  "generated_utc": "2026-09-05T06:38:47Z",
+  "generated_by_session": "8476596b-1943-4577-8a2c-10e0d7553606",
+
+  "lock": {
+    "state": "ALL FEATURE DEVELOPMENT IS STOPPED",
+    "in_force": true,
+    "lifted_by": "explicit human owner instruction only",
+    "prohibited_without_new_authorization": [
+      "editing repository source",
+      "git add / commit / reset / stash / clean / checkout of the shared tree",
+      "git push to any remote",
+      "Azure deployment, IaC apply, Key Vault mutation",
+      "Alembic migration against any live database",
+      "live Azure AI Search index build or upload",
+      "live model or API calls against production endpoints",
+      "provenance harness execution"
+    ],
+    "permitted": [
+      "read-only inspection",
+      "hashing",
+      "writing handover artifacts into a session-state files directory"
+    ],
+    "sole_in_flight_exception": "session ecd8492d-9745-4265-991a-cba401a6ebc3 was authorized for archival reconciliation plus ONE private push from the OLD host; that authorization does not transfer"
+  },
+
+  "ordering_rule": "Do not reorder. Each phase gates the next.",
+
+  "phases": [
+    {
+      "phase": 0,
+      "name": "Transfer",
+      "gate": "nothing else may start until this completes",
+      "tasks": [
+        {
+          "id": "P0-1",
+          "action": "Copy C:\\Users\\taomar\\Downloads\\policy extractor INCLUDING the complete .git directory and the dirty working tree",
+          "status": "pending",
+          "owner": "host operator",
+          "authorization_required": false,
+          "critical": true,
+          "warning": "Do not clean, gc, reflog expire, or delete branches. Nine commits and four branch tips exist ONLY locally."
+        },
+        {
+          "id": "P0-2",
+          "action": "Copy C:\\Users\\taomar\\Downloads\\policy-extractor-azure-deploy (clean; 1 branch; 2 unpushed commits)",
+          "status": "pending",
+          "owner": "host operator",
+          "authorization_required": false
+        },
+        {
+          "id": "P0-3",
+          "action": "Copy the session-state trees listed in ARTIFACT_INVENTORY.json (minimum: b065f09b, 6713376d, c17eaeeb, d5da914d, 71c6d508, 5a06fec2, 8437f3da, ecd8492d, 690ae612, 749bf4f5, 8476596b)",
+          "status": "pending",
+          "owner": "host operator",
+          "authorization_required": false
+        },
+        {
+          "id": "P0-4",
+          "action": "Recreate the NTFS junction C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository -> C:\\Users\\taomar\\Downloads\\policy extractor",
+          "status": "pending",
+          "owner": "host operator",
+          "authorization_required": false,
+          "critical": true,
+          "warning": "Nothing in this package resolves without the junction."
+        },
+        {
+          "id": "P0-5",
+          "action": "Transfer secrets and runtime data OUTSIDE Git by a separate secure channel: every .env family file, .local-accounts.txt, .local-signing-key*, *.pem, .azure\\*, data\\documents\\, data\\backups\\",
+          "status": "pending",
+          "owner": "host operator",
+          "authorization_required": false,
+          "critical": true,
+          "warning": "NEVER commit these."
+        }
+      ]
+    },
+    {
+      "phase": 1,
+      "name": "Verify after clone (read-only, no writes)",
+      "gate": "any mismatch STOPS the migration",
+      "tasks": [
+        {
+          "id": "P1-6",
+          "action": "git --no-pager rev-parse HEAD and --abbrev-ref HEAD",
+          "expect": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f on branch main",
+          "status": "pending"
+        },
+        {
+          "id": "P1-7",
+          "action": "git --no-pager status --porcelain=v1 (and -uall)",
+          "expect": "86 entries (48 ' M', 35 '??', 3 ' D'); 87 exhaustive",
+          "status": "pending"
+        },
+        {
+          "id": "P1-8",
+          "action": "git --no-pager diff --cached --name-only and git --no-pager stash list",
+          "expect": "both empty",
+          "status": "pending"
+        },
+        {
+          "id": "P1-9",
+          "action": "Confirm the 3 synthetic ' D' paths are genuinely absent from disk and the 6 synthetic ' M' paths each report exactly ' M <path>'",
+          "expect": "as recorded in GIT_AND_WORKTREE_LEDGER.json dirty_byte_preserving_index_adoption",
+          "status": "pending",
+          "critical": true,
+          "on_failure": "STOP - the tree was mutated in transit"
+        },
+        {
+          "id": "P1-10",
+          "action": "Re-verify the content tree excluding .git\\**",
+          "expect": "37,199 files / 553,349,103 bytes / sha256 a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28; and the 78 per-file dirty hashes in feature-adoption\\START_STATE.json",
+          "status": "pending"
+        },
+        {
+          "id": "P1-11",
+          "action": "Confirm all refs resolve, especially 4f9f21a982ca612c08a3af7f8e6128f59fca605f, cf2d0f104c55f5a961d4634e692b9ebbe49e2aa7, b13f168db44f2dd0218b3deea0bba1bf186fb27e, 8bc0657a7076e8bf85b0a5f1b5ea009911829040, 381586688f0337be15dcc1d42d2be7d4b0fe4936",
+          "status": "pending",
+          "critical": true
+        },
+        {
+          "id": "P1-12",
+          "action": "Repair the worktree registry: git worktree list, then git worktree prune ONLY for paths confirmed gone",
+          "status": "pending",
+          "warning": "Do not prune the shared checkout, the publisher worktree, or the Azure checkout."
+        }
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Resolve the in-flight publication",
+      "gate": "publication status must be settled before any further Git decision",
+      "tasks": [
+        {
+          "id": "P2-13",
+          "action": "Obtain the publisher's final result from parent session b065f09b-2a4c-479f-a012-e6e55f388234: the exact remote SHA pushed to https://github.com/taomar/PolicyVerbAItim.git, or an explicit 'not pushed'",
+          "status": "BLOCKED",
+          "blocked_on": "parent session",
+          "critical": true,
+          "note": "Until it arrives, publication is UNVERIFIED."
+        },
+        {
+          "id": "P2-14",
+          "action": "Confirm whether taomar/PolicyVerbAItim exists and is reachable with the new host's credentials",
+          "status": "pending",
+          "note": "This session observed 'Repository not found'; cause indeterminate (credentials vs existence)."
+        },
+        {
+          "id": "P2-15",
+          "action": "Configure the 'base' remote on the new host; if a push is still required, obtain FRESH explicit authorization",
+          "status": "pending",
+          "authorization_required": true,
+          "note": "The old authorization was for one push from the old host and does not transfer."
+        },
+        {
+          "id": "P2-16",
+          "action": "Decide the fate of archive-inflight / b13f168 / 8bc0657: keep as the archival reconciliation, or redo under the in_flight_reconciliation_rule",
+          "status": "pending",
+          "decision_owner": "human owner",
+          "warning": "Do not delete either branch before this decision."
+        }
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Restore the environment (no product changes)",
+      "tasks": [
+        {
+          "id": "P3-17",
+          "action": "Resolve the origin decision: origin currently points at https://github.com/taomar/policyAIengine.git; the documented normal origin is https://github.com/taomar/policy-governance-engine.git",
+          "status": "pending",
+          "decision_owner": "human owner",
+          "note": "origin/main (db882ef) is the ancestor of all nine local commits either way. ASK before changing."
+        },
+        {
+          "id": "P3-18",
+          "action": "Recreate Python and Node environments (.venv; node_modules for apps\\web and apps\\consume-demo)",
+          "status": "pending",
+          "note": "deliberately not transferred"
+        },
+        {
+          "id": "P3-19",
+          "action": "Restore data\\documents\\ if the 12 corpus errors are to disappear; otherwise record them as expected-by-design",
+          "status": "pending"
+        },
+        {
+          "id": "P3-20",
+          "action": "Provide a valid .env (or fix the harness first, P4-22) so the 9 x 503 failures are not misread as environmental",
+          "status": "pending"
+        },
+        {
+          "id": "P3-21",
+          "action": "Re-establish the full baseline IN A REAL WORKTREE, never via git archive",
+          "expect": "9 failed / 23 skipped / 12 errors at d3bb0f94 if the environment is incomplete",
+          "status": "pending",
+          "warning": "git archive removes .git, and two publication tests shell out to git check-ignore, producing a false 57-failure baseline."
+        }
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "Separately authorized follow-up work",
+      "gate": "each item is its own authorization",
+      "tasks": [
+        {
+          "id": "P4-22",
+          "action": "Fix the test-harness defect in repository\\src\\policy_platform\\api\\routers\\ai.py - the harness never patches get_settings on that module, so 9 tests read the ambient .env and fail with 503",
+          "status": "pending",
+          "classification": "real defect; pre-existing at base 3414811; unrelated to this programme; deliberately left unfixed under scope discipline",
+          "authorization_required": true,
+          "note": "Own commit, own review. Do NOT fold into feature work. Do NOT dismiss the 9 as environmental."
+        },
+        {
+          "id": "P4-23",
+          "action": "Resolve the residual dirty snapshot: reconcile by hunk against merge base 3414811, decide per-hunk what is product versus archival, and land the 5 mixed paths deliberately",
+          "status": "pending",
+          "authorization_required": true,
+          "sub_decisions": [
+            "explicit fate of src\\policy_platform\\infrastructure\\projection\\llm_reasoning_view.py (WITHDRAWN experiment)",
+            "explicit fate of tests\\unit\\test_the_model_reads_a_reasoning_view.py (WITHDRAWN)"
+          ],
+          "mixed_paths": [
+            "src\\policy_platform\\api\\app.py",
+            "src\\policy_platform\\infrastructure\\projection\\policy_rule_slice.py",
+            "src\\policy_platform\\infrastructure\\search\\policy_index.py",
+            "tests\\unit\\test_no_m2_code_is_shaped_around_a_corpus.py",
+            "tests\\unit\\test_the_corpus_is_indexed_in_one_language.py"
+          ]
+        },
+        {
+          "id": "P4-24",
+          "action": "Decide whether to apply Alembic f4b8c2e97d31 -> a1c5f0b3e284 against the local database",
+          "status": "pending",
+          "authorization_required": true
+        },
+        {
+          "id": "P4-25",
+          "action": "Obtain independent HUMAN confirmation for the 19 semantic-pending provenance criteria (12 unresolved + 7 unscorable) and an authoritative product decision on HW-03:manual-1",
+          "status": "BLOCKED",
+          "blocked_on": "human confirmation - AI review must never be represented as human semantic confirmation",
+          "authorization_required": true
+        },
+        {
+          "id": "P4-26",
+          "action": "Decide on pushing local main to a remote",
+          "status": "pending",
+          "authorization_required": true,
+          "note": "No push without new authorization. main is 9 ahead of origin/main and has never been pushed."
+        },
+        {
+          "id": "P4-27",
+          "action": "NEVER deploy, push or merge 381586688f0337be15dcc1d42d2be7d4b0fe4936",
+          "status": "standing prohibition",
+          "authorization_required": true
+        },
+        {
+          "id": "P4-28",
+          "action": "Outstanding validation gaps: run a live native-rule AIS rerun; run a client-side live HTTP arm-F; run the full combined backend + both frontend suites against current main on a complete environment",
+          "status": "pending",
+          "authorization_required": true,
+          "note": "Do not run backend and both frontend suites concurrently - vitest worker startup timeouts from CPU contention."
+        },
+        {
+          "id": "P4-29",
+          "action": "Optional: if a zero-whitespace-warning policy is enforced, clean and rebase ordinals 01 and 02 TOGETHER and re-run every gate",
+          "status": "pending",
+          "note": "ordinal-01 adds one blank line at EOF in test_policy_case_project.py; non-blocking today"
+        }
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "Cleanup (last, only when confirmed safe)",
+      "tasks": [
+        {
+          "id": "P5-30",
+          "action": "Remove stale worktrees #3, #4, #5 (and #6 ONLY if branch taomar-microsoft-ranking-telemetry is retained)",
+          "status": "pending",
+          "warning": "removing #6 without retaining the branch makes 4f9f21a unreachable"
+        },
+        {
+          "id": "P5-31",
+          "action": "Archive completed sessions; keep every session in SESSION_LEDGER.json on disk until the new host has independently reproduced their conclusions",
+          "status": "pending"
+        },
+        {
+          "id": "P5-32",
+          "action": "Consider deleting merged/obsolete local branches ONLY after confirming reachability",
+          "status": "pending"
+        },
+        {
+          "id": "P5-33",
+          "action": "Fix the session-seeding defect that cut both reviewer worktrees at db882ef instead of the asserted base 3414811",
+          "status": "pending",
+          "classification": "process defect, reported by both reviewers, unfixed"
+        }
+      ]
+    }
+  ],
+
+  "status_summary": {
+    "completed": [
+      "local oversight migration and handover preservation",
+      "AIS 180-call matrix and final adjudication (27 product failures / 11 rubric errors / 0 unresolved / 0 proven regressions)",
+      "independent 38-call failure audit",
+      "rubric provenance guard and versioned harness 3.0.0 then 3.1.0",
+      "native rule-only retrieval backend with separate envelopes, receipts, citations, hashes and 503 propagation",
+      "Consume Demo native rule parser and renderer",
+      "Azure production local-auth implementation preserved in an isolated commit",
+      "prompt-v16 evidence-completeness contract",
+      "entitlement-versus-approval correction",
+      "property-derived coverage expansion",
+      "read-only commit-decomposition audit",
+      "ordinal-00 and ordinal-03 reconstructions",
+      "six-unit sequence validation and Adoption A",
+      "canonical table-structure carrier, reviewed and adopted",
+      "ranking-component telemetry, reviewed, rebased and adopted (Adoption B)",
+      "criterion provenance successor v1.0.0 built, validated and archived"
+    ],
+    "pending": [
+      "publisher final remote SHA",
+      "host transfer and post-clone verification",
+      "environment restoration",
+      "residual dirty-snapshot reconciliation",
+      "ai.py test-harness fix",
+      "live native-rule AIS rerun and client-side arm-F run",
+      "Alembic decision",
+      "origin restoration decision"
+    ],
+    "blocked": [
+      "19 semantic-pending provenance criteria - require independent human confirmation",
+      "HW-03:manual-1 - unsupported/contradicted and unresolved",
+      "2 criteria requiring authoritative product decisions",
+      "publication verification - awaiting parent"
+    ],
+    "withdrawn": [
+      "llm_reasoning_view experiment, its test and quarantine - must not be committed as product",
+      "score-scale disclosure (Rule Retrieval stage 2) - incomplete, unverified working-tree patch, not authority to change selection"
+    ],
+    "containment": [
+      "composition disclosure-only patch - superseded by the prompt-v16 evidence-completeness contract",
+      "local-mode one-replica enforcement - horizontal scaling requires shared transactional lockout state"
+    ],
+    "architectural_resolutions": [
+      "native rule retrieval replaces rule-first parent-policy expansion",
+      "prompt v16 / case-plan v4 total evidence-disposition validation, failing closed to not_settled_by_rules with no new verdict status",
+      "entitlement does not imply present approval; settles_requested_decision read only as a real boolean",
+      "coverage eligibility derived from a property (cut applied AND budget unspent), not an enumerated mode list",
+      "all-published-rule index/projection foundation extracted as a prerequisite commit",
+      "gzip and Search select-list narrowing re-owned into their own ordinal",
+      "criterion provenance guard: partition validation precedes overlay application; AI is never human confirmation",
+      "canonical table carrier: covered_columns moved into the contract so graph and carrier cannot disagree",
+      "ranking telemetry: failure guard placed inside record_ranking because the success call site has no try/except"
+    ],
+    "known_defects_not_fixed": [
+      "test harness never patches get_settings on api/routers/ai.py -> 9 x 503 failures (P4-22)",
+      "review-session worktrees seeded at db882ef instead of the asserted base (P5-33)",
+      "ordinal-01 single EOF blank-line whitespace warning (P4-29)"
+    ]
+  }
+}

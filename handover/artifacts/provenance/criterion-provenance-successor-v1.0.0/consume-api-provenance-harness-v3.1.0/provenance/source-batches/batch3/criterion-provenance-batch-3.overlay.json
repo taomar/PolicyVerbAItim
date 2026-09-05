@@ -1,0 +1,219 @@
+{
+  "schema_version": "criterion-provenance-authoring-overlay/1",
+  "batch_id": "criterion-provenance-batch-3",
+  "reviewer_kind": "ai",
+  "human_confirmation": false,
+  "base": {
+    "bundle": "consume-api-provenance-harness-v3.0.0",
+    "bundle_payload_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+    "rubric_schema_version": "consume-api-evaluation-rubric/3",
+    "rubric_sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58"
+  },
+  "selection": {
+    "predicate": "validation_state not in {validated_supported, known_limitation_supported}",
+    "sort": "criterion_id ascending by Unicode code point",
+    "asserted_total": 113,
+    "slice_start_1_based": 77,
+    "slice_end_1_based": 113,
+    "slice_count": 37,
+    "criterion_ids": [
+      "HW-05:R4",
+      "HW-05:R5",
+      "HW-05:R9",
+      "HW-05:manual-1",
+      "HW-06:R1",
+      "HW-06:R3",
+      "HW-06:R4",
+      "HW-06:R5",
+      "HW-06:R9",
+      "HW-06:manual-1",
+      "HW-07:R1",
+      "HW-07:R3",
+      "HW-07:R4",
+      "HW-07:R5",
+      "HW-07:R9",
+      "HW-07:manual-1",
+      "HW-08:R1",
+      "HW-08:R3",
+      "HW-08:R4",
+      "HW-08:R5",
+      "HW-08:R9",
+      "HW-08:manual-1",
+      "HW-08:manual-2",
+      "HW-09:R1",
+      "HW-09:R3",
+      "HW-09:R4",
+      "HW-09:R5",
+      "HW-09:R9",
+      "HW-09:manual-1",
+      "HW-09:manual-2",
+      "HW-09:manual-3",
+      "HW-10:R1",
+      "HW-10:R3",
+      "HW-10:R4",
+      "HW-10:R5",
+      "HW-10:R9",
+      "HW-10:manual-1"
+    ]
+  },
+  "evidence_sources_to_add": [
+    {
+      "id": "hw_rules_v3_3",
+      "path": "evidence/normative/hardware-policy-v3.3.rules.json",
+      "sha256": "0fb6a1298d13f4d3b82da8c3571e189076bd56fec943be0e871036d0875ecfbf",
+      "type": "json",
+      "origin_path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\samples\\policies\\hardware-policy-v3.3-import.json"
+    }
+  ],
+  "classifications": {
+    "mechanically_source_supported": [
+      "HW-08:manual-1"
+    ],
+    "semantic_support_pending_human_confirmation": [
+      "HW-05:manual-1",
+      "HW-07:manual-1",
+      "HW-09:manual-1"
+    ],
+    "unsupported_or_contradicted_rubric": [],
+    "structural_harness_not_product_law": [
+      "HW-05:R4",
+      "HW-05:R5",
+      "HW-05:R9",
+      "HW-06:R1",
+      "HW-06:R3",
+      "HW-06:R4",
+      "HW-06:R5",
+      "HW-06:R9",
+      "HW-06:manual-1",
+      "HW-07:R1",
+      "HW-07:R3",
+      "HW-07:R4",
+      "HW-07:R5",
+      "HW-07:R9",
+      "HW-08:R1",
+      "HW-08:R3",
+      "HW-08:R4",
+      "HW-08:R5",
+      "HW-08:R9",
+      "HW-08:manual-2",
+      "HW-09:R1",
+      "HW-09:R3",
+      "HW-09:R4",
+      "HW-09:R5",
+      "HW-09:R9",
+      "HW-09:manual-2",
+      "HW-09:manual-3",
+      "HW-10:R1",
+      "HW-10:R3",
+      "HW-10:R4",
+      "HW-10:R5",
+      "HW-10:R9",
+      "HW-10:manual-1"
+    ],
+    "unavailable_evidence": [],
+    "product_decision_required": []
+  },
+  "criterion_updates": [
+    {
+      "criterion_id": "HW-08:manual-1",
+      "slice_index_1_based": 98,
+      "expected_existing_pointer": "/questions/17/criteria/5",
+      "expected_existing_pointer_sha256": "a61cef01f18ef7ff9dbba6ff215ca4c11a0dbbc5555dd3d001bc072fbe49122a",
+      "classification": "mechanically_source_supported",
+      "replacement": {
+        "criterion_id": "HW-08:manual-1",
+        "active": true,
+        "applies_to": {
+          "kind": "manual",
+          "manual_index": 0
+        },
+        "description": "Thresholds without the self-approval prohibition are incomplete.",
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_rule_body",
+        "source_provision_ids": [
+          "df7847c17b9d31607df53fb27399b06a",
+          "e52c80ff95fb8c5af308eb6cf80b93dd"
+        ],
+        "source_rule_ids": [
+          "RULE-HW-001",
+          "RULE-HW-002",
+          "RULE-HW-003",
+          "RULE-HW-004",
+          "RULE-HW-005",
+          "RULE-HW-008"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_thresholds",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/62",
+            "pointer_sha256": "3cb0767d37b9673540bfbb6899f58b6c778d09fc892d312c409243a062541305"
+          },
+          {
+            "role": "normative_identity_self_approval",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/64",
+            "pointer_sha256": "76873cf76e07de4dad5f663650461104a6abc6ebadf34c8f81295ec066c2412f"
+          },
+          {
+            "role": "normative_rule_threshold_1",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/0",
+            "pointer_sha256": "0518d7a01f2d924f97c3cbf579bf410919e0b591df1d90c6a61f4366610786a9"
+          },
+          {
+            "role": "normative_rule_threshold_2",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/1",
+            "pointer_sha256": "2a885232776ed973a7921f5a80606bfc88b485ffbe36fca772713b9b0168c918"
+          },
+          {
+            "role": "normative_rule_threshold_3",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/2",
+            "pointer_sha256": "1882d730a971c08ccfbdd11036be25a9dab6e972e948489d43281ac35fdb0a10"
+          },
+          {
+            "role": "normative_rule_threshold_4",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/3",
+            "pointer_sha256": "95dbd9ceef6fc6db980c0e02abfbb41655c4a0b2b85ec227d9e33997af45d0a6"
+          },
+          {
+            "role": "normative_rule_threshold_5",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/4",
+            "pointer_sha256": "270d30083ceb8eab69bac73d2dad447bd980700fccb5c615423bc90c31659df4"
+          },
+          {
+            "role": "normative_rule_self_approval",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/7",
+            "pointer_sha256": "5ec464038b9dfacbfcdf9b0e4092808bb6595adb8dab0240c92804f84919e484"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/17/manual_criteria/0",
+            "pointer_sha256": "e7f201636568b248e830333ac54018430550c1087a85d682541b13acc4081e4e"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 6,
+          "supporting_provision_count": 2,
+          "method": "hash_bound_structured_rule_objects",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    }
+  ],
+  "merge_invariants": [
+    "Do not treat this AI review as human confirmation.",
+    "Apply only the listed criterion update and do not modify criteria outside slice indices 77-113.",
+    "Keep semantic-pending and structural classifications unscorable for product-failure attribution.",
+    "Vendor evidence byte-identically and revalidate every full-file and pointer hash before merge.",
+    "Do not add benchmark, question, provision, or rule identifiers to production guard logic."
+  ]
+}

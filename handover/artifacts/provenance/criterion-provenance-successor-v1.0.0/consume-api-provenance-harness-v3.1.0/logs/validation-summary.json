@@ -1,0 +1,113 @@
+{
+  "schema_version": "criterion-provenance-successor-validation/1",
+  "status": "passed",
+  "versions": {
+    "harness": "consume-api-provenance-harness/3.1.0",
+    "rubric": "3.1.0",
+    "manifest": "2.1.0"
+  },
+  "partition": {
+    "count": 113,
+    "pairwise_disjoint": true,
+    "omissions": 0,
+    "overlaps": 0,
+    "extras": 0
+  },
+  "counts": {
+    "criteria_total": 128,
+    "scorable": 20,
+    "unscorable": 95,
+    "unresolved": 13,
+    "findings": 108
+  },
+  "source_classifications": {
+    "mechanically_source_supported": 5,
+    "product_decision_required": 8,
+    "semantic_support_pending_human_confirmation": 19,
+    "structural_harness_not_product_law": 80,
+    "unsupported_or_contradicted_rubric": 1
+  },
+  "native_validate": {
+    "status": "passed",
+    "warnings": 0,
+    "question_count": 20,
+    "primary_job_count": 360,
+    "rubric_finding_count": 108
+  },
+  "native_self_test": {
+    "status": "passed",
+    "network_calls": 0,
+    "offline_guard": "socket_connect_and_dns_blocked"
+  },
+  "unit_tests": {
+    "status": "passed",
+    "passed": 31,
+    "failed": 0
+  },
+  "negative_controls": {
+    "status": "passed",
+    "passed": 8,
+    "failed": 0,
+    "results": [
+      {
+        "name": "omitted_canonical_owner",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "duplicate_canonical_owner",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "bad_pointer_hash",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "bad_evidence_source_hash",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "unsupported_scoring_upgrade",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "ai_as_human_confirmation",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "out_of_scope_criterion_mutation",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "correction_attestation_as_normative_evidence",
+        "result": "passed",
+        "expected": "rejected"
+      }
+    ]
+  },
+  "leakage": {
+    "status": "passed",
+    "source_literal_candidates": 167,
+    "source_literal_hits": 0,
+    "question_literals_checked": 20,
+    "question_literal_hits": 0,
+    "production_guard_hits": {
+      "rubric_ids": 0,
+      "question_ids": 0,
+      "provision_fixtures": 0
+    },
+    "secret_hits": 0,
+    "total_hits": 0
+  },
+  "deterministic_regeneration": {
+    "passes": 2,
+    "byte_identical": true
+  },
+  "execution_enabled": false
+}

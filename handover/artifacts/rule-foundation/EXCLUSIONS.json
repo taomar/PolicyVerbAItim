@@ -1,0 +1,183 @@
+{
+  "azure_commit_3815866": [
+    {
+      "base_exists": true,
+      "base_sha256": "5d7e95352fe52866427e703da24a0ff148b682dd56ccef1f6b60b37410cb8e6c",
+      "final_exists": true,
+      "final_sha256": "5d7e95352fe52866427e703da24a0ff148b682dd56ccef1f6b60b37410cb8e6c",
+      "matches_head": true,
+      "path": ".env.example"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "9344585f2ef0f8695490148e907c76cc03fbabf630f51f6460d7e2b19bad39c7",
+      "final_exists": true,
+      "final_sha256": "9344585f2ef0f8695490148e907c76cc03fbabf630f51f6460d7e2b19bad39c7",
+      "matches_head": true,
+      "path": "apps/web/src/App.tsx"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "46717f6d3ea578d0bde57fba86a39bea62b49407edab0f8f30d80b1bbe21eb8a",
+      "final_exists": true,
+      "final_sha256": "46717f6d3ea578d0bde57fba86a39bea62b49407edab0f8f30d80b1bbe21eb8a",
+      "matches_head": true,
+      "path": "apps/web/src/api.ts"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "1f50d07dec957fe0eff79d44c80ae76d33c58b1eb02e9b1013182f645266e627",
+      "final_exists": true,
+      "final_sha256": "1f50d07dec957fe0eff79d44c80ae76d33c58b1eb02e9b1013182f645266e627",
+      "matches_head": true,
+      "path": "docs/api.md"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "e751b01ebf80f664588f65e048df3ffcb9fc7c36365e1d8504ed6a784e041de4",
+      "final_exists": true,
+      "final_sha256": "e751b01ebf80f664588f65e048df3ffcb9fc7c36365e1d8504ed6a784e041de4",
+      "matches_head": true,
+      "path": "docs/configuration.md"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "16f3c69e456142e4b1b64b18c80daee0b9218990d184f941ec6a0d446bea2e37",
+      "final_exists": true,
+      "final_sha256": "16f3c69e456142e4b1b64b18c80daee0b9218990d184f941ec6a0d446bea2e37",
+      "matches_head": true,
+      "path": "docs/known-limitations.md"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "8111ffcdc04e07fba8477a1e51fb9cec8b31d8b7091efc30009011832c167b02",
+      "final_exists": true,
+      "final_sha256": "8111ffcdc04e07fba8477a1e51fb9cec8b31d8b7091efc30009011832c167b02",
+      "matches_head": true,
+      "path": "src/policy_platform/api/app.py"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "8e3a10734405deb52f38fb801c4aba85c026f476aae9df3bb6261d5588db25ea",
+      "final_exists": true,
+      "final_sha256": "8e3a10734405deb52f38fb801c4aba85c026f476aae9df3bb6261d5588db25ea",
+      "matches_head": true,
+      "path": "src/policy_platform/api/authz.py"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "36fe52ec5864ab2f617f0c6b3ff601b3b74ebc0b141fe8ef14a2478719c7418e",
+      "final_exists": true,
+      "final_sha256": "36fe52ec5864ab2f617f0c6b3ff601b3b74ebc0b141fe8ef14a2478719c7418e",
+      "matches_head": true,
+      "path": "src/policy_platform/infrastructure/settings.py"
+    }
+  ],
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "head_paths_unchanged": 981,
+  "misattributed_earlier_payload": [
+    {
+      "base_exists": true,
+      "base_sha256": "8111ffcdc04e07fba8477a1e51fb9cec8b31d8b7091efc30009011832c167b02",
+      "final_exists": true,
+      "final_sha256": "8111ffcdc04e07fba8477a1e51fb9cec8b31d8b7091efc30009011832c167b02",
+      "matches_head": true,
+      "path": "src/policy_platform/api/app.py"
+    },
+    {
+      "base_exists": false,
+      "base_sha256": null,
+      "final_exists": false,
+      "final_sha256": null,
+      "matches_head": true,
+      "path": "tests/unit/test_large_responses_are_compressed.py"
+    },
+    {
+      "base_exists": false,
+      "base_sha256": null,
+      "final_exists": false,
+      "final_sha256": null,
+      "matches_head": true,
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py"
+    }
+  ],
+  "mixed_hunk_exclusions": {
+    "policy_index.py": [
+      "projection opaque-span/rendering fidelity",
+      "error description",
+      "interleaved-text reporting",
+      "PolicyIndexBuild progress/history/orchestration"
+    ],
+    "policy_rule_slice.py": [
+      "literal/prose provenance and rendering-span hunks",
+      "Rule context_rule_ids hunks are deferred to Rule"
+    ],
+    "test_no_m2_code_is_shaped_around_a_corpus.py": [
+      "earlier Payload module registrations",
+      "later Payload measured-float guard and controls"
+    ],
+    "test_the_corpus_is_indexed_in_one_language.py": [
+      "quantity punctuation and protected-literal rendering tests"
+    ]
+  },
+  "other_excluded_families": [
+    "auth and subscription-key lifecycle",
+    "upload UI and documentation",
+    "database migrations",
+    "unresolved transport retry/error work and test_policy_index.py",
+    "later Payload evidence accounting and coverage-expansion work",
+    "Consume Demo work",
+    "live data, DB, Search, API, model, Azure, deployment, and migration operations"
+  ],
+  "schema_version": "rule_index_foundation_exclusions_v1",
+  "sequence_changed_path_count": 21,
+  "sequence_changed_paths": [
+    "src/policy_platform/api/routers/policy_decisions.py",
+    "src/policy_platform/application/policy_case_decision.py",
+    "src/policy_platform/contracts/case_decision.py",
+    "src/policy_platform/contracts/case_decision_light.py",
+    "src/policy_platform/contracts/policy_retrieval.py",
+    "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+    "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+    "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+    "src/policy_platform/infrastructure/quality/projection_faithfulness.py",
+    "src/policy_platform/infrastructure/search/policy_index.py",
+    "tests/unit/test_a_project_case_decision_carries_its_own_receipt.py",
+    "tests/unit/test_a_projection_is_checked_against_what_it_renders.py",
+    "tests/unit/test_case_decision_light_contract.py",
+    "tests/unit/test_external_policy_retrieval_returns_filtered_json.py",
+    "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+    "tests/unit/test_p0_rest_telemetry_closes_measurement_blind_spots.py",
+    "tests/unit/test_policy_case_project.py",
+    "tests/unit/test_rule_mode_returns_rules_not_policies.py",
+    "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+    "tests/unit/test_the_corpus_is_indexed_in_one_language.py",
+    "tests/unit/test_the_retrieval_route_answers_in_the_shape_the_mode_asked_for.py"
+  ],
+  "withdrawn_reasoning_view": [
+    {
+      "base_exists": false,
+      "base_sha256": null,
+      "final_exists": false,
+      "final_sha256": null,
+      "matches_head": true,
+      "path": "src/policy_platform/infrastructure/projection/llm_reasoning_view.py"
+    },
+    {
+      "base_exists": false,
+      "base_sha256": null,
+      "final_exists": false,
+      "final_sha256": null,
+      "matches_head": true,
+      "path": "tests/unit/test_the_model_reads_a_reasoning_view.py"
+    },
+    {
+      "base_exists": true,
+      "base_sha256": "7dada6655a1444abc78c9ef7d330892e5e65f69fa6c9ae4b5a1578129805a113",
+      "final_exists": true,
+      "final_sha256": "7dada6655a1444abc78c9ef7d330892e5e65f69fa6c9ae4b5a1578129805a113",
+      "matches_head": true,
+      "path": "tests/unit/test_capabilities_are_reachable.py"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "ordinal": "00",
+    "name": "00-rule-index-foundation.patch",
+    "source": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\00-rule-index-foundation.patch",
+    "bytes": 51705,
+    "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218",
+    "source_sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218",
+    "byte_identical": true
+  },
+  {
+    "ordinal": "01",
+    "name": "01-rule-retrieval.patch",
+    "source": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\01-rule-retrieval.rebased-on-foundation.patch",
+    "bytes": 316091,
+    "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1",
+    "source_sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1",
+    "byte_identical": true
+  },
+  {
+    "ordinal": "01a",
+    "name": "01a-earlier-payload-optimizations.patch",
+    "source": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\01a-earlier-payload-optimizations.patch",
+    "bytes": 31908,
+    "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e",
+    "source_sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e",
+    "byte_identical": true
+  },
+  {
+    "ordinal": "02",
+    "name": "02-payload.patch",
+    "source": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\02-payload.rebased-on-six-unit-base.patch",
+    "bytes": 87833,
+    "sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7",
+    "source_sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7",
+    "byte_identical": true
+  },
+  {
+    "ordinal": "03",
+    "name": "03-consume-request-mode-foundation.patch",
+    "source": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\03-consume-request-mode-foundation.patch",
+    "bytes": 27171,
+    "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+    "source_sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+    "byte_identical": true
+  },
+  {
+    "ordinal": "04",
+    "name": "04-consume-native-parser-renderer.patch",
+    "source": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\04-consume-native-parser-renderer.patch",
+    "bytes": 35998,
+    "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+    "source_sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+    "byte_identical": true
+  }
+]

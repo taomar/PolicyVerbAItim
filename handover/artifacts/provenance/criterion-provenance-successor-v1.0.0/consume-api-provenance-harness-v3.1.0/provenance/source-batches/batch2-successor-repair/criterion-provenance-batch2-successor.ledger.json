@@ -1,0 +1,1293 @@
+{
+  "schema_version": "consume-api-normative-provenance-ledger/1",
+  "selection": {
+    "filter": "canonical provenance preflight rubric_findings",
+    "sort": "stable criterion_id ascending",
+    "total_unscorable_or_unresolved": 113,
+    "slice_start_index_zero_based": 38,
+    "slice_end_index_zero_based_inclusive": 75,
+    "selected_count": 38,
+    "first_criterion_id": "AIS-08:R5",
+    "last_criterion_id": "HW-05:R3",
+    "selected_ids_sha256": "251c3289af2ae64a3312e9242129ffef08f87614766338d2df9a684dfc14b6ed"
+  },
+  "classification_counts": {
+    "product_decision_required": 2,
+    "semantic_support_pending_human_confirmation": 12,
+    "structural_harness_not_product_law": 23,
+    "unsupported_or_contradicted_rubric": 1
+  },
+  "criteria": [
+    {
+      "absolute_unscorable_index": 38,
+      "criterion_id": "AIS-08:R5",
+      "question_id": "ais-info-probation-evaluation",
+      "rubric_id": "AIS-08",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Generic refusal behavior is a response-contract and harness concern; the canonical relevance flag supplies no normative policy support.",
+      "blocker": "Wrong scoring boundary; normative source cannot establish this response-contract behavior as product law.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 39,
+      "criterion_id": "AIS-08:manual-2",
+      "question_id": "ais-info-probation-evaluation",
+      "rubric_id": "AIS-08",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Whether an information request may produce a reached verdict is an API/evaluator track contract, not a rule in the employee handbook.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 40,
+      "criterion_id": "AIS-09:R3",
+      "question_id": "ais-leave-travel-composition",
+      "rubric_id": "AIS-09",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Allowed answer-track states are evaluator contract metadata rather than product law.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 41,
+      "criterion_id": "AIS-09:R4",
+      "question_id": "ais-leave-travel-composition",
+      "rubric_id": "AIS-09",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Internal consistency of missing-information fields is response integrity, not normative policy.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 42,
+      "criterion_id": "AIS-09:R5",
+      "question_id": "ais-leave-travel-composition",
+      "rubric_id": "AIS-09",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Relevance/refusal handling is a harness classification concern and this question is declared relevant.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 43,
+      "criterion_id": "AIS-10:R1",
+      "question_id": "ais-irrelevant-football",
+      "rubric_id": "AIS-10",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "An out-of-domain control with no expected policy evidence is a citation-integrity test, not a product-law criterion.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 44,
+      "criterion_id": "AIS-10:R3",
+      "question_id": "ais-irrelevant-football",
+      "rubric_id": "AIS-10",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Allowed response-track states for an out-of-domain control are harness behavior.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 45,
+      "criterion_id": "AIS-10:R4",
+      "question_id": "ais-irrelevant-football",
+      "rubric_id": "AIS-10",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Internal consistency of missing-information fields is response integrity.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 46,
+      "criterion_id": "AIS-10:R5",
+      "question_id": "ais-irrelevant-football",
+      "rubric_id": "AIS-10",
+      "project": "ais-e2e",
+      "classification": "product_decision_required",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "The normative corpus cannot decide how the API should refuse an out-of-domain question; an explicit product contract is required.",
+      "blocker": "No authoritative product contract defines the requested out-of-domain response behavior.",
+      "recommended_action": "Keep fail-closed until an authoritative API/product contract defines out-of-domain behavior.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 47,
+      "criterion_id": "AIS-10:R9",
+      "question_id": "ais-irrelevant-football",
+      "rubric_id": "AIS-10",
+      "project": "ais-e2e",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "An out-of-domain control with no composition authorities is a harness integrity check, not product law.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 48,
+      "criterion_id": "AIS-10:manual-1",
+      "question_id": "ais-irrelevant-football",
+      "rubric_id": "AIS-10",
+      "project": "ais-e2e",
+      "classification": "product_decision_required",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "The exact empty-response shape for an out-of-domain question requires an explicit API/product decision.",
+      "blocker": "No authoritative product contract defines the requested out-of-domain response behavior.",
+      "recommended_action": "Keep fail-closed until an authoritative API/product contract defines out-of-domain behavior.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 49,
+      "criterion_id": "HW-01:R1",
+      "question_id": "hw-refresh-26-months",
+      "rubric_id": "HW-01",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "heading_path",
+        "provenance_kind": "heading_derived",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/0",
+        "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause directly governs device-age refresh eligibility, but the question-to-clause semantic binding still requires human confirmation.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/48",
+            "pointer_sha256": "27dc1f8f7992a20370fbde2d73fdedae9cd7152dba3061ff099dd03e41340fd5"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/10/expected_evidence",
+            "pointer_sha256": "79b7ece0d4be32cd503fa8f58d0d8d6efef420ad85d17dafea6dda694d5ae47b"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/0",
+            "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 50,
+      "criterion_id": "HW-01:R3",
+      "question_id": "hw-refresh-26-months",
+      "rubric_id": "HW-01",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Allowed answer-track states are evaluator contract metadata.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 51,
+      "criterion_id": "HW-01:R4",
+      "question_id": "hw-refresh-26-months",
+      "rubric_id": "HW-01",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Missing-information field consistency is response integrity.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 52,
+      "criterion_id": "HW-01:R5",
+      "question_id": "hw-refresh-26-months",
+      "rubric_id": "HW-01",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Relevance/refusal handling is harness behavior and this question is declared relevant.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 53,
+      "criterion_id": "HW-01:R9",
+      "question_id": "hw-refresh-26-months",
+      "rubric_id": "HW-01",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/0",
+        "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause is the apparent primary composition authority; completeness of the authority set remains a semantic human-review decision.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/10/expected_evidence",
+            "pointer_sha256": "79b7ece0d4be32cd503fa8f58d0d8d6efef420ad85d17dafea6dda694d5ae47b"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/0",
+            "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 54,
+      "criterion_id": "HW-01:manual-1",
+      "question_id": "hw-refresh-26-months",
+      "rubric_id": "HW-01",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Treating two unevaluated tracks as failure is evaluator coverage policy.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 55,
+      "criterion_id": "HW-02:R1",
+      "question_id": "hw-stolen-trip",
+      "rubric_id": "HW-02",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "heading_path",
+        "provenance_kind": "heading_derived",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/1",
+        "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause governs the stated theft scenario, but semantic confirmation must be supplied by a human reviewer.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/55",
+            "pointer_sha256": "c60cabbc02c1b3afd316e96acc7718a8a72add708bed44e0c2940e3e45ee2be2"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/expected_evidence",
+            "pointer_sha256": "049091642528fb8ab0446687f020fecf5b49fa23ec35f17007de8d92d5563d73"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 56,
+      "criterion_id": "HW-02:R3",
+      "question_id": "hw-stolen-trip",
+      "rubric_id": "HW-02",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Allowed answer-track states are evaluator contract metadata.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 57,
+      "criterion_id": "HW-02:R4",
+      "question_id": "hw-stolen-trip",
+      "rubric_id": "HW-02",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Missing-information field consistency is response integrity.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 58,
+      "criterion_id": "HW-02:R5",
+      "question_id": "hw-stolen-trip",
+      "rubric_id": "HW-02",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Relevance/refusal handling is harness behavior and this question is declared relevant.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 59,
+      "criterion_id": "HW-02:R9",
+      "question_id": "hw-stolen-trip",
+      "rubric_id": "HW-02",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/1",
+        "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause is the apparent primary composition authority; completeness of the authority set remains semantic.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/expected_evidence",
+            "pointer_sha256": "049091642528fb8ab0446687f020fecf5b49fa23ec35f17007de8d92d5563d73"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 60,
+      "criterion_id": "HW-02:manual-1",
+      "question_id": "hw-stolen-trip",
+      "rubric_id": "HW-02",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/1",
+        "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause makes reporting and notification prerequisites, but AI review is not human semantic confirmation.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/manual_criteria/0",
+            "pointer_sha256": "67eea304391401c561efa15d1f7c1003746177b59acb9275cfd3d8cbd4e7ada2"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 61,
+      "criterion_id": "HW-02:manual-2",
+      "question_id": "hw-stolen-trip",
+      "rubric_id": "HW-02",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/1",
+        "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause states pre-release safeguards and documentation, but a human must confirm the rubric outcome mapping.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/manual_criteria/1",
+            "pointer_sha256": "b12dc5fa7f7553304183130d6e1e9996353b1e4517a0f5217f0def2ff84d54c1"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 62,
+      "criterion_id": "HW-03:R1",
+      "question_id": "hw-byod-client-files",
+      "rubric_id": "HW-03",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "heading_path",
+        "provenance_kind": "heading_derived",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/2",
+        "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause governs personal-device use for organizational data, but the question-to-clause semantic binding remains pending human confirmation.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/81",
+            "pointer_sha256": "323310a097b2084d84bb8619325e79e5565709321c1855d9d9e36be9b03afa0b"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/expected_evidence",
+            "pointer_sha256": "0c7de93f20591035b57644cc7c4fc73d969726ec351f765745db0d339119089e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 63,
+      "criterion_id": "HW-03:R3",
+      "question_id": "hw-byod-client-files",
+      "rubric_id": "HW-03",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Allowed answer-track states are evaluator contract metadata.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 64,
+      "criterion_id": "HW-03:R4",
+      "question_id": "hw-byod-client-files",
+      "rubric_id": "HW-03",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Missing-information field consistency is response integrity.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 65,
+      "criterion_id": "HW-03:R5",
+      "question_id": "hw-byod-client-files",
+      "rubric_id": "HW-03",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Relevance/refusal handling is harness behavior and this question is declared relevant.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 66,
+      "criterion_id": "HW-03:R9",
+      "question_id": "hw-byod-client-files",
+      "rubric_id": "HW-03",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/2",
+        "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause is the apparent primary composition authority; completeness of the authority set remains semantic.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/expected_evidence",
+            "pointer_sha256": "0c7de93f20591035b57644cc7c4fc73d969726ec351f765745db0d339119089e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 67,
+      "criterion_id": "HW-03:manual-1",
+      "question_id": "hw-byod-client-files",
+      "rubric_id": "HW-03",
+      "project": "hw-policy",
+      "classification": "unsupported_or_contradicted_rubric",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/2",
+        "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The source permits a constrained approved-virtual-desktop route, so rejecting every permission-granting answer is overbroad.",
+      "blocker": "Source permits a constrained path that the blanket criterion rejects; human reconciliation is required.",
+      "recommended_action": "Keep fail-closed; a human reviewer must rewrite or withdraw the overbroad criterion before any unsupported state is confirmed.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/manual_criteria/0",
+            "pointer_sha256": "fcdc71942efbf246333583494dc9af024b37a4c50b7080af510bba151e2164f5"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 68,
+      "criterion_id": "HW-04:R1",
+      "question_id": "hw-contractor-15-days",
+      "rubric_id": "HW-04",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "heading_path",
+        "provenance_kind": "heading_derived",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/3",
+        "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause directly governs shorter contractor engagements, but semantic confirmation must be supplied by a human reviewer.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/80",
+            "pointer_sha256": "2162cc2d6801df78ca0d9db3eb4bb4f6346000538216e2d444674354ca25a294"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/expected_evidence",
+            "pointer_sha256": "6c9966ab1bb6ddbf50682cb727a172b809f67031ba922941b7d17682203e2970"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 69,
+      "criterion_id": "HW-04:R3",
+      "question_id": "hw-contractor-15-days",
+      "rubric_id": "HW-04",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Allowed answer-track states are evaluator contract metadata.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 70,
+      "criterion_id": "HW-04:R4",
+      "question_id": "hw-contractor-15-days",
+      "rubric_id": "HW-04",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Missing-information field consistency is response integrity.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 71,
+      "criterion_id": "HW-04:R5",
+      "question_id": "hw-contractor-15-days",
+      "rubric_id": "HW-04",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Relevance/refusal handling is harness behavior and this question is declared relevant.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 72,
+      "criterion_id": "HW-04:R9",
+      "question_id": "hw-contractor-15-days",
+      "rubric_id": "HW-04",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/3",
+        "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause is the apparent primary composition authority; completeness of the authority set remains semantic.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/expected_evidence",
+            "pointer_sha256": "6c9966ab1bb6ddbf50682cb727a172b809f67031ba922941b7d17682203e2970"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 73,
+      "criterion_id": "HW-04:manual-1",
+      "question_id": "hw-contractor-15-days",
+      "rubric_id": "HW-04",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/3",
+        "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause is the direct short-engagement authority, but making its citation mandatory for every answered verdict requires human semantic confirmation.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/manual_criteria/0",
+            "pointer_sha256": "92d33b1e8e937b15398e2a36f2378087df4b3da0cf7a82ebe511ed0a09ff0c50"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 74,
+      "criterion_id": "HW-05:R1",
+      "question_id": "hw-accessibility-monitor",
+      "rubric_id": "HW-05",
+      "project": "hw-policy",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "heading_path",
+        "provenance_kind": "heading_derived",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/4",
+        "pointer_sha256": "96ef899700a2719225c008efdab9415b954a3e0663b87e7c4cb34f2dd49b4964",
+        "source_provision_ids": [
+          "22daced0bf9d5768c63eb83f1cc7df60"
+        ],
+        "source_rule_ids": []
+      },
+      "bounded_rationale": "The identified clause governs adjustment priority, approvals, and overrides, but the semantic binding still requires human confirmation.",
+      "blocker": "AI source review is not human confirmation under the canonical provenance contract.",
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status.",
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "22daced0bf9d5768c63eb83f1cc7df60"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/68",
+            "pointer_sha256": "6f2bafa5629fffbf1eefe0f2c8f717159f88b51f04104aef461a47d9a00322dc"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/14/expected_evidence",
+            "pointer_sha256": "947f157e79a6861b928c205e3f49412bf221574204bb54f2b1da13f1908a243e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/4",
+            "pointer_sha256": "96ef899700a2719225c008efdab9415b954a3e0663b87e7c4cb34f2dd49b4964"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "human_confirmation_recorded": false
+    },
+    {
+      "absolute_unscorable_index": 75,
+      "criterion_id": "HW-05:R3",
+      "question_id": "hw-accessibility-monitor",
+      "rubric_id": "HW-05",
+      "project": "hw-policy",
+      "classification": "structural_harness_not_product_law",
+      "scorable_after_batch": false,
+      "current_state": {
+        "criterion_provenance": "question_only",
+        "provenance_kind": "question_inferred",
+        "validation_state": "unverified"
+      },
+      "normative_evidence": null,
+      "bounded_rationale": "Allowed answer-track states are evaluator contract metadata.",
+      "blocker": "Wrong scoring boundary; normative source cannot support a response-contract or evaluator-integrity rule.",
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer.",
+      "candidate_rubric_fields": null,
+      "human_confirmation_recorded": false
+    }
+  ]
+}

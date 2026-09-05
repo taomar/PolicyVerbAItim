@@ -1,0 +1,2041 @@
+{
+  "deterministic_regeneration": {
+    "00-rule-index-foundation.patch": {
+      "byte_equal": true,
+      "run_1": {
+        "bytes": 51705,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\regen-1\\00-rule-index-foundation.patch",
+        "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218"
+      },
+      "run_2": {
+        "bytes": 51705,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\regen-2\\00-rule-index-foundation.patch",
+        "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218"
+      }
+    },
+    "01-rule-retrieval.rebased-on-foundation.patch": {
+      "byte_equal": true,
+      "run_1": {
+        "bytes": 316091,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\regen-1\\01-rule-retrieval.rebased-on-foundation.patch",
+        "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1"
+      },
+      "run_2": {
+        "bytes": 316091,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\regen-2\\01-rule-retrieval.rebased-on-foundation.patch",
+        "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1"
+      }
+    },
+    "PATH_HUNK_MANIFEST.raw.json": {
+      "byte_equal": true,
+      "run_1": {
+        "bytes": 44173,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\regen-1\\PATH_HUNK_MANIFEST.raw.json",
+        "sha256": "230e809e77d28e9ab9e45e7f3c2e9ececba08d17395a6bbc89c006cbf44ee44f"
+      },
+      "run_2": {
+        "bytes": 44173,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\regen-2\\PATH_HUNK_MANIFEST.raw.json",
+        "sha256": "230e809e77d28e9ab9e45e7f3c2e9ececba08d17395a6bbc89c006cbf44ee44f"
+      }
+    }
+  },
+  "foundation": {
+    "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+    "patch": {
+      "bytes": 51705,
+      "name": "00-rule-index-foundation.patch",
+      "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218"
+    },
+    "path_count": 7,
+    "paths": [
+      {
+        "base_bytes": 135876,
+        "base_sha256": "2987319b14889d5199060acebb56666cb70e06e4536cc5b46696bae6b33bb830",
+        "evidence": [
+          "PAYLOAD_HANDOVER.md:205-219",
+          "OVERSIGHT_HANDOVER.md:22-30, 103-108",
+          "test_the_corpus_is_indexed_in_one_language.py foundation controls"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 253,
+            "exact_sha256": "b47e985556acd2cfec1b32e008d08ce2264e44348af0b6f21f67bc451fba8c3d",
+            "header": "@@ -208,6 +208,7 @@",
+            "patch_line": 5
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 2,
+            "exact_bytes": 1014,
+            "exact_sha256": "629555ce4099a1b17a646f117b2dc2d072b89cd4e2ff1afc227eb145f2346605",
+            "header": "@@ -2234,10 +2235,14 @@",
+            "patch_line": 13
+          }
+        ],
+        "ownership": "ordinal-00 compatibility reader",
+        "path": "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "result_bytes": 136203,
+        "result_sha256": "2d79647771c463f47683c95ef2fadaf73a9c4a083c28335d1a94f3c2fb01ff92",
+        "why": "The widened corpus would otherwise change the pre-existing policy-mode rule query. This hunk imports the shared filter and constrains that existing reader to the legacy large-provision subset."
+      },
+      {
+        "base_bytes": 59494,
+        "base_sha256": "9777cc5791944f32cad38bc43c06cc309954e686eaaf073e054ac5d80359164e",
+        "evidence": [
+          "FINAL_COMMIT_DECOMPOSITION.md:74-79",
+          "path-diffs-v4 policy_rule_slice frozen hunk 1"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 41,
+            "deleted_line_count": 0,
+            "exact_bytes": 2459,
+            "exact_sha256": "7895a3078fa67e24398d7231cc26ac7a00cf90105f2d98cf25aa94700b8c79e4",
+            "header": "@@ -129,6 +129,47 @@",
+            "patch_line": 34
+          }
+        ],
+        "ownership": "ordinal-00 shared scope boundary",
+        "path": "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "result_bytes": 61520,
+        "result_sha256": "254eef80e74b6758425898e9329402b39abea542eefb12b2cc38666f2a630c9f",
+        "why": "Builder and validator both depend on this projection module, so it owns the scope vocabulary and the single rule-document eligibility decision."
+      },
+      {
+        "base_bytes": 41142,
+        "base_sha256": "1ba70eacc6a96cbcf063bb737e673f2612b5f9cec4930230bc5d5614486dfa85",
+        "evidence": [
+          "FINAL_COMMIT_DECOMPOSITION.md:74-79",
+          "complete frozen per-path diff and focused validation tests"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 0,
+            "exact_bytes": 401,
+            "exact_sha256": "5e3e307404592e035235e130f1cdc14dfc0aeb019dee4b1304838b6eb8913988",
+            "header": "@@ -83,6 +83,9 @@",
+            "patch_line": 86
+          },
+          {
+            "added_line_count": 4,
+            "deleted_line_count": 0,
+            "exact_bytes": 739,
+            "exact_sha256": "20acb5627fb70cd509d5e24cb4f2780a60301f74717d29280160ee5d957d41b5",
+            "header": "@@ -164,6 +167,10 @@",
+            "patch_line": 96
+          },
+          {
+            "added_line_count": 12,
+            "deleted_line_count": 2,
+            "exact_bytes": 1229,
+            "exact_sha256": "0b70907cf348d69965d3dfe41986e741e68ee41eb1effe2a0fad1425ad1afc9a",
+            "header": "@@ -384,9 +391,19 @@",
+            "patch_line": 107
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 316,
+            "exact_sha256": "f912727429e45187494039338e324e2cd560f6dae62b2bb91ead61e4cd3646d2",
+            "header": "@@ -464,6 +481,7 @@",
+            "patch_line": 129
+          },
+          {
+            "added_line_count": 7,
+            "deleted_line_count": 1,
+            "exact_bytes": 376,
+            "exact_sha256": "c59d01390b766a8569377efe7d6de9bc09ea0e5748c32b9452b2e36dd4dba357",
+            "header": "@@ -527,7 +545,13 @@",
+            "patch_line": 137
+          },
+          {
+            "added_line_count": 41,
+            "deleted_line_count": 13,
+            "exact_bytes": 3307,
+            "exact_sha256": "1302997b9b11816cd1b0b620bbb55c76cb8a61f9393c173392751f182ba93d8d",
+            "header": "@@ -578,23 +602,51 @@",
+            "patch_line": 152
+          },
+          {
+            "added_line_count": 16,
+            "deleted_line_count": 2,
+            "exact_bytes": 1377,
+            "exact_sha256": "cdcc6d63b1e1d34f1ca841d70e02e485b0e01a40f0477c50b25f25dbd2f8f4a8",
+            "header": "@@ -606,11 +658,25 @@",
+            "patch_line": 217
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 383,
+            "exact_sha256": "7c905e67c3d8524beb69f137369bfe33b0a2d2c1ddd33d9042a368ab66e80268",
+            "header": "@@ -797,6 +863,7 @@",
+            "patch_line": 245
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 252,
+            "exact_sha256": "cbe1c82e0e0a1f192bb8103066e1579c5e17422b5614369570e00bf7a9321095",
+            "header": "@@ -831,6 +898,7 @@",
+            "patch_line": 253
+          }
+        ],
+        "ownership": "ordinal-00 scope-aware validator",
+        "path": "src/policy_platform/infrastructure/quality/projection_faithfulness.py",
+        "result_bytes": 44414,
+        "result_sha256": "2bcb7415d5ac630711acc82b67f3c4a7f8e7f9d6141f27a4fd750ee8e0477428",
+        "why": "Validation must judge exact child-document coverage under the scope recorded by the writer and must refuse unknown scopes."
+      },
+      {
+        "base_bytes": 95048,
+        "base_sha256": "179b48cf0a1ba85e23e9284200e2c07cf002cd5409bf3a5fcc260bf581d42ec9",
+        "evidence": [
+          "RULE_RECONSTRUCTION_DIAGNOSTIC.json:55-86",
+          "PAYLOAD_HANDOVER.md:205-219",
+          "frozen per-path diff with unrelated progress/error/rendering hunks excluded"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 0,
+            "exact_bytes": 390,
+            "exact_sha256": "a82c2459ee179099be07f6d25689e2b799921059d9591ef0bfbb0c275deea756",
+            "header": "@@ -125,6 +125,9 @@",
+            "patch_line": 265
+          },
+          {
+            "added_line_count": 29,
+            "deleted_line_count": 0,
+            "exact_bytes": 2068,
+            "exact_sha256": "72f6cc236f1f7ac94d5907bce1b7f9de38413986fab323a58ed5365cfb901d63",
+            "header": "@@ -188,6 +191,35 @@",
+            "patch_line": 275
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 1,
+            "exact_bytes": 784,
+            "exact_sha256": "c592dece6a7e6da459e3fb9c71ddfe0fcf0fe5dbfba85bb66c4d9340563e3eb4",
+            "header": "@@ -205,8 +237,13 @@",
+            "patch_line": 311
+          },
+          {
+            "added_line_count": 36,
+            "deleted_line_count": 0,
+            "exact_bytes": 1758,
+            "exact_sha256": "e6ae26a25072afdaabb9c30558a626d6daff6bf65e49b93a4491fab698478df6",
+            "header": "@@ -417,6 +454,42 @@",
+            "patch_line": 326
+          },
+          {
+            "added_line_count": 7,
+            "deleted_line_count": 0,
+            "exact_bytes": 1044,
+            "exact_sha256": "5e383fdb7643f82af44fe3f6ce93f8131d064c82327affe8c3243f2f25389615",
+            "header": "@@ -516,6 +589,13 @@",
+            "patch_line": 369
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 256,
+            "exact_sha256": "dc63c142634bd94eb0c032be5765c0d391b33b0a799d24625553b62c038e3a6f",
+            "header": "@@ -787,6 +867,7 @@",
+            "patch_line": 383
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 368,
+            "exact_sha256": "4e757846f2c08da82a87abe3f9868b1dea49ff80f3d8b2a8f1be5ca0a06eb244",
+            "header": "@@ -817,6 +898,7 @@",
+            "patch_line": 391
+          },
+          {
+            "added_line_count": 15,
+            "deleted_line_count": 2,
+            "exact_bytes": 1408,
+            "exact_sha256": "0ab7c66d26212837fe6b58825ac4bbfb9e5818348e083730bf8ce61d3dff25c3",
+            "header": "@@ -873,10 +955,23 @@",
+            "patch_line": 399
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 1,
+            "exact_bytes": 692,
+            "exact_sha256": "07e46d8abc6cec649b713a4cfae1195bdd0bae3cc5838a90109dd5bb130e31e6",
+            "header": "@@ -884,7 +979,12 @@",
+            "patch_line": 425
+          },
+          {
+            "added_line_count": 5,
+            "deleted_line_count": 0,
+            "exact_bytes": 612,
+            "exact_sha256": "3b890f8fea72e1c35551b76c7ce18ff1f39a063517c10b7cdd895375d2ad2725",
+            "header": "@@ -1092,6 +1192,11 @@",
+            "patch_line": 439
+          },
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 0,
+            "exact_bytes": 881,
+            "exact_sha256": "22d6abf699dce8f4f2d77ec4098d0b9a0fcead14798ce621b5ae17c305ef485a",
+            "header": "@@ -1266,6 +1371,15 @@",
+            "patch_line": 451
+          },
+          {
+            "added_line_count": 37,
+            "deleted_line_count": 0,
+            "exact_bytes": 1681,
+            "exact_sha256": "d73cb2ea527101bd7263092242e9fc7a179d96c0d387c020fee974b3ac75d1d2",
+            "header": "@@ -1460,6 +1574,43 @@",
+            "patch_line": 467
+          },
+          {
+            "added_line_count": 10,
+            "deleted_line_count": 0,
+            "exact_bytes": 835,
+            "exact_sha256": "caa450bd9d45a2c9ec0aebe97590fa1b7d03798683bf5ff9c4eebfcf8e95961a",
+            "header": "@@ -1595,6 +1746,16 @@",
+            "patch_line": 511
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 281,
+            "exact_sha256": "d4734907c1510cfedab050ebc1f394b9c121d534e7306075d7e6af8a03f1fb09",
+            "header": "@@ -1602,6 +1763,7 @@",
+            "patch_line": 528
+          },
+          {
+            "added_line_count": 4,
+            "deleted_line_count": 0,
+            "exact_bytes": 523,
+            "exact_sha256": "d92a83cddff911ec795ce446f88aaf29ff3444c317af89407e772e868eeaa40e",
+            "header": "@@ -1717,6 +1879,10 @@",
+            "patch_line": 536
+          }
+        ],
+        "ownership": "ordinal-00 index writer, schema, manifest, filter, and reader",
+        "path": "src/policy_platform/infrastructure/search/policy_index.py",
+        "result_bytes": 103845,
+        "result_sha256": "ddd6d7b02a2ab179cb187b932a36f6dac76daf8c5014e5c3fa6c7d15e66f2e61",
+        "why": "These hunks make new builds write every published rule, stamp that scope, expose it in schema/readiness, preserve legacy policy-mode reads, and pass exact expected counts to validation."
+      },
+      {
+        "base_bytes": 20926,
+        "base_sha256": "ae0dfc6401af5ab6ca1460ee8b1101cab810f45ac8c204000114397cd5bc35ba",
+        "evidence": [
+          "complete frozen per-path diff",
+          "204-test foundation run"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 0,
+            "exact_bytes": 384,
+            "exact_sha256": "2604204e5b56388846ca045a72467fc4a3fd51362b069b72c65ab9cbeaeed839",
+            "header": "@@ -55,6 +55,9 @@",
+            "patch_line": 551
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 277,
+            "exact_sha256": "2f368e41ecb4f76e3566d08249e6566e3d65ce1382adaad83fcaf92627054531",
+            "header": "@@ -68,6 +71,7 @@",
+            "patch_line": 561
+          },
+          {
+            "added_line_count": 12,
+            "deleted_line_count": 1,
+            "exact_bytes": 1063,
+            "exact_sha256": "403a6a47c77501093edb57dc5c50b56e1ecc2bd120b6ebfdf7d537ef0b5c18da",
+            "header": "@@ -184,13 +188,24 @@",
+            "patch_line": 569
+          },
+          {
+            "added_line_count": 266,
+            "deleted_line_count": 0,
+            "exact_bytes": 12821,
+            "exact_sha256": "568438e9fb9e5831d36ec8642766b9499cba77aed6e032e06029759654cc8bbe",
+            "header": "@@ -405,6 +420,272 @@",
+            "patch_line": 595
+          }
+        ],
+        "ownership": "ordinal-00 scope and exact-coverage tests",
+        "path": "tests/unit/test_a_projection_is_checked_against_what_it_renders.py",
+        "result_bytes": 33803,
+        "result_sha256": "bc54a35407d10dccb1b771a050a0520acee66a197834f347fd41bc79f07abe0c",
+        "why": "The complete frozen diff proves both scopes, unknown-scope refusal, exact child counts, and shared builder/validator decision ownership."
+      },
+      {
+        "base_bytes": 29940,
+        "base_sha256": "91787ad1a8551abe0e99eb09a2a488df8f88520742a6c84c750b4fd36765fee8",
+        "evidence": [
+          "frozen mixed-file diff hunk at test_rule_indexing_turns_on_a_count...",
+          "later Payload float-magnitude and Rule registrations excluded here"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 46,
+            "deleted_line_count": 8,
+            "exact_bytes": 3315,
+            "exact_sha256": "c9a2821b403bec4ee25dfedae3f14772da33dc1e586877c80a444171f9b33404",
+            "header": "@@ -630,19 +630,57 @@",
+            "patch_line": 872
+          }
+        ],
+        "ownership": "ordinal-00 foundation anti-corpus guard",
+        "path": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "result_bytes": 31889,
+        "result_sha256": "ce073b192c037b5d5ce2847f1185769c73081c02ef92385ce9a0200ecefcea85",
+        "why": "Only the guard that follows the eligibility decision from indexable_rules to rule_documents_expected is included."
+      },
+      {
+        "base_bytes": 74079,
+        "base_sha256": "2005b545377a881483e929ff37618fab5ec830b7eb0ee11752c5748f60bb67bc",
+        "evidence": [
+          "frozen per-path diff hunks 1-3",
+          "204-test foundation run"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 0,
+            "exact_bytes": 258,
+            "exact_sha256": "4b95f37d50e4f11f64631107708bab924d939088a740723421488d0a3ebaf072",
+            "header": "@@ -63,6 +63,8 @@",
+            "patch_line": 942
+          },
+          {
+            "added_line_count": 48,
+            "deleted_line_count": 6,
+            "exact_bytes": 3061,
+            "exact_sha256": "9a07e5876b24e3c74b89a30f340b5da01cb365767f3856fc8080ced088ace8e5",
+            "header": "@@ -333,15 +335,57 @@",
+            "patch_line": 951
+          },
+          {
+            "added_line_count": 15,
+            "deleted_line_count": 10,
+            "exact_bytes": 2218,
+            "exact_sha256": "1575942ffca3cf9593e1275a3df95b5035b1b6f46f90345401f3397cea83afd0",
+            "header": "@@ -406,28 +450,33 @@",
+            "patch_line": 1015
+          }
+        ],
+        "ownership": "ordinal-00 build, manifest, and compatibility tests",
+        "path": "tests/unit/test_the_corpus_is_indexed_in_one_language.py",
+        "result_bytes": 76309,
+        "result_sha256": "b77ebeda9ab555711c543290c72f4ad76dcec6f6a28f88474af476015848c202",
+        "why": "Only the scope imports, both-scope behavior, manifest stamp, and shrink semantics are included; unrelated rendering-preservation hunks are excluded."
+      }
+    ],
+    "schema_version": "rule_index_foundation_path_hunk_manifest_v1",
+    "unit": "All-published-rule index/projection foundation"
+  },
+  "rule": {
+    "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+    "patch": {
+      "bytes": 316091,
+      "name": "01-rule-retrieval.rebased-on-foundation.patch",
+      "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1"
+    },
+    "path_count": 17,
+    "paths": [
+      {
+        "base_bytes": 36492,
+        "base_sha256": "8e8c1c75b805301df7c929ff7c0b39da2894421eff4533c9e943033f8a6578bd",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 190,
+            "exact_sha256": "54a6b692893ac228117a1f5c9ae12767a81b041dafb83a877487c85f8429ea06",
+            "header": "@@ -84,6 +84,7 @@",
+            "patch_line": 5
+          },
+          {
+            "added_line_count": 11,
+            "deleted_line_count": 2,
+            "exact_bytes": 863,
+            "exact_sha256": "1f3f72a5b93378b515eca5bf0e602d4907920d0ad7f491c0aefc598873b248e5",
+            "header": "@@ -91,10 +92,19 @@",
+            "patch_line": 13
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 1,
+            "exact_bytes": 594,
+            "exact_sha256": "1f6c9cc13a9cb0c1d89fcee9b8674207030e68f94bc378f7e27c5cbaffda74f2",
+            "header": "@@ -291,7 +301,9 @@",
+            "patch_line": 35
+          },
+          {
+            "added_line_count": 20,
+            "deleted_line_count": 0,
+            "exact_bytes": 1692,
+            "exact_sha256": "24285d96e5c06f364e0be0968dca11c7f2e0c21ea1e0ccba32caae278b2dc54c",
+            "header": "@@ -339,6 +351,26 @@",
+            "patch_line": 46
+          },
+          {
+            "added_line_count": 11,
+            "deleted_line_count": 0,
+            "exact_bytes": 884,
+            "exact_sha256": "964c728ff9f7560fbb6f3a6cbae9949104d604629bb0de5363f5d0c977575c1f",
+            "header": "@@ -355,6 +387,17 @@",
+            "patch_line": 73
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 290,
+            "exact_sha256": "3a05726dc54fb250283b0424cc6dce8872856edaa3d245e81d92cf313c718e55",
+            "header": "@@ -412,7 +455,7 @@",
+            "patch_line": 91
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 480,
+            "exact_sha256": "6411856eb8ca652cb453dc9364220748a17a30bf41d7e04ad2c2d8b215b1cd49",
+            "header": "@@ -420,7 +463,7 @@",
+            "patch_line": 100
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 333,
+            "exact_sha256": "1ceba386ec0a090e716cd2994fe5138e736ab20e2aeee9d8dc1bbac9869be972",
+            "header": "@@ -466,6 +509,7 @@",
+            "patch_line": 109
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 410,
+            "exact_sha256": "7af2e893d861d11cb4dd676563158de1456b02963c63b772b52138d6318615cf",
+            "header": "@@ -481,7 +525,7 @@",
+            "patch_line": 117
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 350,
+            "exact_sha256": "073cb872afd786d282874073a4b5dc7f861b7074de73621f77daa2dd4ccf500a",
+            "header": "@@ -530,6 +574,7 @@",
+            "patch_line": 126
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 530,
+            "exact_sha256": "3ad1ea5cee15db5c44f60ee4c160e62a400607a3d1f65e71ef04ab1ca4b4da37",
+            "header": "@@ -553,7 +598,7 @@",
+            "patch_line": 134
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 300,
+            "exact_sha256": "0d847d240c2ce774ecb8c0a239668d52e8fdec007f7638396998b5a987b3c230",
+            "header": "@@ -688,7 +733,7 @@",
+            "patch_line": 143
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 503,
+            "exact_sha256": "89d145474772175d144aee0b9c20ed3fcc5924ab995cce6ecb854fecff73441c",
+            "header": "@@ -698,7 +743,7 @@",
+            "patch_line": 152
+          },
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 0,
+            "exact_bytes": 254,
+            "exact_sha256": "f0027a70c7e01bff832709f766db9d0e86f0379dab3de8b44cbc09c613c85ce1",
+            "header": "@@ -719,6 +764,8 @@",
+            "patch_line": 161
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 470,
+            "exact_sha256": "65e5c7dab0f03897608b528cf55007911fe86c346b3806289fef6baae12db271",
+            "header": "@@ -728,7 +775,7 @@",
+            "patch_line": 170
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "src/policy_platform/api/routers/policy_decisions.py",
+        "result_bytes": 39369,
+        "result_sha256": "c259d154b867e4742b89b4d041f9e6bc02b42ac9060b9bc171d525eacf833249",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 112672,
+        "base_sha256": "c9a42bf63c34c8185569a90fe1fb30dd04219501d238d232547c8fddf97f75f1",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 11,
+            "deleted_line_count": 0,
+            "exact_bytes": 687,
+            "exact_sha256": "5631584662762c7856cbd91205f14f3f547ca6850bb8439a2719d854849d443f",
+            "header": "@@ -155,18 +155,29 @@",
+            "patch_line": 183
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 217,
+            "exact_sha256": "7420f59533079825c48dae6dc22da7fe55ed28d73204a5cccaec3cd34a27b7fb",
+            "header": "@@ -175,6 +186,7 @@",
+            "patch_line": 213
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 228,
+            "exact_sha256": "3422f2aa60c0a1c58199bb9603beab7f5ac318f72f528cef6011384effc19e87",
+            "header": "@@ -186,6 +198,7 @@",
+            "patch_line": 221
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 301,
+            "exact_sha256": "9b751f6f8206ecd48182e6056a57476bbd94c6a6323e7527b9767c2cc550d1ac",
+            "header": "@@ -193,6 +206,12 @@",
+            "patch_line": 229
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 280,
+            "exact_sha256": "e1c80b3e0a2a23aa1aa68d5518ef125f3098eeca6c0fb527b6f433a16a2b1155",
+            "header": "@@ -559,7 +578,7 @@",
+            "patch_line": 242
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 235,
+            "exact_sha256": "784717dd88ddefb82673435f4acf49dd02b1eeea7b45e66a2a9961699a44a51a",
+            "header": "@@ -609,6 +628,7 @@",
+            "patch_line": 251
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 216,
+            "exact_sha256": "7ef9f9069de215ba0370fe4a2b389402842adc12af56271fe0ddf9767eb40937",
+            "header": "@@ -639,6 +659,7 @@",
+            "patch_line": 259
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 1,
+            "exact_bytes": 396,
+            "exact_sha256": "3095092b6e773ac07055b1234c79d3e6bea8617ba30fea1f80133a96baa72554",
+            "header": "@@ -721,7 +742,9 @@",
+            "patch_line": 267
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 284,
+            "exact_sha256": "d5fe7dc39e6ad99dba22851164f1ceab46297c2ded849f3d8fa3e24ef8e7a467",
+            "header": "@@ -771,6 +794,7 @@",
+            "patch_line": 278
+          },
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 0,
+            "exact_bytes": 629,
+            "exact_sha256": "ae079ae4d37962f4c0946392dc514ad68bd1a468046415af124f42015206c66f",
+            "header": "@@ -789,6 +813,15 @@",
+            "patch_line": 286
+          },
+          {
+            "added_line_count": 27,
+            "deleted_line_count": 10,
+            "exact_bytes": 2067,
+            "exact_sha256": "7cc21314b671ee0f69ef40cb17c1a946e8c2ba427053eb4dfc26a89161b56a8c",
+            "header": "@@ -822,21 +855,38 @@",
+            "patch_line": 302
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 1,
+            "exact_bytes": 335,
+            "exact_sha256": "af3da7df381cf52851ebfdccb202e25ced212aed7d225573081ac301254cea5d",
+            "header": "@@ -846,7 +896,9 @@",
+            "patch_line": 351
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 198,
+            "exact_sha256": "05f7be9e7f95d15fe5c3877e37a04cc9ab6a79ccc7fa1772e6c4fa4db2717ff7",
+            "header": "@@ -858,6 +910,7 @@",
+            "patch_line": 362
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 292,
+            "exact_sha256": "33447337ac9cef4a31511c291ee6fc0c8f4cf674e4b0554723c3891b1cf472e2",
+            "header": "@@ -1018,6 +1071,7 @@",
+            "patch_line": 370
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 417,
+            "exact_sha256": "7da71da9824f1bc5b2cc3d33f43a77ea9f07111b054ca49bf6c0210ff0cb46d0",
+            "header": "@@ -1026,6 +1080,7 @@",
+            "patch_line": 378
+          },
+          {
+            "added_line_count": 123,
+            "deleted_line_count": 0,
+            "exact_bytes": 5152,
+            "exact_sha256": "74ff6a9dd1e3ebeb75c847669d73f15425956c89bcf49ba2a392168a227c6e9f",
+            "header": "@@ -1048,6 +1103,129 @@",
+            "patch_line": 386
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 273,
+            "exact_sha256": "4762fa49dc6afedeaa21c788943e3d0498310105803b2337e660d44258828223",
+            "header": "@@ -1094,6 +1272,7 @@",
+            "patch_line": 516
+          },
+          {
+            "added_line_count": 11,
+            "deleted_line_count": 0,
+            "exact_bytes": 699,
+            "exact_sha256": "c9102c0c811c3d67650955b606cbc575220035b0b08763eef60ffeea09771da8",
+            "header": "@@ -1125,6 +1304,17 @@",
+            "patch_line": 524
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 286,
+            "exact_sha256": "b4123e8ca9794886663274ab3bd83c7c11a6ed7b8de62888d893f5d9b0543b59",
+            "header": "@@ -1193,6 +1383,7 @@",
+            "patch_line": 542
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 280,
+            "exact_sha256": "281ef46fa5f80804a2f69ac6bb924cc009064bd2d1c0ef12d22e2eafb09f9814",
+            "header": "@@ -1335,6 +1526,7 @@",
+            "patch_line": 550
+          },
+          {
+            "added_line_count": 18,
+            "deleted_line_count": 0,
+            "exact_bytes": 1033,
+            "exact_sha256": "1dbd6e8b7911c8153efd9e68e9e87df1da8abc1579c0e2e7406a6b3b03a44750",
+            "header": "@@ -1380,6 +1572,24 @@",
+            "patch_line": 558
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 2,
+            "exact_bytes": 513,
+            "exact_sha256": "980f5f4b88e054c183d4338fd21682cc6cd819e1caae5388b7c56aa429cb3f99",
+            "header": "@@ -1463,8 +1673,12 @@",
+            "patch_line": 583
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 292,
+            "exact_sha256": "7693cf0d503a9e1804afdd99fd5875e0df61c0a8684c3d2e39cb35c2125a751d",
+            "header": "@@ -1513,6 +1727,7 @@",
+            "patch_line": 598
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 279,
+            "exact_sha256": "8ffd4f28c7762b600560002aa2bc06f4374995f3ee328dba0fb3fe9a50d95127",
+            "header": "@@ -1625,6 +1840,7 @@",
+            "patch_line": 606
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 236,
+            "exact_sha256": "20caf0009fca330e2576407f0db0ef47201adf97c8e37045f280c6582a383143",
+            "header": "@@ -1641,6 +1857,7 @@",
+            "patch_line": 614
+          },
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 1,
+            "exact_bytes": 445,
+            "exact_sha256": "f8e6fa03cc62340b144f87be3a362cc977e720afcf2c4a904d93583037988e7a",
+            "header": "@@ -1940,7 +2157,8 @@",
+            "patch_line": 622
+          },
+          {
+            "added_line_count": 18,
+            "deleted_line_count": 0,
+            "exact_bytes": 847,
+            "exact_sha256": "b34d30b57e5cc8d8af895afa17b9a00d8ae6ddad74dc60c8d18d4dcf9788d7a9",
+            "header": "@@ -1983,6 +2201,24 @@",
+            "patch_line": 632
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 349,
+            "exact_sha256": "88460f89c06c2a4442eed04576c72c61ad28a44cd59e129e29878c59a1c27a9a",
+            "header": "@@ -2017,6 +2253,7 @@",
+            "patch_line": 657
+          },
+          {
+            "added_line_count": 88,
+            "deleted_line_count": 1,
+            "exact_bytes": 3613,
+            "exact_sha256": "b4394926c093ba6e524ab4c9641f3e49bb4c6e3c73edb7bce8dd66776c81e3e7",
+            "header": "@@ -2057,7 +2294,94 @@",
+            "patch_line": 665
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 1,
+            "exact_bytes": 383,
+            "exact_sha256": "9c2274464589e2182bcf2d9795f80893805dc534e8115158a0b818588d82b262",
+            "header": "@@ -2078,7 +2402,9 @@",
+            "patch_line": 761
+          },
+          {
+            "added_line_count": 28,
+            "deleted_line_count": 0,
+            "exact_bytes": 1165,
+            "exact_sha256": "2407e95817f89f2225f3aa867049b62f16633f5203747de421ff7cdbdac6b649",
+            "header": "@@ -2255,6 +2581,34 @@",
+            "patch_line": 772
+          },
+          {
+            "added_line_count": 62,
+            "deleted_line_count": 0,
+            "exact_bytes": 2534,
+            "exact_sha256": "501126f2db614543de04b8d5d729f3de05ad570e8c710c29baca0cbbeaf927ef",
+            "header": "@@ -2362,6 +2716,68 @@",
+            "patch_line": 807
+          },
+          {
+            "added_line_count": 7,
+            "deleted_line_count": 1,
+            "exact_bytes": 598,
+            "exact_sha256": "c5428dec581a88c4515a207eb6255613fc3514ca707b8275c5486be18816d250",
+            "header": "@@ -2377,13 +2793,19 @@",
+            "patch_line": 876
+          },
+          {
+            "added_line_count": 30,
+            "deleted_line_count": 0,
+            "exact_bytes": 973,
+            "exact_sha256": "dbe87a6a2e6e1d98b79a41aefe5cd7bd506f5b0986276d2e3a12eff2e1c8d0d7",
+            "header": "@@ -2421,6 +2843,36 @@",
+            "patch_line": 897
+          },
+          {
+            "added_line_count": 13,
+            "deleted_line_count": 0,
+            "exact_bytes": 647,
+            "exact_sha256": "80dac70a8990340b28a4f4c3fe239e137acbdf143db2722383490b0aa51b7a45",
+            "header": "@@ -2432,6 +2884,19 @@",
+            "patch_line": 934
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 399,
+            "exact_sha256": "72bacf6234710dda3015cbc99317eb18faca823e8ad9242e342554398f42a829",
+            "header": "@@ -2457,6 +2922,7 @@",
+            "patch_line": 954
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 0,
+            "exact_bytes": 352,
+            "exact_sha256": "76b1dc9944bc9556ae5d48edac4899de558d1d84e02d63a42a0dcb795833b35a",
+            "header": "@@ -2470,6 +2936,9 @@",
+            "patch_line": 962
+          },
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 0,
+            "exact_bytes": 441,
+            "exact_sha256": "de9854ee868a80618f5e7003ca19bcea537871106bbb5394a7516b1b9ab55104",
+            "header": "@@ -2494,6 +2963,15 @@",
+            "patch_line": 972
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "src/policy_platform/application/policy_case_decision.py",
+        "result_bytes": 130043,
+        "result_sha256": "f51fcd35838b3e146973714db4405bbe5f836c68cc8d893fdf086f3a43280440",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 94246,
+        "base_sha256": "38842eeeffe53b684edfe935c861fbd43a845822f4431cc5798075ab8df4dbca",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 336,
+            "exact_sha256": "323a193ff8166afc8ece85080198f32a1e9213056c07017d50aea91c9ec931ac",
+            "header": "@@ -110,7 +110,7 @@",
+            "patch_line": 992
+          },
+          {
+            "added_line_count": 12,
+            "deleted_line_count": 0,
+            "exact_bytes": 955,
+            "exact_sha256": "a48c5678bf79e2cffb705324929b28122dd422ece760d8525c9d077e85217dd7",
+            "header": "@@ -364,6 +364,18 @@",
+            "patch_line": 1001
+          },
+          {
+            "added_line_count": 62,
+            "deleted_line_count": 0,
+            "exact_bytes": 3207,
+            "exact_sha256": "362e8e550026d9d2ba309f2f296a875b138b36d9a7a0e19089a562cc2f33dcdd",
+            "header": "@@ -663,6 +675,68 @@",
+            "patch_line": 1020
+          },
+          {
+            "added_line_count": 7,
+            "deleted_line_count": 0,
+            "exact_bytes": 472,
+            "exact_sha256": "532bb7265875b73a2a00c6467d658307096b2a127b8a03cb15c12717972b679c",
+            "header": "@@ -706,6 +780,13 @@",
+            "patch_line": 1089
+          },
+          {
+            "added_line_count": 38,
+            "deleted_line_count": 0,
+            "exact_bytes": 1979,
+            "exact_sha256": "792d2ffbc29b742464a3bc6698de0933f403bc0b89eea27f50245a4cffdd86b7",
+            "header": "@@ -723,6 +804,44 @@",
+            "patch_line": 1103
+          },
+          {
+            "added_line_count": 14,
+            "deleted_line_count": 9,
+            "exact_bytes": 1539,
+            "exact_sha256": "f71ec4e8e7912e192921820472aadcbebdd6819c3c4f6411915e93ef58b5cd28",
+            "header": "@@ -1613,19 +1732,24 @@",
+            "patch_line": 1148
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 485,
+            "exact_sha256": "e378ad7ca1378cdbcc240379e41d7435700f2004ac85d89129c826341a463fe9",
+            "header": "@@ -1635,7 +1759,7 @@",
+            "patch_line": 1182
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 250,
+            "exact_sha256": "24208d67c46b3e54606b7761d6aa87ece6705f225de59a6057c300bae08b8ccb",
+            "header": "@@ -2029,6 +2153,7 @@",
+            "patch_line": 1191
+          },
+          {
+            "added_line_count": 468,
+            "deleted_line_count": 9,
+            "exact_bytes": 19890,
+            "exact_sha256": "fef87bfe7bc53bddbb74e92b3066d28a436408bf69ce9d7841049399092aaf3c",
+            "header": "@@ -2043,14 +2168,473 @@",
+            "patch_line": 1199
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "src/policy_platform/contracts/case_decision.py",
+        "result_bytes": 118814,
+        "result_sha256": "734dcd3cff33bb33ea4e7cb12eae038efb64947b3c0e850ca78c506032735a28",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 3173,
+        "base_sha256": "58c509ff235d0db6f1bc898ffa976caec19ea6654b68bbcb64c6fb748bab35cf",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 7,
+            "deleted_line_count": 3,
+            "exact_bytes": 667,
+            "exact_sha256": "8ff48556651f1fb88a801e617bb1406a6e9cc4c32d8a973f51412a415fad2c75",
+            "header": "@@ -1,15 +1,19 @@",
+            "patch_line": 1686
+          },
+          {
+            "added_line_count": 11,
+            "deleted_line_count": 0,
+            "exact_bytes": 759,
+            "exact_sha256": "433fa4c16a10cbb7662dd4d486f3311664057a99f1b4ab85bec088f7e45ee721",
+            "header": "@@ -23,6 +27,17 @@",
+            "patch_line": 1709
+          },
+          {
+            "added_line_count": 11,
+            "deleted_line_count": 0,
+            "exact_bytes": 872,
+            "exact_sha256": "93088db2269e6681661c8e77d8df77d007df8ba341feaf84b87f398be52a9c12",
+            "header": "@@ -69,6 +84,17 @@",
+            "patch_line": 1727
+          },
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 0,
+            "exact_bytes": 311,
+            "exact_sha256": "f1816ff60fa042d3fd7e49f31760864086db5df313a06ced04110edc789f5638",
+            "header": "@@ -86,6 +112,8 @@",
+            "patch_line": 1745
+          },
+          {
+            "added_line_count": 134,
+            "deleted_line_count": 0,
+            "exact_bytes": 5065,
+            "exact_sha256": "73afcb5d300243b8a45fc7654aee315ab00be96530d9c88923b31d222bb30cf6",
+            "header": "@@ -107,3 +135,137 @@",
+            "patch_line": 1754
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "src/policy_platform/contracts/case_decision_light.py",
+        "result_bytes": 9437,
+        "result_sha256": "91d179d4aa37ee0e180f0f4852f8784e8a29450cca4a1cdd4a9b1861c254c0ac",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 2885,
+        "base_sha256": "ea33e40e46e6aeec6d45bffa6dfa59f97e57d0051a5a0e7968a87354102bf2a1",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 4,
+            "deleted_line_count": 3,
+            "exact_bytes": 457,
+            "exact_sha256": "3db28ad7445decf57407c41888a599ef9f3dfdaf050058ad3d50285f785627f4",
+            "header": "@@ -6,14 +6,15 @@",
+            "patch_line": 1896
+          },
+          {
+            "added_line_count": 94,
+            "deleted_line_count": 0,
+            "exact_bytes": 4132,
+            "exact_sha256": "68365387c323bed8332323449f4cd2709a09fdab9ecabee638a04b395c26325d",
+            "header": "@@ -22,6 +23,100 @@",
+            "patch_line": 1915
+          },
+          {
+            "added_line_count": 22,
+            "deleted_line_count": 5,
+            "exact_bytes": 1683,
+            "exact_sha256": "411c4bf6b82d2fa96981b9e2b1af3d35bee775cc5a4832b92886a66ce1fcea4a",
+            "header": "@@ -59,16 +154,33 @@",
+            "patch_line": 2016
+          },
+          {
+            "added_line_count": 33,
+            "deleted_line_count": 0,
+            "exact_bytes": 1333,
+            "exact_sha256": "01528f0d38a998f4d015c958941748b27a4c0daf14c75638857202464065c828",
+            "header": "@@ -84,3 +196,36 @@",
+            "patch_line": 2055
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "src/policy_platform/contracts/policy_retrieval.py",
+        "result_bytes": 8867,
+        "result_sha256": "55ae5a145e5c7bc27d0d2842f1aa4b83ae57c89033d7c9e03276c35c6e61e355",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 182380,
+        "base_sha256": "e0f655c03efbe1f458e70e46ae8e02f4b0e1ebaf23038e882b4659e988e30846",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 307,
+            "exact_sha256": "6f88232e4ba840f816db4e42116123684192fb445082f0f474da4c626876e7f3",
+            "header": "@@ -135,7 +135,7 @@",
+            "patch_line": 2096
+          },
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 1,
+            "exact_bytes": 873,
+            "exact_sha256": "adc664029b7115f3f860a807dc7fac975b85f5c895ee1f792ca445c081beab08",
+            "header": "@@ -193,7 +193,15 @@",
+            "patch_line": 2105
+          },
+          {
+            "added_line_count": 38,
+            "deleted_line_count": 0,
+            "exact_bytes": 1789,
+            "exact_sha256": "6c00aa2b85bed528c9103a8b3ae2db393db1a666b00b0f1863c653b5d497429c",
+            "header": "@@ -2839,6 +2847,44 @@",
+            "patch_line": 2122
+          },
+          {
+            "added_line_count": 5,
+            "deleted_line_count": 1,
+            "exact_bytes": 480,
+            "exact_sha256": "9a8b0699d2de8b4136513f5df389a850ac97e1cbafe601e2e96ac2edad44a3e1",
+            "header": "@@ -3038,7 +3084,11 @@",
+            "patch_line": 2167
+          },
+          {
+            "added_line_count": 5,
+            "deleted_line_count": 1,
+            "exact_bytes": 427,
+            "exact_sha256": "1dda2724ed68e0ddb15f11ae9dc41c90fd45d4077447c1d6e2ccf9212a13ebc6",
+            "header": "@@ -3056,7 +3106,11 @@",
+            "patch_line": 2180
+          },
+          {
+            "added_line_count": 12,
+            "deleted_line_count": 1,
+            "exact_bytes": 878,
+            "exact_sha256": "0c5a021932af893f9ebab948e6de074f93c824fcfe6f5050c532aa9d1e80e690",
+            "header": "@@ -3065,7 +3119,18 @@",
+            "patch_line": 2193
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 279,
+            "exact_sha256": "bb379c9feb807afa1d3ab615bcc00fb78edd4e3ef587311ea7165e7817a01bbd",
+            "header": "@@ -3076,6 +3141,7 @@",
+            "patch_line": 2213
+          },
+          {
+            "added_line_count": 7,
+            "deleted_line_count": 4,
+            "exact_bytes": 917,
+            "exact_sha256": "e670f480b05d3a0a7714dd234f5c3911587be25ce6a495500853a7a0cf4c1866",
+            "header": "@@ -3107,12 +3173,15 @@",
+            "patch_line": 2221
+          },
+          {
+            "added_line_count": 16,
+            "deleted_line_count": 7,
+            "exact_bytes": 1879,
+            "exact_sha256": "0f538f03e086e7d02e8c12ece9ef9f861688fbc55af68e10a1c54598a065925e",
+            "header": "@@ -3127,27 +3196,36 @@",
+            "patch_line": 2241
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 350,
+            "exact_sha256": "cd91ef663cd0d71d8c4f894f52af8f79c144d9f25314d26a95a5eeab3c8e94c7",
+            "header": "@@ -3163,7 +3241,7 @@",
+            "patch_line": 2285
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 1,
+            "exact_bytes": 518,
+            "exact_sha256": "18cdbf3c78c2c09a8b6bc137a2a82990fca7f105cde8c3cfd9fbe76fa97901fa",
+            "header": "@@ -3183,7 +3261,9 @@",
+            "patch_line": 2294
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 280,
+            "exact_sha256": "f5d7a579b2caffd971e13836d226338302fea4545a5e6eae447a447bcb65bc13",
+            "header": "@@ -3193,6 +3273,7 @@",
+            "patch_line": 2305
+          },
+          {
+            "added_line_count": 8,
+            "deleted_line_count": 6,
+            "exact_bytes": 899,
+            "exact_sha256": "8f0afb3817d64c9676929fb03c78a31073865e41bff01b74a8ea1557cf585612",
+            "header": "@@ -3212,14 +3293,16 @@",
+            "patch_line": 2313
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 300,
+            "exact_sha256": "a6aad72ef769946c7c4258a10bf0cb40e333f7842c35fad2a84d83b75c396a8b",
+            "header": "@@ -3230,7 +3313,7 @@",
+            "patch_line": 2336
+          },
+          {
+            "added_line_count": 25,
+            "deleted_line_count": 8,
+            "exact_bytes": 2449,
+            "exact_sha256": "153bc12c6e64a6b06ae28075d183c373fcc04dcf6143eef99e936358424c194a",
+            "header": "@@ -3240,30 +3323,47 @@",
+            "patch_line": 2345
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 283,
+            "exact_sha256": "960ec4a43fc402592d3a60bd6761f4bfa9c08422a17dcb3346c4b611c711c431",
+            "header": "@@ -3280,6 +3380,7 @@",
+            "patch_line": 2401
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 1,
+            "exact_bytes": 410,
+            "exact_sha256": "bb5d1ade77c87d66d28c437c77fb2bd988d84e0065e24c0bb547b667de769003",
+            "header": "@@ -3354,7 +3455,9 @@",
+            "patch_line": 2409
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 1,
+            "exact_bytes": 372,
+            "exact_sha256": "2aecfcff1aacbda3c845f4eb49ad38e90c7e755d44f773530f6be54cd78fbca0",
+            "header": "@@ -3362,7 +3465,9 @@",
+            "patch_line": 2420
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 717,
+            "exact_sha256": "db04ce862b1c739f4dddcc7e5b6bcb3ff635ee23ddcca0ebcc6c7ef06888f9a0",
+            "header": "@@ -3395,11 +3500,17 @@",
+            "patch_line": 2431
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 702,
+            "exact_sha256": "b49d935e2dd6959865c583c909ceeb1f3652c723ba3355d60c73b26556de8321",
+            "header": "@@ -3418,11 +3529,17 @@",
+            "patch_line": 2449
+          },
+          {
+            "added_line_count": 18,
+            "deleted_line_count": 0,
+            "exact_bytes": 658,
+            "exact_sha256": "c4beebfc5a2e6664bcc3ee5726ac1c3c6aeea4577812343941a4fefde187df5c",
+            "header": "@@ -3477,3 +3594,21 @@",
+            "patch_line": 2467
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+        "result_bytes": 187651,
+        "result_sha256": "84fedebd9b1741322cfc6849168e306bae545ffe98c3020c7707974f56f9f086",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 136203,
+        "base_sha256": "2d79647771c463f47683c95ef2fadaf73a9c4a083c28335d1a94f3c2fb01ff92",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 0,
+            "exact_bytes": 320,
+            "exact_sha256": "15a07fdb0cf1f0cded5acf3cc4a46c0691e1ec3700cfe51ae20612462e30d55b",
+            "header": "@@ -173,6 +173,8 @@",
+            "patch_line": 2493
+          },
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 0,
+            "exact_bytes": 254,
+            "exact_sha256": "b4e7f9fa27cc6cc6b620de421671f62fcfba8b19d451a73118ecbbe9bc86bd95",
+            "header": "@@ -187,6 +189,8 @@",
+            "patch_line": 2502
+          },
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 0,
+            "exact_bytes": 481,
+            "exact_sha256": "daff7f8d09438585a2da89737cbe5eaff24964dab6b15c70b3cd101808965750",
+            "header": "@@ -204,12 +208,14 @@",
+            "patch_line": 2511
+          },
+          {
+            "added_line_count": 57,
+            "deleted_line_count": 0,
+            "exact_bytes": 3556,
+            "exact_sha256": "eadd1bd733f29195f41f09f369983472fb748d09fba1c49f4951dc76ba95c8d8",
+            "header": "@@ -267,6 +273,63 @@",
+            "patch_line": 2526
+          },
+          {
+            "added_line_count": 127,
+            "deleted_line_count": 0,
+            "exact_bytes": 8082,
+            "exact_sha256": "57c7b182e45478a234a4abe7d86fdabb600116b8e7832fa4f0c88432bcaa7375",
+            "header": "@@ -283,6 +346,133 @@",
+            "patch_line": 2590
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 191,
+            "exact_sha256": "03709db0036e980c9356025d250d62a1672b4d6f420047bf98769c3d93437fb6",
+            "header": "@@ -311,6 +501,7 @@",
+            "patch_line": 2724
+          },
+          {
+            "added_line_count": 7,
+            "deleted_line_count": 0,
+            "exact_bytes": 821,
+            "exact_sha256": "a76ec0178e639704550934cd050ce127fca6881e61c1bcfacfe82a308166dd0e",
+            "header": "@@ -362,6 +553,13 @@",
+            "patch_line": 2732
+          },
+          {
+            "added_line_count": 26,
+            "deleted_line_count": 0,
+            "exact_bytes": 1434,
+            "exact_sha256": "47dff841223a1ba1979be0a2f481f47a1daa9da868bc12de102f2d4be0f96438",
+            "header": "@@ -426,6 +624,32 @@",
+            "patch_line": 2746
+          },
+          {
+            "added_line_count": 4,
+            "deleted_line_count": 0,
+            "exact_bytes": 527,
+            "exact_sha256": "fa49249c03f186010e29804fdbd2d2634021a34b656b3a88730875161f11b423",
+            "header": "@@ -476,6 +700,10 @@",
+            "patch_line": 2779
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 347,
+            "exact_sha256": "7234a88870b22dce0f7dfb227bdaa04909ce4f52403c7b0a9039b9bc3f4c6de0",
+            "header": "@@ -507,6 +735,7 @@",
+            "patch_line": 2790
+          },
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 0,
+            "exact_bytes": 328,
+            "exact_sha256": "25c372815ebae3e92cf228d7fe20011f84d738217fee991ddcfb966cc63888bc",
+            "header": "@@ -553,6 +782,8 @@",
+            "patch_line": 2798
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 729,
+            "exact_sha256": "baf7686f71caa0a62c2f3a415357216bf490d514adf708b8eb5b3b7c1c2b9666",
+            "header": "@@ -585,6 +816,12 @@",
+            "patch_line": 2807
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 325,
+            "exact_sha256": "d48d9643906e4edeb108a758be03e452d54924c5a6d8b9d6e9a9b087240c801b",
+            "header": "@@ -623,6 +860,7 @@",
+            "patch_line": 2820
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 649,
+            "exact_sha256": "af507261fe0b4ef57ee19fee6a3d67f7f18bb8e14bdd121aaf60effd70aeb770",
+            "header": "@@ -681,6 +919,12 @@",
+            "patch_line": 2828
+          },
+          {
+            "added_line_count": 414,
+            "deleted_line_count": 0,
+            "exact_bytes": 18247,
+            "exact_sha256": "dded3364c42491c844e2008d5aaab4aed0194b49bf844d6447de50a010c4ceaf",
+            "header": "@@ -729,6 +973,420 @@",
+            "patch_line": 2841
+          },
+          {
+            "added_line_count": 36,
+            "deleted_line_count": 0,
+            "exact_bytes": 1688,
+            "exact_sha256": "96a345e4a4955d9833b05ca1906a655c2d6273d85ab3e96a9c65eda3731cd58e",
+            "header": "@@ -1172,6 +1830,42 @@",
+            "patch_line": 3262
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 623,
+            "exact_sha256": "b519d2e2eb5a2daedd0b3de54318b6d91c614485f236b7548566f65ddfaa21c8",
+            "header": "@@ -1213,6 +1907,12 @@",
+            "patch_line": 3305
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 406,
+            "exact_sha256": "ff374ccab6a44ead519565ca1de2584cba3436a8eb50b3c0c7d67058ec1a1e80",
+            "header": "@@ -1234,6 +1934,7 @@",
+            "patch_line": 3318
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 400,
+            "exact_sha256": "acf963248191c5345c85e2cb67202bcd18dc64bdb3b68f527ed495530b54558d",
+            "header": "@@ -1247,6 +1948,7 @@",
+            "patch_line": 3326
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 341,
+            "exact_sha256": "8e28dde99b34e67e9b25838776c7e41933367163d1fad41538ec314c9b0f23d1",
+            "header": "@@ -1258,6 +1960,7 @@",
+            "patch_line": 3334
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 297,
+            "exact_sha256": "99a877985329a1bd533cd2dbee7004756e550ab71fd07dc456ce4cfde9fec1af",
+            "header": "@@ -1275,6 +1978,7 @@",
+            "patch_line": 3342
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 587,
+            "exact_sha256": "effebc0769f632f26dc25f9def6e155b2a21f5d802129184728b869410eb6427",
+            "header": "@@ -1533,6 +2237,12 @@",
+            "patch_line": 3350
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 366,
+            "exact_sha256": "f125f27f8717d4837ca837efca7f2cacf8e12407dce70d1887bbc6cdbf0071b7",
+            "header": "@@ -1540,6 +2250,7 @@",
+            "patch_line": 3363
+          },
+          {
+            "added_line_count": 48,
+            "deleted_line_count": 0,
+            "exact_bytes": 2828,
+            "exact_sha256": "a676c9494c389059d77e127597f5ad7447d875b58e48cfc050ca6f8325e60719",
+            "header": "@@ -1548,10 +2259,58 @@",
+            "patch_line": 3371
+          },
+          {
+            "added_line_count": 8,
+            "deleted_line_count": 0,
+            "exact_bytes": 738,
+            "exact_sha256": "6e0e10a8220e2e5cb42698a693f64620ba38f86515759e2b68a482eefce5ccad",
+            "header": "@@ -1648,7 +2407,15 @@",
+            "patch_line": 3430
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 366,
+            "exact_sha256": "280429d9989681c8709b5c1b7c7dd6b313622251a4799d9013b6cda441c2eb17",
+            "header": "@@ -1656,6 +2423,7 @@",
+            "patch_line": 3446
+          },
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 0,
+            "exact_bytes": 670,
+            "exact_sha256": "9373868b22f4fd684edf07944d91d3ddb4bbe56afb34f3b9bc4d0609824394f6",
+            "header": "@@ -1664,6 +2432,15 @@",
+            "patch_line": 3454
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 697,
+            "exact_sha256": "395c2bd551e966b28b09980d6639d560fdf8e46361be8ed45e16db4d1e5623a3",
+            "header": "@@ -1687,6 +2464,12 @@",
+            "patch_line": 3470
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 441,
+            "exact_sha256": "2964b6f38d7752c33fd0ac247a51565e38519e09979d50d7ba90f289018689b6",
+            "header": "@@ -1694,6 +2477,7 @@",
+            "patch_line": 3483
+          },
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 0,
+            "exact_bytes": 804,
+            "exact_sha256": "108c65575ba726ab6b7c2a24c665cd9cbc3206009582fb506fbf3c15a2733aa1",
+            "header": "@@ -1702,6 +2486,15 @@",
+            "patch_line": 3491
+          },
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 0,
+            "exact_bytes": 684,
+            "exact_sha256": "fd1d8393a38ed03f7c707c1979615db2c3e7acbe5ef5e03960867937ec23bfa3",
+            "header": "@@ -1710,6 +2503,15 @@",
+            "patch_line": 3507
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 338,
+            "exact_sha256": "de0448492c6b7fad33333989d6aff05e3df178c2d6335473200cdac63a0b0eba",
+            "header": "@@ -1902,6 +2704,7 @@",
+            "patch_line": 3523
+          },
+          {
+            "added_line_count": 12,
+            "deleted_line_count": 1,
+            "exact_bytes": 1029,
+            "exact_sha256": "8570d32a457400c04636f0fc0ba9919afd6d67e3de69ac41198519669c797e3c",
+            "header": "@@ -1949,7 +2752,18 @@",
+            "patch_line": 3531
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 0,
+            "exact_bytes": 453,
+            "exact_sha256": "464783e9a9737f32245716cf8e91962d55aced6754e59a42d4f63da848a1ae47",
+            "header": "@@ -1982,7 +2796,10 @@",
+            "patch_line": 3551
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 369,
+            "exact_sha256": "329f9d651545b6f7e68e5c39e831363bbd11c25e466d2bb8e7999daa4fa9b4aa",
+            "header": "@@ -2036,6 +2853,7 @@",
+            "patch_line": 3562
+          },
+          {
+            "added_line_count": 43,
+            "deleted_line_count": 0,
+            "exact_bytes": 2827,
+            "exact_sha256": "ae5c512e7d5c3fa54665ebba5572bcad0a2a7b511cc627da5debfc9343b6676d",
+            "header": "@@ -2198,6 +3016,49 @@",
+            "patch_line": 3570
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 355,
+            "exact_sha256": "04e283c287983a2faac81562a7ce322d241ef543ceb88d80d7294c30cb991f42",
+            "header": "@@ -2217,7 +3078,7 @@",
+            "patch_line": 3620
+          },
+          {
+            "added_line_count": 17,
+            "deleted_line_count": 7,
+            "exact_bytes": 2366,
+            "exact_sha256": "5b9e3d62523877ea912594e31bde94f1df5f00b68b52fd20ce9b1099fea3159f",
+            "header": "@@ -2234,22 +3095,32 @@",
+            "patch_line": 3629
+          },
+          {
+            "added_line_count": 24,
+            "deleted_line_count": 5,
+            "exact_bytes": 2206,
+            "exact_sha256": "7624691cf3271d3dc8fa9a3b8eb7d41d7d5bfa3b83f75c8e14a0d5d32fe2c943",
+            "header": "@@ -2261,18 +3132,37 @@",
+            "patch_line": 3669
+          },
+          {
+            "added_line_count": 236,
+            "deleted_line_count": 1,
+            "exact_bytes": 10679,
+            "exact_sha256": "cdf300d269e10e188df5cb23f2159fb437a4abc09753b03f076a84e2ae50306f",
+            "header": "@@ -2403,7 +3293,242 @@",
+            "patch_line": 3712
+          },
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 0,
+            "exact_bytes": 433,
+            "exact_sha256": "c961229542465c912d8e286b0658ce7c0f137f2f8585b372bb49311afe684118",
+            "header": "@@ -2418,6 +3543,9 @@",
+            "patch_line": 3956
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 349,
+            "exact_sha256": "addb666b38be191717afa13603cc91a77279545ffe9305bb79498ec8c01aab59",
+            "header": "@@ -2460,7 +3588,7 @@",
+            "patch_line": 3966
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 1,
+            "exact_bytes": 851,
+            "exact_sha256": "b517f7a9e08375903e61bd24ed996e8689741e3d304ed0a12665e313e15a233f",
+            "header": "@@ -2489,7 +3617,12 @@",
+            "patch_line": 3975
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 283,
+            "exact_sha256": "391ecadfca41701266a766b13f2104279195114d248848ed94514e92c2f3c99b",
+            "header": "@@ -2894,6 +4027,7 @@",
+            "patch_line": 3989
+          },
+          {
+            "added_line_count": 5,
+            "deleted_line_count": 0,
+            "exact_bytes": 584,
+            "exact_sha256": "10898365995eaf76894a405f67c25df4438e070a74d56cdd75003982f8988309",
+            "header": "@@ -2920,6 +4054,11 @@",
+            "patch_line": 3997
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 251,
+            "exact_sha256": "e85291b8c46fe7d28184966485fddd4ee43836b29f8d0cb76fb9ba23b82c9ecb",
+            "header": "@@ -2942,6 +4081,7 @@",
+            "patch_line": 4009
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 251,
+            "exact_sha256": "2aa0b603745c1855b9e2751ec0f436f600bd54582f72e403dc138c30bd051ecd",
+            "header": "@@ -2955,6 +4095,7 @@",
+            "patch_line": 4017
+          },
+          {
+            "added_line_count": 4,
+            "deleted_line_count": 0,
+            "exact_bytes": 549,
+            "exact_sha256": "777e9a8ee9012ff4a52f6a08454f074d35906ebeaff5736aaac5e2a25d607384",
+            "header": "@@ -2963,6 +4104,10 @@",
+            "patch_line": 4025
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 218,
+            "exact_sha256": "f0981e230eeba9db371e11f6bc13868be82efc7dc999618a17e9e36de501987e",
+            "header": "@@ -2974,6 +4119,7 @@",
+            "patch_line": 4036
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "result_bytes": 191105,
+        "result_sha256": "a26379de4e0bad9da508d2eb355afe26b057584c256fd6d8dc6853fa4c6a75eb",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 61520,
+        "base_sha256": "254eef80e74b6758425898e9329402b39abea542eefb12b2cc38666f2a630c9f",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 3,
+            "deleted_line_count": 0,
+            "exact_bytes": 377,
+            "exact_sha256": "bf22f7cb4e48139b7d88a929be19621df985ff2f0ba03185cd1099b12d1fc386",
+            "header": "@@ -756,6 +756,9 @@",
+            "patch_line": 4048
+          },
+          {
+            "added_line_count": 6,
+            "deleted_line_count": 0,
+            "exact_bytes": 453,
+            "exact_sha256": "15d96e778e83dbffb0909d386be8040e56900286b939b97c01951151ae2e8aa2",
+            "header": "@@ -765,6 +768,12 @@",
+            "patch_line": 4058
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "result_bytes": 61952,
+        "result_sha256": "fef24501dc437ed48d53f326c1dc2c82f5aae51a0a2b1030ecb2197b70a9ddae",
+        "why": "Rule-only public context_rule_ids alias and documentation, journal-proven."
+      },
+      {
+        "base_bytes": 113377,
+        "base_sha256": "47522f46497c728a69bbc9665e3353ac2b0dd9d6efa9ba7191414011ce178721",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 0,
+            "exact_bytes": 372,
+            "exact_sha256": "2cf49cccf9d9b547ad41bf0d0b3fab692fa59a0a3f6d277c63ee6c333dc1b724",
+            "header": "@@ -70,8 +70,10 @@",
+            "patch_line": 4075
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 412,
+            "exact_sha256": "c3df3aaedc16b8b524ee4a71ff3e08c3a7f79a482beb3823962bd62067a0b6ee",
+            "header": "@@ -103,6 +105,7 @@",
+            "patch_line": 4086
+          },
+          {
+            "added_line_count": 27,
+            "deleted_line_count": 1,
+            "exact_bytes": 1417,
+            "exact_sha256": "dc791eaaf5ebdef59b8b66b0f0be19506a83a7bc6c4d8168ff45e10599bb15d8",
+            "header": "@@ -224,7 +227,33 @@",
+            "patch_line": 4094
+          },
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 0,
+            "exact_bytes": 439,
+            "exact_sha256": "1635dd30eb29181823304289dd71bfc5d07e7b733d002f3cd497bb8429a2b4db",
+            "header": "@@ -238,6 +267,15 @@",
+            "patch_line": 4129
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 260,
+            "exact_sha256": "4e46493dc24392dce25debb1692fe1971ba494e3c076fa13054a46ddd3a732bd",
+            "header": "@@ -468,6 +506,7 @@",
+            "patch_line": 4145
+          },
+          {
+            "added_line_count": 5,
+            "deleted_line_count": 1,
+            "exact_bytes": 752,
+            "exact_sha256": "5bc5947503c39802b9da1791403d23495cb893948c157bba959d3316e2f80f01",
+            "header": "@@ -476,8 +515,12 @@",
+            "patch_line": 4153
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 593,
+            "exact_sha256": "0b292937afa605402e38518ffaabf86d6344d12d4d8da0fb279629e6dfd95126",
+            "header": "@@ -530,6 +573,7 @@",
+            "patch_line": 4167
+          },
+          {
+            "added_line_count": 137,
+            "deleted_line_count": 0,
+            "exact_bytes": 5580,
+            "exact_sha256": "c43812b9f8ccaa9c585a954a961a13062503a0a93b61e6ac1f44f6f6258af1ef",
+            "header": "@@ -669,6 +713,143 @@",
+            "patch_line": 4175
+          },
+          {
+            "added_line_count": 4,
+            "deleted_line_count": 0,
+            "exact_bytes": 524,
+            "exact_sha256": "1d740468c41cded5dab67b991cb03b01c1c27b394b222f1c612dd70be13373d8",
+            "header": "@@ -1953,6 +2134,10 @@",
+            "patch_line": 4319
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_a_project_case_decision_carries_its_own_receipt.py",
+        "result_bytes": 120565,
+        "result_sha256": "b9aa19b0c7d35fad9b0d475078d5f59f8bc5e585569dbcd5fa219d0c4dad3921",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 7187,
+        "base_sha256": "f2fb1ee7cfa2c7af6818be22f8267919af6c21ccebd8c541883febfbf737fbc9",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 9,
+            "deleted_line_count": 2,
+            "exact_bytes": 571,
+            "exact_sha256": "2881cb800f0450b7d8317dab8d4e428894db3de413dd3d366c769a44adad77d1",
+            "header": "@@ -3,8 +3,15 @@",
+            "patch_line": 4334
+          },
+          {
+            "added_line_count": 215,
+            "deleted_line_count": 0,
+            "exact_bytes": 8743,
+            "exact_sha256": "1125e93fec712fd4c6e3a2d208221a95a8d2aedaf879af909531942ec4253abc",
+            "header": "@@ -190,3 +197,218 @@",
+            "patch_line": 4352
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_case_decision_light_contract.py",
+        "result_bytes": 15623,
+        "result_sha256": "bc0cc646f253aba2b5911b24ad15111b9e4cef232ab856c061a3678db344b760",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 4982,
+        "base_sha256": "b6c92fcb653f88b1c6ca7ba4183fb877ed31f8540ddbfd282fbdae8fac89a1f5",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 2,
+            "deleted_line_count": 1,
+            "exact_bytes": 516,
+            "exact_sha256": "b30fa02b61778073f8251a34eb74a5a31e804444ef3de68b1efa797f08139649",
+            "header": "@@ -35,9 +35,10 @@",
+            "patch_line": 4575
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_external_policy_retrieval_returns_filtered_json.py",
+        "result_bytes": 5092,
+        "result_sha256": "468f314aba745f2a620350e3dd20cd139322ad2ca446ce49f556512e6b2b4fe0",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 31889,
+        "base_sha256": "ce073b192c037b5d5ce2847f1185769c73081c02ef92385ce9a0200ecefcea85",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 10,
+            "deleted_line_count": 3,
+            "exact_bytes": 1042,
+            "exact_sha256": "f456e6453568cd88e72185bb2f8584502e1cbb7c01952a2c382a6c26d90e119c",
+            "header": "@@ -64,11 +64,18 @@",
+            "patch_line": 4591
+          },
+          {
+            "added_line_count": 4,
+            "deleted_line_count": 0,
+            "exact_bytes": 223,
+            "exact_sha256": "5b855b6c962e8eba416f9e26124776c0e8c3ec2da0e3936bbd421dadbe9adc9a",
+            "header": "@@ -95,6 +102,10 @@",
+            "patch_line": 4613
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "result_bytes": 32092,
+        "result_sha256": "170f8e7c8bdc88dc28a627949f8f4e19db565b0f819c8c33a465176e477143aa",
+        "why": "Rule-only module registrations in imports and TOUCHED; foundation and later Payload guard changes remain separate."
+      },
+      {
+        "base_bytes": 28142,
+        "base_sha256": "b96d5baf28462155b59ac605044a7b9a0f3695b82561d5463ca089c1c6949746",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 1,
+            "exact_bytes": 507,
+            "exact_sha256": "0dbce59beac00c14772d83abad9ff122ae1ada034aed25e17616090de51b42b4",
+            "header": "@@ -91,7 +91,7 @@",
+            "patch_line": 4628
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_p0_rest_telemetry_closes_measurement_blind_spots.py",
+        "result_bytes": 28164,
+        "result_sha256": "00a2b862df4ecb47adf762f938ff43c7e613ad7549595ecdeb778e7a3ecfbb78",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 64332,
+        "base_sha256": "0cc05f8402eca9ff4731f9d10e9cd9759681b180e0cc2bfe4cd9215e434c9553",
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 4,
+            "deleted_line_count": 1,
+            "exact_bytes": 586,
+            "exact_sha256": "bdc7e38ac9bf1b270b79f4827b25e633cfc4ab1b45371e3011d48a11f9c97e20",
+            "header": "@@ -49,7 +49,10 @@",
+            "patch_line": 4641
+          },
+          {
+            "added_line_count": 46,
+            "deleted_line_count": 1,
+            "exact_bytes": 2250,
+            "exact_sha256": "97958f8168029100a34733e031bd4f4f9417f01d158a38a51211969b97ca4938",
+            "header": "@@ -715,7 +718,52 @@",
+            "patch_line": 4653
+          },
+          {
+            "added_line_count": 1,
+            "deleted_line_count": 0,
+            "exact_bytes": 116,
+            "exact_sha256": "4d2c15089e64d7e612dc35ed6e7f78fe1398d1ba67c2ed3039fc0c7465c738d7",
+            "header": "@@ -1634,3 +1682,4 @@",
+            "patch_line": 4707
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_policy_case_project.py",
+        "result_bytes": 66318,
+        "result_sha256": "5715f1fd7817ea1aea4bc43d9865da67fc2fbee44e028f8596f66fe3c3d95d43",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 0,
+        "base_sha256": null,
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 1856,
+            "deleted_line_count": 0,
+            "exact_bytes": 75664,
+            "exact_sha256": "01927f045fcdad7754d63f080f7155e0607c333bbc554ce7c257e8c69d6d7b45",
+            "header": "@@ -0,0 +1,1856 @@",
+            "patch_line": 4717
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_rule_mode_returns_rules_not_policies.py",
+        "result_bytes": 75645,
+        "result_sha256": "05fa859707cadbcb1456e464d3308539d4b805b1fdf3cfb688bb80de6a5d29cd",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 0,
+        "base_sha256": null,
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 773,
+            "deleted_line_count": 0,
+            "exact_bytes": 30762,
+            "exact_sha256": "75e088747494f639aac48d9790e8810cfdd4044c630a0005d53a33cfd578c367",
+            "header": "@@ -0,0 +1,773 @@",
+            "patch_line": 6579
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+        "result_bytes": 30744,
+        "result_sha256": "119c300ea52250bd3c0d1fc37cd6902b6000ef021a11394fc7dc732d49e99943",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      },
+      {
+        "base_bytes": 0,
+        "base_sha256": null,
+        "evidence": [
+          "01-rule-retrieval.blocked-proven-subset.patch",
+          "01-rule-retrieval.manifest.json",
+          "focused foundation-to-Rule sequence validation"
+        ],
+        "hunks": [
+          {
+            "added_line_count": 218,
+            "deleted_line_count": 0,
+            "exact_bytes": 8521,
+            "exact_sha256": "9f5ec7325d364a701f754eaa3c36337c45737145c280fe22f78f32d2e6d35d13",
+            "header": "@@ -0,0 +1,218 @@",
+            "patch_line": 7358
+          }
+        ],
+        "ownership": "Native Rule Retrieval",
+        "path": "tests/unit/test_the_retrieval_route_answers_in_the_shape_the_mode_asked_for.py",
+        "result_bytes": 8503,
+        "result_sha256": "7a178bedf0cd760eb84c07520049961ed8c2ec05eeb70d4c7036adad016b7fcf",
+        "why": "Frozen Rule implementation or focused contract test, retained from the proven subset after removing two independently owned Payload optimizations."
+      }
+    ],
+    "schema_version": "rule_index_foundation_path_hunk_manifest_v1",
+    "unit": "Native Rule Retrieval rebased on ordinal 0"
+  },
+  "schema_version": "rule_index_foundation_path_hunk_manifest_v2"
+}

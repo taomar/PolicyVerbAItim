@@ -1,0 +1,54 @@
+{
+  "schema_version": "six_unit_backend_validation_v1",
+  "passed": true,
+  "imports": {
+    "result": "passed",
+    "log": "IMPORT_CHECK.log",
+    "sha256": "e4a0c388bbd56ab96fa97ff949e4c2982d142bce1e7d07551db42c9b2c1f50c3",
+    "bytes": 20
+  },
+  "focused": [
+    {
+      "name": "foundation_and_01a",
+      "passed": 231,
+      "log": "FOCUSED_FOUNDATION_01A.log",
+      "bytes": 42231,
+      "sha256": "16bf8d7938e91e71c6b704c7b1dbdedeecc5399e98dfa0d4034fb6363032b34f"
+    },
+    {
+      "name": "rule",
+      "passed": 524,
+      "log": "FOCUSED_RULE.log",
+      "bytes": 86599,
+      "sha256": "48dd4febc75b22f17e1506ab44d7b197bc54f895e04f715e1a502243128d55e8"
+    },
+    {
+      "name": "payload",
+      "passed": 448,
+      "log": "FOCUSED_PAYLOAD.log",
+      "bytes": 71531,
+      "sha256": "776f8c7e1adc9ce18599d9521bcfab81485a7bc0666b5f26abff8df5df6c93eb"
+    }
+  ],
+  "full_suite": {
+    "test_files": 246,
+    "passed": 5192,
+    "skipped": 23,
+    "shards": 9,
+    "all_passed": true,
+    "log": {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\FULL_BACKEND_FINAL.log",
+      "bytes": 16918,
+      "sha256": "09c630e502d0270721fcb77e5c0ded6e942607c39df0e27035d5c0e6d7f65c9d"
+    }
+  },
+  "environment": {
+    "private_git_metadata": "initialized and exact HEAD committed only inside private tree so Git publication guards execute",
+    "ignored_test_fixtures": "two hash-recorded local PDFs copied only into private ignored data/documents",
+    "dependencies_installed": false,
+    "live_calls": false,
+    "database_calls": false,
+    "test_database_url": "non-secret localhost:1 refusal address",
+    "skip_note": "23 skips: optional graph/docling, local-only docs/accounts, and prohibited/unavailable local Postgres fixtures"
+  }
+}

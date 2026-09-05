@@ -1,0 +1,783 @@
+{
+  "schema_version": "consume_path_hunk_manifest_v1",
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "foundation": {
+    "status": "approved_narrow_retroactive",
+    "publishable_patch": true,
+    "private_evidence_patch": {
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "bytes": 27171,
+      "deterministic_regeneration": true
+    },
+    "paths": [
+      {
+        "path": "apps/consume-demo/src/App.test.tsx",
+        "classification": "mixed: T1 request-selection tests; T2 repairs the rule response fixture and renderer expectation",
+        "head": {
+          "sha256": "5a9229bc0e87ab97644731dac5f3fc078f9823c914a724ac0fb171b5ac1a09d9",
+          "bytes": 106103
+        },
+        "foundation": {
+          "sha256": "57d214310f65966048faac1bd600b509dc66ee86c5393c7bfe8ddf1ab9770c46",
+          "bytes": 111701
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "67b4afe478dafa47271b1a1ca4126ed3807bc97b",
+        "git_result_blob": "9df391b0724d3d2d0e0f66fe6e184fa6a9da8834",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -654,10 +654,147 @@ describe('the request inspector, before anything is submitted', () => {",
+            "patch_sha256": "38cdf7d70f6a2cbded651d02304e4de049f14aae25559d4e1bb411ff0e4b850a",
+            "base_fragment_sha256": "9f9d247d915d979f2531796ca347e4d9d97971456f44f967846d43257f5c12a9",
+            "result_fragment_sha256": "121ed3259d0cae2490f0ee578dc587a83642040d0dcd0e23e43782122117e455",
+            "patch_lines": 148,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 147
+          }
+        ],
+        "authorship_event_lines": [
+          3683
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/App.tsx",
+        "classification": "mixed: T1 state/body/hash/docket wiring; T2 schema-tag state, announcement, and renderer",
+        "head": {
+          "sha256": "6096f38104448a14440d2373be0a045c49ab3ce8b5be324c36bba3cb4da1cce6",
+          "bytes": 34834
+        },
+        "foundation": {
+          "sha256": "bc3fa860056d50a669b60c0c0695f9d2b55c78bbdc92ceade960f30ff10a6591",
+          "bytes": 35175
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "a23987bb59f6d56e8ad32c062205bffcadb6ac67",
+        "git_result_blob": "483f657ad7767da6eba5540d711ff3bfd08a67bc",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -165,10 +165,11 @@ export default function App() {",
+            "patch_sha256": "c9d136b34579d20823a173370500cabad51f1470c7202a1dd640e27582a0bf59",
+            "base_fragment_sha256": "c3ed4e0a521c2043055976c156eaa301cabebd3f7541890acf135118b7c11595",
+            "result_fragment_sha256": "7e3bdac050f4c08bd4f76c5e1ee85adcb193ec83a9ff9e3f564c45864aa8aa7e",
+            "patch_lines": 12,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 11
+          },
+          {
+            "header": "@@ -206,12 +207,18 @@ export default function App() {",
+            "patch_sha256": "a25aa39597ddd75986dcf3c20565ca973e7097d178cf9cedf1bf5319f057635c",
+            "base_fragment_sha256": "b1c039d4c72072c5076af0e216973d5749beed4c4d7a12b4073279388cd3583b",
+            "result_fragment_sha256": "b6da5678e076cd9cd4a80b46ee2832c48afca22b5052adaa81e12280d17bf554",
+            "patch_lines": 21,
+            "base_fragment_lines": 12,
+            "result_fragment_lines": 18
+          },
+          {
+            "header": "@@ -251,12 +258,13 @@ export default function App() {",
+            "patch_sha256": "2d401dd495958f9f641ec7fbb0fe321e609d25a379b86a30d211df728a7ae3e8",
+            "base_fragment_sha256": "c59394faef0531c0e21813efe0b13fab9d1708054f3f9a61b8b7ab0bc1f28a5d",
+            "result_fragment_sha256": "8d72e07083bb6b425c045c8cb3812f4a4ba28b72658cf5c39177167a1d290249",
+            "patch_lines": 15,
+            "base_fragment_lines": 12,
+            "result_fragment_lines": 13
+          },
+          {
+            "header": "@@ -637,10 +645,15 @@ export default function App() {",
+            "patch_sha256": "d1adf3a123c5dfc76037abca6e6b08fab091b1d1665ca80149195f05444267e7",
+            "base_fragment_sha256": "1bae24a12d2f07bedfb9f7eb42ca190ce5f1563ef59156cd8fa51dcb3f2f098e",
+            "result_fragment_sha256": "5f8c629d87c1949d396e043498ee809793f79b45cbdfa4e94897fe264191442d",
+            "patch_lines": 16,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 15
+          }
+        ],
+        "authorship_event_lines": [
+          3515,
+          3522,
+          3578,
+          3585
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/components/RequestDocket.tsx",
+        "classification": "T1 only: retrieval selector state boundary",
+        "head": {
+          "sha256": "61a43c2bc994f6009a6265313825e23a163cc432aaeb1da0a4b3e4f38455d366",
+          "bytes": 32511
+        },
+        "foundation": {
+          "sha256": "21932afeffcc97a35ea50bae56cf02bf901de1245fc74d67e92430f23dea291a",
+          "bytes": 33427
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "70c2a5d60aab4fb4739f18e2f5c08341859b981b",
+        "git_result_blob": "498746fb1443e98fad562b7ec1a6653e030d71d8",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -88,10 +88,12 @@ export interface DocketProps {",
+            "patch_sha256": "7d36cb2d7b430d9e0a00d568d05b9065360d24171250b4fa15366b885d32ad8a",
+            "base_fragment_sha256": "ffc72a262469ddb5c4c67442f184cea1f048eae5692b2ecdb788c6194ef5b94b",
+            "result_fragment_sha256": "69b0935a17156863f19ef20e920679b16ffc1a7934313f22150e2aed182baf30",
+            "patch_lines": 13,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 12
+          },
+          {
+            "header": "@@ -458,10 +460,29 @@ export function RequestDocket(props: DocketProps) {",
+            "patch_sha256": "5a0f5482d799a7b8bb1c044690641faec7fde3b59cb09c2a2e233f037a2caff0",
+            "base_fragment_sha256": "4c80d142ccdd91597630987e2a3e54fb2d6d6af3e90ccf543e77490c9f867e3f",
+            "result_fragment_sha256": "84bfe69d83bfc35ff980b245f070c7327bf8d986a7d454ca71f61ac68fde8081",
+            "patch_lines": 30,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 29
+          }
+        ],
+        "authorship_event_lines": [
+          3487,
+          3494,
+          3550
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/contracts/caseDecision.ts",
+        "classification": "mixed: T1 request/receipt mode fields; T2 rule envelope and strict classifier",
+        "head": {
+          "sha256": "f634e3094ee2162b0399fadb70a561747bed3a1bdf50b6f44cfb23ebd878d5e4",
+          "bytes": 34916
+        },
+        "foundation": {
+          "sha256": "a6890423e3a0725b9509e1723cb211b673c8d0534ef01ecb15ab4b8cb4e53995",
+          "bytes": 35932
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "e50101c90d7b6ca3dc5f423c6bfd39e68f479891",
+        "git_result_blob": "b4d251db258ad12a7c56d86b47ae946b59ffa937",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -143,10 +143,18 @@ export interface RequestRef {  scenario: string",
+            "patch_sha256": "118cbc419461070b4e5a9f7465a7d2f1b36a7f86cf53d19ee615d979d140731c",
+            "base_fragment_sha256": "e63eaafe469a2bbf81b9985c38b892c0ed4c2d45014b44d8e95eab6cc04a654b",
+            "result_fragment_sha256": "379e89b4987a3e67236fe70ee0bbbbd66aab5699c3147c1add0f700365d44d8d",
+            "patch_lines": 19,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 18
+          },
+          {
+            "header": "@@ -326,10 +334,16 @@ export interface PolicyRef {",
+            "patch_sha256": "c862430dda6a84a11df9ff20db93875590720efe0c657b810aebb32ac0c8b68c",
+            "base_fragment_sha256": "d4fc1aeffc92450583b05f8bfd889ee45545e34fcb90b5eeb4873835de8368ca",
+            "result_fragment_sha256": "89b21bbc0d5bfbe023d8ede3acf7566170a0aee7d795843b996351fcbebe399b",
+            "patch_lines": 17,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 16
+          },
+          {
+            "header": "@@ -883,14 +897,22 @@ export function trackHasNoSection(outcome: InformationOutcome | VerdictOutcome):",
+            "patch_sha256": "34f312f6c9e95deca7886b4be351da8b24339a44d0be6598ceff098776e4d59a",
+            "base_fragment_sha256": "3c68fea7d9a8e5f5cfc4042906504232904ea78b96d50addb3f316bc588fca43",
+            "result_fragment_sha256": "398ea7c067bcdc602734267191e43f9d187a6eed00ea560d4d16e1377393592f",
+            "patch_lines": 23,
+            "base_fragment_lines": 14,
+            "result_fragment_lines": 22
+          }
+        ],
+        "authorship_event_lines": [
+          3441,
+          3450,
+          3459
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/copy/strings.ts",
+        "classification": "mixed: T1 labels/options/original hints; T2 replaces only the two hints",
+        "head": {
+          "sha256": "b7cbafbf49e552314c354f85000b788a4264e5574d35c886438455155d897caf",
+          "bytes": 36375
+        },
+        "foundation": {
+          "sha256": "7b79ea922aa100bef3cdb148f29c9ae07e46b099f14ab9ecfed8619cb22a963c",
+          "bytes": 36782
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "8d9c12234f788803b3ad94b70c42ebab50f0a618",
+        "git_result_blob": "7bfdfc4d2a039a7b192fe0438e51ce7e1cabb678",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -56,10 +56,16 @@ export const DOCKET = {",
+            "patch_sha256": "fbaa2118b5af8025c2f7fd6ee175b6130a1835f3609a54e3ab86cbf40fc6475e",
+            "base_fragment_sha256": "368314180a729649c8716a2dd4f1705c397551c2424cf7ed264743e1e184e5fb",
+            "result_fragment_sha256": "3797982da84cce23e49746272a10fa970b02160e07ae55206348a86e65f1cb3d",
+            "patch_lines": 17,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 16
+          }
+        ],
+        "authorship_event_lines": [
+          3508,
+          3543
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/lib/canonicalHash.test.ts",
+        "classification": "T1 only: omitted/false compatibility and true-mode rotation",
+        "head": {
+          "sha256": "228985fa59cdc34c5a9f07273a8b4109e083b3debbb7fa62da839dc09ae3a68c",
+          "bytes": 5269
+        },
+        "foundation": {
+          "sha256": "502702ce81888a62caf78c3b5f7c7574663f95d1f25948418cbaa77014943903",
+          "bytes": 6876
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "c121ebb67c76fc2b1dfb9a7ef751d314c7d7cf96",
+        "git_result_blob": "9d087ccf19f6ce84d37a5cc85c7dbbadc1655d8f",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -105,10 +105,50 @@ describe('the hashes the receipt can be checked against', () => {",
+            "patch_sha256": "9f6508c730578c905a57aaee6b10fb863bf94a475ae0d9bdbefa15fe02c7f8a9",
+            "base_fragment_sha256": "02665ce81c13cf52cc46ddcc8e9fa5ea52c100d7f1ccb40b144330cd0e776a84",
+            "result_fragment_sha256": "dd683522eb95a2a38c52697b9bcbf1f9077941890c11ebc7f263ae5d5f4fd173",
+            "patch_lines": 51,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 50
+          }
+        ],
+        "authorship_event_lines": [
+          3662
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/lib/canonicalHash.ts",
+        "classification": "T1 only: true-only idempotency preimage member",
+        "head": {
+          "sha256": "88ec011297bf3a4590153976b186eb9ad3f4c65b90d6c59bc6a37455fc2d9c7b",
+          "bytes": 8128
+        },
+        "foundation": {
+          "sha256": "0f2ebb2001fa50f9151ee508cc189000870cc2bcac4c404238663f192a2142bb",
+          "bytes": 8816
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "830082e63f6162b120031185dff9723050969fad",
+        "git_result_blob": "16a2abfc42ebf8ddc897f7ae240b64068214238a",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -156,25 +156,38 @@ export function additionalInstructionsHash(value: string): string {",
+            "patch_sha256": "0c8a8606f17309ea1ed53e7dcbac2349bb451b9faa85e27496bf62f76b1c6cba",
+            "base_fragment_sha256": "16c9a7f438b3041910a38566cfe7dfb4fbc4464581db00ca98fd7a023bfde0fc",
+            "result_fragment_sha256": "82d5a89b58e90ed483fe6d113f9351fe3a05ba0029043aa2774f376b7444d157",
+            "patch_lines": 41,
+            "base_fragment_lines": 25,
+            "result_fragment_lines": 38
+          }
+        ],
+        "authorship_event_lines": [
+          3466
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/lib/requestBody.test.ts",
+        "classification": "T1 only: true-only wire serialization tests",
+        "head": {
+          "sha256": "0c753bea3ed78ee39756a6696b400608b058e7a67c24e63badafa9dd98622a4f",
+          "bytes": 4467
+        },
+        "foundation": {
+          "sha256": "c2eb2406f351e4dfc2a94fad4b22ec11446b4d1d9012366c21b49455af91d63b",
+          "bytes": 6506
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "237cec887c74bf951c12ebc94825b38b49fae7c4",
+        "git_result_blob": "0c5268c9fadb16240e7fa124b4400dc5d47bda5b",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -13,10 +13,14 @@ import { MAX_ADDITIONAL_INSTRUCTIONS_CHARS } from '../contracts/caseDecision'",
+            "patch_sha256": "b59b7c1c32b40c4b1ea4e31a782e2db9ddd2ed036ea7435df87142ba2e862c92",
+            "base_fragment_sha256": "1b4f70d1e44a85fcd772842e783b683b722729f2b5e8d21ec3f268799fce59f4",
+            "result_fragment_sha256": "ecef15dfdf66de28c219a339e2434dffc47672457a3ef4b6702f66240969b172",
+            "patch_lines": 15,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 14
+          },
+          {
+            "header": "@@ -80,10 +84,60 @@ describe('buildRequestBody — what actually goes on the wire', () => {",
+            "patch_sha256": "f7b3de29db896fefcebbbd1ff42ebc17242c70e5c0daac85bfaf8be58502b751",
+            "base_fragment_sha256": "a4ed7104be96b180ff600ab505bb5119b6c65a0d16a4f730ac2b7bc5e9b6466b",
+            "result_fragment_sha256": "8d84ac4364c06f36131d6efb9c4d1b1dbbabb3a0f0cd0f960aab4033ac38779a",
+            "patch_lines": 61,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 60
+          }
+        ],
+        "authorship_event_lines": [
+          3606,
+          3641
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/lib/requestBody.ts",
+        "classification": "T1 only: centralized true-only request construction",
+        "head": {
+          "sha256": "42b7fd2793754dad3cc2a067bec8781cbc3c433e1f0be744f192d91ef67fb19e",
+          "bytes": 5342
+        },
+        "foundation": {
+          "sha256": "2f29d7b94e469617d6bdf749713ee0c72e2ff07931ace0e2724cb467dfaaa0cd",
+          "bytes": 6647
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "47ef1c64f147793b9657edce280b95b72a602ff1",
+        "git_result_blob": "cb30b5a7c1d0a57af9b4da28331e262d1392b11c",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -16,25 +16,41 @@ import type {",
+            "patch_sha256": "5ab21286d7e71666065f718b467ff26605072d2bf5de4d7e7aaabce80ada2dd6",
+            "base_fragment_sha256": "58bde3e36960291e54d372ac1afa693465aca43fa46f81ca2e962c0f55b2963d",
+            "result_fragment_sha256": "3ad824a781ccf9cc64e01d40ee6976e242d1472473b2f93f463cef6d5788bf54",
+            "patch_lines": 43,
+            "base_fragment_lines": 25,
+            "result_fragment_lines": 41
+          },
+          {
+            "header": "@@ -45,16 +61,29 @@ export function buildRequestBody(values: DocketValues): CaseDecisionRequestBody",
+            "patch_sha256": "ac29da2df4e6fc58527b6cdec2b9e48b289e5c45644cdf004260e734de9395e6",
+            "base_fragment_sha256": "97c0b2a33b2ba4727fae7590c900817b5957dd4cbcb2ff110f8ba1ca850fa6f1",
+            "result_fragment_sha256": "643d9802323a67308a382f89fe5c8d692e1c1a967cfadcbca9f70f90c0bd15c4",
+            "patch_lines": 32,
+            "base_fragment_lines": 16,
+            "result_fragment_lines": 29
+          }
+        ],
+        "authorship_event_lines": [
+          3412,
+          3419
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/playground.css",
+        "classification": "T1 only: retrieval selector layout hunk",
+        "head": {
+          "sha256": "c7801ca37a67b08ec48d75d586d1a7c2b288cf79d99b41e725a9e992d4c3b3e6",
+          "bytes": 51719
+        },
+        "foundation": {
+          "sha256": "f995315c2703b0f8d6494af2a6d0b790cec3758743393918059435766afa63e4",
+          "bytes": 52008
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "13e0e82c6d7fa3b4db7fb6478d6e9a3d50dcf787",
+        "git_result_blob": "d63b2f2cd6f6e9152bca52ca23b2d05b55262bd0",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -962,10 +962,18 @@ button {",
+            "patch_sha256": "e642bd7b42ce40bd78fa80f81ef5d145b406c1f58567c0cae98da5ae52994c50",
+            "base_fragment_sha256": "93b11fdb10cca3503961ab7e36708287e99e57899f5e8cacc833b4157af8dfdc",
+            "result_fragment_sha256": "724aa74e35bd807a05ada6bfb08a3bda180b1109b1043ba7001be974dbed66b0",
+            "patch_lines": 19,
+            "base_fragment_lines": 10,
+            "result_fragment_lines": 18
+          }
+        ],
+        "authorship_event_lines": [
+          3564
+        ]
+      }
+    ],
+    "patch": {
+      "path": "03-consume-request-mode-foundation.patch",
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "bytes": 27171,
+      "byte_identical_to_private_evidence": true
+    },
+    "attribution": {
+      "session_name": "Policy payload size audit",
+      "session_id": "d99011fe-a8c3-4032-872b-1643baaef994",
+      "agent_id": "call_NXSiPU3O1bwlEaxo3A1CGhoz",
+      "events_path": "C:\\Users\\taomar\\.copilot\\session-state\\d99011fe-a8c3-4032-872b-1643baaef994\\events.jsonl",
+      "events_sha256": "54e224651b09fb9fbeef338342b92de2370bbb3c403a9d10a061735bf6822a51"
+    },
+    "authorization": {
+      "historical_status": "unauthorized read-only scope drift",
+      "warning_event_lines": [
+        3866,
+        3867
+      ],
+      "retroactive_scope": "exact T1 patch bytes only",
+      "approved": true
+    }
+  },
+  "native": {
+    "status": "ready_after_approved_foundation",
+    "patch": {
+      "path": "04-consume-native-parser-renderer.patch",
+      "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+      "bytes": 35998
+    },
+    "paths": [
+      {
+        "path": "apps/consume-demo/src/App.test.tsx",
+        "classification": "mixed: T1 request-selection tests; T2 repairs the rule response fixture and renderer expectation",
+        "foundation": {
+          "sha256": "57d214310f65966048faac1bd600b509dc66ee86c5393c7bfe8ddf1ab9770c46",
+          "bytes": 111701
+        },
+        "native_final": {
+          "sha256": "a4a8434e5e42f92a8488daf6dd4d59b6f21e7f8c20822397a9d03fb8a74af157",
+          "bytes": 112110
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "9df391b0724d3d2d0e0f66fe6e184fa6a9da8834",
+        "git_result_blob": "c7db5d31b58d59b212a01dfc979ff1c4cc6ba381",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -29,6 +29,7 @@ import {",
+            "patch_sha256": "0c3c22ba1c58bea0afae3f828efa571fe1bb7f163e2d05ac84cb277c4d96bccc",
+            "base_fragment_sha256": "7edfb447523cfb483bb9d67a2c164883d5eb3bf5521835732f06bcb6703e9bd2",
+            "result_fragment_sha256": "45967fcdc91cb46d51303c5f2fc5f54664e01501894e17741f16df807510f8de",
+            "patch_lines": 8,
+            "base_fragment_lines": 6,
+            "result_fragment_lines": 7
+          },
+          {
+            "header": "@@ -701,12 +702,17 @@ describe('the retrieval mode control', () => {",
+            "patch_sha256": "230269d2bbec2e1da9f0c4a809df52f59ed11b8a83178c9d338d53138dcbe50e",
+            "base_fragment_sha256": "b6cb4063130233a7ca8d5d745b96aeca38fe4a0763a222cc584613dd760bf740",
+            "result_fragment_sha256": "bd0aa30d0af343cd523a42c95b5c7bea9be2f2a99183186d8f7f87e50d0bc177",
+            "patch_lines": 19,
+            "base_fragment_lines": 12,
+            "result_fragment_lines": 17
+          },
+          {
+            "header": "@@ -740,7 +746,7 @@ describe('the retrieval mode control', () => {",
+            "patch_sha256": "2fe8a8180ac5820217ddb060328faadb932c2a698f76fb7cc0243c2fffe87ced",
+            "base_fragment_sha256": "d93a656deb655357b40e6af0f5ba37e33233569fc57868b11bb3eb2146f05a72",
+            "result_fragment_sha256": "1e4c11b13eda5443e1186a2a51a59be08cc317db8790fc905f6ea7225541f28a",
+            "patch_lines": 9,
+            "base_fragment_lines": 7,
+            "result_fragment_lines": 7
+          }
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/App.tsx",
+        "classification": "mixed: T1 state/body/hash/docket wiring; T2 schema-tag state, announcement, and renderer",
+        "foundation": {
+          "sha256": "bc3fa860056d50a669b60c0c0695f9d2b55c78bbdc92ceade960f30ff10a6591",
+          "bytes": 35175
+        },
+        "native_final": {
+          "sha256": "e7f4a837a6b8d7396c64436cf03f2aa6dfb3109b1cbf67e5c939670c2495f5f6",
+          "bytes": 36034
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "483f657ad7767da6eba5540d711ff3bfd08a67bc",
+        "git_result_blob": "6b7d7dfb1e537344368f2c0c1d477e9930060c85",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -12,6 +12,8 @@ import {",
+            "patch_sha256": "1c538d1565cfae8fb718d71902e3e5cf1d2241f6c1db6c04479dd4ebd091c365",
+            "base_fragment_sha256": "77e71b876754eacf46c9af1793f759ed12b9da36db4206d6091bd54b29bf7625",
+            "result_fragment_sha256": "7621627962fa93ba7fcd2bc2d14c48cd1aa4813682dcdb28b9d0f76a6dc5de69",
+            "patch_lines": 9,
+            "base_fragment_lines": 6,
+            "result_fragment_lines": 8
+          },
+          {
+            "header": "@@ -54,6 +56,7 @@ import { RequestDocket, type ResolutionState } from './components/RequestDocket'",
+            "patch_sha256": "c875fe94ed009afda1c8e46fef2d54cf8b8e4dc2bc4bfe4bafcb99acf8d6c5ce",
+            "base_fragment_sha256": "9afc1e8ac3202c405f8fab166f3bdd2d9f141cab9346e1491d36c6aa3846fcbb",
+            "result_fragment_sha256": "3ffaa3fcb0bff28933fea5895c5dd4814bbdcc3a12be0c3ecd3d6dd69275a89e",
+            "patch_lines": 8,
+            "base_fragment_lines": 6,
+            "result_fragment_lines": 7
+          },
+          {
+            "header": "@@ -179,7 +182,7 @@ export default function App() {",
+            "patch_sha256": "e67bd059983947b04ffe1f06d1d1fcb159be9e30957518a0bea1772227d44767",
+            "base_fragment_sha256": "63e25e314d220b20e623b307d1a6ebba470eebb02e5958848245ac59271219d2",
+            "result_fragment_sha256": "1d4ecdeb6aaaea68b190cfec5ecdfcd79cc7c138edc14d5b128d5a583f103f04",
+            "patch_lines": 9,
+            "base_fragment_lines": 7,
+            "result_fragment_lines": 7
+          },
+          {
+            "header": "@@ -447,15 +450,24 @@ export default function App() {",
+            "patch_sha256": "fd255ad4784f09a077c7fdd3403a9995d65ef0db0362daff5ac6eb014ef8c66a",
+            "base_fragment_sha256": "10a0b435b34423a3f3520f7a0d49a9f1224aee6cd89bef72c24d1d3357b94f01",
+            "result_fragment_sha256": "32a488b5904a3764684961fa7ead7f77187547f261532c945fe4cec0c23862fc",
+            "patch_lines": 32,
+            "base_fragment_lines": 15,
+            "result_fragment_lines": 24
+          },
+          {
+            "header": "@@ -714,7 +726,11 @@ export default function App() {",
+            "patch_sha256": "db80af5123525d4dac5306a5bb6da2efd040f3e64567184b2a4a5bae8b7e2b75",
+            "base_fragment_sha256": "895cec158c70c0ccda2b3cb8bcf5e2615d8a46662fdacc45169fae1590d5369f",
+            "result_fragment_sha256": "936afc430e45af00cade8b260dcd7d54d566ed0004aba4b2d4d1876a806fb0ad",
+            "patch_lines": 13,
+            "base_fragment_lines": 7,
+            "result_fragment_lines": 11
+          }
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/components/RuleRetrievalResult.tsx",
+        "classification": "T2 only: rule-native renderer",
+        "foundation": null,
+        "native_final": {
+          "sha256": "64ba52e6c0c0732e0f2422c187198f763343b50c4ff7dfb4caa1690f20d4f3b9",
+          "bytes": 2661
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "0000000000000000000000000000000000000000",
+        "git_result_blob": "102c01913765a15c7dd73c928ec7587f2f1dc4f3",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -0,0 +1,69 @@",
+            "patch_sha256": "03d62d9766cd6e345ec6d690e79864c050ad40e9f2d884609a40f54a6e6caa13",
+            "base_fragment_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "result_fragment_sha256": "7dd1458d7ca6bd95d26d7f565f315f10db8d885979dd536a52fac299ab3f8241",
+            "patch_lines": 70,
+            "base_fragment_lines": 0,
+            "result_fragment_lines": 69
+          }
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/contracts/caseDecision.ts",
+        "classification": "mixed: T1 request/receipt mode fields; T2 rule envelope and strict classifier",
+        "foundation": {
+          "sha256": "a6890423e3a0725b9509e1723cb211b673c8d0534ef01ecb15ab4b8cb4e53995",
+          "bytes": 35932
+        },
+        "native_final": {
+          "sha256": "3912d53bb5684d64e9b898e8a37d318f46e483ef3793d028a876e62172c72cac",
+          "bytes": 41759
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "b4d251db258ad12a7c56d86b47ae946b59ffa937",
+        "git_result_blob": "f6631572bb5fab78dea552eaf65f2724188dd8bb",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -39,6 +39,8 @@ export const SCHEMA_VERSION_V1 = 'case_decision_v1'",
+            "patch_sha256": "ed0dd462cae2ae8d85b5b8e41b164a9494b1ccbfb46f0a140091ae475d9c4146",
+            "base_fragment_sha256": "bc55ea0f1b0518d386d277a817360eabf5637889c1e7ff10e21a05493a6eea32",
+            "result_fragment_sha256": "4f54316fb2264e93a3b28e223899d6f5fc40c44b92cd4efad4e03b255a0418f6",
+            "patch_lines": 9,
+            "base_fragment_lines": 6,
+            "result_fragment_lines": 8
+          },
+          {
+            "header": "@@ -800,15 +802,71 @@ export interface RetrievedPolicyRecord {",
+            "patch_sha256": "2eb2c92dbccb9e85b1d054df2771d13e80a23630ce9f95c572168ced793ca58c",
+            "base_fragment_sha256": "6cb67a61d69c46511dc283c909becf6b27bee5c90463c2922e12316915675a2c",
+            "result_fragment_sha256": "c03904d152dd5d26b7d9ce19b28df3bbcbf4a5204ac7ae26d0d41de9017b1be5",
+            "patch_lines": 76,
+            "base_fragment_lines": 15,
+            "result_fragment_lines": 71
+          },
+          {
+            "header": "@@ -818,7 +876,7 @@ export interface PolicyRetrievalEnvelope {",
+            "patch_sha256": "3c3fe1502d5f5115402d1ce031a06282a9e325f03e2c661fff9f5b4bccf91c80",
+            "base_fragment_sha256": "02b7738b4b370346e7311afccd83bbb968c475b91b908bd40d36420c14842abc",
+            "result_fragment_sha256": "0cebf2a062fe0e7a6e9570496ba693faa2e366a3cf0a9432ed0727f8c3f05ab3",
+            "patch_lines": 9,
+            "base_fragment_lines": 7,
+            "result_fragment_lines": 7
+          },
+          {
+            "header": "@@ -827,6 +885,32 @@ export interface PolicyRetrievalEnvelope {",
+            "patch_sha256": "e9b8bc3e42a7f9cc1a090c1485a462a28da1e830eeebaadeb974c6367af7255f",
+            "base_fragment_sha256": "078de573386abe2a4b0726217c2983bda3e5713a19e8a48e545e78db65739797",
+            "result_fragment_sha256": "fc4e5a136e48b04f3f7c98d1d8fc6e402ac3b1a06d9ac9118eadad6846952167",
+            "patch_lines": 33,
+            "base_fragment_lines": 6,
+            "result_fragment_lines": 32
+          },
+          {
+            "header": "@@ -869,6 +953,58 @@ export function isV1Receipt(receipt: CaseDecisionReceipt): receipt is CaseDecisi",
+            "patch_sha256": "54196fac90c852f5c3a7b42909ed64697a4a84919a685c6d8d7932a679b3505e",
+            "base_fragment_sha256": "91ee5862593de2c31b1efffd1749ec4a8ac7bda19ecad58580668dd86214407d",
+            "result_fragment_sha256": "85f84f8286a4af0c72bdd3a285acff8887ab7ca68b5bafad095a68a6758e2fc4",
+            "patch_lines": 59,
+            "base_fragment_lines": 6,
+            "result_fragment_lines": 58
+          }
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/copy/strings.ts",
+        "classification": "mixed: T1 labels/options/original hints; T2 replaces only the two hints",
+        "foundation": {
+          "sha256": "7b79ea922aa100bef3cdb148f29c9ae07e46b099f14ab9ecfed8619cb22a963c",
+          "bytes": 36782
+        },
+        "native_final": {
+          "sha256": "df3627fdf51852f87dadc93f61743f8336b16537e3d955e17a161320aa4a0a55",
+          "bytes": 36920
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "7bfdfc4d2a039a7b192fe0438e51ce7e1cabb678",
+        "git_result_blob": "31564809dc673ac618a3347989aece58ab9de34f",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -61,9 +61,10 @@ export const DOCKET = {",
+            "patch_sha256": "ed62efb10ab1ffb4254ea428ec0bed20b355455c6c11ba2bfa948ff5a3f2fa2f",
+            "base_fragment_sha256": "ca557ea52d0adb74a01e2e3b0919213d9f852d6e34087fef6b66942a94a65c2e",
+            "result_fragment_sha256": "997ccd2d051124626ff08b5ce7ef68a88ec891e0119729d1b9f02b06b76b90a4",
+            "patch_lines": 13,
+            "base_fragment_lines": 9,
+            "result_fragment_lines": 10
+          }
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/lib/apiClient.ts",
+        "classification": "T2 only: runtime schema-tag validation",
+        "foundation": {
+          "sha256": "6753966347e3bd691d56c3ff2bfd810a028990a5fc5b0a281578be35809b08b5",
+          "bytes": 12244
+        },
+        "native_final": {
+          "sha256": "c5f2b51ac211ac85eeb6c1e96e396568f3cfec00eb7a3f2b8bf2a8e8eea46a53",
+          "bytes": 13702
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "0faa285006cc93fc2172d9a936c549aabbf4f5f4",
+        "git_result_blob": "24ad9021015644f74881a1c029b4fa648c48bb92",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -2,9 +2,10 @@ import type {",
+            "patch_sha256": "58ef982cf53b3e3a6ff2c3319554d47af70645b0c778a3e0bc9ea5afc7eae310",
+            "base_fragment_sha256": "35488239d724032264a658c721181fd4ee4f47ec61f2659c62aa79b3e9190360",
+            "result_fragment_sha256": "2007024d0823c3075216c20decbc8edd8f8ebddbeb026833bfcda8ce13fbf79a",
+            "patch_lines": 12,
+            "base_fragment_lines": 9,
+            "result_fragment_lines": 10
+          },
+          {
+            "header": "@@ -16,7 +17,13 @@ import {",
+            "patch_sha256": "312b1a2154640cc63628dcb7060f3e5e27cff2b19e71c20d65720bc6a91fbaac",
+            "base_fragment_sha256": "1f3b3d49767efe2a37bd5e2625bc84a5d369b91dbac3ebe8e6d340517028068b",
+            "result_fragment_sha256": "8137a53e4aa5aec93275e046366fb3e5cf08bdbaa3e870ec7f3685153ab98ef9",
+            "patch_lines": 15,
+            "base_fragment_lines": 7,
+            "result_fragment_lines": 13
+          },
+          {
+            "header": "@@ -41,6 +48,19 @@ export type ApiResult<T> =",
+            "patch_sha256": "e302b49e108a7821ebb40daf300466d3317451d70d8bb5ee8b31cedab494150d",
+            "base_fragment_sha256": "da24a692772bc4f26b8218efb5714701aa2e3d41983bd28a00f9188704b2f221",
+            "result_fragment_sha256": "32f896e784cc515a449a3746a81881b107f1cd03f2c1e5fe6b36ff4781d54bf0",
+            "patch_lines": 20,
+            "base_fragment_lines": 6,
+            "result_fragment_lines": 19
+          },
+          {
+            "header": "@@ -285,7 +305,7 @@ export async function postPolicies(input: {",
+            "patch_sha256": "bcd07910688e2ddb427540f99d4878da409a3744f5517ddeaeb0d687d0ad96fb",
+            "base_fragment_sha256": "51ef340476b4050909635faaffa82ba603fbe7382e7df4ed8e0c80526c843b92",
+            "result_fragment_sha256": "0a52feef20cb94fda1346abf1193fabe8c91afd8bf42b3f1d70721af5cae2c81",
+            "patch_lines": 9,
+            "base_fragment_lines": 7,
+            "result_fragment_lines": 7
+          },
+          {
+            "header": "@@ -311,7 +331,25 @@ export async function postPolicies(input: {",
+            "patch_sha256": "8b6c2d2ada0715796c912291cd9b91778f5f0cac9d731e576986b16f47b36455",
+            "base_fragment_sha256": "c4a7e288485d2945c133ca368aad80274bd8f17fcdc126bf005cc782f2bd06d3",
+            "result_fragment_sha256": "131c7a1d8a458cff704872c4c0aa7582dbcb37754d2117b8a853a401c0e78ad2",
+            "patch_lines": 27,
+            "base_fragment_lines": 7,
+            "result_fragment_lines": 25
+          }
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/lib/errors.ts",
+        "classification": "T2 only: structural-only refusal diagnostics",
+        "foundation": {
+          "sha256": "bcb5540d539745a0a9b85171e0166629509ba2fa8748b5e35e59e30ccab4386e",
+          "bytes": 12048
+        },
+        "native_final": {
+          "sha256": "1731ffabfbae1d6038ba96b30c3fb9e1a9f027832944cf70d9dab5fd24ee04a9",
+          "bytes": 15288
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "af22e12635b8c5ef37154251296aa96982e68ec3",
+        "git_result_blob": "f8e089b3f1daa886b7ee38128a49322bd967b103",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -259,6 +259,78 @@ export function mapDecisionError(input: {",
+            "patch_sha256": "ea004d8d3776c0327a62bba36111853da4a3b9cc6ce3634e3ddd206f61627cec",
+            "base_fragment_sha256": "75341e3003b726527cd8a60e6f7f53d85774b85699717ec8b1c275062004df75",
+            "result_fragment_sha256": "f16bce6c72c45952bfd3e8d2a403d0932b96ff758e68dbc515e2c3c83ed1d9ff",
+            "patch_lines": 79,
+            "base_fragment_lines": 6,
+            "result_fragment_lines": 78
+          }
+        ]
+      },
+      {
+        "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+        "classification": "T2 only: parser, renderer, mutation, and leakage tests",
+        "foundation": null,
+        "native_final": {
+          "sha256": "9ec9d8d3bf9925aad602a89c0df8c57b4e556f7e1da98fe110052a78f99d722a",
+          "bytes": 10203
+        },
+        "authorship_proven": true,
+        "temporal_layer_proven": true,
+        "git_base_blob": "0000000000000000000000000000000000000000",
+        "git_result_blob": "a1ba1a0c8b90893c7a38893d333e4c01aabfc8a3",
+        "hunk_fragment_encoding": "utf8-lf, terminal newline only when fragment nonempty",
+        "hunks": [
+          {
+            "header": "@@ -0,0 +1,253 @@",
+            "patch_sha256": "fc27698c765d1a5c6e0494fe1733033be6e3f2e0bf4bccf439218d9290d49f10",
+            "base_fragment_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "result_fragment_sha256": "b4a24105616272024549d0939261e3c58bf626f4ba75982a38b8998bcb9f8c82",
+            "patch_lines": 254,
+            "base_fragment_lines": 0,
+            "result_fragment_lines": 253
+          }
+        ]
+      }
+    ]
+  }
+}

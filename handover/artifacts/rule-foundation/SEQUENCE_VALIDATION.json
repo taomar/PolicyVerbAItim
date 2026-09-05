@@ -1,0 +1,236 @@
+{
+  "dependencies_installed": false,
+  "exclusions": {
+    "azure_overlap_paths_at_head": true,
+    "head_paths_unchanged": 981,
+    "sequence_changed_paths": 21,
+    "withdrawn_paths_at_head_or_absent": true
+  },
+  "existing_rule_patch_after_ordinal_00": {
+    "log": {
+      "bytes": 2062,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\EXISTING_RULE_AFTER_FOUNDATION_APPLY_CHECK.txt",
+      "sha256": "9c3390179e9a381f07de27a0bfac0db83e0e2aea071e1e1352c6fbd5b36691be"
+    },
+    "reason": "Both patches edit ai_case_project import/filter context; this is the expected reason a rebase is required.",
+    "status": "does not apply"
+  },
+  "full_suite": {
+    "future_writer_command": ".\\.venv\\Scripts\\python.exe -m pytest tests\\unit -v --durations=25",
+    "reason": "The request asked for bounded visible validation, not a silent full suite.",
+    "run": false
+  },
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "leakage_scan": {
+    "ais_or_hw_identifier_hits": 0,
+    "anti_corpus_guard": "included in both passing test runs",
+    "corpus_tuned_executable_logic_hits": 0,
+    "high_confidence_secret_hits": 0,
+    "incident_count_comment": "The integer 36 appears only in explanatory comments/docstrings describing the validator/build drift; it is not a rank, score, threshold, branch, fixture selector, or source-corpus identifier.",
+    "observed_rank_or_score_literal_hits": 0,
+    "source_filename_hits": 0
+  },
+  "live_calls_or_mutations": false,
+  "ordinal_00": {
+    "apply_check": "passed with git apply --check --whitespace=error-all",
+    "apply_result": "exact 7-path target hashes reproduced",
+    "imports": "passed",
+    "patch": {
+      "bytes": 51705,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\00-rule-index-foundation.patch",
+      "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218"
+    },
+    "tests": {
+      "files": [
+        "test_a_projection_is_checked_against_what_it_renders.py",
+        "test_the_corpus_is_indexed_in_one_language.py",
+        "test_no_m2_code_is_shaped_around_a_corpus.py",
+        "test_capabilities_are_reachable.py"
+      ],
+      "log": {
+        "bytes": 36493,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\FOUNDATION_FOCUSED_TESTS.txt",
+        "sha256": "eac819bc601eefbcdf1a8f03d2c0e76da5c08bd0e1a2e72ceb6dfbed5f7f540e"
+      },
+      "result": "204 passed"
+    }
+  },
+  "rebased_rule": {
+    "apply_check": "passed with whitespace warnings tolerated; the sole warning is the frozen Rule target's pre-existing blank line at EOF",
+    "apply_result": "exact foundation-plus-Rule target hashes reproduced",
+    "delta_manifest": "RULE_REBASE_DELTA_MANIFEST.json",
+    "imports": "passed",
+    "patch": {
+      "bytes": 316091,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\01-rule-retrieval.rebased-on-foundation.patch",
+      "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1"
+    },
+    "tests": {
+      "dummy_environment": "Non-secret example.invalid/test-only Azure OpenAI values were set because git archive excludes the live .env; all network clients in these tests are stubs.",
+      "log": {
+        "bytes": 83805,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\FOUNDATION_RULE_FOCUSED_TESTS.txt",
+        "sha256": "2705e13931fa689657684bbdb4da1d1a94cf64c0ba87f93aa50250d08d817efd"
+      },
+      "result": "511 passed"
+    }
+  },
+  "schema_version": "rule_index_foundation_sequence_validation_v1",
+  "sequence_gap": {
+    "blocks_preserving_all_accepted_earlier_payload_optimizations": true,
+    "does_not_block_ordinal_00_or_rebased_rule": true,
+    "gzip_production_dependency": {
+      "gzip_hunks": [
+        {
+          "added_lines": 1,
+          "bytes": 288,
+          "deleted_lines": 0,
+          "header": "@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager",
+          "ordinal": 1,
+          "sha256": "4fdfa505f59543ee7ebeb784751ec46c1fd7e77e98483fb2c437e085444b33b0"
+        },
+        {
+          "added_lines": 6,
+          "bytes": 568,
+          "deleted_lines": 0,
+          "header": "@@ -31,6 +34,12 @@ from policy_platform.infrastructure.settings import get_settings",
+          "ordinal": 3,
+          "sha256": "01b62e39b601cdf8fd20327090d22283aea5219b025a28f3b243d806dfbf1537"
+        },
+        {
+          "added_lines": 18,
+          "bytes": 1541,
+          "deleted_lines": 0,
+          "header": "@@ -132,6 +141,24 @@ def create_app() -> FastAPI:",
+          "ordinal": 4,
+          "sha256": "37227258c07fb523e8d74b861b8d82926393aa41361abf270cd774e0e5234417"
+        }
+      ],
+      "mixed_path_patch": {
+        "bytes": 3325,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\path-diffs-v4\\src__policy_platform__api__app.py.patch",
+        "sha256": "6fec5392cf93799bd3ff75690eb4cd6bbaa8ac995287b9823fb01b74939f1455"
+      },
+      "other_app_hunks_excluded": "integration and policy-index-console imports/router registration",
+      "path": "src/policy_platform/api/app.py"
+    },
+    "payload_ordinal_02": {
+      "contains_app_py": false,
+      "contains_gzip_test": false,
+      "contains_search_select_test": false,
+      "manifest": {
+        "bytes": 16045,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\02-payload.manifest.json",
+        "sha256": "c41bbee6ea4b7214b0eebb2883fc9770b5e08373c5701ea9f94f9c4389c93c47"
+      },
+      "patch": {
+        "bytes": 86466,
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\02-payload.blocked-reconstruction.patch",
+        "sha256": "d2c9594603899ff9561cef8534ca51837cfa311e2c08e8c133323cee44b889a6"
+      }
+    },
+    "smallest_safe_unblock": "Create a separate earlier-Payload optimization commit containing only app.py gzip hunks 1, 3, and 4 plus the gzip test, and only the ai_case_project select-list narrowing hunks plus its focused test. Hunk-review app.py against Azure commit 3815866. Do not put either optimization back into Rule or ordinal 0.",
+    "status": "open"
+  },
+  "shared_repository": {
+    "actual": {
+      "branch": "main",
+      "cached_diff": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "default_status_entries": 120,
+      "expanded_status_entries": 121,
+      "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "head_tree": "f0ee85e947d51d159adf9855aba66f42ec8cf391",
+      "logical_index": {
+        "bytes": 96289,
+        "sha256": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287"
+      },
+      "python_walk_tree": {
+        "files": 37199,
+        "record_format": "relative path + TAB + bytes + TAB + SHA-256 + LF",
+        "sha256": "310678405aeea4b7a0ef60bfd23f0c23c41c9c8ec68d6b071785d3e69888baea"
+      },
+      "refs": {
+        "bytes": 210309,
+        "sha256": "390876629df355ef8bb6ad07c9f3802563ba7af49a534ba5632563ea2b860c3a"
+      },
+      "repository_tree": {
+        "bytes": 553349103,
+        "files": 37199,
+        "record_format": "relative path + NUL + bytes + NUL + SHA-256 + LF",
+        "sha256": "a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28"
+      },
+      "stash": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status_v2_all": {
+        "bytes": 14502,
+        "sha256": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9"
+      },
+      "tracked_patch": {
+        "bytes": 670506,
+        "sha256": "77928c291289f25451ee51adea468a7f25956eb518bc11fcee05e88d422fa077"
+      }
+    },
+    "auxiliary_ordering_note": "The exact PowerShell start algorithm is recorded in END_POWERSHELL_TREE.json and matched byte-for-byte. Python's alternate path collation is informational and is not a canonical drift gate.",
+    "checks": {
+      "branch": true,
+      "cached_diff": true,
+      "default_status_count": true,
+      "expanded_status_count": true,
+      "head": true,
+      "head_tree": true,
+      "logical_index": true,
+      "powershell_session_start_tree": true,
+      "refs": true,
+      "repository_tree": true,
+      "stash": true,
+      "status_v2_all": true,
+      "tracked_patch": true
+    },
+    "count_reconciliation": "Default status collapses .serena/ into one untracked entry; porcelain-v2 --untracked-files=all expands it into two files.",
+    "expected": {
+      "branch": "main",
+      "cached_diff": [
+        0,
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      ],
+      "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "head_tree": "f0ee85e947d51d159adf9855aba66f42ec8cf391",
+      "logical_index": [
+        96289,
+        "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287"
+      ],
+      "refs": [
+        210309,
+        "390876629df355ef8bb6ad07c9f3802563ba7af49a534ba5632563ea2b860c3a"
+      ],
+      "repository_tree": [
+        37199,
+        553349103,
+        "a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28"
+      ],
+      "session_start_tree": [
+        37199,
+        "ebc35f46dcdc549dcfc95c3b2c77eb3a797c5cde4cc7f6dde5bbef15c43c7306"
+      ],
+      "stash": [
+        0,
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      ],
+      "status_v2_all": [
+        14502,
+        "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9"
+      ],
+      "tracked_patch": [
+        670506,
+        "77928c291289f25451ee51adea468a7f25956eb518bc11fcee05e88d422fa077"
+      ]
+    },
+    "schema_version": "rule_index_foundation_nonmutation_v1",
+    "unchanged": true
+  }
+}

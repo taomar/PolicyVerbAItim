@@ -1,0 +1,59 @@
+{
+  "schema_version": "01a_azure_overlap_review_v1",
+  "azure_commit": "381586688f0337be15dcc1d42d2be7d4b0fe4936",
+  "path": "src/policy_platform/api/app.py",
+  "path_overlap": true,
+  "selected_current_hunks": [
+    {
+      "ordinal": 1,
+      "header": "@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager",
+      "sha256": "4fdfa505f59543ee7ebeb784751ec46c1fd7e77e98483fb2c437e085444b33b0",
+      "bytes": 288,
+      "added_lines": 1,
+      "deleted_lines": 0
+    },
+    {
+      "ordinal": 3,
+      "header": "@@ -31,6 +34,12 @@ from policy_platform.infrastructure.settings import get_settings",
+      "sha256": "01b62e39b601cdf8fd20327090d22283aea5219b025a28f3b243d806dfbf1537",
+      "bytes": 568,
+      "added_lines": 6,
+      "deleted_lines": 0
+    },
+    {
+      "ordinal": 4,
+      "header": "@@ -132,6 +141,24 @@ def create_app() -> FastAPI:",
+      "sha256": "37227258c07fb523e8d74b861b8d82926393aa41361abf270cd774e0e5234417",
+      "bytes": 1541,
+      "added_lines": 18,
+      "deleted_lines": 0
+    }
+  ],
+  "excluded_current_hunks": [
+    {
+      "ordinal": 2,
+      "header": "@@ -16,10 +17,12 @@ from policy_platform.api.routers import (",
+      "sha256": "850419b1cca4d45f0068b94a617767fb72d198f8503a9eb71c8f42c680472a39",
+      "bytes": 311,
+      "added_lines": 2,
+      "deleted_lines": 0
+    },
+    {
+      "ordinal": 5,
+      "header": "@@ -159,6 +186,8 @@ def create_app() -> FastAPI:",
+      "sha256": "83dfbc07ccbd9f3254899210f7e291407917642c79241732a4cdd46aeb5dc877",
+      "bytes": 370,
+      "added_lines": 2,
+      "deleted_lines": 0
+    }
+  ],
+  "azure_hunk_headers": [
+    "@@ -1,11 +1,13 @@",
+    "@@ -22,13 +24,14 @@ from policy_platform.api.routers import (",
+    "@@ -109,30 +112,55 @@ async def _reconcile_interrupted_runs() -> None:",
+    "@@ -159,12 +187,24 @@ def create_app() -> FastAPI:"
+  ],
+  "exact_meaningful_added_line_overlap": [],
+  "forbidden_azure_or_integration_terms_in_01a": [],
+  "assessment": "Selected gzip changes are adjacent to broad Azure import/create_app hunks but contain none of Azure local-auth additions and none of the current integration/policy-index-console router hunks."
+}

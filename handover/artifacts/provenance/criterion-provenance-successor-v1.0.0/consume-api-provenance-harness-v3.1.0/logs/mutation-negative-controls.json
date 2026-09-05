@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "passed": 8,
+  "failed": 0,
+  "results": [
+    {
+      "name": "omitted_canonical_owner",
+      "result": "passed",
+      "expected": "rejected"
+    },
+    {
+      "name": "duplicate_canonical_owner",
+      "result": "passed",
+      "expected": "rejected"
+    },
+    {
+      "name": "bad_pointer_hash",
+      "result": "passed",
+      "expected": "rejected"
+    },
+    {
+      "name": "bad_evidence_source_hash",
+      "result": "passed",
+      "expected": "rejected"
+    },
+    {
+      "name": "unsupported_scoring_upgrade",
+      "result": "passed",
+      "expected": "rejected"
+    },
+    {
+      "name": "ai_as_human_confirmation",
+      "result": "passed",
+      "expected": "rejected"
+    },
+    {
+      "name": "out_of_scope_criterion_mutation",
+      "result": "passed",
+      "expected": "rejected"
+    },
+    {
+      "name": "correction_attestation_as_normative_evidence",
+      "result": "passed",
+      "expected": "rejected"
+    }
+  ]
+}

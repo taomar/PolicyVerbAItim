@@ -1,0 +1,101 @@
+{
+  "actual": {
+    "branch": "main",
+    "cached_diff": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "default_status_entries": 120,
+    "expanded_status_entries": 121,
+    "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+    "head_tree": "f0ee85e947d51d159adf9855aba66f42ec8cf391",
+    "logical_index": {
+      "bytes": 96289,
+      "sha256": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287"
+    },
+    "refs": {
+      "bytes": 210309,
+      "sha256": "390876629df355ef8bb6ad07c9f3802563ba7af49a534ba5632563ea2b860c3a"
+    },
+    "repository_tree": {
+      "bytes": 553349103,
+      "files": 37199,
+      "record_format": "relative path + NUL + bytes + NUL + SHA-256 + LF",
+      "sha256": "a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28"
+    },
+    "python_walk_tree": {
+      "files": 37199,
+      "record_format": "relative path + TAB + bytes + TAB + SHA-256 + LF",
+      "sha256": "310678405aeea4b7a0ef60bfd23f0c23c41c9c8ec68d6b071785d3e69888baea"
+    },
+    "stash": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "status_v2_all": {
+      "bytes": 14502,
+      "sha256": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9"
+    },
+    "tracked_patch": {
+      "bytes": 670506,
+      "sha256": "77928c291289f25451ee51adea468a7f25956eb518bc11fcee05e88d422fa077"
+    }
+  },
+  "checks": {
+    "branch": true,
+    "cached_diff": true,
+    "default_status_count": true,
+    "expanded_status_count": true,
+    "head": true,
+    "head_tree": true,
+    "logical_index": true,
+    "refs": true,
+    "powershell_session_start_tree": true,
+    "repository_tree": true,
+    "stash": true,
+    "status_v2_all": true,
+    "tracked_patch": true
+  },
+  "count_reconciliation": "Default status collapses .serena/ into one untracked entry; porcelain-v2 --untracked-files=all expands it into two files.",
+  "expected": {
+    "branch": "main",
+    "cached_diff": [
+      0,
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+    "head_tree": "f0ee85e947d51d159adf9855aba66f42ec8cf391",
+    "logical_index": [
+      96289,
+      "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287"
+    ],
+    "refs": [
+      210309,
+      "390876629df355ef8bb6ad07c9f3802563ba7af49a534ba5632563ea2b860c3a"
+    ],
+    "repository_tree": [
+      37199,
+      553349103,
+      "a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28"
+    ],
+    "session_start_tree": [
+      37199,
+      "ebc35f46dcdc549dcfc95c3b2c77eb3a797c5cde4cc7f6dde5bbef15c43c7306"
+    ],
+    "stash": [
+      0,
+      "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    ],
+    "status_v2_all": [
+      14502,
+      "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9"
+    ],
+    "tracked_patch": [
+      670506,
+      "77928c291289f25451ee51adea468a7f25956eb518bc11fcee05e88d422fa077"
+    ]
+  },
+  "auxiliary_ordering_note": "The exact PowerShell start algorithm is recorded in END_POWERSHELL_TREE.json and matched byte-for-byte. Python's alternate path collation is informational and is not a canonical drift gate.",
+  "schema_version": "rule_index_foundation_nonmutation_v1",
+  "unchanged": true
+}

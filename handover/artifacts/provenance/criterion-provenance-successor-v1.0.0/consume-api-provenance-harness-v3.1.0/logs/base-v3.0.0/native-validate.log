@@ -1,0 +1,81 @@
+{
+  "status": "valid",
+  "harness_version": "consume-api-provenance-harness/3.0.0",
+  "manifest_version": "2.0.0",
+  "rubric_version": "3.0.0",
+  "execution_ready": false,
+  "run_id": "consume-api-six-arm-20260904-pending",
+  "hashes": {
+    "manifest_sha256": "b6ebd94d3858f92387a8a910696de5c16031730e643f825bd989e9e2fdb5ea21",
+    "contract_sha256": "f761cee25d6cdb879a8a744e884757cf1683c724c7e6130c909d53a44da89fe8",
+    "questions_sha256": "b99029eb15521a85aa625339be9f6e979b7c1fa767128507825b0089e7de38a7",
+    "rubric_sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+    "source_snapshot_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c"
+  },
+  "warnings": [],
+  "provenance_preflight": {
+    "status": "ready_with_rubric_findings",
+    "criterion_count": 128,
+    "rubric_finding_count": 113
+  },
+  "question_count": 20,
+  "primary_job_count": 360,
+  "jobs_per_arm": {
+    "A": 60,
+    "B": 60,
+    "C": 60,
+    "D": 60,
+    "E": 60,
+    "F": 60
+  },
+  "order_position_counts": {
+    "A": {
+      "1": 10,
+      "2": 10,
+      "3": 10,
+      "4": 10,
+      "5": 10,
+      "6": 10
+    },
+    "B": {
+      "1": 10,
+      "2": 10,
+      "3": 10,
+      "4": 10,
+      "5": 10,
+      "6": 10
+    },
+    "C": {
+      "1": 10,
+      "2": 10,
+      "3": 10,
+      "4": 10,
+      "5": 10,
+      "6": 10
+    },
+    "D": {
+      "1": 10,
+      "2": 10,
+      "3": 10,
+      "4": 10,
+      "5": 10,
+      "6": 10
+    },
+    "E": {
+      "1": 10,
+      "2": 10,
+      "3": 10,
+      "4": 10,
+      "5": 10,
+      "6": 10
+    },
+    "F": {
+      "1": 10,
+      "2": 10,
+      "3": 10,
+      "4": 10,
+      "5": 10,
+      "6": 10
+    }
+  }
+}

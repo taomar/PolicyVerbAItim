@@ -1,0 +1,1287 @@
+{
+  "approved_rules_columns": [
+    {
+      "column_name": "policy_version_id"
+    },
+    {
+      "column_name": "authority_id"
+    },
+    {
+      "column_name": "rule_id"
+    },
+    {
+      "column_name": "revision"
+    },
+    {
+      "column_name": "title"
+    },
+    {
+      "column_name": "description"
+    },
+    {
+      "column_name": "rule_type"
+    },
+    {
+      "column_name": "priority"
+    },
+    {
+      "column_name": "effective_from"
+    },
+    {
+      "column_name": "effective_to"
+    },
+    {
+      "column_name": "machine_executable"
+    },
+    {
+      "column_name": "ambiguity_status"
+    },
+    {
+      "column_name": "review_status"
+    },
+    {
+      "column_name": "scope_json"
+    },
+    {
+      "column_name": "condition_json"
+    },
+    {
+      "column_name": "effect_json"
+    },
+    {
+      "column_name": "required_facts_json"
+    },
+    {
+      "column_name": "lineage_json"
+    },
+    {
+      "column_name": "id"
+    },
+    {
+      "column_name": "created_at"
+    },
+    {
+      "column_name": "updated_at"
+    },
+    {
+      "column_name": "category"
+    },
+    {
+      "column_name": "tags_json"
+    },
+    {
+      "column_name": "group_label"
+    },
+    {
+      "column_name": "related_rule_ids_json"
+    },
+    {
+      "column_name": "is_explicit_override"
+    },
+    {
+      "column_name": "supersedes_rule_ids_json"
+    },
+    {
+      "column_name": "advice_json"
+    },
+    {
+      "column_name": "formulation_json"
+    },
+    {
+      "column_name": "provision_key"
+    },
+    {
+      "column_name": "provision_heading_json"
+    }
+  ],
+  "provisions": [
+    {
+      "project": "ais-e2e",
+      "provision_key": "9567c554023e12f1cdb0100d76c0abcd",
+      "heading_path_json": [
+        "AIS EMPLOYEE HANDBOOK"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "3093fb921195c240817f5b5283eae6f5",
+      "heading_path_json": [
+        "1. WELCOME MESSAGE"
+      ],
+      "first_page": 6,
+      "last_page": 6,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "84b698d60f400116dcd852935c8afd13",
+      "heading_path_json": [
+        "6. HANDBOOK OBJECTIVE"
+      ],
+      "first_page": 8,
+      "last_page": 8,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "a7b3cc442315ae10ab9a8c3cd45190d5",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.1. THE EMPLOYMENT CONTRACT"
+      ],
+      "first_page": 9,
+      "last_page": 9,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "3ab85c48da7312b94592fd1eb5d13c6c",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.2. WORK PERMIT (IQAMA) & TRANSFERRING ONES SPONSORSHIP"
+      ],
+      "first_page": 9,
+      "last_page": 9,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "c61822e7314dbe27c8d8196b175ee23e",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.3. DOCUMENTS REQUIRED TO BE ON FILE"
+      ],
+      "first_page": 9,
+      "last_page": 9,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "39e08eda7e9f169c6e2e1a936911c023",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.4. THE PROBATION PERIOD"
+      ],
+      "first_page": 9,
+      "last_page": 9,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "05cde987d85627d03bdfddaceb46140f",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.5. PERFORMANCE EVALUATION"
+      ],
+      "first_page": 10,
+      "last_page": 10,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "c23e32a19af231d1b939f6013bd3f3a2",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.6. SALARIES AND DEDUCTIONS"
+      ],
+      "first_page": 10,
+      "last_page": 10,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "158472087238c1b21815c3b4695e7922",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.8. WORKING HOURS"
+      ],
+      "first_page": 10,
+      "last_page": 11,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "4094ad6b422dbb097ec11368c525b5a6",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.9. OVERTIME"
+      ],
+      "first_page": 11,
+      "last_page": 11,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "ea882d3d2614c6f17cf8f5e50cb8b8b5",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.10. ABSENCE, LATENESS, TARDINESS & LEAVE"
+      ],
+      "first_page": 11,
+      "last_page": 11,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "d3b9a1390f48e961ef33515d8cc61bb9",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.11. HIRING RELATIVES & NEPOTISM"
+      ],
+      "first_page": 11,
+      "last_page": 12,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "ab87a692f3a20e95c545a0ce7718ba61",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.12. ANNUAL VACATION"
+      ],
+      "first_page": 12,
+      "last_page": 12,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "28334f1a0b3c389682647d43c89d554f",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.13. SICK LEAVE"
+      ],
+      "first_page": 12,
+      "last_page": 12,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "01309aeb409607211e4115e044bd8ac3",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.14. MATERNITY LEAVE"
+      ],
+      "first_page": 12,
+      "last_page": 13,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "bd602a7cc8f975b2cdbd3ce5e9ffc068",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.15. MARRIAGE LEAVE"
+      ],
+      "first_page": 13,
+      "last_page": 13,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "4037e3b8d5e6f62b50a320ccf3f143f4",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.16. EMERGENCY LEAVE/COMPASSIONATE LEAVE"
+      ],
+      "first_page": 13,
+      "last_page": 13,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "9d51aef7e740abeccaf10156454edd40",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.17. BUSINESS/ TRAINING ASSIGNMENTS & EXAM LEAVE"
+      ],
+      "first_page": 13,
+      "last_page": 13,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "e1fce2fe2cd98608b209767d99ca3769",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.19. EMPLOYEES\u2019 DAY OF TRAVEL & DAY OF RETURN FROM LEAVE"
+      ],
+      "first_page": 14,
+      "last_page": 14,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "77ec032421fdcfc11ed1dd2fb6ee7ae4",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.20. TUITION DISCOUNT FOR AN EMPLOYEE'S CHILD"
+      ],
+      "first_page": 14,
+      "last_page": 14,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "0bc8245e3853d81dce32b95f9e33540a",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.21 BUSINESS TRAVEL"
+      ],
+      "first_page": 14,
+      "last_page": 14,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "3861e1b212c37ca50eb4dc94f2ef49c1",
+      "heading_path_json": [
+        "7. RECRUITMENT",
+        "7.22. COVID REGULATIONS & PROCEDURES"
+      ],
+      "first_page": 14,
+      "last_page": 14,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "031726697d61d71b63ec892d4610e1b1",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.2. AIS STAFF EXPECTED WORK BEHAVIOUR"
+      ],
+      "first_page": 15,
+      "last_page": 16,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "56fb8aa2f84221220adc808bca7327f6",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.3. INTELLECTUAL PROPERTY"
+      ],
+      "first_page": 16,
+      "last_page": 16,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "a19af1513eea6e4768e9cec3cb5f7cb3",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.3. INTELLECTUAL PROPERTY",
+        "8.3.1 RETURN OF PROPERTY"
+      ],
+      "first_page": 16,
+      "last_page": 16,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "accede07f396517bf079665493696318",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.4. DRESS CODE",
+        "8.4.1. DRESS CODE FOR MALE EMPLOYEES"
+      ],
+      "first_page": 16,
+      "last_page": 17,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "b8623485f5444937ff17ddf3b993ff41",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.4. DRESS CODE",
+        "8.4.2. DRESS CODE FOR FEMALE EMPLOYEES"
+      ],
+      "first_page": 17,
+      "last_page": 17,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "ff62ad3ba00699135806e71ec3d3755e",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.5. COSMETICS AND ACCESSORIES"
+      ],
+      "first_page": 17,
+      "last_page": 17,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "eddb92e116296d15639385e5283f067d",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.6. CONFIDENTIALITY POLICY"
+      ],
+      "first_page": 17,
+      "last_page": 17,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "017de08ad6e139f5b53bd1e36ec96755",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.7. CONFLICT OF INTEREST"
+      ],
+      "first_page": 18,
+      "last_page": 18,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "427ba88c3ccbecd0a35f9a6ed919365f",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.8. RELATIONS WITH ARAB SCHOOLS CLIENTS"
+      ],
+      "first_page": 18,
+      "last_page": 18,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "3eb516e623a74001f1e5ccac869e3adb",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.9. GIFTS"
+      ],
+      "first_page": 18,
+      "last_page": 18,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "11f942fc167eb5a74f3715ed4b64f6de",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.10. PERSONAL VISITS"
+      ],
+      "first_page": 18,
+      "last_page": 18,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "22f466bf6813bd98c9861f9fa1bce765",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.11. HEALTH AND SAFETY"
+      ],
+      "first_page": 18,
+      "last_page": 19,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "cba1448ad9c71697fd6ca6322cdc8ae5",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.12. WORKPLACE VIOLENCE"
+      ],
+      "first_page": 19,
+      "last_page": 19,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "12511c81643194b09a520462744fce5e",
+      "heading_path_json": [
+        "8. WORKPLACE BEHAVIOUR AND ENVIRONMENT",
+        "8.13. TECHNOLOGY AND COMMUNICATIONS"
+      ],
+      "first_page": 19,
+      "last_page": 19,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "e76455fa9e8f2f9d66f30efc97b1e0d7",
+      "heading_path_json": [
+        "9. EMPLOYEES RESIDING IN THE COMPANY APARTMENTS"
+      ],
+      "first_page": 19,
+      "last_page": 20,
+      "merged_run_count": 1
+    },
+    {
+      "project": "ais-e2e",
+      "provision_key": "e8326a491c60c8914b7932dd0f2607eb",
+      "heading_path_json": [
+        "Table of Violations and Penalties"
+      ],
+      "first_page": 21,
+      "last_page": 27,
+      "merged_run_count": 7
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "a3f66fc0b504477e79a5bb8193d08ade",
+      "heading_path_json": [],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "dc3e44552ac735ea7dca71cc841f94e4",
+      "heading_path_json": [
+        "1. Purpose and Scope",
+        "1.1 Who this applies to"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "5c0773d10e30d7dadc94df9a9b27c358",
+      "heading_path_json": [
+        "1. Purpose and Scope",
+        "1.2 What this applies to"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "c260302c0579d7509096bfc0132cad2a",
+      "heading_path_json": [
+        "1. Purpose and Scope",
+        "1.3 Ownership"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "02f401ab228b38c80b31cbd56fb234f8",
+      "heading_path_json": [
+        "1. Purpose and Scope",
+        "1.4 Joint ventures and secondees"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "11273bc1cb58969effaa576fdbb239e2",
+      "heading_path_json": [
+        "2. Entitlement"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "5f0db9c8aa713e68722566865fca65b3",
+      "heading_path_json": [
+        "2. Entitlement",
+        "2.1 Standard entitlement"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "e3d61b6c8a957a8d6725da692171b3c1",
+      "heading_path_json": [
+        "2. Entitlement",
+        "2.2 Devices held at any one time"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "561321303bbd6e0114b59dc40cc70c34",
+      "heading_path_json": [
+        "2. Entitlement",
+        "2.3 Off-catalogue equipment"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "230ef0dbd6d412b2007b01babc0a74a9",
+      "heading_path_json": [
+        "3. Refresh and Device Age",
+        "3.1 Standard refresh interval"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "ab1916ac6641eae9fc5d2aed61f5a6f3",
+      "heading_path_json": [
+        "3. Refresh and Device Age",
+        "3.2 Peripheral refresh"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "d262d792c60890578b011bb641997299",
+      "heading_path_json": [
+        "3. Refresh and Device Age",
+        "3.3 Early refresh on role change"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "8bd060ede8c6c77986f83b4eb7d59418",
+      "heading_path_json": [
+        "4. Replacement"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "cf55af3a914a3b12252e1ca2a797d010",
+      "heading_path_json": [
+        "4. Replacement",
+        "4.1 Faulty equipment"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "7f1e23fe6ad46352d7f356b90dab7d9f",
+      "heading_path_json": [
+        "4. Replacement",
+        "4.2 Accidental damage"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "ef23786b233c5dbdc6599d8c6c5260f7",
+      "heading_path_json": [
+        "4. Replacement",
+        "4.3 Performance"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "ebb9290859d9fe10ab4a13e486482699",
+      "heading_path_json": [
+        "4. Replacement",
+        "4.4 Lost or stolen equipment"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "9533c5c08af5ddcef745ce65ff5f1d2c",
+      "heading_path_json": [
+        "5. Warranty and Repair",
+        "5.1 Warranty first"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "6bb29142f892f996c77c16fa21eb1572",
+      "heading_path_json": [
+        "5. Warranty and Repair",
+        "5.2 Out of warranty"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "d039b72d52c1e87ff5028ae4ab30ed47",
+      "heading_path_json": [
+        "5. Warranty and Repair",
+        "5.3 Repeated failure"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "8c781b6540420f96a478f5496095e309",
+      "heading_path_json": [
+        "6. Upgrades",
+        "6.1 Justification"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "8494c266dbcd567b0b5d2588acf7fe84",
+      "heading_path_json": [
+        "6. Upgrades",
+        "6.2 Approval"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "b6c20e65c1448628bc2ae6d041de4cfe",
+      "heading_path_json": [
+        "7. Financial Authority"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "df7847c17b9d31607df53fb27399b06a",
+      "heading_path_json": [
+        "7. Financial Authority",
+        "7.1 Approval thresholds"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "d8edc5ac70f23b09522dcb77fc4be226",
+      "heading_path_json": [
+        "7. Financial Authority",
+        "7.2 Budget"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "e52c80ff95fb8c5af308eb6cf80b93dd",
+      "heading_path_json": [
+        "7. Financial Authority",
+        "7.3 Self-approval prohibited"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "9ed4790ac5ddb47e70c485543ddbe58b",
+      "heading_path_json": [
+        "8. Peripherals and Accessories",
+        "8.1 Standard set"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "ee1cc7fa8108a627ae0ac536b9652765",
+      "heading_path_json": [
+        "8. Peripherals and Accessories",
+        "8.2 Additional peripherals"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "dd92cd0f62bae072abbcc651fe70bcc3",
+      "heading_path_json": [
+        "8. Peripherals and Accessories",
+        "8.3 Compatibility"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "22daced0bf9d5768c63eb83f1cc7df60",
+      "heading_path_json": [
+        "9. Workplace Adjustments and Accessibility",
+        "9.1 Priority"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "6df31d3421a1c35abb9e26b164b517b0",
+      "heading_path_json": [
+        "9. Workplace Adjustments and Accessibility",
+        "9.2 Confidentiality"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "b4bf52f8d20c559ffd0c1b12e9bb68cd",
+      "heading_path_json": [
+        "10. New Joiners",
+        "10.1 Standard bundle"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "60461ca17c5cf1b41f02b9f64a633f26",
+      "heading_path_json": [
+        "10. New Joiners",
+        "10.2 Approval"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "c9915d3c1d2f37acbf320456a3a7f744",
+      "heading_path_json": [
+        "11. Temporary Loans",
+        "11.1 When a loan is provided"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "32d164668e8f5cf5ffa3021d360b24bc",
+      "heading_path_json": [
+        "11. Temporary Loans",
+        "11.2 Loan period"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "fa048a899108fe1ab00fae3af6a5dc98",
+      "heading_path_json": [
+        "12. Leavers and Returns",
+        "12.1 Return on leaving"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "3dfb4d0e0c25323854630c1bc8e51934",
+      "heading_path_json": [
+        "12. Leavers and Returns",
+        "12.2 Outstanding equipment"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "904185efb2c152992cf15dc94562e85a",
+      "heading_path_json": [
+        "12. Leavers and Returns",
+        "12.3 Data"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "448b4fbb8bd02d1ecafce36e2445b15f",
+      "heading_path_json": [
+        "13. Remote and Hybrid Working",
+        "13.1 Home working equipment"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "6c7e6c35a0130803268d7db2d3971869",
+      "heading_path_json": [
+        "13. Remote and Hybrid Working",
+        "13.2 Equipment held off site"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "b57586dd9b4b4658ac08a71dc85d55da",
+      "heading_path_json": [
+        "14. Contractors and Non-Employees",
+        "14.1 Engagements over twenty days"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "2499ce756c30f34b1da6e16171bded61",
+      "heading_path_json": [
+        "14. Contractors and Non-Employees",
+        "14.2 Shorter engagements"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "81edaa293982adfdd04cb864640ba76d",
+      "heading_path_json": [
+        "15. Bring Your Own Device",
+        "15.1 Personal devices"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "eba664f59992374de093eee37bc8a4e5",
+      "heading_path_json": [
+        "16. Security Requirements",
+        "16.1 Baseline"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "9c57be246db93d93f71c82c0563c69c1",
+      "heading_path_json": [
+        "16. Security Requirements",
+        "16.2 Devices out of compliance"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "99f8a2822b39a71926467c72623447f3",
+      "heading_path_json": [
+        "17. Software Tied to Hardware",
+        "17.1 Device-bound licences"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "ac3b7bcd38ffca1c7672af3d6a2467df",
+      "heading_path_json": [
+        "18. Sustainability",
+        "18.1 Reuse before purchase"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "847d381a7ca3b1e3f0513c3623bb7123",
+      "heading_path_json": [
+        "18. Sustainability",
+        "18.2 Disposal"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "f93441e99e4ddfd52b702ec185022944",
+      "heading_path_json": [
+        "19. Asset Records",
+        "19.1 Register"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "7ff4b5a015e1433da164feb6930e03ca",
+      "heading_path_json": [
+        "19. Asset Records",
+        "19.2 Verification"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "fa830a67747fc243f33aa619e14ee7d9",
+      "heading_path_json": [
+        "20. Liability and Recovery",
+        "20.1 Recovery of cost"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "1a66c1d8044e484616e5b2757b20d48c",
+      "heading_path_json": [
+        "21. Service Levels",
+        "21.1 Support response"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "397d09b85677d4a73a103a71ab4bf1e4",
+      "heading_path_json": [
+        "22. Exceptions",
+        "22.1 Raising an exception"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "ba6429b402ed6d79b96c2c608ccc8f09",
+      "heading_path_json": [
+        "A. Appendix A \u2014 Exceptions and Overrides to the Clauses Above"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "22c84faafa71535eefef2f459a8ef1d0",
+      "heading_path_json": [
+        "A.1 Executive profile"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "33eb8eff1af53feaf9b0e85b5fceb8e9",
+      "heading_path_json": [
+        "A.2 Field and travel profile"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "0eabeaf7eda017fb633973d8fbc3d342",
+      "heading_path_json": [
+        "A.3 Adjustment requests"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "65df8c59fca36c9deb24f954c5c39726",
+      "heading_path_json": [
+        "A.4 Security suspension"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "cc02c036dec4e5cc8d32a8e31fd01458",
+      "heading_path_json": [
+        "A.5 Regional variation \u2014 European Union"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    },
+    {
+      "project": "hw-policy",
+      "provision_key": "6bc314621536aebeb6bf8c87629d3efe",
+      "heading_path_json": [
+        "B.1 Terms used in this policy"
+      ],
+      "first_page": 1,
+      "last_page": 1,
+      "merged_run_count": 1
+    }
+  ],
+  "rule_types": [
+    {
+      "project": "ais-e2e",
+      "rule_type": "routing",
+      "n": 119
+    },
+    {
+      "project": "ais-e2e",
+      "rule_type": "human_judgment_requirement",
+      "n": 50
+    },
+    {
+      "project": "ais-e2e",
+      "rule_type": "obligation",
+      "n": 46
+    },
+    {
+      "project": "ais-e2e",
+      "rule_type": "prohibition",
+      "n": 36
+    },
+    {
+      "project": "ais-e2e",
+      "rule_type": "permission",
+      "n": 27
+    },
+    {
+      "project": "ais-e2e",
+      "rule_type": "definition",
+      "n": 12
+    },
+    {
+      "project": "ais-e2e",
+      "rule_type": "eligibility",
+      "n": 2
+    },
+    {
+      "project": "ais-e2e",
+      "rule_type": "calculation",
+      "n": 1
+    },
+    {
+      "project": "hw-policy",
+      "rule_type": "routing",
+      "n": 58
+    },
+    {
+      "project": "hw-policy",
+      "rule_type": "definition",
+      "n": 34
+    },
+    {
+      "project": "hw-policy",
+      "rule_type": "prohibition",
+      "n": 31
+    },
+    {
+      "project": "hw-policy",
+      "rule_type": "obligation",
+      "n": 29
+    },
+    {
+      "project": "hw-policy",
+      "rule_type": "permission",
+      "n": 15
+    },
+    {
+      "project": "hw-policy",
+      "rule_type": "human_judgment_requirement",
+      "n": 14
+    },
+    {
+      "project": "hw-policy",
+      "rule_type": "eligibility",
+      "n": 7
+    },
+    {
+      "project": "hw-policy",
+      "rule_type": "calculation",
+      "n": 1
+    }
+  ],
+  "machine_executable": [
+    {
+      "project": "ais-e2e",
+      "machine_executable": false,
+      "ambiguity_status": "none",
+      "n": 226
+    },
+    {
+      "project": "ais-e2e",
+      "machine_executable": false,
+      "ambiguity_status": "human_judgment_required",
+      "n": 65
+    },
+    {
+      "project": "ais-e2e",
+      "machine_executable": true,
+      "ambiguity_status": "none",
+      "n": 2
+    },
+    {
+      "project": "hw-policy",
+      "machine_executable": false,
+      "ambiguity_status": "none",
+      "n": 148
+    },
+    {
+      "project": "hw-policy",
+      "machine_executable": false,
+      "ambiguity_status": "human_judgment_required",
+      "n": 41
+    }
+  ]
+}

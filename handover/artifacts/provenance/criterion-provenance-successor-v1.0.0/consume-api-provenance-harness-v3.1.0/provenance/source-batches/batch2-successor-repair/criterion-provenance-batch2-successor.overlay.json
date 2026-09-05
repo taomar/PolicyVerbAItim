@@ -1,0 +1,895 @@
+{
+  "schema_version": "consume-api-normative-provenance-overlay/1",
+  "authoritative_bundle": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0",
+    "canonical_payload_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+    "rubric_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evaluation-rubric.json",
+    "rubric_sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58"
+  },
+  "selection": {
+    "filter": "canonical provenance preflight rubric_findings",
+    "sort": "stable criterion_id ascending",
+    "total_unscorable_or_unresolved": 113,
+    "slice_start_index_zero_based": 38,
+    "slice_end_index_zero_based_inclusive": 75,
+    "selected_count": 38,
+    "first_criterion_id": "AIS-08:R5",
+    "last_criterion_id": "HW-05:R3",
+    "selected_ids_sha256": "251c3289af2ae64a3312e9242129ffef08f87614766338d2df9a684dfc14b6ed"
+  },
+  "evidence_sources": [
+    {
+      "id": "normative_batch2_source_attestations",
+      "path": "normative-provenance-batch2.source-attestations.json",
+      "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+      "type": "json"
+    }
+  ],
+  "classification_counts": {
+    "product_decision_required": 2,
+    "semantic_support_pending_human_confirmation": 12,
+    "structural_harness_not_product_law": 23,
+    "unsupported_or_contradicted_rubric": 1
+  },
+  "criterion_updates": [
+    {
+      "criterion_id": "AIS-08:R5",
+      "question_id": "ais-info-probation-evaluation",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-08:manual-2",
+      "question_id": "ais-info-probation-evaluation",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-09:R3",
+      "question_id": "ais-leave-travel-composition",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-09:R4",
+      "question_id": "ais-leave-travel-composition",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-09:R5",
+      "question_id": "ais-leave-travel-composition",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-10:R1",
+      "question_id": "ais-irrelevant-football",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-10:R3",
+      "question_id": "ais-irrelevant-football",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-10:R4",
+      "question_id": "ais-irrelevant-football",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-10:R5",
+      "question_id": "ais-irrelevant-football",
+      "classification": "product_decision_required",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed until an authoritative API/product contract defines out-of-domain behavior."
+    },
+    {
+      "criterion_id": "AIS-10:R9",
+      "question_id": "ais-irrelevant-football",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "AIS-10:manual-1",
+      "question_id": "ais-irrelevant-football",
+      "classification": "product_decision_required",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed until an authoritative API/product contract defines out-of-domain behavior."
+    },
+    {
+      "criterion_id": "HW-01:R1",
+      "question_id": "hw-refresh-26-months",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/0",
+        "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/48",
+            "pointer_sha256": "27dc1f8f7992a20370fbde2d73fdedae9cd7152dba3061ff099dd03e41340fd5"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/10/expected_evidence",
+            "pointer_sha256": "79b7ece0d4be32cd503fa8f58d0d8d6efef420ad85d17dafea6dda694d5ae47b"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/0",
+            "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-01:R3",
+      "question_id": "hw-refresh-26-months",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-01:R4",
+      "question_id": "hw-refresh-26-months",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-01:R5",
+      "question_id": "hw-refresh-26-months",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-01:R9",
+      "question_id": "hw-refresh-26-months",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/0",
+        "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/10/expected_evidence",
+            "pointer_sha256": "79b7ece0d4be32cd503fa8f58d0d8d6efef420ad85d17dafea6dda694d5ae47b"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/0",
+            "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-01:manual-1",
+      "question_id": "hw-refresh-26-months",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-02:R1",
+      "question_id": "hw-stolen-trip",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/1",
+        "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/55",
+            "pointer_sha256": "c60cabbc02c1b3afd316e96acc7718a8a72add708bed44e0c2940e3e45ee2be2"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/expected_evidence",
+            "pointer_sha256": "049091642528fb8ab0446687f020fecf5b49fa23ec35f17007de8d92d5563d73"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-02:R3",
+      "question_id": "hw-stolen-trip",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-02:R4",
+      "question_id": "hw-stolen-trip",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-02:R5",
+      "question_id": "hw-stolen-trip",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-02:R9",
+      "question_id": "hw-stolen-trip",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/1",
+        "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/expected_evidence",
+            "pointer_sha256": "049091642528fb8ab0446687f020fecf5b49fa23ec35f17007de8d92d5563d73"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-02:manual-1",
+      "question_id": "hw-stolen-trip",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/1",
+        "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/manual_criteria/0",
+            "pointer_sha256": "67eea304391401c561efa15d1f7c1003746177b59acb9275cfd3d8cbd4e7ada2"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-02:manual-2",
+      "question_id": "hw-stolen-trip",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/1",
+        "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/manual_criteria/1",
+            "pointer_sha256": "b12dc5fa7f7553304183130d6e1e9996353b1e4517a0f5217f0def2ff84d54c1"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-03:R1",
+      "question_id": "hw-byod-client-files",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/2",
+        "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/81",
+            "pointer_sha256": "323310a097b2084d84bb8619325e79e5565709321c1855d9d9e36be9b03afa0b"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/expected_evidence",
+            "pointer_sha256": "0c7de93f20591035b57644cc7c4fc73d969726ec351f765745db0d339119089e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-03:R3",
+      "question_id": "hw-byod-client-files",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-03:R4",
+      "question_id": "hw-byod-client-files",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-03:R5",
+      "question_id": "hw-byod-client-files",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-03:R9",
+      "question_id": "hw-byod-client-files",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/2",
+        "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/expected_evidence",
+            "pointer_sha256": "0c7de93f20591035b57644cc7c4fc73d969726ec351f765745db0d339119089e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-03:manual-1",
+      "question_id": "hw-byod-client-files",
+      "classification": "unsupported_or_contradicted_rubric",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/2",
+        "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/manual_criteria/0",
+            "pointer_sha256": "fcdc71942efbf246333583494dc9af024b37a4c50b7080af510bba151e2164f5"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Keep fail-closed; a human reviewer must rewrite or withdraw the overbroad criterion before any unsupported state is confirmed."
+    },
+    {
+      "criterion_id": "HW-04:R1",
+      "question_id": "hw-contractor-15-days",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/3",
+        "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/80",
+            "pointer_sha256": "2162cc2d6801df78ca0d9db3eb4bb4f6346000538216e2d444674354ca25a294"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/expected_evidence",
+            "pointer_sha256": "6c9966ab1bb6ddbf50682cb727a172b809f67031ba922941b7d17682203e2970"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-04:R3",
+      "question_id": "hw-contractor-15-days",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-04:R4",
+      "question_id": "hw-contractor-15-days",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-04:R5",
+      "question_id": "hw-contractor-15-days",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    },
+    {
+      "criterion_id": "HW-04:R9",
+      "question_id": "hw-contractor-15-days",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/3",
+        "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/expected_evidence",
+            "pointer_sha256": "6c9966ab1bb6ddbf50682cb727a172b809f67031ba922941b7d17682203e2970"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-04:manual-1",
+      "question_id": "hw-contractor-15-days",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/3",
+        "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/manual_criteria/0",
+            "pointer_sha256": "92d33b1e8e937b15398e2a36f2378087df4b3da0cf7a82ebe511ed0a09ff0c50"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-05:R1",
+      "question_id": "hw-accessibility-monitor",
+      "classification": "semantic_support_pending_human_confirmation",
+      "scorable": false,
+      "normative_evidence": {
+        "source_id": "normative_batch2_source_attestations",
+        "pointer": "/provisions/4",
+        "pointer_sha256": "96ef899700a2719225c008efdab9415b954a3e0663b87e7c4cb34f2dd49b4964",
+        "source_provision_ids": [
+          "22daced0bf9d5768c63eb83f1cc7df60"
+        ],
+        "source_rule_ids": []
+      },
+      "candidate_rubric_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "22daced0bf9d5768c63eb83f1cc7df60"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/68",
+            "pointer_sha256": "6f2bafa5629fffbf1eefe0f2c8f717159f88b51f04104aef461a47d9a00322dc"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/14/expected_evidence",
+            "pointer_sha256": "947f157e79a6861b928c205e3f49412bf221574204bb54f2b1da13f1908a243e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/4",
+            "pointer_sha256": "96ef899700a2719225c008efdab9415b954a3e0663b87e7c4cb34f2dd49b4964"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      },
+      "recommended_action": "Attach the hash-bound source-body provenance as unresolved semantics; a human reviewer must confirm support before scorable status."
+    },
+    {
+      "criterion_id": "HW-05:R3",
+      "question_id": "hw-accessibility-monitor",
+      "classification": "structural_harness_not_product_law",
+      "scorable": false,
+      "normative_evidence": null,
+      "candidate_rubric_fields": null,
+      "recommended_action": "Keep fail-closed in the product-law rubric and route to a separate contract/integrity validation layer."
+    }
+  ],
+  "invariants": {
+    "human_confirmation_recorded": false,
+    "criteria_made_scorable": 0,
+    "outside_slice_updates": 0,
+    "production_guard_modified": false
+  }
+}

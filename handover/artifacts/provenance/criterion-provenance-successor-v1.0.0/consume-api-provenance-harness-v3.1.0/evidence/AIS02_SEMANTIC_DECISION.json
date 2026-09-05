@@ -1,0 +1,51 @@
+{
+  "schema_version": "consume-api-semantic-decision/1",
+  "status": "human_confirmed",
+  "question_scope": "entitlement_and_present_operational_authorization",
+  "decision": {
+    "entitlement": "answered",
+    "present_approval": "not_settled_by_rules",
+    "future_report_is_current_missing_fact": false,
+    "rationale": "A settled entitlement and future documentary duty do not authorize immediate execution when the normative source is silent on present approval."
+  },
+  "normative_source": {
+    "source_pdf_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9",
+    "source_snapshot_sha256": "95df2a9538bb5090a5ab652a57b5f7f29e614ea7b2da2343203c05a903cd4718",
+    "provision_key": "28334f1a0b3c389682647d43c89d554f",
+    "provision_pointer": "/provisions/14",
+    "provision_pointer_sha256": "41bf7fa70289ac47792a5670d015e0c2a9a16c95f77a38027d006d7000901206"
+  },
+  "served_rules": [
+    {
+      "rule_id": "AI-b4226cc420",
+      "source_text_sha256": "756303adc3a587ab7dbd6a2ff7353e56f4db660567b98a3fd8afef04b5344652"
+    },
+    {
+      "rule_id": "AI-7336476841",
+      "source_text_sha256": "ff6fd977fa5126bce109d1c6a3028fb34a28f6a8c05b15bb4b968f4256d882cd"
+    },
+    {
+      "rule_id": "AI-d858b6b2ba",
+      "source_text_sha256": "97d3287dd663735d023b258804b20b284aab2ea2432abdeab9c590d3657e8387"
+    }
+  ],
+  "contract": {
+    "prompt_id": "ai-case-intent-v15",
+    "ai_case_intent_py_sha256": "84fedebd9b1741322cfc6849168e306bae545ffe98c3020c7707974f56f9f086",
+    "case_decision_py_sha256": "734dcd3cff33bb33ea4e7cb12eae038efb64947b3c0e850ca78c506032735a28",
+    "boundary": "entitlement_does_not_imply_operational_authorization"
+  },
+  "observation": {
+    "job_id": "C__ais-sick-surgery__r3",
+    "raw_response_decoded_sha256": "88773f2992c31623b8c34a9116f3fbd2fda581d7c1113c5f0daeb6c1639ae1f1",
+    "raw_record_file_sha256": "591eb8abcc63e60eb96ec866723526f926a4f6d7485c02b5ea7c15c97665e61f",
+    "canonical_record_sha256": "b5b7adf0749c80a774326e794beb018f2e909aa9a08783f4ae6f98a108596f47",
+    "decision_hash": "76ea03f1409d4b6e4682850001c13eeb96e78b1b9b38820cc360c8ff0908d80e"
+  },
+  "audit": {
+    "checkpoint_sha256": "b57e782bb49080d1067488c3ddbd61aeffa9018062bcef45bebb4b51597ad738",
+    "checkpoint_ordinal": 27,
+    "prior_audit_memo_sha256": "a46099c8a187fbca985300097f962561c5d6c2c9b6fe4b921b03c7a436e6923a",
+    "resolution": "supersedes_prior_unresolved_classification_for_this_semantic_facet"
+  }
+}

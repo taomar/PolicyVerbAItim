@@ -1,0 +1,14 @@
+{
+  "schema_version": "six_unit_post_test_integrity_v1",
+  "passed": true,
+  "source_files_checked": 1011,
+  "source_mismatches": [],
+  "staged_path_count": 48,
+  "expected_path_count": 48,
+  "staged_path_set_matches": "False",
+  "private_status_entries": 48,
+  "ignored_fixture_manifest": {
+    "path": "PRIVATE_TEST_FIXTURES.json",
+    "sha256": "8d4151fb9ad0c3464dde1fb86d59d1277d9cf3e7d3b4d022cbeea854b44ec2ef"
+  }
+}

@@ -1,0 +1,333 @@
+{
+  "schema": "policyverbatim_host_migration_artifact_inventory/1",
+  "generated_utc": "2026-09-05T06:38:47Z",
+  "generated_by_session": "8476596b-1943-4577-8a2c-10e0d7553606",
+  "path_convention": "Windows-native",
+
+  "handover_package": {
+    "root": "C:\\Users\\taomar\\.copilot\\session-state\\8476596b-1943-4577-8a2c-10e0d7553606\\files",
+    "layout": {
+      "primary_document": "hosthandover.md",
+      "primary_document_destination": "repository root (to be placed by an authorized writer; this session did not write into the repository)",
+      "supporting_directory": "handover\\",
+      "supporting_destination": "repository root handover\\ directory"
+    },
+    "files": [
+      { "path": "hosthandover.md", "role": "primary deep narrative handover" },
+      { "path": "handover\\RESUME_FIRST.md", "role": "short exact first actions" },
+      { "path": "handover\\SESSION_LEDGER.json", "role": "session hierarchy, IDs, roles, states, artifact paths, handoffs" },
+      { "path": "handover\\GIT_AND_WORKTREE_LEDGER.json", "role": "remotes, refs, commit ledger, adoption transitions, status classification, worktrees, reachability, publication status" },
+      { "path": "handover\\PENDING_DECISIONS_AND_TASKS.json", "role": "ordered phased task list with gates, owners and authorization requirements" },
+      { "path": "handover\\ARTIFACT_INVENTORY.json", "role": "this file" },
+      { "path": "handover\\HANDOVER_HASHES.sha256", "role": "SHA-256 of every file in this package" }
+    ]
+  },
+
+  "repositories_and_checkouts": [
+    {
+      "id": "shared-checkout",
+      "path": "C:\\Users\\taomar\\Downloads\\policy extractor",
+      "role": "THE primary working tree; dirty on purpose; holds all nine unpushed main commits and four unique branch tips",
+      "must_transfer": true,
+      "transfer_note": "copy whole tree INCLUDING .git; do not clean, gc, prune or delete branches"
+    },
+    {
+      "id": "junction",
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository",
+      "role": "NTFS junction to the shared checkout; every path in this package resolves through it",
+      "must_transfer": true,
+      "transfer_note": "recreate the junction on the new host"
+    },
+    {
+      "id": "oversight-project-root",
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight",
+      "role": "local-only folder project root (project ID 398fea1a-f058-481a-8546-dc08cfa1eb6f)",
+      "must_transfer": true
+    },
+    {
+      "id": "azure-deploy-checkout",
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-azure-deploy",
+      "role": "separate Azure deployment checkout; branch azure-deploy at 3815866; clean",
+      "must_transfer": true,
+      "transfer_note": "KEEP; never deploy or push"
+    },
+    {
+      "id": "worktree-pool",
+      "path": "C:\\Users\\taomar\\.copilot\\repos\\copilot-worktrees\\policy extractor",
+      "role": "Copilot worktree pool containing taomar-microsoft-automatic-train (publisher, in flight) and taomar-microsoft-jubilant-broccoli (stale)",
+      "must_transfer": "publisher worktree only, and only while it is in flight"
+    }
+  ],
+
+  "session_artifact_trees": [
+    {
+      "session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "role": "top-level parent / oversight coordinator",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234",
+      "must_transfer": true,
+      "key_paths": [
+        "files\\PARENT_SUCCESSOR_HANDOVER.md",
+        "files\\matrix-api.log",
+        "files\\feature-adoption\\START_STATE.json",
+        "files\\feature-adoption\\ADOPTION_RESULT.json",
+        "files\\feature-adoption\\shared-index-*.bin",
+        "files\\feature-integration-candidate\\  (git worktree, detached at d3bb0f9)",
+        "files\\worktrees\\canonical-table-carrier\\  (git worktree, detached at 3da502f)",
+        "files\\worktrees\\ranking-telemetry\\  (git worktree, detached at 4f9f21a)",
+        "checkpoints\\001-orchestrating-consume-api-matr.md",
+        "checkpoints\\002-correcting-rule-only-retrieval.md",
+        "checkpoints\\003-rule-retrieval-and-audit.md",
+        "checkpoints\\004-provenance-and-commit-reconstr.md",
+        "events.jsonl"
+      ]
+    },
+    {
+      "session": "8437f3da-491a-4139-b979-8b00996c8953",
+      "role": "retiring oversight; the seven migration artifacts",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953",
+      "must_transfer": true,
+      "key_paths": [
+        "files\\OVERSIGHT_SUCCESSOR_HANDOVER.md",
+        "files\\SPAWN_SUCCESSOR_STRUCTURE.md",
+        "files\\TOP_LEVEL_PARENT_KICKOFF.md",
+        "files\\CHILD_AZURE_HANDOVER.md",
+        "files\\CHILD_INTEGRATION_HANDOVER.md",
+        "files\\CHILD_PAYLOAD_HANDOVER.md",
+        "files\\CHILD_RULE_RETRIEVAL_HANDOVER.md",
+        "files\\data-db-before-local-workflow.sqlite",
+        "files\\ais-*.json  (upload / publish / index / extraction evidence)",
+        "files\\hw-*.json  (upload / publish / extraction evidence)",
+        "files\\backend-8068.log, backend-8069.log, backend-8070.log",
+        "files\\runs\\",
+        "checkpoints\\001-diagnosing-ais-projection-fail.md"
+      ]
+    },
+    {
+      "session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "role": "final commit-decomposition auditor; executed Adoption A",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "must_transfer": true,
+      "key_paths": [
+        "files\\FINAL_COMMIT_DECOMPOSITION.md",
+        "files\\NEXT_ACTION_HANDOFF.md",
+        "files\\COMMIT_SEQUENCE.json",
+        "files\\COMPLETE_PATH_LEDGER.json",
+        "files\\EXCLUSIONS.json",
+        "files\\CURRENT_UNTRACKED_ADDITIONS.patch",
+        "files\\END_TRACKED_DIRTY.patch",
+        "files\\START_TRACKED_DIRTY.patch",
+        "files\\AZURE_3815866.patch",
+        "files\\AZURE_OVERLAP_ANALYSIS.json",
+        "files\\HEAD-c0972c8.tar",
+        "files\\six-unit-audit\\final-artifacts\\00-rule-index-foundation.patch",
+        "files\\six-unit-audit\\final-artifacts\\01-rule-retrieval.patch",
+        "files\\six-unit-audit\\final-artifacts\\01a-earlier-payload-optimizations.patch",
+        "files\\six-unit-audit\\final-artifacts\\02-payload.patch",
+        "files\\six-unit-audit\\final-artifacts\\03-consume-request-mode-foundation.patch",
+        "files\\six-unit-audit\\final-artifacts\\04-consume-native-parser-renderer.patch",
+        "files\\six-unit-audit\\final-artifacts\\FINAL_SIX_UNIT_SEQUENCE_AUDIT.md",
+        "files\\six-unit-audit\\final-artifacts\\PATCH_HASHES.json",
+        "files\\six-unit-audit\\final-artifacts\\FINAL_ARTIFACT_HASHES.json",
+        "files\\six-unit-audit\\final-artifacts\\FINAL_ARTIFACT_HASHES.sha256",
+        "files\\six-unit-audit\\final-artifacts\\SEQUENCE_VALIDATION.json",
+        "files\\six-unit-audit\\final-artifacts\\BACKEND_VALIDATION.json",
+        "files\\six-unit-audit\\final-artifacts\\CONSUME_VALIDATION.json",
+        "files\\six-unit-audit\\final-artifacts\\CONTENT_REVIEW.json",
+        "files\\six-unit-audit\\final-artifacts\\CURRENT_TREE_COMPARISON.json",
+        "files\\six-unit-audit\\final-artifacts\\SHARED_NON_MUTATION.json",
+        "files\\six-unit-audit\\final-artifacts\\POST_TEST_INTEGRITY.json",
+        "files\\six-unit-audit\\final-artifacts\\PRIVATE_TEST_FIXTURES.json",
+        "files\\six-unit-audit\\final-artifacts\\WHITESPACE_ASSESSMENT.json",
+        "files\\six-unit-audit\\adoption\\00-commit.patch .. 04-commit.patch",
+        "files\\six-unit-audit\\adoption\\00-message.txt .. 04-message.txt",
+        "files\\six-unit-audit\\adoption\\ADOPTION_RESULT.json",
+        "files\\six-unit-audit\\adoption\\COMMIT_CHAIN_PRE_ADOPTION.json",
+        "files\\six-unit-audit\\adoption\\ROLLBACK_RECORD.json",
+        "files\\six-unit-audit\\adoption\\shared-index-before.bin",
+        "files\\six-unit-audit\\adoption\\shared-HEAD-before.bin",
+        "files\\six-unit-audit\\FULL_BACKEND_FINAL.json",
+        "files\\six-unit-audit\\FULL_BACKEND_FINAL.log",
+        "files\\six-unit-audit\\FOCUSED_FOUNDATION_01A.log",
+        "files\\six-unit-audit\\FOCUSED_RULE.log",
+        "files\\six-unit-audit\\FOCUSED_PAYLOAD.log",
+        "files\\six-unit-audit\\CONSUME_FINAL_SHARDED.log",
+        "files\\six-unit-audit\\CONSUME_PARSER_RETRY.log"
+      ],
+      "note": "adoption\\detached-worktree was removed by the adopter"
+    },
+    {
+      "session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "must_transfer": true,
+      "key_paths": [
+        "files\\00-rule-index-foundation.patch",
+        "files\\01-rule-retrieval.rebased-on-foundation.patch",
+        "files\\RULE_INDEX_FOUNDATION_RECONSTRUCTION.md",
+        "files\\RULE_REBASE_DELTA_MANIFEST.json",
+        "files\\PATH_HUNK_MANIFEST.json",
+        "files\\SEQUENCE_VALIDATION.json",
+        "files\\EXCLUSIONS.json",
+        "files\\INPUT_OUTPUT_HASHES.json",
+        "files\\END_SHARED_REPOSITORY_STATE.json",
+        "files\\FOUNDATION_FOCUSED_TESTS.txt",
+        "files\\FOUNDATION_RULE_FOCUSED_TESTS.txt",
+        "files\\NEXT_ACTION.md",
+        "files\\private-head-c0972c8.tar",
+        "files\\verify_shared_nonmutation.py"
+      ]
+    },
+    {
+      "session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "role": "ordinal-03 Consume request-mode foundation reconstruction",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610",
+      "must_transfer": true,
+      "key_paths": [
+        "files\\03-consume-request-mode-foundation.patch",
+        "files\\04-consume-native-parser-renderer.patch",
+        "files\\03-consume-request-mode-foundation.BLOCKED.json",
+        "files\\APPROVAL_AUTHORSHIP_EVIDENCE.json",
+        "files\\APPROVAL_NON_MUTATION_PROOF.json",
+        "files\\APPROVAL_EXCLUSION_REVALIDATION.json",
+        "files\\CONSUME_REQUEST_FOUNDATION_RECONSTRUCTION.md",
+        "files\\PATH_HUNK_MANIFEST.json",
+        "files\\SEQUENCE_VALIDATION.json",
+        "files\\CONTENT_LEAK_REVIEW.json",
+        "files\\EXCLUSIONS.json",
+        "files\\INPUT_OUTPUT_HASHES.json",
+        "files\\NON_MUTATION_PROOF.json",
+        "files\\NEXT_ACTION.md",
+        "files\\private-validation\\foundation-evidence-pass1.patch"
+      ],
+      "governance_note": "foundation-evidence-pass1.patch sha256 3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7 is the exact narrowly-approved byte set"
+    },
+    {
+      "session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "role": "criterion provenance merge and validation successor",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69",
+      "must_transfer": true,
+      "key_paths": [
+        "files\\criterion-provenance-successor-v1.0.0\\MERGE_HANDOFF.md",
+        "files\\criterion-provenance-successor-v1.0.0\\FULL_SOURCE_INPUT_OUTPUT_HASH_MANIFEST.json",
+        "files\\criterion-provenance-successor-v1.0.0\\build_criterion_provenance_successor.py",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\BUNDLE_MANIFEST.json",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\FILE_INVENTORY.json",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evaluation-rubric.json",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\manifest.pending.json",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\consume_matrix_runner.py",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\rubric_provenance.py",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\ADOPTION_AND_ROLLBACK.md",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\MERGE_VALIDATION_REPORT.md",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\criterion-provenance-merged-overlay.json",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\criterion-provenance-merged-ledger.json",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\SOURCE_NON_MUTATION.json",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch1\\",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-original-predecessor\\",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch3\\",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\validation-summary.json",
+        "files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\normative\\",
+        "files\\criterion-provenance-merge-blocked-v1.0.0\\",
+        "files\\HANDOFF_HASH_MANIFEST.json",
+        "files\\NO_MERGE_VALIDATION_EXECUTION.json",
+        "files\\validate_provenance_partition.py",
+        "files\\inputs\\"
+      ],
+      "canonical_bundle_sha256": "037a40264acdde60c2b769f37e3eba5fe4af01dc980292d90fd4cab03c569c75",
+      "execution": "disabled"
+    },
+    {
+      "session": "5a06fec2-12cd-4477-b574-4d18ab814907",
+      "role": "Payload and full-cycle verification successor",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907",
+      "must_transfer": true,
+      "key_paths": [
+        "files\\CHILD_PAYLOAD_SUCCESSOR_HANDOVER.md",
+        "files\\IMPLEMENTATION_BLUEPRINT_26_TRUE_FAILURES.md",
+        "files\\REGRESSION_INVESTIGATION_38_POLICY_MODE.md",
+        "files\\CONSUME_API_EVALUATION_RUBRIC.md",
+        "files\\AGENT_PROGRESS.md",
+        "files\\corpus_topic_map.json",
+        "files\\replay_old_rubric.py",
+        "files\\verify_search_live.py"
+      ]
+    },
+    {
+      "session": "ecd8492d-9745-4265-991a-cba401a6ebc3",
+      "role": "private base publisher (IN FLIGHT)",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3",
+      "must_transfer": true,
+      "key_paths": [
+        "files\\safe-inflight-paths.txt",
+        "files\\pathspec.txt",
+        "files\\msg-snapshot.txt",
+        "files\\msg-merge.txt",
+        "files\\msg-skills.txt",
+        "files\\detect-secrets-scan.json",
+        "events.jsonl"
+      ],
+      "note": "state was still advancing at snapshot; re-capture before transfer"
+    },
+    {
+      "session": "690ae612-611a-4b4a-99e4-c39753610534",
+      "role": "table-carrier reviewer (ARCHIVED)",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\690ae612-611a-4b4a-99e4-c39753610534",
+      "must_transfer": true,
+      "key_paths": ["events.jsonl (contains the full review and test evidence)", "workspace.yaml"]
+    },
+    {
+      "session": "749bf4f5-26be-4bce-ba4e-0fc3d3551d60",
+      "role": "ranking-telemetry reviewer (ARCHIVED)",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\749bf4f5-26be-4bce-ba4e-0fc3d3551d60",
+      "must_transfer": true,
+      "key_paths": ["events.jsonl (contains the review, the baseline diff and the ai.py harness-defect finding)", "workspace.yaml"]
+    },
+    {
+      "session": "d99011fe-a8c3-4032-872b-1643baaef994",
+      "role": "Policy payload size audit - authorship evidence for the Consume T1 edits",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\d99011fe-a8c3-4032-872b-1643baaef994",
+      "must_transfer": true,
+      "key_paths": ["events.jsonl (warning turns 35-36; direct edit events around lines 3600-3688)"],
+      "note": "sole surviving proof of ordinal-03 authorship; required to justify the narrow retroactive approval"
+    },
+    {
+      "session": "8476596b-1943-4577-8a2c-10e0d7553606",
+      "role": "this handover session",
+      "root": "C:\\Users\\taomar\\.copilot\\session-state\\8476596b-1943-4577-8a2c-10e0d7553606",
+      "must_transfer": true,
+      "key_paths": ["files\\hosthandover.md", "files\\handover\\"]
+    }
+  ],
+
+  "excluded_from_transfer_via_git": {
+    "rule": "transfer these OUTSIDE Git on a separate secure channel, or recreate them; never commit",
+    "classes": {
+      "secrets": [".env", ".env.*", "*.env", "apps\\web\\.env", "apps\\consume-demo\\.env.local", "services\\policy-decision-api\\.env", "infra\\parameters\\baseline.env", ".local-accounts.txt", ".local-signing-key*", "*.pem", "*token*.txt", "*token*.json", "*.token", ".token", ".tokens", ".azure\\* (except .azure\\deployment-plan.md)"],
+      "runtime_data": ["data\\documents\\", "data\\backups\\", "App_Data\\", ".mutation-check.lock"],
+      "dependencies_and_build": [".venv\\", ".venv-graph\\", "venv\\", "node_modules\\", "apps\\web\\node_modules\\", "apps\\consume-demo\\node_modules\\", "dist\\", "build\\", "*.egg-info\\", "src\\policy_platform.egg-info\\", "apps\\web\\dist\\", "apps\\consume-demo\\dist\\"],
+      "caches": ["__pycache__\\ (approx. 45 directories)", "*.pyc", ".pytest_cache\\", ".serena\\cache\\", ".coverage", "htmlcov\\"],
+      "local_session_and_agent": ["AGENT_PROGRESS.md", "HANDOVER*", "handover*", "docs\\SESSION_HANDOFF.md", "docs\\adr\\", "docs\\handoff\\", "docs\\handover\\", "docs\\internal\\", "docs\\failures\\", "docs\\todo\\", "todo\\", "todos\\", "TODO.md", ".impeccable\\", ".github\\skills\\", "skills\\", ".playwright-mcp\\", ".artifacts\\", ".private\\", "Instructions for Claude Opus 5_*.md", ".serena\\project.local.yml"],
+      "logs_and_scratch": ["*.log", "backend_stdout.log", "backend_stderr.log", "apps\\web\\vite.out.log", "apps\\web\\vite.err.log", "decision-light-*.png"]
+    },
+    "ignored_entries_present_at_snapshot": 95,
+    "publisher_exception": "commit 8bc0657a7076e8bf85b0a5f1b5ea009911829040 deliberately carries three ignored 'skills' asset sets into the private archive, committed separately so the ignore-rule bypass is auditable in one place. .gitignore itself is unchanged."
+  },
+
+  "naming_collision_warning": {
+    "issue": "The repository .gitignore contains the patterns 'HANDOVER*', 'handover*' and 'docs\\handover\\'.",
+    "consequence": "A 'handover\\' directory placed at the repository root WILL be ignored by git unless the ignore rules are amended or the files are force-added.",
+    "status": "flagged for the authorized writer; this session made no repository change",
+    "note": "'hosthandover.md' does NOT match 'HANDOVER*' or 'handover*' (those are anchored to the start of a path component), so the primary document is not ignored. The supporting directory is."
+  },
+
+  "unverified": [
+    "final remote SHA published to https://github.com/taomar/PolicyVerbAItim.git",
+    "existence and reachability of taomar/PolicyVerbAItim from any credentialed context",
+    "whether 8bc0657a7076e8bf85b0a5f1b5ea009911829040 is the intended publication tip or an intermediate",
+    "current live Azure, PostgreSQL and Azure AI Search state (last verified 2026-09-04; no live calls made by this session)",
+    "whether origin should be restored to taomar/policy-governance-engine",
+    "post-transfer validity of absolute worktree registry paths",
+    "exact remaining content of the feature-integration-candidate worktree",
+    "adjudication of the publisher's detect-secrets baseline findings"
+  ]
+}

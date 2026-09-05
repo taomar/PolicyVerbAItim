@@ -1,0 +1,1058 @@
+diff --git a/src/policy_platform/infrastructure/assistants/ai_case_project.py b/src/policy_platform/infrastructure/assistants/ai_case_project.py
+index 98e15dccef7e962289850e8681d148b75fd36272..067fc477db6bf6f3f10cc4da17559def93c8b76d 100644
+--- a/src/policy_platform/infrastructure/assistants/ai_case_project.py
++++ b/src/policy_platform/infrastructure/assistants/ai_case_project.py
+@@ -208,6 +208,7 @@
+     policy_document_id,
+     policy_index_filter,
+     policy_index_name,
++    policy_rule_content_filter,
+     read_projection_readiness,
+ )
+ from policy_platform.infrastructure.search.search_client import AzureSearchClient
+@@ -2234,10 +2235,14 @@
+                             query_text=scenario,
+                             vector=vector,
+                             top=RETRIEVAL_RULE_SCAN,
+-                            filter_expr=policy_index_filter(
++                            # The corpus now holds every published rule,
++                            # while policy mode keeps querying the legacy large-
++                            # provision subset until a caller explicitly asks for
++                            # native rule retrieval.
++                            filter_expr=policy_rule_content_filter(
+                                 policy_set.key,
+-                                content_type=CONTENT_TYPE_RULE,
+                                 projection_profile=readiness.profile,
++                                large_policies_only=True,
+                             ),
+                             select=_RULE_SELECT,
+                             semantic_configuration=POLICY_SEMANTIC_CONFIG,
+diff --git a/src/policy_platform/infrastructure/projection/policy_rule_slice.py b/src/policy_platform/infrastructure/projection/policy_rule_slice.py
+index 5d424fd8c24a8fbc9fe031f71fe07e43a2908f22..f6fe47cb0084b50fa39d1c3905022826455f86f3 100644
+--- a/src/policy_platform/infrastructure/projection/policy_rule_slice.py
++++ b/src/policy_platform/infrastructure/projection/policy_rule_slice.py
+@@ -129,6 +129,47 @@
+ #: rather than one governing statement, and its rules are retrieved individually.
+ #: See the module docstring for why this number and not a measured one.
+ LARGE_POLICY_RULE_THRESHOLD: Final[int] = 15
++
++#: WHICH RULES A BUILD GIVES THEIR OWN DOCUMENT.
++#:
++#: The vocabulary lives here, at the boundary the build and the quality check
++#: both already depend on, rather than in either of them. It was previously
++#: declared in the build alone, and the consequence was measured rather than
++#: imagined: the build moved to `all_published_rules_v1` while the quality check
++#: went on enforcing the older contract, and the first rebuild that got far
++#: enough to be validated was failed 36 times for holding exactly the corpus it
++#: was asked to hold. A shared decision needs a shared definition.
++RULE_INDEX_SCOPE_LARGE_POLICY: Final[str] = "large_policy_rules_v1"
++RULE_INDEX_SCOPE_ALL: Final[str] = "all_published_rules_v1"
++
++#: Every scope this code knows how to reason about. A value outside it is not
++#: assumed to mean anything, least of all the most permissive thing.
++RULE_INDEX_SCOPES: Final[frozenset[str]] = frozenset(
++    {RULE_INDEX_SCOPE_LARGE_POLICY, RULE_INDEX_SCOPE_ALL}
++)
++
++
++def rule_documents_expected(
++    rule_count: int, *, scope: str, threshold: int = LARGE_POLICY_RULE_THRESHOLD
++) -> bool:
++    """Whether a provision holding ``rule_count`` rules should carry rule documents.
++
++    One function, used by the build to decide and by the quality check to judge,
++    so the two cannot drift again. The mapping from scope to expectation is
++    explicit here — not a threshold of zero passed in from somewhere, which
++    would read as a magic number at every call site and would say nothing about
++    *why* a small provision is suddenly allowed children.
++
++    Raises for a scope it does not recognise. An unknown scope is not a licence
++    to guess: guessing "all" would bless any corpus at all, and guessing
++    "large policy" would condemn a correct one.
++    """
++
++    if scope == RULE_INDEX_SCOPE_ALL:
++        return rule_count > 0
++    if scope == RULE_INDEX_SCOPE_LARGE_POLICY:
++        return rule_count > threshold
++    raise ValueError(f"unknown rule index scope: {scope!r}")
+ 
+ #: How many rules of a large policy may be selected for one case. Deliberately
+ #: equal to the threshold: a sliced policy is then never larger, in rules, than
+diff --git a/src/policy_platform/infrastructure/quality/projection_faithfulness.py b/src/policy_platform/infrastructure/quality/projection_faithfulness.py
+index 0d3afd0628ed1bccfcd3c42fe72a812e6ad2511b..123063e4350119b4ab9e568b618a548ec5725a77 100644
+--- a/src/policy_platform/infrastructure/quality/projection_faithfulness.py
++++ b/src/policy_platform/infrastructure/quality/projection_faithfulness.py
+@@ -83,6 +83,9 @@
+ from policy_platform.infrastructure.ai.openai_client import AzureOpenAIClient
+ from policy_platform.infrastructure.projection.policy_rule_slice import (
+     LARGE_POLICY_RULE_THRESHOLD,
++    RULE_INDEX_SCOPE_LARGE_POLICY,
++    RULE_INDEX_SCOPES,
++    rule_documents_expected,
+ )
+ from policy_platform.infrastructure.search.english_projection import preservation_failure
+ 
+@@ -164,6 +167,10 @@
+ #: A provision small enough to read as one statement, carrying per-rule
+ #: documents anyway.
+ FINDING_RULE_DOCUMENTS_UNEXPECTED: Final[str] = "rule_documents_unexpected"
++#: A corpus whose manifest names a rule-index scope this code does not know. It
++#: cannot be judged either way, and neither answer is safe to assume: "all"
++#: would bless any corpus and "large policy" would condemn a correct one.
++FINDING_RULE_INDEX_SCOPE_UNKNOWN: Final[str] = "rule_index_scope_unknown"
+ #: A provision past the threshold whose rows got no documents of their own, so a
+ #: row past its provision's retrieval-text ceiling cannot surface at all.
+ FINDING_RULE_DOCUMENTS_MISSING: Final[str] = "rule_documents_missing"
+@@ -384,9 +391,19 @@
+     #: policy document. It is how a rule document is told from a provision's own
+     #: without this module knowing what either is called.
+     parent_document_id: str | None = None
+-    #: How many rules the provision holds. Read only against the threshold, so
+-    #: the one question asked of it is a size question.
++    #: How many rules the provision holds. Read against the scope's expectation,
++    #: so the one question asked of it is a size question.
+     provision_rule_count: int = 0
++    #: How many rule documents this provision should have, when the caller knows.
++    #: Set on a provision's own record and left None on a rule's.
++    #:
++    #: Carried rather than inferred because `provision_rule_count` is not always
++    #: the answer: a rule with no id gets no document, so a provision holding one
++    #: legitimately has fewer documents than rules. Deriving the expectation from
++    #: the rule count would report that provision permanently short by one, and
++    #: the honest way to know is for the side that made the documents to say how
++    #: many it made eligible.
++    expected_rule_documents: int | None = None
+ 
+ 
+ @dataclass(frozen=True, slots=True)
+@@ -464,6 +481,7 @@
+     expected_profile: str,
+     ignore_document_ids: Collection[str] = (),
+     rule_threshold: int = LARGE_POLICY_RULE_THRESHOLD,
++    rule_index_scope: str = RULE_INDEX_SCOPE_LARGE_POLICY,
+ ) -> list[QualityFinding]:
+     """Every deterministic thing wrong with this build, as a set.
+ 
+@@ -527,7 +545,13 @@
+             )
+         )
+ 
+-    findings.extend(_rule_coverage_findings(expected_by_id, rule_threshold=rule_threshold))
++    findings.extend(
++        _rule_coverage_findings(
++            expected_by_id,
++            rule_threshold=rule_threshold,
++            rule_index_scope=rule_index_scope,
++        )
++    )
+     return findings
+ 
+ 
+@@ -578,23 +602,51 @@
+ 
+ 
+ def _rule_coverage_findings(
+-    expected_by_id: Mapping[str, ProjectedRecord], *, rule_threshold: int
++    expected_by_id: Mapping[str, ProjectedRecord],
++    *,
++    rule_threshold: int,
++    rule_index_scope: str,
+ ) -> list[QualityFinding]:
+-    """Rule documents exist for exactly the provisions large enough to have them.
+-
+-    Both directions, because they are different defects. A provision at or under
+-    the threshold reads as one governing statement and its own document already
+-    carries every rule, so per-rule documents there are duplicates competing with
+-    their own parent for rank. A provision past it is a schedule of independent
+-    rows, and a row with no document of its own past the parent's retrieval-text
+-    ceiling cannot surface at all — the corpus would be complete by count and
+-    unreachable in exactly the part that needed the split.
+-
+-    The whole decision is a count against a threshold. Nothing here reads a
+-    heading, a key, or anything a document says.
++    """Rule documents exist for exactly the provisions the build's scope says.
++
++    Both directions, because they are different defects. A provision that should
++    have no per-rule documents and has them carries duplicates competing with
++    their own parent for rank. A provision that should have them and does not has
++    rows past the parent's retrieval-text ceiling that cannot surface at all —
++    the corpus would be complete by count and unreachable in exactly the part
++    that needed the split.
++
++    WHICH PROVISIONS THOSE ARE IS A PROPERTY OF THE SCOPE, NOT OF THIS FUNCTION
++
++    Under ``large_policy_rules_v1`` only provisions past the threshold have them:
++    below it a provision reads as one governing statement and its own document
++    already carries every rule. Under ``all_published_rules_v1`` every provision
++    holding rules has them, because a rule with no document cannot be found by a
++    rule query at all.
++
++    This function used to encode the first of those as if it were the only one.
++    The build moved to the second and this did not, so the first rebuild that
++    rendered successfully was failed 36 times for holding precisely the corpus it
++    had been asked to build. The expectation now comes from
++    :func:`rule_documents_expected`, which the build uses to decide, so the two
++    cannot disagree again without one of them failing its own tests.
++
++    The whole decision is still a count against an expectation. Nothing here
++    reads a heading, a key, or anything a document says.
+     """
+ 
+     findings: list[QualityFinding] = []
++    if rule_index_scope not in RULE_INDEX_SCOPES:
++        # Refused, not guessed. Assuming "all" would bless any corpus; assuming
++        # "large policy" would condemn a correct one. Neither is an answer, and
++        # a validation that cannot say which contract applies has not validated.
++        return [
++            QualityFinding(
++                code=FINDING_RULE_INDEX_SCOPE_UNKNOWN,
++                document_id=str(rule_index_scope),
++            )
++        ]
++
+     children: dict[str, int] = {}
+     for record in expected_by_id.values():
+         if record.parent_document_id is not None:
+@@ -606,11 +658,25 @@
+         if record.parent_document_id is not None:
+             continue
+         count = children.get(key, 0)
+-        if record.provision_rule_count > rule_threshold and count == 0:
++        # The exact number, not merely "some". A provision holding sixteen rules
++        # and carrying one rule document is missing fifteen rows that cannot
++        # surface, and a zero-versus-nonzero test calls that healthy — which is
++        # the shape of "complete by count and unreachable where it matters" this
++        # check exists to refuse.
++        if not rule_documents_expected(
++            record.provision_rule_count, scope=rule_index_scope, threshold=rule_threshold
++        ):
++            expected_count = 0
++        elif record.expected_rule_documents is not None:
++            expected_count = record.expected_rule_documents
++        else:
++            expected_count = record.provision_rule_count
++
++        if count < expected_count:
+             findings.append(
+                 QualityFinding(code=FINDING_RULE_DOCUMENTS_MISSING, document_id=key)
+             )
+-        elif record.provision_rule_count <= rule_threshold and count > 0:
++        elif count > expected_count:
+             findings.append(
+                 QualityFinding(code=FINDING_RULE_DOCUMENTS_UNEXPECTED, document_id=key)
+             )
+@@ -797,6 +863,7 @@
+     ignore_document_ids: Collection[str] = (),
+     profile: ProjectionQualityProfile | None = None,
+     rule_threshold: int = LARGE_POLICY_RULE_THRESHOLD,
++    rule_index_scope: str = RULE_INDEX_SCOPE_LARGE_POLICY,
+     validated_at: datetime | None = None,
+ ) -> ProjectionQualityReport:
+     """Whether this corpus' projection may be matched against.
+@@ -831,6 +898,7 @@
+         expected_profile=expected_profile,
+         ignore_document_ids=ignore_document_ids,
+         rule_threshold=rule_threshold,
++        rule_index_scope=rule_index_scope,
+     )
+     structural_count = len(findings)
+ 
+diff --git a/src/policy_platform/infrastructure/search/policy_index.py b/src/policy_platform/infrastructure/search/policy_index.py
+index 4ba805128aba2f0bf6b0a4a7d541947ac8e3164b..7be231f387f20ab333bd5c6837fc959afdd70b8c 100644
+--- a/src/policy_platform/infrastructure/search/policy_index.py
++++ b/src/policy_platform/infrastructure/search/policy_index.py
+@@ -125,6 +125,9 @@
+ )
+ from policy_platform.infrastructure.projection.policy_rule_slice import (
+     LARGE_POLICY_RULE_THRESHOLD,
++    RULE_INDEX_SCOPE_ALL as _RULE_INDEX_SCOPE_ALL,
++    RULE_INDEX_SCOPE_LARGE_POLICY as _RULE_INDEX_SCOPE_LARGE_POLICY,
++    rule_documents_expected,
+     rule_text,
+ )
+ from policy_platform.infrastructure.quality.projection_faithfulness import (
+@@ -188,6 +191,35 @@
+ MANIFEST_READY = "ready"
+ MANIFEST_INCOMPLETE = "incomplete"
+ 
++#: WHICH RULES A BUILD GIVES THEIR OWN DOCUMENT, NAMED SO A READER CAN BE ASKED.
++#:
++#: `large_policy_rules_v1` is what every corpus built before this constant
++#: existed holds: a document per rule for provisions above
++#: `LARGE_POLICY_RULE_THRESHOLD` and none at all below it.
++#:
++#: `all_published_rules_v1` gives every published rule its own document. It is
++#: what a rule-first retrieval needs — a rule that has no document cannot be
++#: found by a rule query, whatever its parent's size — and it is a superset, so
++#: it changes nothing for a reader that only wants the large-policy rows: those
++#: documents carry `rule_count`, and a filter on it selects exactly the old set.
++#: See `policy_rule_content_filter`.
++#:
++#: The scope a corpus was actually built under is written on its manifest, and
++#: is absent on every manifest written before this existed. Absent is the honest
++#: answer for those, and it is what a rule-first query refuses on: an index that
++#: holds no document for a small policy's rules would answer a rule query with
++#: silence about them, which is indistinguishable from "nothing there bears".
++#: The names themselves are defined at the projection boundary, which the build
++#: and the quality check both already depend on, and re-exported here so the
++#: many callers that import them from this module are unaffected. They were
++#: declared here once and the quality check could not see them, which is how a
++#: correct corpus came to be failed 36 times.
++RULE_INDEX_SCOPE_LARGE_POLICY = _RULE_INDEX_SCOPE_LARGE_POLICY
++RULE_INDEX_SCOPE_ALL = _RULE_INDEX_SCOPE_ALL
++
++#: The scope a build performed now writes and stamps.
++RULE_INDEX_SCOPE = RULE_INDEX_SCOPE_ALL
++
+ #: The fields a validation reads back off a live index. Named here, with the
+ #: schema that declares them, because a `select` list is part of how documents
+ #: in this index are addressed — the same reason `policy_index_filter` lives
+@@ -205,8 +237,13 @@
+     "projection_profile,projection_language,expected_policy_documents,"
+     "expected_rule_documents,uploaded_documents,indexed_at,status,document_id,"
+     "document_version,provision_key,heading_path,section_heading,heading,body,"
+-    "retrieval_text"
++    "retrieval_text,rule_index_scope"
+ )
++
++#: The manifest fields a rule-first query needs before it may run: which rule
++#: documents this corpus actually holds. Read on its own, and only on the path
++#: that asks — the default retrieval path makes no extra round trip for it.
++_RULE_SCOPE_SELECT = "id,rule_index_scope"
+ 
+ #: How many documents one upload call carries. Azure AI Search accepts batches of
+ #: up to 1,000 documents or 16 MB; a policy document carries an embedding and a
+@@ -417,6 +454,42 @@
+     if projection_profile:
+         clauses.append(f"projection_profile eq {_odata_string(projection_profile)}")
+     return " and ".join(clauses)
++
++
++def policy_rule_content_filter(
++    policy_set_key: str,
++    *,
++    projection_profile: str,
++    large_policies_only: bool,
++    threshold: int = LARGE_POLICY_RULE_THRESHOLD,
++) -> str:
++    """The filter a rule query uses, and the one knob that separates the modes.
++
++    Both modes ask for this project's rule documents under one rendering
++    contract. They differ in a single clause, and it is the clause that keeps the
++    default mode's behaviour byte-for-byte what it was after the corpus started
++    carrying a document for every rule:
++
++    * ``large_policies_only=True`` adds ``rule_count gt threshold``, selecting
++      exactly the documents a `large_policy_rules_v1` corpus would have held and
++      no others. A rule of a small provision is simply not in the result set, the
++      way it was not in the index before.
++    * ``large_policies_only=False`` leaves it off, which is the rule-first mode's
++      whole point: every published rule is a candidate on its own terms.
++
++    Expressed as a predicate rather than as two corpora because it has to be
++    both — one build, read two ways — and because the alternative is a second
++    index whose staleness is a second thing to get wrong.
++    """
++
++    expression = policy_index_filter(
++        policy_set_key,
++        content_type=CONTENT_TYPE_RULE,
++        projection_profile=projection_profile,
++    )
++    if large_policies_only:
++        expression += f" and rule_count gt {int(threshold)}"
++    return expression
+ 
+ 
+ def policy_index_ready_filter(
+@@ -516,6 +589,13 @@
+             {"name": "projection_language", "type": "Edm.String", "filterable": True, "retrievable": True},
+             # ── the manifest's own fields ───────────────────────────
+             {"name": "manifest_state", "type": "Edm.String", "filterable": True, "retrievable": True},
++            # Which rules this corpus gave their own document. Filterable for the
++            # same reason `projection_profile` is: a rule-first query is only
++            # answerable over a corpus that holds every rule, and a corpus built
++            # under the older scope must fail to satisfy the question rather than
++            # answer it thinly. Absent on every manifest written before it
++            # existed, and absent is the refusal.
++            {"name": "rule_index_scope", "type": "Edm.String", "filterable": True, "retrievable": True},
+             {
+                 "name": "expected_policy_documents",
+                 "type": "Edm.Int32",
+@@ -787,6 +867,7 @@
+     state: str,
+     indexed_at: str,
+     quality: ProjectionQualityReport | None = None,
++    rule_index_scope: str = RULE_INDEX_SCOPE,
+ ) -> dict:
+     """The document that says whether this project may be matched against.
+ 
+@@ -817,6 +898,7 @@
+         "version_number": version_number,
+         "content_type": CONTENT_TYPE_MANIFEST,
+         "manifest_state": state,
++        "rule_index_scope": rule_index_scope,
+         "projection_profile": projection_profile,
+         "projection_language": PROCESSING_LANGUAGE,
+         "expected_policy_documents": expected_policy_documents,
+@@ -873,10 +955,23 @@
+     return " \n".join(part for part in (heading, body) if part.strip())
+ 
+ 
+-def indexable_rules(projection: dict, *, threshold: int = LARGE_POLICY_RULE_THRESHOLD) -> list[dict]:
++def indexable_rules(
++    projection: dict,
++    *,
++    threshold: int = LARGE_POLICY_RULE_THRESHOLD,
++    scope: str = RULE_INDEX_SCOPE,
++) -> list[dict]:
+     """The rules of this policy that get their own document, in document order.
+ 
+-    Empty for a provision at or under the threshold, and that is the whole rule:
++    Under ``all_published_rules_v1`` that is every rule with an id. A rule with
++    no document cannot be found by a rule query at all, so a retrieval whose
++    primary unit is the rule needs the corpus to hold all of them — and holding
++    them costs nothing to a reader that wants only the large-policy rows, because
++    each document carries its provision's `rule_count` and
++    :func:`policy_rule_content_filter` selects exactly that subset.
++
++    Under ``large_policy_rules_v1`` the older rule stands, unchanged and still
++    the whole rule: empty for a provision at or under the threshold, because
+     below it a provision reads as one governing statement and its own document
+     already carries every rule; above it the provision is a schedule whose rows
+     have nothing to do with one another, and a row that cannot surface on its own
+@@ -884,7 +979,12 @@
+     """
+ 
+     rules = _projection_rules(projection)
+-    if len(rules) <= threshold:
++    # The scope-to-expectation mapping is `rule_documents_expected`, and it is
++    # deliberately not restated here. This branch and the quality check's used to
++    # be two copies of one rule; they drifted, and a correct corpus was failed 36
++    # times before anyone noticed. One of them has to be the definition, and a
++    # decision the validator must also make belongs at the boundary they share.
++    if not rule_documents_expected(len(rules), scope=scope, threshold=threshold):
+         return []
+     return [rule for rule in rules if rule.get("rule_id")]
+ 
+@@ -1092,6 +1192,11 @@
+             expected_profile=projection_profile,
+             openai_client=openai_client,
+             profile=resolve_quality_profile(quality_profile_name),
++            # The scope this build is writing onto its own manifest. Passed
++            # rather than defaulted: the check judges rule-document coverage
++            # against it, and a build validated under a contract other than the
++            # one it was built to is not validated.
++            rule_index_scope=RULE_INDEX_SCOPE,
+             validated_at=indexed_at,
+         )
+         if not quality.passed:
+@@ -1266,6 +1371,15 @@
+                 source_text=source,
+                 parent_document_id=parent,
+                 provision_rule_count=len(_projection_rules(projection)),
++                # Only a provision's own record carries this. It is how many rule
++                # documents *this build made eligible*, which is not the rule
++                # count: a rule with no id gets no document. Stating it here, from
++                # the same call the build selects with, is what lets the quality
++                # check compare an exact number instead of asking the far weaker
++                # question of whether there are any rule documents at all.
++                expected_rule_documents=(
++                    len(indexable_rules(projection)) if parent is None else None
++                ),
+             )
+         )
+     return documents, records
+@@ -1460,6 +1574,43 @@
+     )
+ 
+ 
++async def read_rule_index_scope(
++    search_client: AzureSearchClient,
++    index_name: str,
++    *,
++    policy_set_key: str,
++    projection_profile: str = ENGLISH_PROJECTION_PROFILE,
++) -> str | None:
++    """Which rules this project's live index actually holds documents for.
++
++    Returns the scope stamped on the project's manifest, or ``None`` when the
++    manifest carries none — which is every corpus built before the scope existed,
++    and is a refusal rather than a default. A rule-first query run over a corpus
++    holding rule documents only for large provisions would return silence about
++    every small provision's rules, and silence is indistinguishable from "nothing
++    there bears on this question". So the caller is told the corpus cannot answer
++    the question it was about to ask, and the repair is one rebuild.
++
++    Asked only on the path that needs it. The default retrieval mode reads
++    nothing here and makes no extra round trip.
++    """
++
++    found = await search_client.find_documents_by_filter(
++        index_name,
++        filter_expr=policy_index_filter(
++            policy_set_key,
++            content_type=CONTENT_TYPE_MANIFEST,
++            projection_profile=projection_profile,
++        ),
++        select=_RULE_SCOPE_SELECT,
++        page_size=1,
++    )
++    for document in found:
++        scope = document.get("rule_index_scope")
++        return str(scope) if scope else None
++    return None
++
++
+ @dataclass(frozen=True)
+ class PolicyIndexValidationOutcome:
+     """What a validation of an already-built projection found, and what it wrote.
+@@ -1595,6 +1746,16 @@
+             if str(document.get("id") or "") != manifest_id
+         ]
+ 
++        # The scope the corpus was *actually built under*, read off its own
++        # manifest rather than assumed from what this code would write today. A
++        # manifest written before the field existed carries none, and that means
++        # legacy semantics — it was built when legacy was the only contract, so
++        # judging it by today's would condemn a corpus that is correct for its
++        # age. An unrecognised value is neither, and the check refuses it.
++        recorded_scope = await read_rule_index_scope(
++            search_client, index_name, policy_set_key=policy_set_key
++        )
++
+         quality = await validate_projection(
+             records=records,
+             documents=live,
+@@ -1602,6 +1763,7 @@
+             openai_client=openai_client,
+             ignore_document_ids={manifest_id},
+             profile=profile,
++            rule_index_scope=recorded_scope or RULE_INDEX_SCOPE_LARGE_POLICY,
+             validated_at=validated_at,
+         )
+ 
+@@ -1717,6 +1879,10 @@
+                 ],
+                 parent_document_id=None,
+                 provision_rule_count=len(rules),
++                # What this build would actually make eligible, so a validation
++                # compares against the number of documents there should be
++                # rather than against the number of rules there are.
++                expected_rule_documents=len(indexable_rules(projection)),
+             )
+         )
+         for rule in indexable_rules(projection):
+diff --git a/tests/unit/test_a_projection_is_checked_against_what_it_renders.py b/tests/unit/test_a_projection_is_checked_against_what_it_renders.py
+index 08d6129e084b5b33de65a080532eee1d07d78d11..e26a9844610e579d0a863e3d221a0525daa1ee9d 100644
+--- a/tests/unit/test_a_projection_is_checked_against_what_it_renders.py
++++ b/tests/unit/test_a_projection_is_checked_against_what_it_renders.py
+@@ -55,6 +55,9 @@
+ 
+ from policy_platform.infrastructure.projection.policy_rule_slice import (  # noqa: E402
+     LARGE_POLICY_RULE_THRESHOLD,
++    RULE_INDEX_SCOPE_ALL,
++    RULE_INDEX_SCOPE_LARGE_POLICY,
++    rule_documents_expected,
+ )
+ from policy_platform.infrastructure.quality.projection_faithfulness import (  # noqa: E402
+     FINDING_AUTHORITATIVE_RECORD_EMBEDDED,
+@@ -68,6 +71,7 @@
+     FINDING_PROJECTED_TEXT_EMPTY,
+     FINDING_RULE_DOCUMENTS_MISSING,
+     FINDING_RULE_DOCUMENTS_UNEXPECTED,
++    FINDING_RULE_INDEX_SCOPE_UNKNOWN,
+     FINDING_SIMILARITY_BELOW_FLOOR,
+     FINDING_VERSION_MISMATCH,
+     PROJECTION_QUALITY_PROFILE,
+@@ -184,13 +188,24 @@
+     return docs
+ 
+ 
+-def _records(*, rule_count: int = LARGE_POLICY_RULE_THRESHOLD + 1) -> list[ProjectedRecord]:
++def _records(
++    *,
++    rule_count: int = LARGE_POLICY_RULE_THRESHOLD + 1,
++    expected_rule_documents: int | None = None,
++) -> list[ProjectedRecord]:
+     records = [
+         ProjectedRecord(
+             document_id=_PARENT_ID,
+             policy_version_id=_VERSION,
+             source_text=_PARENT_TEXT,
+             provision_rule_count=rule_count,
++            # Defaults to the number of children this fixture actually builds, so
++            # the ordinary corpus is internally consistent. Override it to state
++            # a provision that should have had more documents than it has —
++            # which a zero-versus-nonzero coverage test cannot express at all.
++            expected_rule_documents=(
++                len(_RULE_TEXTS) if expected_rule_documents is None else expected_rule_documents
++            ),
+         )
+     ]
+     for key, text in _RULE_TEXTS.items():
+@@ -405,6 +420,272 @@
+         report = _validate(records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD))
+ 
+         assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report)
++
++
++class TestRuleCoverageIsJudgedAgainstTheScopeTheBuildUsed:
++    """Which provisions should have rule documents depends on the contract.
++
++    THE DEFECT THIS PREVENTS, WHICH ALREADY HAPPENED
++
++    The build moved from `large_policy_rules_v1` — a document per rule only for
++    provisions past the threshold — to `all_published_rules_v1`, where every
++    published rule has one, because a rule with no document cannot be found by a
++    rule query at all. The quality check went on enforcing the older contract.
++
++    Nothing failed for weeks, because no rebuild got far enough to be validated.
++    The first one that did was failed 36 times, each finding correctly reporting
++    that a small provision had rule documents — against an expectation the build
++    had been deliberately changed to stop meeting. The corpus was right and the
++    judge was out of date.
++
++    So the expectation is now derived from the scope, by the same function the
++    build decides with, and every case below is stated for both scopes. A test
++    that only checked one would have passed throughout the entire drift.
++    """
++
++    def _parent_only(self, *, rule_count: int):
++        records = [r for r in _records(rule_count=rule_count) if r.parent_document_id is None]
++        documents = [d for d in _documents() if d["parent_document_id"] is None]
++        return {"records": records, "documents": documents}
++
++    def test_a_small_provision_with_rule_documents_passes_under_all(self) -> None:
++        """The exact corpus that was failed 36 times. Under the scope it was
++        built to, it is correct."""
++
++        report = _validate(
++            records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD),
++            rule_index_scope=RULE_INDEX_SCOPE_ALL,
++        )
++
++        assert FINDING_RULE_DOCUMENTS_UNEXPECTED not in _codes(report)
++        assert report.state == QUALITY_PASSED
++
++    def test_the_same_corpus_is_still_refused_under_the_legacy_scope(self) -> None:
++        """The legacy control, unweakened. The old contract still means what it
++        meant; this change did not delete it, it stopped applying it to corpora
++        that were never built under it."""
++
++        report = _validate(
++            records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD),
++            rule_index_scope=RULE_INDEX_SCOPE_LARGE_POLICY,
++        )
++
++        assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report)
++
++    def test_a_small_provision_without_rule_documents_is_refused_under_all(self) -> None:
++        """The other direction, and the reason the scope moved. Under `all`, a
++        small provision's rules must be individually findable; a corpus that
++        omits them is complete by count and silent where it matters."""
++
++        report = _validate(
++            **self._parent_only(rule_count=LARGE_POLICY_RULE_THRESHOLD),
++            rule_index_scope=RULE_INDEX_SCOPE_ALL,
++        )
++
++        assert FINDING_RULE_DOCUMENTS_MISSING in _codes(report)
++
++    def test_that_same_omission_is_correct_under_the_legacy_scope(self) -> None:
++        report = _validate(
++            **self._parent_only(rule_count=LARGE_POLICY_RULE_THRESHOLD),
++            rule_index_scope=RULE_INDEX_SCOPE_LARGE_POLICY,
++        )
++
++        assert FINDING_RULE_DOCUMENTS_MISSING not in _codes(report)
++
++    def test_a_large_provision_without_rule_documents_is_refused_under_both(self) -> None:
++        """The case both contracts agree on, which is what makes the two tests
++        above a distinction rather than a disagreement."""
++
++        for scope in (RULE_INDEX_SCOPE_ALL, RULE_INDEX_SCOPE_LARGE_POLICY):
++            report = _validate(
++                **self._parent_only(rule_count=LARGE_POLICY_RULE_THRESHOLD + 1),
++                rule_index_scope=scope,
++            )
++
++            assert FINDING_RULE_DOCUMENTS_MISSING in _codes(report), scope
++
++    def test_a_provision_with_no_rules_at_all_needs_none_under_either(self) -> None:
++        for scope in (RULE_INDEX_SCOPE_ALL, RULE_INDEX_SCOPE_LARGE_POLICY):
++            report = _validate(**self._parent_only(rule_count=0), rule_index_scope=scope)
++
++            assert FINDING_RULE_DOCUMENTS_MISSING not in _codes(report), scope
++            assert FINDING_RULE_DOCUMENTS_UNEXPECTED not in _codes(report), scope
++
++    def test_an_unknown_scope_is_refused_rather_than_guessed(self) -> None:
++        """Neither answer is safe to assume. Reading an unknown scope as `all`
++        would bless any corpus at all; reading it as legacy would condemn a
++        correct one. A validation that cannot say which contract applies has not
++        validated, and says so."""
++
++        report = _validate(
++            records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD),
++            rule_index_scope="some_future_scope_v9",
++        )
++
++        assert FINDING_RULE_INDEX_SCOPE_UNKNOWN in _codes(report)
++        assert report.passed is False
++
++    def test_an_empty_scope_is_not_read_as_permission(self) -> None:
++        report = _validate(
++            records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD),
++            rule_index_scope="",
++        )
++
++        assert FINDING_RULE_INDEX_SCOPE_UNKNOWN in _codes(report)
++
++    def test_the_default_is_legacy_so_an_unstamped_corpus_keeps_its_own_contract(
++        self,
++    ) -> None:
++        """A manifest written before the scope field existed carries none. It was
++        built when legacy was the only contract, so legacy is what it must be
++        judged by — and defaulting the other way would silently pass corpora
++        nobody ever checked."""
++
++        report = _validate(records=_records(rule_count=LARGE_POLICY_RULE_THRESHOLD))
++
++        assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report)
++
++    def test_the_expectation_comes_from_the_shared_function_the_build_decides_with(
++        self,
++    ) -> None:
++        """The anti-drift claim itself, stated as an assertion rather than a hope.
++
++        If someone reintroduces a private threshold here, this fails: the two
++        sides would once again be free to disagree, which is the whole defect.
++        """
++
++        assert rule_documents_expected(1, scope=RULE_INDEX_SCOPE_ALL) is True
++        assert rule_documents_expected(0, scope=RULE_INDEX_SCOPE_ALL) is False
++        assert (
++            rule_documents_expected(
++                LARGE_POLICY_RULE_THRESHOLD, scope=RULE_INDEX_SCOPE_LARGE_POLICY
++            )
++            is False
++        )
++        assert (
++            rule_documents_expected(
++                LARGE_POLICY_RULE_THRESHOLD + 1, scope=RULE_INDEX_SCOPE_LARGE_POLICY
++            )
++            is True
++        )
++        with pytest.raises(ValueError):
++            rule_documents_expected(1, scope="not_a_scope")
++
++    def test_the_build_selects_rules_through_that_same_function(self) -> None:
++        """Gap this closed: the build had its own copy of the branch.
++
++        `indexable_rules` is the build's side of the decision. Driving it through
++        the same helper the validator uses is what makes "they cannot disagree" a
++        fact rather than a comment, so it is asserted from the build's side too.
++        """
++
++        from policy_platform.infrastructure.search.policy_index import indexable_rules
++
++        small = {"rules": [{"rule_id": f"r{i}"} for i in range(3)]}
++        large = {"rules": [{"rule_id": f"r{i}"} for i in range(LARGE_POLICY_RULE_THRESHOLD + 1)]}
++
++        assert len(indexable_rules(small, scope=RULE_INDEX_SCOPE_ALL)) == 3
++        assert indexable_rules(small, scope=RULE_INDEX_SCOPE_LARGE_POLICY) == []
++        assert len(indexable_rules(large, scope=RULE_INDEX_SCOPE_LARGE_POLICY)) == (
++            LARGE_POLICY_RULE_THRESHOLD + 1
++        )
++
++    def test_changing_the_shared_helper_moves_both_sides_together(
++        self, monkeypatch: pytest.MonkeyPatch
++    ) -> None:
++        """The mutation control for the shared decision.
++
++        With the helper forced to "never", the build selects no rules AND the
++        validator stops expecting any — both sides move, which is the property
++        that stops one drifting from the other. If either had kept a private
++        copy, one of these two assertions would fail.
++        """
++
++        from policy_platform.infrastructure.search import policy_index as build_side
++        from policy_platform.infrastructure.quality import projection_faithfulness as judge
++
++        monkeypatch.setattr(build_side, "rule_documents_expected", lambda *a, **k: False)
++        monkeypatch.setattr(judge, "rule_documents_expected", lambda *a, **k: False)
++
++        large = {"rules": [{"rule_id": f"r{i}"} for i in range(LARGE_POLICY_RULE_THRESHOLD + 1)]}
++        assert build_side.indexable_rules(large, scope=RULE_INDEX_SCOPE_ALL) == []
++
++        report = _validate(rule_index_scope=RULE_INDEX_SCOPE_ALL)
++        assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report), (
++            "the validator kept expecting rule documents after the shared decision said none"
++        )
++
++
++class TestRuleCoverageIsCountedExactly:
++    """"Some" is not coverage. A provision short by fifteen rows is not healthy.
++
++    The earlier version of this check asked only whether a provision had any
++    rule documents at all. Under `all_published_rules_v1` a sixteen-rule
++    provision carrying one child passed it; under the legacy scope a
++    seventeen-rule provision carrying one child passed it too. In both cases the
++    rows that could not surface were exactly the rows the split exists for, and
++    the corpus was complete by document count while being unreachable in the
++    part that mattered.
++    """
++
++    def test_a_provision_short_of_its_rule_documents_is_refused_under_all(self) -> None:
++        report = _validate(
++            records=_records(rule_count=8, expected_rule_documents=8),
++            rule_index_scope=RULE_INDEX_SCOPE_ALL,
++        )
++
++        assert FINDING_RULE_DOCUMENTS_MISSING in _codes(report)
++
++    def test_a_provision_short_of_its_rule_documents_is_refused_under_legacy(self) -> None:
++        report = _validate(
++            records=_records(
++                rule_count=LARGE_POLICY_RULE_THRESHOLD + 5,
++                expected_rule_documents=LARGE_POLICY_RULE_THRESHOLD + 5,
++            ),
++            rule_index_scope=RULE_INDEX_SCOPE_LARGE_POLICY,
++        )
++
++        assert FINDING_RULE_DOCUMENTS_MISSING in _codes(report)
++
++    def test_a_provision_carrying_more_than_it_should_is_refused(self) -> None:
++        report = _validate(
++            records=_records(rule_count=8, expected_rule_documents=1),
++            rule_index_scope=RULE_INDEX_SCOPE_ALL,
++        )
++
++        assert FINDING_RULE_DOCUMENTS_UNEXPECTED in _codes(report)
++
++    def test_the_exact_count_passes_in_both_scopes(self) -> None:
++        """The control. Without it every assertion above would be satisfied by a
++        check that simply refused everything."""
++
++        under_all = _validate(
++            records=_records(rule_count=len(_RULE_TEXTS), expected_rule_documents=len(_RULE_TEXTS)),
++            rule_index_scope=RULE_INDEX_SCOPE_ALL,
++        )
++        assert under_all.state == QUALITY_PASSED
++
++        under_legacy = _validate(
++            records=_records(
++                rule_count=LARGE_POLICY_RULE_THRESHOLD + 1,
++                expected_rule_documents=len(_RULE_TEXTS),
++            ),
++            rule_index_scope=RULE_INDEX_SCOPE_LARGE_POLICY,
++        )
++        assert under_legacy.state == QUALITY_PASSED
++
++    def test_a_rule_without_an_id_does_not_read_as_a_missing_document(self) -> None:
++        """A rule with no id gets no document, legitimately. The expectation is
++        the count the build made eligible, not the count of rules, or every such
++        provision would be reported permanently short."""
++
++        report = _validate(
++            records=_records(rule_count=len(_RULE_TEXTS) + 1, expected_rule_documents=len(_RULE_TEXTS)),
++            rule_index_scope=RULE_INDEX_SCOPE_ALL,
++        )
++
++        assert FINDING_RULE_DOCUMENTS_MISSING not in _codes(report)
++        assert FINDING_RULE_DOCUMENTS_UNEXPECTED not in _codes(report)
+ 
+     def test_the_manifest_is_excluded_rather_than_counted_as_a_stray(self) -> None:
+         """It is the statement *about* the content, so counting it would make
+diff --git a/tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py b/tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py
+index 9bb731c2110b14944f085e44f558ea27573f0f67..2131f536b4074d033ab207fddcadd6c2fe305902 100644
+--- a/tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py
++++ b/tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py
+@@ -630,19 +630,57 @@
+ def test_rule_indexing_turns_on_a_count_against_a_threshold_and_nothing_else():
+     """Which provisions get rule documents is a size question, not a subject one.
+ 
+-    The whole decision is `len(rules) > threshold`, and the only string it reads
+-    is the schema key that says a rule has an id. No heading, no key, no count
+-    fitted to a document that was measured.
+-    """
+-
+-    node = _function(policy_index, "indexable_rules")
+-
+-    compares = [inner for inner in ast.walk(node) if isinstance(inner, ast.Compare)]
++    The whole decision is a count against a declared threshold, and the only
++    string either side reads is the schema key that says a rule has an id. No
++    heading, no key, no count fitted to a document that was measured.
++
++    THE DECISION MOVED, AND THIS GUARD FOLLOWED IT
++
++    It used to be spelled out inside `indexable_rules`. The quality check had its
++    own copy, the two drifted, and a correct corpus was failed 36 times. The
++    comparison now lives once, in `rule_documents_expected`, which the build and
++    the validator both call — so that is where this asserts it is still a size
++    question. Asserting it in `indexable_rules` would now fail for the right
++    change, and deleting the assertion would stop asking the question at all.
++    """
++
++    decision = _function(policy_rule_slice, "rule_documents_expected")
++
++    compares = [inner for inner in ast.walk(decision) if isinstance(inner, ast.Compare)]
+     assert compares, "the threshold comparison is gone"
+     assert any(
+         isinstance(inner.comparators[0], ast.Name) and inner.comparators[0].id == "threshold"
+         for inner in compares
+     ), "the rule-document decision no longer turns on the declared threshold"
++
++    # Strings inside a `raise` are excluded: a refusal message is something this
++    # function *writes*, not something it reads out of a document, and the claim
++    # under test is about what it reads. Everything else is still checked, so a
++    # heading or subject smuggled in anywhere but an error message still fails.
++    raised = {
++        id(inner)
++        for statement in ast.walk(decision)
++        if isinstance(statement, ast.Raise)
++        for inner in ast.walk(statement)
++    }
++    for inner in ast.walk(decision):
++        if not isinstance(inner, ast.Constant) or not isinstance(inner.value, str):
++            continue
++        if id(inner) in raised or id(inner) in _docstring_ids(decision):
++            continue
++        raise AssertionError(
++            f"rule_documents_expected reads {inner.value!r}; the scopes it compares "
++            "against are declared constants, and a literal here is a second rule"
++        )
++
++    node = _function(policy_index, "indexable_rules")
++
++    # The build's side reads no subject either, and now defers the size question
++    # rather than answering it a second way.
++    assert any(
++        isinstance(inner, ast.Name) and inner.id == "rule_documents_expected"
++        for inner in ast.walk(node)
++    ), "indexable_rules no longer defers to the shared decision, so the two may drift again"
+ 
+     for value in _function_strings(policy_index, "indexable_rules"):
+         assert value in SCHEMA_KEYS, (
+diff --git a/tests/unit/test_the_corpus_is_indexed_in_one_language.py b/tests/unit/test_the_corpus_is_indexed_in_one_language.py
+index 0cee458243045e4f5c38c0db2b36ea08fdab4387..649d9b6220402a3548fa9fcc47ebff0bba482baf 100644
+--- a/tests/unit/test_the_corpus_is_indexed_in_one_language.py
++++ b/tests/unit/test_the_corpus_is_indexed_in_one_language.py
+@@ -63,6 +63,8 @@
+     MANIFEST_READY,
+     POLICY_INDEX_FRESHNESS_CURRENT,
+     POLICY_INDEX_FRESHNESS_STALE,
++    RULE_INDEX_SCOPE_ALL,
++    RULE_INDEX_SCOPE_LARGE_POLICY,
+     _document_was_accepted,
+     _acknowledged_keys,
+     indexable_rules,
+@@ -333,15 +335,57 @@
+ 
+ 
+ @pytest.mark.parametrize("corpus", sorted(CORPORA))
+-def test_a_provision_at_or_under_the_threshold_gets_no_rule_documents(corpus: str):
+-    """Below the threshold a provision is one statement and its own document carries it."""
++def test_a_provision_at_or_under_the_threshold_gets_no_rule_documents_under_the_older_scope(
++    corpus: str,
++):
++    """The rule that held before every published rule was given a document.
++
++    Below the threshold a provision is one statement and its own document
++    carries it. That scope is still selectable and still exact, and it is what
++    `policy_rule_content_filter(large_policies_only=True)` reproduces as a
++    predicate over the wider corpus — which is how the default retrieval mode
++    keeps behaving as it always did.
++    """
+ 
+     for count in (1, LARGE_POLICY_RULE_THRESHOLD - 1, LARGE_POLICY_RULE_THRESHOLD):
+-        assert indexable_rules(_projection(rule_count=count, corpus=corpus)) == []
+-
+-        _outcome, search, _client = _rebuild([_projection(rule_count=count, corpus=corpus)])
+-        assert search.of_type(CONTENT_TYPE_RULE) == []
++        assert (
++            indexable_rules(
++                _projection(rule_count=count, corpus=corpus),
++                scope=RULE_INDEX_SCOPE_LARGE_POLICY,
++            )
++            == []
++        )
++
++
++@pytest.mark.parametrize("corpus", sorted(CORPORA))
++def test_every_published_rule_gets_a_document_under_the_current_scope(corpus: str):
++    """A rule with no document cannot be found by a rule query, whatever its parent's size.
++
++    That is the whole reason the build's scope moved: rule-first retrieval asks
++    the index for rules, and a small provision's rules were simply not there to
++    be asked about. Their absence read as "nothing here bears", which is the one
++    thing retrieval must never say when it has not looked.
++    """
++
++    for count in (1, LARGE_POLICY_RULE_THRESHOLD - 1, LARGE_POLICY_RULE_THRESHOLD):
++        projection = _projection(rule_count=count, corpus=corpus)
++        assert len(indexable_rules(projection)) == count
++
++        _outcome, search, _client = _rebuild([projection])
++        assert len(search.of_type(CONTENT_TYPE_RULE)) == count
+         assert len(search.of_type(CONTENT_TYPE_POLICY)) == 1
++        # And every one of them carries its provision's size, which is the field
++        # the default retrieval mode filters on to select exactly the older set.
++        assert {doc["rule_count"] for doc in search.of_type(CONTENT_TYPE_RULE)} == {count}
++
++
++def test_the_manifest_records_which_rules_the_corpus_holds_documents_for():
++    """A rule-first query has to be able to ask, and be refused when the answer is no."""
++
++    _outcome, search, _client = _rebuild([_projection(rule_count=4)])
++
++    assert search.final_manifest["rule_index_scope"] == RULE_INDEX_SCOPE_ALL
++    assert RULE_INDEX_SCOPE_ALL != RULE_INDEX_SCOPE_LARGE_POLICY
+ 
+ 
+ @pytest.mark.parametrize("corpus", sorted(CORPORA))
+@@ -406,28 +450,33 @@
+     assert search_b.deleted == []  # nothing was stale
+ 
+ 
+-def test_a_provision_that_shrinks_below_the_threshold_loses_its_rule_documents():
++def test_a_provision_that_shrinks_keeps_only_the_rule_documents_it_still_has():
+     """The shrink case, which stable ids make automatic rather than special.
+ 
+-    A schedule edited down to a handful of rules is a provision again. Its rule
+-    documents are not in the new live set, so the stale sweep removes them — and
+-    it must, because a row that no longer exists must not be findable.
++    A schedule edited down to a handful of rules is a smaller provision. The
++    rule documents of the rows it no longer holds are not in the new live set,
++    so the stale sweep removes them — and it must, because a row that no longer
++    exists must not be findable. What it keeps is a document per surviving rule,
++    which is what the current scope means.
+     """
+ 
+     large = _projection(rule_count=30)
+     _first, search_a, _ = _rebuild([large])
+-    stale_rule_ids = [doc["id"] for doc in search_a.of_type(CONTENT_TYPE_RULE)]
+-    assert stale_rule_ids
++    previous_rule_ids = [doc["id"] for doc in search_a.of_type(CONTENT_TYPE_RULE)]
++    assert previous_rule_ids
+ 
+     small = _projection(rule_count=4)
+-    indexed = stale_rule_ids + [
++    indexed = previous_rule_ids + [
+         policy_document_id(policy_version_id=_VERSION, provision_key="a-provision")
+     ]
+     _second, search_b, _ = _rebuild([small], search=RecordingSearch(existing_ids=indexed))
+ 
+-    assert search_b.of_type(CONTENT_TYPE_RULE) == []
+-    assert search_b.deleted, "the rule documents of a shrunk provision were left behind"
+-    assert set(stale_rule_ids) <= set(search_b.deleted[0])
++    surviving = {doc["id"] for doc in search_b.of_type(CONTENT_TYPE_RULE)}
++    assert len(surviving) == 4
++    assert search_b.deleted, "the rule documents of removed rows were left behind"
++    removed = set(previous_rule_ids) - surviving
++    assert removed <= set(search_b.deleted[0])
++    assert surviving.isdisjoint(set(search_b.deleted[0]))
+ 
+ 
+ def test_a_new_version_removes_the_documents_of_the_one_it_replaces():

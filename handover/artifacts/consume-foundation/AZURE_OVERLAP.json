@@ -1,0 +1,20 @@
+{
+  "azure_commit": "381586688f0337be15dcc1d42d2be7d4b0fe4936",
+  "subject": "Add production local authentication",
+  "merge_base": "0be820f461cdf79566ce215d4eff3ebef69a1e57",
+  "azure_path_count": 48,
+  "dirty_overlap": [
+    ".env.example",
+    "apps/web/src/api.ts",
+    "apps/web/src/App.tsx",
+    "docs/api.md",
+    "docs/configuration.md",
+    "docs/known-limitations.md",
+    "src/policy_platform/api/app.py",
+    "src/policy_platform/api/authz.py",
+    "src/policy_platform/infrastructure/settings.py"
+  ],
+  "foundation_overlap": [],
+  "native_overlap": [],
+  "consume_overlap_proven_absent": true
+}

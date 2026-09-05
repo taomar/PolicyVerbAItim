@@ -1,0 +1,40 @@
+{
+  "schema_version": "consume_approval_exclusion_revalidation_v1",
+  "ordinal03_paths": [
+    "apps/consume-demo/src/App.test.tsx",
+    "apps/consume-demo/src/App.tsx",
+    "apps/consume-demo/src/components/RequestDocket.tsx",
+    "apps/consume-demo/src/contracts/caseDecision.ts",
+    "apps/consume-demo/src/copy/strings.ts",
+    "apps/consume-demo/src/lib/canonicalHash.test.ts",
+    "apps/consume-demo/src/lib/canonicalHash.ts",
+    "apps/consume-demo/src/lib/requestBody.test.ts",
+    "apps/consume-demo/src/lib/requestBody.ts",
+    "apps/consume-demo/src/playground.css"
+  ],
+  "ordinal04_paths": [
+    "apps/consume-demo/src/App.test.tsx",
+    "apps/consume-demo/src/App.tsx",
+    "apps/consume-demo/src/components/RuleRetrievalResult.tsx",
+    "apps/consume-demo/src/contracts/caseDecision.ts",
+    "apps/consume-demo/src/copy/strings.ts",
+    "apps/consume-demo/src/lib/apiClient.ts",
+    "apps/consume-demo/src/lib/errors.ts",
+    "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx"
+  ],
+  "ordinal03_exact_path_set": true,
+  "ordinal04_exact_path_set": true,
+  "overlap_paths": [
+    "apps/consume-demo/src/App.test.tsx",
+    "apps/consume-demo/src/App.tsx",
+    "apps/consume-demo/src/contracts/caseDecision.ts",
+    "apps/consume-demo/src/copy/strings.ts"
+  ],
+  "union_path_count": 14,
+  "ordinal03_contains_native_only_path": [],
+  "ordinal04_contains_foundation_only_path": [],
+  "azure_overlap": [],
+  "ordinal03_native_symbol_hits": [],
+  "ordinal03_css_diff_count": 1,
+  "all_exclusion_gates_passed": true
+}

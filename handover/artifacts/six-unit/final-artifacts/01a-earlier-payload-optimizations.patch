@@ -1,0 +1,733 @@
+diff --git a/src/policy_platform/api/app.py b/src/policy_platform/api/app.py
+index 0bd26c4ccc43c47b0b41ec3022bda3bf894bc3e7..adaff952f6f63956d964cdd72f955d08c0c4ee2c 100644
+--- a/src/policy_platform/api/app.py
++++ b/src/policy_platform/api/app.py
+@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
+ from fastapi import Depends, FastAPI
+ from fastapi.middleware.cors import CORSMiddleware
+ from sqlalchemy import update
++from starlette.middleware.gzip import GZipMiddleware
+ 
+ from policy_platform.api.routers import (
+     ai,
+@@ -31,6 +32,12 @@ from policy_platform.infrastructure.settings import get_settings
+ logger = logging.getLogger(__name__)
+ 
+ 
++#: The smallest response body worth compressing, in bytes. Under it the gzip
++#: framing costs more than the encoding saves, so a small error body or a health
++#: check is served uncompressed and byte-identical to what it always was.
++RESPONSE_COMPRESSION_MIN_BYTES = 1000
++
++
+ _INTERRUPTED_MESSAGE = (
+     "Interrupted — the API process stopped while this run was in "
+     "progress. Rules committed before the interruption were kept."
+@@ -132,6 +139,24 @@ def create_app() -> FastAPI:
+         dependencies=[Depends(enforce_rbac)],
+     )
+ 
++    # A retrieval or receipt response is JSON carrying published policy records,
++    # and JSON of that kind compresses by roughly an order of magnitude. It is
++    # added before CORS so CORS ends up the outer layer: the allowlist decision
++    # and its headers are then made on an uncompressed exchange, and compression
++    # only ever rewrites the body of a response CORS has already approved.
++    #
++    # `minimum_size` is a floor, not a tuning knob. Below roughly a kilobyte the
++    # gzip header and trailer are a meaningful fraction of the payload, so a
++    # small error body or a health check would be made *larger* by compressing
++    # it. Responses under the floor are served exactly as they are today.
++    #
++    # It compresses; it never composes. The middleware reads only the bytes a
++    # route already produced, so nothing a request carried — a subscription key,
++    # an `Authorization` credential — can enter a response through it. See
++    # `tests/unit/test_large_responses_are_compressed.py`, which holds that as a
++    # checked property rather than an assumption.
++    app.add_middleware(GZipMiddleware, minimum_size=RESPONSE_COMPRESSION_MIN_BYTES)
++
+     # CORS origins come from configuration (see Settings.allowed_cors_origins).
+     # They used to be a hardcoded port range here, which meant running the UI on
+     # any other port required editing application code — and the symptom is a
+diff --git a/src/policy_platform/infrastructure/assistants/ai_case_project.py b/src/policy_platform/infrastructure/assistants/ai_case_project.py
+index 01cc39d402b5b409cf3282f8242f0d5df077be73..9dfe8ab91575d4f824ecaa50dff78dbcababac27 100644
+--- a/src/policy_platform/infrastructure/assistants/ai_case_project.py
++++ b/src/policy_platform/infrastructure/assistants/ai_case_project.py
+@@ -485,17 +485,55 @@ DECISION_RULE_RESCUE_MARGIN = 0.3
+ #: so the change is legible rather than a string that silently moved.
+ RETRIEVAL_METHOD_POLICY_ONLY = "hybrid_vector_topk"
+ 
+-#: What a rule-document query selects. The shared default field list does not
+-#: name the fields that make a rule hit usable — which rule it is, where it sits
+-#: in its policy, which policy document holds it, and the English projection the
+-#: request-side selection scores against — so this names them explicitly. It is a
+-#: superset of the default, so nothing a caller already read is lost.
+-_RULE_SELECT = (
+-    "id,policy_id,document_id,document_version,clause_id,clause_number,"
+-    "section_heading,heading,body,status,content_type,rule_id,rule_ordinal,"
+-    "parent_document_id,provision_key,retrieval_text,projection_profile"
++#: WHAT EACH QUERY SELECTS, AND WHY IT IS FOUR LISTS AND NOT ONE
++#:
++#: A `select` is the width of the wire. Azure AI Search returns every named
++#: field for every hit, so a list that names a field nobody reads is paid for on
++#: every result of every request — and the four queries this module makes read
++#: genuinely different things. One shared superset was the simple choice and it
++#: was the expensive one: the rule queries carried `body`, a second copy of the
++#: same text `retrieval_text` already holds, on 120 discovery hits and up to 200
++#: ranking hits per decision.
++#:
++#: So each call site names what its own consumers read, and nothing else. The
++#: rule is mechanical rather than aesthetic: a field may be dropped from a list
++#: only when no code path reads it off a hit from *that* query. `body` stays in
++#: the index schema and stays keyword-searchable — it participates in scoring,
++#: which happens service-side and needs no field to come back.
++#:
++#: Retrieval-only policy selection (`/policies`). It ranks and returns records;
++#: it never expands coverage over headings, because there is no downstream
++#: gather to reject an over-kept policy. What it reads off a hit is identity, the
++#: version the stale guard compares, and the scores Azure attaches to every
++#: result whether or not they are selected.
++_POLICY_RETRIEVAL_SELECT = "id,policy_id,document_id,document_version,content_type"
++
++#: Decision policy selection. Everything above, plus the two heading fields and
++#: the one body text `expand_policy_query_coverage` reads: a term named in a
++#: heading can admit a policy, and body text is how it recognises what the
++#: already-selected policies cover.
++_POLICY_DECISION_SELECT = (
++    "id,policy_id,document_id,document_version,content_type,"
++    "section_heading,heading,body"
+ )
+ 
++#: Rule discovery. Which rule it is, which provision and which policy document
++#: hold it, the version the stale guard reads, and the English projection the
++#: request-side selection scores against. `policy_id` and `document_id` are read
++#: when a rule-only rescue has to synthesise the parent policy hit its policy
++#: query never returned. One text field: `retrieval_text` **is** the projection,
++#: and `body` was a verbatim second copy of it.
++_RULE_DISCOVERY_SELECT = (
++    "id,policy_id,document_id,document_version,content_type,"
++    "rule_id,parent_document_id,provision_key,retrieval_text"
++)
++
++#: Scoped rule ranking. Narrower again, because this query is already scoped to
++#: named provisions of the current version by its filter, and its consumer reads
++#: exactly three things per hit: that it is a rule document, which provision and
++#: rule it is, and its projection.
++_RULE_RANKING_SELECT = "id,content_type,rule_id,provision_key,retrieval_text"
++
+ #: The two scopes a case can be put in. Named, because a reviewer who chose one
+ #: policy and a reviewer who put a question to the project are doing two different
+ #: things, and only the second one retrieves.
+@@ -3072,6 +3110,11 @@ async def _answer_project_scope(
+                         content_type=CONTENT_TYPE_POLICY,
+                         projection_profile=readiness.profile,
+                     ),
++                    select=(
++                        _POLICY_RETRIEVAL_SELECT
++                        if policies_only
++                        else _POLICY_DECISION_SELECT
++                    ),
+                     semantic_configuration=POLICY_SEMANTIC_CONFIG,
+                 )
+             finally:
+@@ -3111,7 +3154,7 @@ async def _answer_project_scope(
+                                 projection_profile=readiness.profile,
+                                 large_policies_only=not rule_retrieval,
+                             ),
+-                            select=_RULE_SELECT,
++                            select=_RULE_DISCOVERY_SELECT,
+                             semantic_configuration=POLICY_SEMANTIC_CONFIG,
+                         ),
+                         RULE_INDEX_MATCHED,
+@@ -3948,7 +3991,7 @@ async def _rank_rules_for_retained(
+                     + " and "
+                     + _provision_key_filter(large_keys)
+                 ),
+-                select=_RULE_SELECT,
++                select=_RULE_RANKING_SELECT,
+                 semantic_configuration=semantic_configuration,
+             )
+             rule_index_state = RULE_INDEX_MATCHED
+diff --git b/tests/unit/test_a_search_result_carries_only_what_is_read.py b/tests/unit/test_a_search_result_carries_only_what_is_read.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..6bd26c61897bbb921992c416cf45f54ae2dc152a
+--- /dev/null
++++ b/tests/unit/test_a_search_result_carries_only_what_is_read.py
+@@ -0,0 +1,351 @@
++"""A search result carries only what the code that reads it actually reads.
++
++WHY THIS FILE EXISTS
++
++`select` is the width of the wire. Azure AI Search returns every field a query
++names for every hit it returns, so a field nobody reads is paid for on every
++result of every request — and this module's four queries return up to 40, 120 and
++200 documents each. The single shared list they used to share carried `body` on
++rule hits, which is a verbatim second copy of the `retrieval_text` the same hit
++already carries, plus clause numbers, a status and a projection profile no code
++path reads at all.
++
++Narrowing a `select` is exactly as dangerous as it is cheap: it is invisible
++until a downstream read returns `None`, and a `None` in this module means "no
++version", "no heading", "no projection" — all of which have honest meanings that
++a missing field would silently impersonate. So there are two kinds of test here
++and both are needed:
++
++  * the **field lists** are pinned by value, so widening or narrowing one is a
++    visible change to a named contract rather than an edit inside a function; and
++  * the **behaviour** is exercised over hits that carry *only* the narrowed
++    fields, so a consumer that still needs a dropped field fails here rather than
++    in production.
++
++Nothing here names a corpus: every provision key, heading and sentence is
++invented.
++"""
++from __future__ import annotations
++
++import asyncio
++
++import pytest
++
++from policy_platform.infrastructure.assistants import ai_case_project
++from policy_platform.infrastructure.search.policy_index import (
++    CONTENT_TYPE_POLICY,
++    CONTENT_TYPE_RULE,
++    policy_document_id,
++)
++
++_PV = "11111111-1111-4111-8111-111111111111"
++
++
++def _run(coro):
++    """Drive one coroutine to completion.
++
++    Used rather than the anyio plugin because exactly one test here is async and
++    the rest are pure; opting the module in would make every future test in it
++    async by default, which is not the shape these checks want.
++    """
++
++    return asyncio.run(coro)
++
++
++def _fields(select: str) -> list[str]:
++    return [part for part in select.split(",") if part]
++
++
++# ── the four lists, pinned by value ──────────────────────────────────
++
++
++class TestTheSelectListsAreNamedContracts:
++    def test_retrieval_only_policy_selection_asks_for_identity_and_version(self) -> None:
++        """`/policies` ranks and returns records; it expands no heading coverage."""
++
++        assert ai_case_project._POLICY_RETRIEVAL_SELECT == (
++            "id,policy_id,document_id,document_version,content_type"
++        )
++
++    def test_decision_policy_selection_adds_the_headings_and_one_text_field(self) -> None:
++        """Coverage expansion reads headings to admit, and body to recognise."""
++
++        assert ai_case_project._POLICY_DECISION_SELECT == (
++            "id,policy_id,document_id,document_version,content_type,"
++            "section_heading,heading,body"
++        )
++
++    def test_rule_discovery_asks_for_the_rule_its_parents_and_one_projection(self) -> None:
++        assert ai_case_project._RULE_DISCOVERY_SELECT == (
++            "id,policy_id,document_id,document_version,content_type,"
++            "rule_id,parent_document_id,provision_key,retrieval_text"
++        )
++
++    def test_scoped_rule_ranking_asks_for_the_least_of_the_four(self) -> None:
++        """It is already scoped to named provisions by its filter."""
++
++        assert ai_case_project._RULE_RANKING_SELECT == (
++            "id,content_type,rule_id,provision_key,retrieval_text"
++        )
++
++    def test_no_rule_query_asks_for_body_beside_retrieval_text(self) -> None:
++        """The duplicate that made this worth doing.
++
++        `build_rule_document` writes the same string into `body` and into
++        `retrieval_text`. Selecting both doubles the text of every rule hit and
++        buys nothing: the request-side selection scores `retrieval_text`.
++        """
++
++        for select in (
++            ai_case_project._RULE_DISCOVERY_SELECT,
++            ai_case_project._RULE_RANKING_SELECT,
++        ):
++            fields = _fields(select)
++            assert "retrieval_text" in fields
++            assert "body" not in fields, "a rule hit would carry its own text twice"
++
++    def test_the_stale_version_guard_can_still_be_asked_of_every_discovery_hit(self) -> None:
++        """The one field whose absence would be indistinguishable from a match.
++
++        `_answer_project_scope` compares `document_version` on every discovery
++        hit against the active published version. A hit that did not carry it
++        would compare `None` against the version, drop out of `current_*_hits`,
++        and the retrieval would report a stale index for a perfectly current one.
++        """
++
++        for select in (
++            ai_case_project._POLICY_RETRIEVAL_SELECT,
++            ai_case_project._POLICY_DECISION_SELECT,
++            ai_case_project._RULE_DISCOVERY_SELECT,
++        ):
++            assert "document_version" in _fields(select)
++
++    def test_nothing_asks_for_a_field_no_reader_reads(self) -> None:
++        """The four fields the shared list carried and nothing consumed.
++
++        Named individually rather than asserted as a set difference, because the
++        point is that each was checked: `clause_id` and `clause_number` are empty
++        strings on every document this index holds, `status` is the constant
++        `published`, and `projection_profile` is a filter clause, never a read.
++        """
++
++        for select in (
++            ai_case_project._POLICY_RETRIEVAL_SELECT,
++            ai_case_project._POLICY_DECISION_SELECT,
++            ai_case_project._RULE_DISCOVERY_SELECT,
++            ai_case_project._RULE_RANKING_SELECT,
++        ):
++            fields = _fields(select)
++            for absent in ("clause_id", "clause_number", "status", "projection_profile"):
++                assert absent not in fields
++
++
++# ── the behaviour, over hits carrying only the narrowed fields ───────
++
++
++def _narrow_policy_hit(
++    provision_key: str,
++    *,
++    score: float,
++    reranker: float | None = None,
++    heading: str | None = None,
++    body: str = "",
++    version: str = _PV,
++) -> dict:
++    """A policy hit carrying the decision select's fields and no others."""
++
++    hit = {
++        "id": policy_document_id(policy_version_id=version, provision_key=provision_key),
++        "policy_id": provision_key,
++        "document_id": "a-project",
++        "document_version": version,
++        "content_type": CONTENT_TYPE_POLICY,
++        "section_heading": heading or "",
++        "heading": heading or "",
++        "body": body,
++        "@search.score": score,
++    }
++    if reranker is not None:
++        hit["@search.rerankerScore"] = reranker
++    return hit
++
++
++def _narrow_rule_hit(
++    provision_key: str,
++    rule_id: str,
++    *,
++    score: float,
++    reranker: float | None = None,
++    text: str = "",
++    version: str = _PV,
++) -> dict:
++    """A rule hit carrying the discovery select's fields and no others."""
++
++    hit = {
++        "id": f"rule-{rule_id}",
++        "policy_id": provision_key,
++        "document_id": "a-project",
++        "document_version": version,
++        "content_type": CONTENT_TYPE_RULE,
++        "rule_id": rule_id,
++        "parent_document_id": policy_document_id(
++            policy_version_id=version, provision_key=provision_key
++        ),
++        "provision_key": provision_key,
++        "retrieval_text": text,
++        "@search.score": score,
++    }
++    if reranker is not None:
++        hit["@search.rerankerScore"] = reranker
++    return hit
++
++
++class TestTheNarrowedHitsStillCarryTheSelection:
++    def test_a_rule_document_is_still_recognised_as_one(self) -> None:
++        """`is_rule_hit` reads the document, not the query that returned it."""
++
++        assert ai_case_project.is_rule_hit(_narrow_rule_hit("P", "R-1", score=1.0))
++        assert not ai_case_project.is_rule_hit(_narrow_policy_hit("P", score=1.0))
++
++    def test_the_semantic_cut_ranks_and_selects_from_the_narrowed_policy_hits(self) -> None:
++        """The retrieval-only path, which carries no heading and no body at all."""
++
++        hits = [
++            {
++                "id": policy_document_id(policy_version_id=_PV, provision_key=key),
++                "policy_id": key,
++                "document_id": "a-project",
++                "document_version": _PV,
++                "content_type": CONTENT_TYPE_POLICY,
++                "@search.score": score,
++                "@search.rerankerScore": reranker,
++            }
++            for key, score, reranker in (
++                ("HIGH", 0.9, 3.0),
++                ("MID", 0.5, 2.9),
++                ("LOW", 0.1, 1.0),
++            )
++        ]
++
++        selected, precision = ai_case_project.select_semantic_policy_hits(hits)
++
++        assert [hit["policy_id"] for hit in selected] == ["HIGH", "MID"]
++        assert precision["semantic_candidates"] == 3
++        assert precision["semantic_selected"] == 2
++
++    def test_a_rule_only_parent_is_still_rescued_from_a_narrowed_rule_hit(self) -> None:
++        """The one place a policy hit is *synthesised* from a rule hit.
++
++        It reads `policy_id`, `document_id` and `document_version` off the rule,
++        which is why the rule discovery select keeps all three even though the
++        rule's own ranking never touches them.
++        """
++
++        policy_hits = [
++            _narrow_policy_hit("SEEN", score=0.9, reranker=3.0),
++            _narrow_policy_hit("ALSO", score=0.4, reranker=1.0),
++        ]
++        rule_hits = [_narrow_rule_hit("HIDDEN", "R-9", score=0.8, reranker=9.0)]
++
++        selected, ranked, by_parent, precision = ai_case_project.select_decision_policy_hits(
++            policy_hits, rule_hits
++        )
++
++        rescued = [hit for hit in selected if hit.get("elevated_by_rule")]
++        assert len(rescued) == 1
++        assert rescued[0]["policy_id"] == "HIDDEN"
++        assert rescued[0]["document_version"] == _PV
++        assert rescued[0]["id"] == policy_document_id(
++            policy_version_id=_PV, provision_key="HIDDEN"
++        )
++        assert precision["rule_rescued_policies"] == 1
++        assert set(by_parent) == {rescued[0]["id"]}
++        assert {str(hit["id"]) for hit in ranked} >= {rescued[0]["id"]}
++
++    def test_heading_coverage_still_expands_from_the_decision_hits_alone(self) -> None:
++        """Expansion reads `section_heading`, `heading` and `body`, and no more."""
++
++        selected = [
++            _narrow_policy_hit(
++                "FIRST",
++                score=0.9,
++                reranker=3.0,
++                heading="Vessel berthing tariffs",
++                body="A vessel occupying a berth is charged the standard tariff.",
++            )
++        ]
++        other = _narrow_policy_hit(
++            "SECOND",
++            score=0.5,
++            reranker=2.5,
++            heading="Crew shore leave entitlement",
++            body="A crew member may take shore leave once the vessel is secured.",
++        )
++
++        expanded, added = ai_case_project.expand_policy_query_coverage(
++            selected,
++            [*selected, other],
++            scenario="what shore leave does a crew member get while berthed",
++        )
++
++        assert added == 1
++        assert [hit["policy_id"] for hit in expanded] == ["FIRST", "SECOND"]
++
++    def test_the_scoped_ranking_reads_only_provision_rule_and_projection(self) -> None:
++        """The narrowest select, exercised through the function that consumes it.
++
++        The scoped hits below carry the ranking select's five fields and nothing
++        else — no version, no parent, no policy id — because the scoped query is
++        already restricted to named provisions of one project by its filter.
++        """
++
++        scoped = [
++            {
++                "id": f"rule-{rule_id}",
++                "content_type": CONTENT_TYPE_RULE,
++                "rule_id": rule_id,
++                "provision_key": "SCHEDULE",
++                "retrieval_text": text,
++            }
++            for rule_id, text in (("R-2", "second row"), ("R-7", "seventh row"))
++        ]
++
++        class _Scoped:
++            async def vector_search(self, index: str, **kwargs) -> list[dict]:
++                assert kwargs["select"] == ai_case_project._RULE_RANKING_SELECT
++                return scoped
++
++        entry = {"provision_key": "SCHEDULE"}
++        candidate = {
++            "search_document_id": policy_document_id(
++                policy_version_id=_PV, provision_key="SCHEDULE"
++            ),
++            "payload": {
++                "rules": [
++                    {"rule_id": f"R-{n}"}
++                    for n in range(ai_case_project.LARGE_POLICY_RULE_THRESHOLD + 2)
++                ]
++            },
++        }
++
++        class _Readiness:
++            profile = "a-profile"
++
++        ranks, texts, state = _run(
++            ai_case_project._rank_rules_for_retained(
++                _Scoped(),
++                "an-index",
++                policy_set_key="a-project",
++                scenario="a question",
++                vector=None,
++                readiness=_Readiness(),
++                retained=[entry],
++                candidates_by_entry={id(entry): candidate},
++                discovery_hits={},
++                rule_index_state=ai_case_project.RULE_INDEX_MATCHED,
++            )
++        )
++
++        assert ranks["SCHEDULE"] == {"R-2": 0, "R-7": 1}
++        assert texts["SCHEDULE"] == {"R-2": "second row", "R-7": "seventh row"}
++        assert state == ai_case_project.RULE_INDEX_MATCHED
+diff --git b/tests/unit/test_large_responses_are_compressed.py b/tests/unit/test_large_responses_are_compressed.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..0b1878ecddf874f6a789142a1a451ebb8dd96d7a
+--- /dev/null
++++ b/tests/unit/test_large_responses_are_compressed.py
+@@ -0,0 +1,221 @@
++"""A large JSON response is compressed on the wire, and carries nothing extra.
++
++WHY THIS FILE EXISTS
++
++A policy retrieval or a decision receipt is JSON carrying published policy
++records, and JSON of that kind compresses by roughly an order of magnitude. Doing
++that is one line of middleware; proving it did not change anything else is the
++work, and there are three things worth proving:
++
++  * it actually compresses something (a middleware that never fires is not a
++    feature, and a size floor set wrongly is exactly how one silently never
++    fires);
++  * it leaves small responses alone, byte-identical, so an error body or a health
++    check is not made larger and no header appears on a response that was not
++    encoded; and
++  * it **composes nothing**. The middleware reads the bytes a route already
++    produced. A request's own credentials — a subscription key, an
++    `Authorization` header — cannot enter a response through it, and this holds
++    that as a checked property rather than an assumption, over a body the caller
++    themselves controls.
++
++The last one is the reason this file names credentials at all. The scenario a
++caller sends is echoed back to them by design; the headers they send are not, and
++a response layer that started echoing request headers would be a real disclosure
++bug that no functional test would notice.
++"""
++from __future__ import annotations
++
++import gzip
++import json
++
++import pytest
++from fastapi import FastAPI
++from fastapi.testclient import TestClient
++from starlette.middleware.gzip import GZipMiddleware
++
++from policy_platform.api.app import RESPONSE_COMPRESSION_MIN_BYTES
++
++
++#: A stand-in for a credential a caller sends and must never be handed back.
++#: Invented, and never read from configuration — a test that read the real one
++#: would put it in a log the moment it failed.
++_SUBSCRIPTION_KEY = "a-subscription-key-value-that-is-not-real"
++_BEARER = "Bearer a-token-value-that-is-not-real"
++
++
++def _app() -> FastAPI:
++    """The two response shapes, under the middleware the API adds.
++
++    Built here rather than through `create_app` on purpose: this is a test of
++    the response layer, and standing up the whole application would make it
++    depend on settings, routers and a database that have nothing to do with what
++    is being checked. The middleware and its floor come from the application
++    module, so the two cannot drift.
++    """
++
++    app = FastAPI()
++    app.add_middleware(GZipMiddleware, minimum_size=RESPONSE_COMPRESSION_MIN_BYTES)
++
++    @app.post("/large")
++    async def large(body: dict) -> dict:
++        # The caller's own text is echoed, exactly as a retrieval echoes the
++        # scenario it was given. Their credentials are not.
++        return {
++            "scenario": body.get("scenario", ""),
++            "policies": [
++                {
++                    "provision_key": f"P-{index}",
++                    "heading": "A heading that is long enough to be worth compressing",
++                    "source": "A sentence repeated across records, which is what makes "
++                    "this shape compressible in the first place.",
++                }
++                for index in range(200)
++            ],
++        }
++
++    @app.get("/small")
++    async def small() -> dict:
++        return {"code": "project_not_found", "message": "No project with that key."}
++
++    return app
++
++
++@pytest.fixture()
++def client() -> TestClient:
++    return TestClient(_app())
++
++
++class TestALargeResponseIsCompressed:
++    def test_it_is_gzip_encoded_and_materially_smaller(self, client: TestClient) -> None:
++        response = client.post(
++            "/large",
++            json={"scenario": "a question"},
++            headers={"Accept-Encoding": "gzip"},
++        )
++
++        assert response.status_code == 200
++        assert response.headers["content-encoding"] == "gzip"
++
++        # `TestClient` decodes for us, so the encoded length is read from the
++        # header the server set rather than from the body we can see.
++        encoded = int(response.headers["content-length"])
++        decoded = len(response.content)
++        assert encoded < decoded, "the middleware claimed gzip and did not shrink anything"
++        assert encoded * 2 < decoded, "a compressible JSON body barely compressed"
++
++    def test_the_json_that_arrives_is_the_json_that_was_produced(
++        self, client: TestClient
++    ) -> None:
++        """Compression is a transport concern and must not be a content one."""
++
++        plain = client.post(
++            "/large",
++            json={"scenario": "a question"},
++            headers={"Accept-Encoding": "identity"},
++        )
++        compressed = client.post(
++            "/large",
++            json={"scenario": "a question"},
++            headers={"Accept-Encoding": "gzip"},
++        )
++
++        assert "content-encoding" not in plain.headers
++        assert compressed.headers["content-encoding"] == "gzip"
++        assert compressed.json() == plain.json()
++        assert len(compressed.json()["policies"]) == 200
++
++    def test_the_response_varies_on_what_the_caller_accepts(
++        self, client: TestClient
++    ) -> None:
++        """Without it a shared cache could serve gzip to a client that cannot read it."""
++
++        response = client.post(
++            "/large",
++            json={"scenario": "a question"},
++            headers={"Accept-Encoding": "gzip"},
++        )
++
++        assert "accept-encoding" in response.headers["vary"].lower()
++
++
++class TestASmallResponseIsLeftAlone:
++    def test_it_is_served_uncompressed_and_says_so_by_saying_nothing(
++        self, client: TestClient
++    ) -> None:
++        """Below the floor the gzip framing costs more than the encoding saves."""
++
++        response = client.get("/small", headers={"Accept-Encoding": "gzip"})
++
++        assert response.status_code == 200
++        assert "content-encoding" not in response.headers
++        assert len(response.content) < RESPONSE_COMPRESSION_MIN_BYTES
++        assert response.json()["code"] == "project_not_found"
++
++
++class TestNoCredentialReachesTheResponse:
++    def test_neither_a_subscription_key_nor_an_authorization_header_is_echoed(
++        self, client: TestClient
++    ) -> None:
++        """Over a body whose text the caller chose, which is the hard case.
++
++        The scenario is echoed — that is the contract. So the check is not "the
++        response contains nothing the caller sent", which would be false and
++        useless; it is that the response contains the caller's *content* and
++        none of the caller's *credentials*, in the body or in any header.
++        """
++
++        scenario = "a question whose text the caller controls"
++        response = client.post(
++            "/large",
++            json={"scenario": scenario},
++            headers={
++                "Accept-Encoding": "gzip",
++                "Ocp-Apim-Subscription-Key": _SUBSCRIPTION_KEY,
++                "Api-Key": _SUBSCRIPTION_KEY,
++                "Authorization": _BEARER,
++            },
++        )
++
++        assert response.headers["content-encoding"] == "gzip"
++
++        body = response.text
++        assert scenario in body, "the echo this test needs in order to mean anything"
++        for secret in (_SUBSCRIPTION_KEY, _BEARER, _BEARER.split(" ", 1)[1]):
++            assert secret not in body
++            for name, value in response.headers.items():
++                assert secret not in value, f"a credential came back in `{name}`"
++
++    def test_a_non_ascii_source_sentence_survives_the_encoding_intact(self) -> None:
++        """The bytes a document's own words are carried in must not change.
++
++        Verbatim source text is the one thing this platform may never alter, and
++        it is not written in one script. gzip is byte-exact by construction, but
++        the encoding *around* it is where a body gets re-serialised — so this
++        sends non-ASCII through the compressed path and reads it back, rather
++        than assuming a transport layer left it alone.
++        """
++
++        sentence = "يجب إخطار اللجنة خلال ثلاثين يوماً." + " padding. " * 200
++
++        with TestClient(_app()) as client:
++            response = client.post(
++                "/large",
++                json={"scenario": sentence},
++                headers={
++                    "Accept-Encoding": "gzip",
++                    "Ocp-Apim-Subscription-Key": _SUBSCRIPTION_KEY,
++                    "Authorization": _BEARER,
++                },
++            )
++
++        assert response.headers["content-encoding"] == "gzip"
++        document = json.loads(response.content)
++        assert document["scenario"] == sentence
++        assert _SUBSCRIPTION_KEY not in json.dumps(document, ensure_ascii=False)
++        assert _BEARER not in json.dumps(document, ensure_ascii=False)
++
++        # And a plain gzip round trip of the same document is still readable,
++        # which is what a caller's own client does with it.
++        raw = json.dumps(document, ensure_ascii=False).encode("utf-8")
++        assert json.loads(gzip.decompress(gzip.compress(raw))) == document

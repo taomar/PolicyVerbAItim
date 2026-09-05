@@ -1,0 +1,251 @@
+{
+  "schema_version": "earlier_payload_optimizations_manifest_v1",
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "base_sequence": [
+    {
+      "ordinal": "00",
+      "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218",
+      "bytes": 51705
+    },
+    {
+      "ordinal": "01",
+      "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1",
+      "bytes": 316091
+    }
+  ],
+  "patch": {
+    "name": "01a-earlier-payload-optimizations.patch",
+    "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e",
+    "bytes": 31908,
+    "deterministic_run_1": {
+      "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e",
+      "bytes": 31908
+    },
+    "deterministic_run_2": {
+      "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e",
+      "bytes": 31908
+    }
+  },
+  "paths": [
+    {
+      "path": "src/policy_platform/api/app.py",
+      "base": {
+        "bytes": 6675,
+        "sha256": "8111ffcdc04e07fba8477a1e51fb9cec8b31d8b7091efc30009011832c167b02"
+      },
+      "result": {
+        "bytes": 8198,
+        "sha256": "80d7ca0e2c9a4d6496c3e26e6506079f5991ac9a63808ccfcbe0d7602b3ea510"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager",
+          "sha256": "4fdfa505f59543ee7ebeb784751ec46c1fd7e77e98483fb2c437e085444b33b0",
+          "bytes": 288,
+          "added_lines": 1,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -31,6 +32,12 @@ from policy_platform.infrastructure.settings import get_settings",
+          "sha256": "98031dfd2137ebe6d6db9d8d6d70f4d9925f79b69080e69a4668aed308bdf8a4",
+          "bytes": 568,
+          "added_lines": 6,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -132,6 +139,24 @@ def create_app() -> FastAPI:",
+          "sha256": "18e9bcb00003d67c79ac5976fbd052040d8ce9028b53ee15b12d8a4e101694fe",
+          "bytes": 1541,
+          "added_lines": 18,
+          "deleted_lines": 0
+        }
+      ],
+      "ownership": "earlier Payload gzip transport optimization"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+      "base": {
+        "bytes": 191105,
+        "sha256": "a26379de4e0bad9da508d2eb355afe26b057584c256fd6d8dc6853fa4c6a75eb"
+      },
+      "result": {
+        "bytes": 193480,
+        "sha256": "89acda62d16c7d6c9988dd463884ec2860d1078b0a9add94605cd9a290d62a31"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -485,17 +485,55 @@ DECISION_RULE_RESCUE_MARGIN = 0.3",
+          "sha256": "c1cd304d2f083f45ae2f8d8e683d97728554316f7df3a2e8a9c4aa1063e4fcb0",
+          "bytes": 3846,
+          "added_lines": 47,
+          "deleted_lines": 9
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -3072,6 +3110,11 @@ async def _answer_project_scope(",
+          "sha256": "b93ca35fb1fbd453a75a169edb663b8398134f6c556175341c87b26493f14a30",
+          "bytes": 511,
+          "added_lines": 5,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -3111,7 +3154,7 @@ async def _answer_project_scope(",
+          "sha256": "a38696b933b15bea62d2eadb63ad9a7b3481d6b0224349ef7e902e78a796b69e",
+          "bytes": 490,
+          "added_lines": 1,
+          "deleted_lines": 1
+        },
+        {
+          "ordinal": 4,
+          "header": "@@ -3948,7 +3991,7 @@ async def _rank_rules_for_retained(",
+          "sha256": "e63e3f2528be5f80f8b198843942b467a4a132f665cc1ca84f173cd602bb1f9e",
+          "bytes": 380,
+          "added_lines": 1,
+          "deleted_lines": 1
+        }
+      ],
+      "ownership": "earlier Payload Azure AI Search select-list narrowing"
+    },
+    {
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "base": null,
+      "result": {
+        "bytes": 13788,
+        "sha256": "015aaa3ea5db1baf6efd1a18b9d2afb1cdad2cb1cb06b14965b8413c2ec14e7e"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -0,0 +1,351 @@",
+          "sha256": "b0ff18c2bf6ab9cf7a8f498bc35f678a6da47ae85fd70815a1ac726a65336ba8",
+          "bytes": 13806,
+          "added_lines": 351,
+          "deleted_lines": 0
+        }
+      ],
+      "ownership": "earlier Payload Azure AI Search select-list narrowing"
+    },
+    {
+      "path": "tests/unit/test_large_responses_are_compressed.py",
+      "base": null,
+      "result": {
+        "bytes": 9207,
+        "sha256": "a3f950e42a548c58be2fe2ddd7cd33781e5342b86d2556cb8533c98f08cb8848"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -0,0 +1,221 @@",
+          "sha256": "ee6fd967d9d0cdf40c2a39da3dbead9fc4e7b3b74835efb953f37a8f71d66963",
+          "bytes": 9225,
+          "added_lines": 221,
+          "deleted_lines": 0
+        }
+      ],
+      "ownership": "earlier Payload gzip transport optimization"
+    }
+  ],
+  "source_provenance": {
+    "app_source_patch": {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\path-diffs-v4\\src__policy_platform__api__app.py.patch",
+      "sha256": "6fec5392cf93799bd3ff75690eb4cd6bbaa8ac995287b9823fb01b74939f1455",
+      "selected_ordinals": [
+        1,
+        3,
+        4
+      ],
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager",
+          "sha256": "4fdfa505f59543ee7ebeb784751ec46c1fd7e77e98483fb2c437e085444b33b0",
+          "bytes": 288,
+          "added_lines": 1,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -31,6 +34,12 @@ from policy_platform.infrastructure.settings import get_settings",
+          "sha256": "01b62e39b601cdf8fd20327090d22283aea5219b025a28f3b243d806dfbf1537",
+          "bytes": 568,
+          "added_lines": 6,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 4,
+          "header": "@@ -132,6 +141,24 @@ def create_app() -> FastAPI:",
+          "sha256": "37227258c07fb523e8d74b861b8d82926393aa41361abf270cd774e0e5234417",
+          "bytes": 1541,
+          "added_lines": 18,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    "ai_case_project_source": {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\01-rule-retrieval.blocked-proven-subset.patch",
+      "selected_ordinals": [
+        6,
+        38,
+        39,
+        45
+      ],
+      "source_hunks": [
+        {
+          "ordinal": 6,
+          "header": "@@ -294,17 +485,55 @@ DECISION_RULE_RESCUE_MARGIN = 0.3",
+          "sha256": "11cd57fd576a8c425007c9e5b10f422d0e0541ab2314192b749a1d81487a7010",
+          "bytes": 3846,
+          "added_lines": 47,
+          "deleted_lines": 9
+        },
+        {
+          "ordinal": 38,
+          "header": "@@ -2210,13 +3110,18 @@ async def _answer_project_scope(",
+          "sha256": "92b672606b0767ccb66ea6f29c58167b73ba6c1d206f4c6eae8a6f719f3fe60a",
+          "bytes": 837,
+          "added_lines": 6,
+          "deleted_lines": 1
+        },
+        {
+          "ordinal": 39,
+          "header": "@@ -2233,18 +3138,32 @@ async def _answer_project_scope(",
+          "sha256": "f6b57665ddbf971986dfe835ebef364ca8f12999a692c80d3ef450a78166b092",
+          "bytes": 2195,
+          "added_lines": 19,
+          "deleted_lines": 5
+        },
+        {
+          "ordinal": 45,
+          "header": "@@ -2810,7 +3991,7 @@ async def _rank_rules_for_retained(",
+          "sha256": "1400f293993693f2834fbbce6a64d90e6c02e636464d86b80f38a1f0061b2094",
+          "bytes": 380,
+          "added_lines": 1,
+          "deleted_lines": 1
+        }
+      ],
+      "target": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\validation\\prior-baseline\\src\\policy_platform\\infrastructure\\assistants\\ai_case_project.py",
+      "target_sha256": "89acda62d16c7d6c9988dd463884ec2860d1078b0a9add94605cd9a290d62a31",
+      "note": "Source hunks 38 and 39 also contain Rule edits already present after ordinal 01. The generated after-01 delta keeps only the four select-list optimization changes and reaches the exact pre-Payload target."
+    },
+    "test_patches": {
+      "tests/unit/test_large_responses_are_compressed.py": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\path-diffs-v4\\tests__unit__test_large_responses_are_compressed.py.patch",
+        "sha256": "990cf9a788cb2a1c1df051ad52a24f0b0711815a5bfc56310cbf467f282ed2a5"
+      },
+      "tests/unit/test_a_search_result_carries_only_what_is_read.py": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\path-diffs-v4\\tests__unit__test_a_search_result_carries_only_what_is_read.py.patch",
+        "sha256": "14c012f14f63cf0265ef394af97145cd3aa26d32acd8a211c0f0dc78e596dbe0"
+      }
+    }
+  },
+  "azure_review": {
+    "path": "01A_AZURE_OVERLAP_REVIEW.json",
+    "sha256": "c1c9e23f55c715123e5225469e6cc56b9680e3cdf5d24d43987c2bd971956423",
+    "bytes": 2152
+  }
+}

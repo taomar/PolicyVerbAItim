@@ -1,0 +1,30 @@
+{
+  "schema_version": "six_unit_consume_validation_v1",
+  "passed": true,
+  "total_passed": 260,
+  "shards": [
+    {
+      "name": "non-app",
+      "passed": 98,
+      "evidence": "CONSUME_FINAL_SHARDED.log"
+    },
+    {
+      "name": "app",
+      "passed": 143,
+      "evidence": "CONSUME_FINAL_SHARDED.log"
+    },
+    {
+      "name": "parser",
+      "passed": 19,
+      "evidence": "CONSUME_PARSER_RETRY.log",
+      "sha256": "ef239f49c2e01f7d4ee5bb8d2a105fde9fe92ca59e74874379c295a07caddd76"
+    }
+  ],
+  "typescript": {
+    "exit_code": 0,
+    "evidence": "CONSUME_TSC_FINAL.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "worker_note": "Whole-suite and first parser attempts timed out before worker collection under contention. Bounded shards executed all 260 assertions successfully."
+}

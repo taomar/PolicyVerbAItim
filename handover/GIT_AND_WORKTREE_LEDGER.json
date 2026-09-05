@@ -1,0 +1,674 @@
+{
+  "schema": "policyverbatim_host_migration_git_worktree_ledger/1",
+  "generated_utc": "2026-09-05T06:38:47Z",
+  "generated_by_session": "8476596b-1943-4577-8a2c-10e0d7553606",
+  "method": "read-only git queries with GIT_OPTIONAL_LOCKS=0; no mutation of any repository, index, ref, stash, config, hook or ignored file",
+  "snapshots": {
+    "primary_snapshot_utc": "2026-09-05T04:50:02Z",
+    "recheck_utc": "2026-09-05T06:38:47Z",
+    "note": "HEAD, status count and all non-publisher refs identical at both snapshots. The publisher branch advanced between them and is explicitly marked in flight."
+  },
+
+  "locations": {
+    "oversight_project_root": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight",
+    "repository_junction": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository",
+    "junction_target": "C:\\Users\\taomar\\Downloads\\policy extractor",
+    "junction_type": "NTFS junction, not a copy",
+    "git_dir": "C:\\Users\\taomar\\Downloads\\policy extractor\\.git",
+    "azure_checkout": "C:\\Users\\taomar\\Downloads\\policy-extractor-azure-deploy",
+    "worktree_pool": "C:\\Users\\taomar\\.copilot\\repos\\copilot-worktrees\\policy extractor"
+  },
+
+  "remotes": [
+    {
+      "name": "origin",
+      "url": "https://github.com/taomar/policyAIengine.git",
+      "state": "verified",
+      "note": "Changed from the historical https://github.com/taomar/policy-governance-engine.git. The migration handover said this repoint was temporary (to let create_session accept the project) and was to be restored. It is NOT restored. Owner decision required."
+    },
+    {
+      "name": "base",
+      "url": "https://github.com/taomar/PolicyVerbAItim.git",
+      "state": "unverified",
+      "note": "Added by the private publisher. 'git ls-remote --heads base' from this session returned: remote: Repository not found. Cause indeterminate - could be missing credentials for a private repo, or the repo not existing. No remote-tracking refs exist for this remote."
+    }
+  ],
+
+  "head": {
+    "branch": "main",
+    "sha": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f",
+    "subject": "Instrument ranking components",
+    "tree": "3caa34fcb3893e2a877941d1814365598e708cf0",
+    "ahead_of_origin_main": 9,
+    "pushed": false
+  },
+
+  "index_and_stash": {
+    "cached_diff": "EMPTY",
+    "staged_paths": 0,
+    "stash_entries": 0,
+    "physical_index_note": "The physical .git/index byte image is NOT a reliable mutation signal: a read-only git status can refresh stat metadata. Non-mutation proofs therefore hash repository content excluding .git/** and separately verify the logical index entry list, status porcelain, refs and stash under GIT_OPTIONAL_LOCKS=0."
+  },
+
+  "status_now": {
+    "normal_entries": 86,
+    "exhaustive_entries": 87,
+    "by_code": { " M": 48, "??": 35, " D": 3 },
+    "tracked_changes": 51,
+    "untracked_normal": 35,
+    "untracked_exhaustive": 36,
+    "discrepancy_explanation": "Normal status collapses the untracked directory .serena/ into one '?? .serena/' entry; exhaustive mode lists .serena/.gitignore and .serena/project.yml separately."
+  },
+
+  "adoption_transitions": [
+    {
+      "name": "baseline_migration",
+      "classification": "historical",
+      "at_utc": "2026-09-04",
+      "branch": "main",
+      "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "origin_at_the_time": "https://github.com/taomar/policy-governance-engine.git",
+      "status_entries": 101,
+      "tracked_changes": 64,
+      "untracked": 37,
+      "index": "empty",
+      "stash": "empty"
+    },
+    {
+      "name": "pre_decomposition_snapshot",
+      "classification": "historical",
+      "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "normal_status_entries": 120,
+      "exhaustive_status_entries": 121,
+      "tracked_modified": 73,
+      "untracked": 47,
+      "index": "empty",
+      "stash": "empty"
+    },
+    {
+      "name": "adoption_A_six_unit_decomposition",
+      "classification": "completed",
+      "adopted_at_utc": "2026-09-05T03:14:44.864013Z",
+      "executed_by_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "mechanism": "detached private worktree; raw base/result hash validation; explicit path staging; write-tree/commit-tree; detached HEAD update-ref",
+      "before": {
+        "main": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+        "normal_status_entries": 120,
+        "exhaustive_status_entries": 121,
+        "tracked_modified": 73,
+        "untracked_physical": 47,
+        "cached_diff": "empty",
+        "stash": "empty"
+      },
+      "after": {
+        "main": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+        "final_tree": "5ade3ef636fd71c0a7c87b3ba9b69393f47d9e94",
+        "normal_status_entries": 77,
+        "exhaustive_status_entries": 78,
+        "tracked_modified": 42,
+        "untracked_physical": 36,
+        "cached_diff": "empty",
+        "stash": "empty"
+      },
+      "cleaned_target_count": 43,
+      "candidate_mixed_residual_count": 5,
+      "candidate_mixed_residual_paths": [
+        "src/policy_platform/api/app.py",
+        "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "src/policy_platform/infrastructure/search/policy_index.py",
+        "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "tests/unit/test_the_corpus_is_indexed_in_one_language.py"
+      ],
+      "non_mutation_proof": {
+        "dirty_files_checked": 121,
+        "dirty_file_mismatches": 0,
+        "content_tree_files": 37199,
+        "content_tree_bytes": 553349103,
+        "content_tree_sha256": "a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28"
+      },
+      "rollback_record": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\ROLLBACK_RECORD.json",
+        "used": false,
+        "shared_index_backup": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\shared-index-before.bin",
+          "bytes": 120664,
+          "sha256": "bdc2eb8cbd6d29e03595b8f6c60159ae68432f865293f1c74a63456536152bb2"
+        },
+        "shared_head_backup": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\shared-HEAD-before.bin",
+          "bytes": 21,
+          "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+        },
+        "procedure": [
+          "git update-ref refs/heads/main <old_main> <adopted_final>",
+          "git read-tree <old_main>",
+          "re-run complete logical/content gate",
+          "restore shared-index-before.bin only if logical read-tree restoration fails"
+        ]
+      },
+      "temporary_worktree": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\detached-worktree",
+        "removed": true
+      }
+    },
+    {
+      "name": "adoption_B_two_feature_commits",
+      "classification": "completed",
+      "adopted_utc": "2026-09-05T04:35:10.5713383Z",
+      "executed_by_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "before": {
+        "main": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+        "normal_status_entries": 77,
+        "exhaustive_status_entries": 78,
+        "tracked_dirty": 42,
+        "untracked_physical": 36,
+        "normal_status_sha256": "28584ef487e36ee35bf4309b3191a33b502296df9e5891c217d94a4e80bcfb88",
+        "expanded_status_sha256": "3c7cfef96d0bd7c391fa139a70bdc15ee171c550627ab2cf3db4ac663f738f72",
+        "logical_index_sha256": "6676de77652921e53e56f2d8e327b4c9e799c33242b79a79d43d7931e9919037",
+        "index_backup_sha256": "1dc49e3b3203ea82bd4beeda6553e6b901b758d9f53ffe4dea26a1d4dc19389f",
+        "dirty_file_hashes_recorded": 78
+      },
+      "after": {
+        "main": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f",
+        "tree": "3caa34fcb3893e2a877941d1814365598e708cf0",
+        "normal_status_entries": 86,
+        "exhaustive_status_entries": 87,
+        "tracked_modified": 51,
+        "untracked_physical": 36,
+        "cached_diff_empty": true,
+        "stash_entries": 0,
+        "working_tree_bytes_unchanged": true
+      },
+      "start_state_artifact": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\files\\feature-adoption\\START_STATE.json",
+      "result_artifact": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\files\\feature-adoption\\ADOPTION_RESULT.json"
+    }
+  ],
+
+  "dirty_byte_preserving_index_adoption": {
+    "what_was_done": "Both adoptions built new commits in a separate private worktree, validated the resulting tree hash, then moved only refs/heads/main and the logical index in the shared checkout. The shared working-tree bytes were never written to.",
+    "why": "The shared tree contains cross-session, mixed-ownership and partially unattributed work that must not be destroyed by a checkout.",
+    "consequence": "HEAD contains the feature commits while the working tree still holds pre-adoption bytes, so git reports the difference as if the developer had reverted them.",
+    "feature_paths_total": 16,
+    "already_dirty_before_adoption_B": 7,
+    "newly_reported_after_adoption_B": 9,
+    "arithmetic": "42 tracked dirty + 9 new = 51 tracked changes; 51 + 35 untracked (normal) = 86 entries",
+    "synthetic_deleted": {
+      "count": 3,
+      "meaning": "Files ADDED by the feature commits that have never existed in the shared working tree. NOT deletions.",
+      "verified_absent_from_disk": true,
+      "paths": [
+        "src/policy_platform/infrastructure/search/ranking_telemetry.py",
+        "tests/unit/test_a_ranking_says_which_component_ranked_it.py",
+        "tests/unit/test_a_table_keeps_its_shape.py"
+      ]
+    },
+    "synthetic_modified": {
+      "count": 6,
+      "meaning": "Files CHANGED by the feature commits whose working-tree copies still carry older pre-commit content. NOT reverts.",
+      "verified_report_exactly_space_M": true,
+      "paths": [
+        "src/policy_platform/api/routers/extraction.py",
+        "src/policy_platform/contracts/reading_plan.py",
+        "src/policy_platform/contracts/structural_graph.py",
+        "src/policy_platform/infrastructure/extraction/ai_extraction.py",
+        "src/policy_platform/infrastructure/ingestion/document_ingestion.py",
+        "tests/unit/test_clause_projection_boundary.py"
+      ]
+    },
+    "already_dirty_feature_paths": [
+      "src/policy_platform/contracts/canonical_document.py",
+      "src/policy_platform/domain/models.py",
+      "src/policy_platform/infrastructure/ingestion/canonical_fidelity.py",
+      "src/policy_platform/infrastructure/ingestion/canonical_rebuild.py",
+      "src/policy_platform/infrastructure/ingestion/document_extraction.py",
+      "src/policy_platform/infrastructure/search/search_client.py",
+      "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py"
+    ],
+    "DANGER": "A naive 'git checkout -- .', 'git restore .', 'git stash', 'git clean', 'git reset --hard', or wholesale 'git add -A && git commit' will either destroy uncommitted in-flight work or re-delete committed feature files. Reconcile BY HUNK against merge base 3414811752cc2cb08bf26b87dd8d8fa2c22baf65."
+  },
+
+  "commit_ledger": {
+    "identity": "Policy Platform <policy-platform@local>",
+    "trailer": "Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>",
+    "main_line": [
+      {
+        "ordinal": null,
+        "sha": "db882ef31b9cb6e6327f13e7e1750ebcfe2563d5",
+        "tree": "c9a97e860fec8c974198b107a3782c8cee61f326",
+        "parents": ["68979048de977719fd3b95da99f241155a228669"],
+        "subject": "Document the REST integration surface against measured responses",
+        "committed": "2026-09-03T02:15:25+03:00",
+        "ownership": "historical",
+        "on_origin_main": true,
+        "pushed": true
+      },
+      {
+        "ordinal": "0",
+        "sha": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+        "tree": "f0ee85e947d51d159adf9855aba66f42ec8cf391",
+        "parents": ["db882ef31b9cb6e6327f13e7e1750ebcfe2563d5"],
+        "subject": "Point receipt verification at a working canonical-hash implementation",
+        "committed": "2026-09-03T02:49:30+03:00",
+        "ownership": "historical pre-existing local commit; the base of the six-unit decomposition",
+        "pushed": false
+      },
+      {
+        "ordinal": "00",
+        "sha": "e689bf77ca900b69269e0ae3334b41d7608dda81",
+        "tree": "3fe60a8cab64448bcb99c339ca9a2f1cee864ee8",
+        "parents": ["c0972c8bb7ba811903e981d3806afe31cc1f514d"],
+        "subject": "Build all-published rule index foundation",
+        "committed": "2026-09-05T06:12:16+03:00",
+        "ownership": "Rule index/projection foundation; reconstructed by session c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+        "patch": "00-rule-index-foundation.patch",
+        "patch_sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218",
+        "tests": "focused foundation+01a 231 passed; full candidate backend 5192 passed / 23 skipped",
+        "pushed": false
+      },
+      {
+        "ordinal": "01",
+        "sha": "5d731b69c3e5c56ad8e9b0c92e7f3db402172eb7",
+        "tree": "a3e851c8aaa1a8a8e1fdd104b1fe2dd32e24fa7d",
+        "parents": ["e689bf77ca900b69269e0ae3334b41d7608dda81"],
+        "subject": "Implement native rule retrieval",
+        "committed": "2026-09-05T06:12:19+03:00",
+        "ownership": "Rule Retrieval track (successor session 7d783c45-9dd4-49c8-bdc0-ad43f0192148)",
+        "patch": "01-rule-retrieval.patch",
+        "patch_sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1",
+        "tests": "focused Rule 524 passed",
+        "known_warning": "adds one blank line at EOF in test_policy_case_project.py; git apply --whitespace=error-all reports exactly that one line. Normal apply, hashes, imports and all suites pass.",
+        "pushed": false
+      },
+      {
+        "ordinal": "01a",
+        "sha": "acff6e8daa16dfb7a1fe8c65f584d3476194ee43",
+        "tree": "28731a3c17be828a7a9f78b2959c69ab14f05cee",
+        "parents": ["5d731b69c3e5c56ad8e9b0c92e7f3db402172eb7"],
+        "subject": "Optimize response compression and search projection",
+        "committed": "2026-09-05T06:12:21+03:00",
+        "ownership": "earlier Payload optimizations (HTTP gzip + Search select-list narrowing) reclassified out of the Rule patch",
+        "patch": "01a-earlier-payload-optimizations.patch",
+        "patch_sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e",
+        "azure_overlap": "only src/policy_platform/api/app.py; its three gzip hunks contain no Azure local-auth or Integration content",
+        "pushed": false
+      },
+      {
+        "ordinal": "02",
+        "sha": "b8459180aebaf1c8252000ef07402ac9871b47d8",
+        "tree": "5bc79b297f087db359ffd3e67f9d03e6c38571ce",
+        "parents": ["acff6e8daa16dfb7a1fe8c65f584d3476194ee43"],
+        "subject": "Enforce evidence-complete case decisions",
+        "committed": "2026-09-05T06:12:23+03:00",
+        "ownership": "Payload track (session 5a06fec2-12cd-4477-b574-4d18ab814907)",
+        "patch": "02-payload.patch",
+        "patch_sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7",
+        "tests": "focused Payload 448 passed",
+        "rebase_note": "rebased onto the real six-unit base; 16 targets byte-identical to the original Payload artifact; two test paths are explicit ownership-safe merges (prompt version pins v12 -> v16; measured-float guard lands on the Rule/foundation anti-corpus file)",
+        "pushed": false
+      },
+      {
+        "ordinal": "03",
+        "sha": "be2608140d824e42a6d66cf9fbac07dae4792f1f",
+        "tree": "8449ef7308598553e524d9730fdf9def1546d024",
+        "parents": ["b8459180aebaf1c8252000ef07402ac9871b47d8"],
+        "subject": "Add Consume rule retrieval request mode",
+        "committed": "2026-09-05T06:12:25+03:00",
+        "ownership": "older Consume request-mode foundation; authorship proven to session d99011fe-a8c3-4032-872b-1643baaef994; NARROW retroactive approval for exactly these bytes",
+        "patch": "03-consume-request-mode-foundation.patch",
+        "patch_sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+        "pushed": false
+      },
+      {
+        "ordinal": "04",
+        "sha": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+        "tree": "5ade3ef636fd71c0a7c87b3ba9b69393f47d9e94",
+        "parents": ["be2608140d824e42a6d66cf9fbac07dae4792f1f"],
+        "subject": "Render native rule retrieval responses",
+        "committed": "2026-09-05T06:12:27+03:00",
+        "ownership": "Consume Demo native parser/renderer",
+        "patch": "04-consume-native-parser-renderer.patch",
+        "patch_sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+        "tests": "Consume 260/260 in bounded shards; tsc passed",
+        "significance": "THIS IS THE MERGE BASE for reconciling the in-flight dirty tree",
+        "pushed": false
+      },
+      {
+        "ordinal": "F1",
+        "sha": "3da502fee2f4c56ec1864a76553fc1a7ecd9ca94",
+        "tree": "84bae5bae38d28798df05615fcb3d44d1e36b772",
+        "parents": ["3414811752cc2cb08bf26b87dd8d8fa2c22baf65"],
+        "subject": "Preserve canonical table structure",
+        "committed": "2026-09-05T07:05:54+03:00",
+        "ownership": "canonical table-structure carrier; independently reviewed by session 690ae612-611a-4b4a-99e4-c39753610534",
+        "scope": "12 files, +1951 / -100",
+        "tests": "test_a_table_keeps_its_shape.py 83 passed (81 cases + 2 guards); targeted superset 35 files 827 passed / 6 skipped / 12 corpus errors; full suite HEAD 5256 passed / 9 failed / 23 skipped / 12 errors vs base 5169/9/23/12 - identical failing node IDs, zero regressions, net +87 passing",
+        "pushed": false
+      },
+      {
+        "ordinal": "F2",
+        "sha": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f",
+        "tree": "3caa34fcb3893e2a877941d1814365598e708cf0",
+        "parents": ["3da502fee2f4c56ec1864a76553fc1a7ecd9ca94"],
+        "subject": "Instrument ranking components",
+        "committed": "2026-09-05T07:33:01+03:00",
+        "ownership": "ranking telemetry; independently reviewed by session 749bf4f5-26be-4bce-ba4e-0fc3d3551d60; REBASED from original 4f9f21a982ca612c08a3af7f8e6128f59fca605f",
+        "tests": "43 new + 64 anti-corpus passed; 456 targeted passed / 0 failed; full suite HEAD 5216 passed / 9 failed / 23 skipped / 12 errors vs base 5169/9/23/12 - identical failing node IDs, zero regressions, delta 47",
+        "is_current_head": true,
+        "pushed": false
+      }
+    ],
+    "feature_original_vs_adopted": [
+      {
+        "feature": "canonical table carrier",
+        "original_sha": "3da502fee2f4c56ec1864a76553fc1a7ecd9ca94",
+        "original_tree": "84bae5bae38d28798df05615fcb3d44d1e36b772",
+        "original_parent": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+        "adopted_sha": "3da502fee2f4c56ec1864a76553fc1a7ecd9ca94",
+        "relationship": "same object; fast-forwarded unchanged"
+      },
+      {
+        "feature": "ranking telemetry",
+        "original_sha": "4f9f21a982ca612c08a3af7f8e6128f59fca605f",
+        "original_tree": "82862cf9e88f24c9c7a88ed2acc272366a19af52",
+        "original_parent": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+        "adopted_sha": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f",
+        "adopted_tree": "3caa34fcb3893e2a877941d1814365598e708cf0",
+        "relationship": "REBASED onto the table carrier; the original object survives only on branch taomar-microsoft-ranking-telemetry"
+      }
+    ],
+    "reviewer_seeding_defect": {
+      "classification": "defect, reported by both reviewers, unfixed",
+      "detail": "Both visible review worktrees were cut at db882ef (7 commits behind local main), not at the asserted base 3414811. Because db882ef is an ancestor, 'git merge --ff-only' still succeeded and swept in the 7 already-on-main commits. Final parents were correct, but the asserted pre-condition was false; had any of those 7 been unreviewed they would have been silently adopted.",
+      "ui_artifact": "the app's '61 files / +11,901' figure is cumulative db882ef..HEAD, not the commit (which is 12 files, +1951/-100)",
+      "action": "fix how these sessions are seeded"
+    },
+    "off_main": [
+      {
+        "sha": "4f9f21a982ca612c08a3af7f8e6128f59fca605f",
+        "branch": "taomar-microsoft-ranking-telemetry",
+        "parents": ["3414811752cc2cb08bf26b87dd8d8fa2c22baf65"],
+        "tree": "82862cf9e88f24c9c7a88ed2acc272366a19af52",
+        "subject": "Instrument ranking components",
+        "status": "superseded by the rebased d3bb0f94; retained as provenance",
+        "reachable_only_from": "refs/heads/taomar-microsoft-ranking-telemetry"
+      },
+      {
+        "sha": "cf2d0f104c55f5a961d4634e692b9ebbe49e2aa7",
+        "branch": "archive-inflight",
+        "parents": ["3414811752cc2cb08bf26b87dd8d8fa2c22baf65"],
+        "tree": "2981b3785303aec520e39c771b3472f6f6538739",
+        "subject": "Capture the in-flight working tree as archival source",
+        "committed": "2026-09-05T07:43:10+03:00",
+        "scope": "76 files changed, 16841 insertions, 395 deletions",
+        "status": "IN FLIGHT",
+        "reachable_only_from": "refs/heads/archive-inflight"
+      },
+      {
+        "sha": "b13f168db44f2dd0218b3deea0bba1bf186fb27e",
+        "branch": "taomar-microsoft-private-base-publisher",
+        "parents": ["d3bb0f94d58d1810a1ff24cacf8118d82f9c554f", "cf2d0f104c55f5a961d4634e692b9ebbe49e2aa7"],
+        "tree": "fa635f236b94aec336627a6da13d682145836d34",
+        "subject": "Reconcile the in-flight archive with the adopted feature commits",
+        "committed": "2026-09-05T07:50:00+03:00",
+        "kind": "merge commit",
+        "status": "IN FLIGHT",
+        "hand_resolved_files": 4
+      },
+      {
+        "sha": "8bc0657a7076e8bf85b0a5f1b5ea009911829040",
+        "branch": "taomar-microsoft-private-base-publisher",
+        "parents": ["b13f168db44f2dd0218b3deea0bba1bf186fb27e"],
+        "tree": "64cad6a0c472ff49d4fe8895c5aacb5513d3190f",
+        "subject": "Carry the ignored skill assets into the archive",
+        "committed": "2026-09-05T07:54:26+03:00",
+        "status": "IN FLIGHT - branch tip at recheck 2026-09-05T06:38:47Z",
+        "note": "Deliberately pulls three skills (reference notes, helper scripts, fonts and licence files) past the .gitignore 'skills' rule, committed separately so what was pulled past an ignore rule is auditable in one place. .gitignore itself is unchanged; generated coverage output was left behind.",
+        "reachable_only_from": "refs/heads/taomar-microsoft-private-base-publisher"
+      },
+      {
+        "sha": "381586688f0337be15dcc1d42d2be7d4b0fe4936",
+        "branch": "azure-deploy",
+        "parents": ["a17525cad24b3af262290826eb9846f90acea9ae"],
+        "tree": "df100e4f9d9c8d8680a55afe591c1daa9b01df4c",
+        "subject": "Add production local authentication",
+        "committed": "2026-09-05T00:34:55+03:00",
+        "status": "PRESERVED - never deploy, push or merge without new explicit authorization",
+        "reachable_only_from": "refs/heads/azure-deploy"
+      },
+      {
+        "sha": "a17525cad24b3af262290826eb9846f90acea9ae",
+        "branch": "azure-deploy",
+        "parents": ["90fe48ffe1426c878f152e47d8e4beb5a9ae666d"],
+        "subject": "Fix reproducible Azure deployment",
+        "committed": "2026-09-04T13:13:24+03:00",
+        "status": "historical, explicitly authorized preservation commit"
+      }
+    ]
+  },
+
+  "six_unit_patches": {
+    "location": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts",
+    "all_byte_identical_to_source": true,
+    "patches": [
+      { "ordinal": "00", "name": "00-rule-index-foundation.patch", "bytes": 51705, "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218", "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8" },
+      { "ordinal": "01", "name": "01-rule-retrieval.patch", "bytes": 316091, "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1", "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8" },
+      { "ordinal": "01a", "name": "01a-earlier-payload-optimizations.patch", "bytes": 31908, "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e", "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08" },
+      { "ordinal": "02", "name": "02-payload.patch", "bytes": 87833, "sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7", "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08" },
+      { "ordinal": "03", "name": "03-consume-request-mode-foundation.patch", "bytes": 27171, "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7", "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610" },
+      { "ordinal": "04", "name": "04-consume-native-parser-renderer.patch", "bytes": 35998, "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a", "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610" }
+    ],
+    "ordering_rule": "Do not combine or reorder them."
+  },
+
+  "worktrees": [
+    {
+      "index": 1,
+      "path": "C:\\Users\\taomar\\Downloads\\policy extractor",
+      "branch": "main",
+      "sha": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f",
+      "role": "THE shared dirty checkout - primary",
+      "disposition": "KEEP. Never clean, restore, reset, stash or wholesale-stage."
+    },
+    {
+      "index": 2,
+      "path": "C:\\Users\\taomar\\.copilot\\repos\\copilot-worktrees\\policy extractor\\taomar-microsoft-automatic-train",
+      "branch": "archive-inflight",
+      "sha_at_snapshot": "cf2d0f104c55f5a961d4634e692b9ebbe49e2aa7",
+      "role": "private base publisher worktree",
+      "disposition": "IN FLIGHT - do not remove until the publisher reports done"
+    },
+    {
+      "index": 3,
+      "path": "C:\\Users\\taomar\\.copilot\\repos\\copilot-worktrees\\policy extractor\\taomar-microsoft-jubilant-broccoli",
+      "branch": "taomar-microsoft-policyverbatim-v3-oversight",
+      "sha": "db882ef31b9cb6e6327f13e7e1750ebcfe2563d5",
+      "role": "stale oversight worktree at origin/main",
+      "disposition": "removable after confirming the branch is unneeded"
+    },
+    {
+      "index": 4,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\files\\feature-integration-candidate",
+      "branch": "(detached)",
+      "sha": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f",
+      "role": "parent adoption candidate",
+      "disposition": "removable; contents reachable from main"
+    },
+    {
+      "index": 5,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\files\\worktrees\\canonical-table-carrier",
+      "branch": "(detached)",
+      "sha": "3da502fee2f4c56ec1864a76553fc1a7ecd9ca94",
+      "role": "temporary review worktree",
+      "disposition": "removable; commit reachable from main"
+    },
+    {
+      "index": 6,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\files\\worktrees\\ranking-telemetry",
+      "branch": "(detached)",
+      "sha": "4f9f21a982ca612c08a3af7f8e6128f59fca605f",
+      "role": "temporary review worktree",
+      "disposition": "removable ONLY if branch taomar-microsoft-ranking-telemetry is retained, otherwise 4f9f21a becomes unreachable"
+    },
+    {
+      "index": 7,
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-azure-deploy",
+      "branch": "azure-deploy",
+      "sha": "381586688f0337be15dcc1d42d2be7d4b0fe4936",
+      "status": "clean, 0 status entries (verified)",
+      "role": "separate Azure deployment checkout",
+      "disposition": "KEEP. Never deploy or push."
+    },
+    {
+      "index": null,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\detached-worktree",
+      "role": "adoption-A temporary worktree",
+      "disposition": "ALREADY REMOVED"
+    }
+  ],
+
+  "removed_worktrees": [
+    {
+      "path": "C:\\Users\\taomar\\.copilot\\repos\\copilot-worktrees\\policy extractor\\taomar-microsoft-bookish-system",
+      "session": "690ae612-611a-4b4a-99e4-c39753610534",
+      "note": "no longer in 'git worktree list'; session archived; branch taomar-microsoft-canonical-table-carrier survives and its commit is on main"
+    },
+    {
+      "path": "C:\\Users\\taomar\\.copilot\\repos\\copilot-worktrees\\policy extractor\\taomar-microsoft-symmetrical-waddle",
+      "session": "749bf4f5-26be-4bce-ba4e-0fc3d3551d60",
+      "note": "no longer in 'git worktree list'; session archived; branch taomar-microsoft-ranking-telemetry survives and holds the only reference to 4f9f21a"
+    },
+    {
+      "path": "detached baseline worktree used by the table-carrier reviewer",
+      "note": "created to take a true baseline, since removed and pruned"
+    }
+  ],
+
+  "all_local_branches": [
+    { "name": "archive-inflight", "sha": "cf2d0f104c55f5a961d4634e692b9ebbe49e2aa7", "subject": "Capture the in-flight working tree as archival source" },
+    { "name": "azure-deploy", "sha": "381586688f0337be15dcc1d42d2be7d4b0fe4936", "subject": "Add production local authentication" },
+    { "name": "main", "sha": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f", "subject": "Instrument ranking components" },
+    { "name": "taomar-microsoft-advancedtooling", "sha": "13e67f0b5f1418a70472c5a23bbf2c70d048ff4f", "subject": "Build a tab's body when its reader opens it, not when the row does" },
+    { "name": "taomar-microsoft-canonical-table-carrier", "sha": "3da502fee2f4c56ec1864a76553fc1a7ecd9ca94", "subject": "Preserve canonical table structure" },
+    { "name": "taomar-microsoft-cuddly-garbanzo", "sha": "db882ef31b9cb6e6327f13e7e1750ebcfe2563d5", "subject": "Document the REST integration surface against measured responses" },
+    { "name": "taomar-microsoft-entity-recognition-skill-eval", "sha": "bcb4f7a031a7d16f0119a0386e4eae0cd87d5276", "subject": "chore: keep Impeccable metadata local" },
+    { "name": "taomar-microsoft-fluffy-train", "sha": "b491fb4b9ad6c0de99173fb697d422f7b9cded91", "subject": "Release Policy Decision v3" },
+    { "name": "taomar-microsoft-modularize-codebase", "sha": "dd655214a1dab131caa6cb671331eba2f8d2be21", "subject": "Correct the reason the largest module was not split" },
+    { "name": "taomar-microsoft-policy-queue-and-backlog", "sha": "51270f211cb32ed8b92175a52020392d80d4f002", "subject": "Rewrite the user guide around what the product can now do" },
+    { "name": "taomar-microsoft-policyverbatim-v3-oversight", "sha": "db882ef31b9cb6e6327f13e7e1750ebcfe2563d5", "subject": "Document the REST integration surface against measured responses" },
+    { "name": "taomar-microsoft-private-base-publisher", "sha_at_snapshot": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f", "sha_at_recheck": "8bc0657a7076e8bf85b0a5f1b5ea009911829040", "subject_at_recheck": "Carry the ignored skill assets into the archive", "state": "IN FLIGHT" },
+    { "name": "taomar-microsoft-ranking-telemetry", "sha": "4f9f21a982ca612c08a3af7f8e6128f59fca605f", "subject": "Instrument ranking components" }
+  ],
+
+  "remote_refs": [
+    { "name": "refs/remotes/origin/HEAD", "sha": "db882ef31b9cb6e6327f13e7e1750ebcfe2563d5" },
+    { "name": "refs/remotes/origin/main", "sha": "db882ef31b9cb6e6327f13e7e1750ebcfe2563d5" }
+  ],
+
+  "tags": [
+    { "name": "stable1", "sha": "deba264c1761a719dd91b6ead75f5fc1816d60c5", "subject": "Stable 1: decision-ready quality and policy operations" },
+    { "name": "v3", "sha": "dab017e807bfa71b01a7860da608715de2c0c800", "subject": "Policy Decision v3" }
+  ],
+
+  "preserved_refs": {
+    "namespace": "refs/copilot-preserved/6d6207dd-75e7-4b38-86c5-4843dd766108/",
+    "count": 6,
+    "note": "retain; do not prune"
+  },
+
+  "reachability_warnings": [
+    "4f9f21a982ca612c08a3af7f8e6128f59fca605f is reachable ONLY from refs/heads/taomar-microsoft-ranking-telemetry",
+    "cf2d0f104c55f5a961d4634e692b9ebbe49e2aa7 is reachable ONLY from refs/heads/archive-inflight",
+    "b13f168db44f2dd0218b3deea0bba1bf186fb27e and 8bc0657a7076e8bf85b0a5f1b5ea009911829040 are reachable ONLY from refs/heads/taomar-microsoft-private-base-publisher",
+    "381586688f0337be15dcc1d42d2be7d4b0fe4936 and a17525cad24b3af262290826eb9846f90acea9ae are reachable ONLY from refs/heads/azure-deploy",
+    "DO NOT run git gc --prune, git reflog expire, or delete branches during the host move. Migrate the entire .git directory intact."
+  ],
+
+  "in_flight_reconciliation_rule": {
+    "merge_base": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+    "why": "The archival snapshot cf2d0f10 was written against 3414811, the base the dirty bytes were actually authored on. With that merge base the two feature commits are additions on ONE SIDE ONLY, so the newly committed feature files survive untouched instead of reading as deletions. Any other base, or wholesale replacement, deletes them.",
+    "hand_resolved_conflicts": [
+      { "file": "canonical_rebuild", "resolution": "the table carrier generalised sidecar handling to any namespaced provenance entry, which is exactly what the reading-order record is; the recovered order now travels through the general filter so both the grid and the replay proof come back on rebuild" },
+      { "file": "document_extraction", "resolution": "a clause appends both records to its provenance" },
+      { "file": "search_client", "resolution": "keeps the retry helper and the serving path's deliberate refusal to use it, and keeps the ranking record around that same call, which the code below the merge already depended on" },
+      { "file": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py", "resolution": "lists every newly authored module from both sides" }
+    ],
+    "rules": [
+      "Merge base MUST be 3414811752cc2cb08bf26b87dd8d8fa2c22baf65.",
+      "Reconcile by hunk, never by wholesale replacement.",
+      "Never delete the new feature files to resolve a synthetic D.",
+      "Keep .serena/** and every excluded class out.",
+      "llm_reasoning_view.py and test_the_model_reads_a_reasoning_view.py travel as archival in-flight source, NOT as shipped product."
+    ]
+  },
+
+  "safe_inflight_paths": {
+    "count": 76,
+    "composition": "42 tracked modifications + 34 previously untracked source, test, migration and UI files",
+    "source_artifact": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3\\files\\safe-inflight-paths.txt",
+    "pathspec_artifact": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3\\files\\pathspec.txt",
+    "excluded": ".serena/.gitignore and .serena/project.yml (local tool state), plus every ignored secret, runtime-data, dependency, build and session class"
+  },
+
+  "alembic": {
+    "live_local_db_current": "f4b8c2e97d31",
+    "repository_head": "a1c5f0b3e284",
+    "state": "live database is one revision behind; NO migration was applied",
+    "authorization_required": true
+  },
+
+  "publication": {
+    "target_remote": "base",
+    "target_url": "https://github.com/taomar/PolicyVerbAItim.git",
+    "authorized_target_ref": "base/main only - origin must NOT be pushed",
+    "publisher_session": "ecd8492d-9745-4265-991a-cba401a6ebc3",
+    "publisher_branch": "taomar-microsoft-private-base-publisher",
+    "commit_chain_at_recheck": [
+      "cf2d0f104c55f5a961d4634e692b9ebbe49e2aa7",
+      "b13f168db44f2dd0218b3deea0bba1bf186fb27e",
+      "8bc0657a7076e8bf85b0a5f1b5ea009911829040"
+    ],
+    "publisher_head_before_handover_files": {
+      "commit": "8bc0657a7076e8bf85b0a5f1b5ea009911829040",
+      "tree": "64cad6a0c472ff49d4fe8895c5aacb5513d3190f",
+      "worktree": "clean"
+    },
+    "final_remote_sha": null,
+    "final_remote_sha_note": "A publication commit cannot contain its own SHA, and this package is itself part of the published content. The remote ref IS the receipt.",
+    "push_status": "UNVERIFIED_BY_THIS_SESSION",
+    "verification_procedure": [
+      "git ls-remote base refs/heads/main",
+      "git rev-parse HEAD",
+      "the two must match after cloning",
+      "if base/main is absent, publication did not complete - do NOT infer success from local publisher commits"
+    ],
+    "observed_404_RESOLVED": {
+      "observation": "git ls-remote --heads base returned 'remote: Repository not found' from this handover session",
+      "cause": "identity mismatch, not a missing repository: the ambient GH_TOKEN belongs to GitHub user 'taomar_microsoft', which receives a private-repository 404. The repository is private and owned by 'taomar'.",
+      "remedy": "authenticate with the keyring token for GitHub user 'taomar'",
+      "source": "hosthandover.md section 15.4"
+    },
+    "archival_branch_contents": [
+      "all history through local main d3bb0f94d58d1810a1ff24cacf8118d82f9c554f",
+      "all 76 pre-feature-adoption in-flight source paths: 42 tracked modifications and 34 untracked source/test/migration/UI files, byte-verified against feature-adoption START_STATE.json",
+      "both validated feature capabilities, with nine feature-only blobs verified byte-identical to d3bb0f94",
+      "101 intentionally ignored .github/skills/** source, reference, font, license and test assets",
+      "no synthetic feature deletion from the dirty shared checkout"
+    ],
+    "publication_safety_evidence": {
+      "source": "hosthandover.md section 15.3",
+      "detect_secrets": "110 candidates triaged; ZERO high-confidence secrets",
+      "file_size_gate": "largest reachable blob 456,759 bytes; zero blobs over 50 MiB or 100 MiB",
+      "excluded_from_archival_branch": [".serena/**", "secret-bearing .env files", "local account and signing material", ".private/**", "local .azure/**", "runtime documents and backups", "virtual environments", "node_modules", "build/cache/coverage output", "logs", "screenshots", "local agent and session records"],
+      "targeted_combined_feature_guard_tests": { "publisher_final_branch": 219, "parent_two_feature_integration_candidate": 211 },
+      "full_backend_on_publisher_branch": { "passed": 5658, "skipped": 23, "failed": 9, "errors": 12 },
+      "regression_verdict": "the same 9 failures and 12 errors occur at the exact baseline - the known ai.py test-harness defect and absent gitignored corpus artifacts. No new failing or erroring node ID was introduced."
+    },
+    "publisher_secret_scan": {
+      "artifact": "handover/artifacts/publisher/detect-secrets-scan.json",
+      "bytes": 37151,
+      "result_files": 70,
+      "note": "records hashed secret digests and file locations only; contains no plaintext credential"
+    },
+    "resolve_by": "target host: authenticate as taomar, clone, and compare ls-remote base refs/heads/main against rev-parse HEAD (task T-02)"
+  }
+}

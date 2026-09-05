@@ -1,0 +1,156 @@
+{
+  "schema_version": "consume-api-matrix-manifest/1",
+  "status": "offline_ready_provenance_guarded_execution_disabled",
+  "parent_session_id": "b065f09b-2a4c-479f-a012-e6e55f388234",
+  "run_id": "consume-api-six-arm-20260904-pending",
+  "base_url_env": "POLICY_API_BASE_URL",
+  "credential_env": "POLICY_SUBSCRIPTION_KEY",
+  "repository_src_path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\src",
+  "repetitions": 3,
+  "concurrency": 1,
+  "request_defaults": {
+    "provision_id": null,
+    "decision_reasoning_effort": "medium",
+    "calling_system_identity": "consume-api-six-arm-matrix"
+  },
+  "gates": {
+    "endpoint_contract_stabilized": true,
+    "questions_finalized": true,
+    "rubric_finalized": true,
+    "source_snapshot_frozen": true,
+    "rule_retrieval_stable": true,
+    "parent_authorized": false,
+    "rubric_provenance_validated": true
+  },
+  "hashes": {
+    "manifest_sha256": "9ed50fbb863dd44dae85a5891d4f10846c48df41f338b29fdec869d75a5dd2fb",
+    "contract_sha256": "8ba11b174fb46e91c563d0a8e0913d858beef34919d274b62ec68d3118590a87",
+    "questions_sha256": "b99029eb15521a85aa625339be9f6e979b7c1fa767128507825b0089e7de38a7",
+    "rubric_sha256": "00c7397a76d08d7f431994c649a1ace6384b0a663a0f46a66065bf52041e63ed",
+    "source_snapshot_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c"
+  },
+  "rubric": {
+    "status": "provenance_guarded_new_version",
+    "path": "evaluation-rubric.json",
+    "source_markdown_path": "RUBRIC_MIGRATION_V2.md",
+    "source_markdown_sha256": "d12f6f3082c65781069b5e6b012c6d233f896309e75cb74f21c83861c1f6ec40",
+    "authoritative_contract_override": "The corrected source markdown and harness both define A-F as three endpoint surfaces crossed with policy/rule retrieval mode."
+  },
+  "source_snapshot": {
+    "status": "hash_pinned_external_read_only",
+    "path": "evidence/source.snapshot.json",
+    "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c"
+  },
+  "watchdog": {
+    "connect_timeout_seconds": 10,
+    "write_timeout_seconds": 30,
+    "decision_read_timeout_seconds": 180,
+    "retrieval_read_timeout_seconds": 90,
+    "decision_attempt_hard_timeout_seconds": 240,
+    "retrieval_attempt_hard_timeout_seconds": 120,
+    "receipt_attempt_hard_timeout_seconds": 60,
+    "max_attempts": 3,
+    "retryable_http_statuses": [
+      408,
+      429,
+      500,
+      502,
+      504
+    ],
+    "active_run_timeout_seconds": 21600,
+    "wall_run_timeout_seconds": 28800,
+    "heartbeat_interval_seconds": 1,
+    "suspension_gap_seconds": 10
+  },
+  "schedule": {
+    "strategy": "cyclic_latin_rotation",
+    "seed": "questions_sha256",
+    "unrecorded_warmups_allowed": false
+  },
+  "arms": [
+    {
+      "id": "A",
+      "surface": "decision_light",
+      "method": "POST",
+      "path_template": "/api/policy-decisions/{key}/case/light",
+      "rule_retrieval": false,
+      "persists_decision": true,
+      "idempotency": "one_per_logical_call_reused_for_retries",
+      "token_usage_pointer": "/trace/token_usage",
+      "latency_source": "top_level_latency_ms_plus_wall",
+      "receipt_followup": true,
+      "retrieval_mode_echo_pointer": "/retrieval/retrieval_mode",
+      "contract_status": "verified_phase_b"
+    },
+    {
+      "id": "B",
+      "surface": "decision_light",
+      "method": "POST",
+      "path_template": "/api/policy-decisions/{key}/case/light",
+      "rule_retrieval": true,
+      "persists_decision": true,
+      "idempotency": "one_per_logical_call_reused_for_retries",
+      "token_usage_pointer": "/trace/token_usage",
+      "latency_source": "top_level_latency_ms_plus_wall",
+      "receipt_followup": true,
+      "retrieval_mode_echo_pointer": "/retrieval/retrieval_mode",
+      "contract_status": "verified_phase_b"
+    },
+    {
+      "id": "C",
+      "surface": "full_decision",
+      "method": "POST",
+      "path_template": "/api/policy-decisions/{key}/case",
+      "rule_retrieval": false,
+      "persists_decision": true,
+      "idempotency": "one_per_logical_call_reused_for_retries",
+      "token_usage_pointer": "/trace/token_usage",
+      "latency_source": "wall_plus_trace_stage_latency_ms",
+      "receipt_followup": false,
+      "retrieval_mode_echo_pointer": "/retrieval/retrieval_mode",
+      "contract_status": "verified_pending_final_hash"
+    },
+    {
+      "id": "D",
+      "surface": "full_decision",
+      "method": "POST",
+      "path_template": "/api/policy-decisions/{key}/case",
+      "rule_retrieval": true,
+      "persists_decision": true,
+      "idempotency": "one_per_logical_call_reused_for_retries",
+      "token_usage_pointer": "/trace/token_usage",
+      "latency_source": "wall_plus_trace_stage_latency_ms",
+      "receipt_followup": false,
+      "retrieval_mode_echo_pointer": "/retrieval/retrieval_mode",
+      "contract_status": "verified_pending_rule_stability"
+    },
+    {
+      "id": "E",
+      "surface": "json_only_retrieval",
+      "method": "POST",
+      "path_template": "/api/policy-decisions/{key}/policies",
+      "rule_retrieval": false,
+      "persists_decision": false,
+      "idempotency": "omit",
+      "token_usage_pointer": "/token_usage",
+      "latency_source": "top_level_latency_ms_plus_wall",
+      "receipt_followup": false,
+      "retrieval_mode_echo_pointer": "/retrieval/retrieval_mode",
+      "contract_status": "verified_pending_final_hash"
+    },
+    {
+      "id": "F",
+      "surface": "json_only_retrieval",
+      "method": "POST",
+      "path_template": "/api/policy-decisions/{key}/policies",
+      "rule_retrieval": true,
+      "persists_decision": false,
+      "idempotency": "omit",
+      "token_usage_pointer": "/token_usage",
+      "latency_source": "top_level_latency_ms_plus_wall",
+      "receipt_followup": false,
+      "retrieval_mode_echo_pointer": "/retrieval/retrieval_mode",
+      "contract_status": "verified_pending_rule_stability"
+    }
+  ]
+}

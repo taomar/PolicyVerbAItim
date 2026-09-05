@@ -1,0 +1,113 @@
+{
+  "schema_version": "consume_content_leak_review_v2",
+  "patches": [
+    {
+      "patch": "03-consume-request-mode-foundation.patch",
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "bytes": 27171,
+      "added_lines_scanned": 351,
+      "high_confidence_secret_hits": 0,
+      "synthetic_leakage_sentinel_hits": 0,
+      "structural_only_diagnostic_hits": 0
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+      "bytes": 35998,
+      "added_lines_scanned": 613,
+      "high_confidence_secret_hits": 0,
+      "synthetic_leakage_sentinel_hits": 5,
+      "structural_only_diagnostic_hits": 5
+    }
+  ],
+  "high_confidence_secret_hits": 0,
+  "raw_source_policy_or_live_corpus_text_hits": 0,
+  "structural_error_body_serialization_found": false,
+  "assessment": [
+    "No high-confidence secret pattern was found in the promoted foundation or native successor.",
+    "The native test sentinel is synthetic and is asserted absent from serialized error output.",
+    "Malformed retrieval bodies are reduced to schema tag, collection shape/count, and key count."
+  ],
+  "findings": [
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/lib/errors.ts",
+      "patch_line": 505,
+      "classification": "structural-only-diagnostic",
+      "line_sha256": "9ee5f5db38940ffcf1b8e212d82318f75695a7e55ae5fd0d4c71f966fe1fbf10",
+      "redacted_preview": "<structural-only diagnostic>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/lib/errors.ts",
+      "patch_line": 560,
+      "classification": "structural-only-diagnostic",
+      "line_sha256": "f5727d4456e9440bfb0033e0290b00bd2611542a790cc5a925e6a2cfd12bfca4",
+      "redacted_preview": "<structural-only diagnostic>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/lib/errors.ts",
+      "patch_line": 561,
+      "classification": "structural-only-diagnostic",
+      "line_sha256": "35b0fa27e959a1ac689d8e6fc9763fe09f69287c14ecd068cfaafd19e2a9e7bc",
+      "redacted_preview": "<structural-only diagnostic>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "patch_line": 608,
+      "classification": "synthetic-leakage-sentinel",
+      "line_sha256": "8494acfb52a4e0eafadc16401afd1d3400d0652c36729643af37f520b133fa2e",
+      "redacted_preview": "<synthetic sentinel asserted absent from errors>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "patch_line": 781,
+      "classification": "synthetic-leakage-sentinel",
+      "line_sha256": "a96fadeb4e9de0975cce10f02ac57d60b20793d05f1381426bcfb744b0a4bb51",
+      "redacted_preview": "<synthetic sentinel asserted absent from errors>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "patch_line": 783,
+      "classification": "synthetic-leakage-sentinel",
+      "line_sha256": "c78d67f4b96e668e6aa740440c77014b596a300649fe1b1b9ab92666d6000d5b",
+      "redacted_preview": "<synthetic sentinel asserted absent from errors>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "patch_line": 786,
+      "classification": "synthetic-leakage-sentinel",
+      "line_sha256": "0ad12f409e0067d1b54003bf71edf12eba9bf6526a8bb64339b16dace2bd27b5",
+      "redacted_preview": "<synthetic sentinel asserted absent from errors>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "patch_line": 799,
+      "classification": "synthetic-leakage-sentinel",
+      "line_sha256": "6ecfb47d70673b3e097e94ff9678275fecb3837b3a793df502f04ec79ae014ce",
+      "redacted_preview": "<synthetic sentinel asserted absent from errors>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "patch_line": 802,
+      "classification": "structural-only-diagnostic",
+      "line_sha256": "f428569dd3a44914604a8f2270393f1dae2ef230068ad81d2a624fe47b132b8f",
+      "redacted_preview": "<structural-only diagnostic>"
+    },
+    {
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "patch_line": 803,
+      "classification": "structural-only-diagnostic",
+      "line_sha256": "1361694a2a95a1e0edeaeba5c7e270c51ad48a00579dce608adec51c6232e66f",
+      "redacted_preview": "<structural-only diagnostic>"
+    }
+  ]
+}

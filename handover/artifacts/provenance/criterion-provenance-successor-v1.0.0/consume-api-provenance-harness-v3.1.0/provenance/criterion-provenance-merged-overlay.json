@@ -1,0 +1,1414 @@
+{
+  "schema_version": "consume-api-criterion-provenance-merged-overlay/1",
+  "overlay_version": "1.0.0",
+  "base": {
+    "harness_version": "consume-api-provenance-harness/3.0.0",
+    "rubric_version": "3.0.0",
+    "canonical_payload_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+    "rubric_sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58"
+  },
+  "target": {
+    "harness_version": "consume-api-provenance-harness/3.1.0",
+    "rubric_version": "3.1.0",
+    "manifest_version": "2.1.0",
+    "rubric_schema": "consume-api-evaluation-rubric/3",
+    "manifest_schema": "consume-api-matrix-manifest/2"
+  },
+  "partition": {
+    "count": 113,
+    "criterion_ids_sha256": "4a752fd8e13b1fb1d1c37bf110e4b1334ca3bbae1beaab5d630e8d3b1719acb3",
+    "pairwise_disjoint": true,
+    "omitted_ids": [],
+    "duplicate_ids": [],
+    "extra_ids": [],
+    "owners": {
+      "batch1": {
+        "count": 38,
+        "criterion_ids_sha256": "f373a082d7660c051a7dceac2ce11cd3456ea37641342fdef297626531d04375"
+      },
+      "batch2_successor": {
+        "count": 38,
+        "criterion_ids_sha256": "251c3289af2ae64a3312e9242129ffef08f87614766338d2df9a684dfc14b6ed"
+      },
+      "batch3": {
+        "count": 37,
+        "criterion_ids_sha256": "8ef333a6d571970cc4682e939ed96c4c684518ed1eb3df19b8599efa195adb95"
+      }
+    }
+  },
+  "evidence_sources_to_add": [
+    {
+      "id": "ais_e_annual_vacation_r1",
+      "path": "evidence/normative/ais_e_annual_vacation_r1.json",
+      "sha256": "c0567c8cbf547b44734fb5588bada9f3bd107f8ba94677352f994f470cafc20c",
+      "type": "json"
+    },
+    {
+      "id": "ais_e_maternity_leave_r1",
+      "path": "evidence/normative/ais_e_maternity_leave_r1.json",
+      "sha256": "92cc35e1352ad734ca6a6584dd8ee5ac3f21b22c8e31ce1c35dab841ea916f55",
+      "type": "json"
+    },
+    {
+      "id": "ais_e_tuition_child_r1",
+      "path": "evidence/normative/ais_e_tuition_child_r1.json",
+      "sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23",
+      "type": "json"
+    },
+    {
+      "id": "normative_batch2_source_attestations",
+      "path": "evidence/normative/normative-provenance-batch2.source-attestations.json",
+      "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+      "type": "json"
+    },
+    {
+      "id": "hw_rules_v3_3",
+      "path": "evidence/normative/hardware-policy-v3.3.rules.json",
+      "sha256": "0fb6a1298d13f4d3b82da8c3571e189076bd56fec943be0e871036d0875ecfbf",
+      "type": "json",
+      "origin_path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\samples\\policies\\hardware-policy-v3.3-import.json"
+    }
+  ],
+  "changed_criteria_count": 18,
+  "changes": [
+    {
+      "criterion_id": "AIS-01:R1",
+      "owner": "batch1",
+      "source_classification": "mechanically_source_supported",
+      "merge_action": "replace_validated_provenance",
+      "expected_base_record_sha256": "8db0ce1462e751e1cc780bd681b88a48bc4311c4b29fa03a359f17afb85db8f8",
+      "replacement_record_sha256": "23d763cc07a2343f2dcee31f0e67b6ccfbc930336cc75897901d181ac5cf21dd",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ab87a692f3a20e95c545a0ce7718ba61"
+        ],
+        "source_rule_ids": [
+          "AI-0d3f567dc0",
+          "AI-1e6a87d232",
+          "AI-32041fedd2",
+          "AI-32e998f0c0",
+          "AI-57760a678a",
+          "AI-6da44f8da1",
+          "AI-73de523932",
+          "AI-824e6298af",
+          "AI-8af5f2ba84",
+          "AI-a5ecfab674",
+          "AI-ebe8b2ae57"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_policy_payload",
+            "source_id": "ais_e_annual_vacation_r1",
+            "pointer": "/policies/0/payload",
+            "pointer_sha256": "bce2c5afd7f4249717db185b14bfc212d7aa53ab369c871388deb65023527f79"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 11,
+          "supporting_provision_count": 1,
+          "method": "mechanical_hash_bound_normative_payload_identity",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    },
+    {
+      "criterion_id": "AIS-05:R1",
+      "owner": "batch1",
+      "source_classification": "mechanically_source_supported",
+      "merge_action": "replace_validated_provenance",
+      "expected_base_record_sha256": "ff0f40db92402f61281d18a2a8a1f1beb397f3abfcdaa8244f9677f7662ad587",
+      "replacement_record_sha256": "bb4c0e36da4c6b74c113b3ed9b76eec4b78889b3b1f462c5c0f9b617e73e2339",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "01309aeb409607211e4115e044bd8ac3"
+        ],
+        "source_rule_ids": [
+          "AI-18fe024f6d",
+          "AI-f2d7cdc964",
+          "AI-f5e995fb85"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_policy_payload",
+            "source_id": "ais_e_maternity_leave_r1",
+            "pointer": "/policies/0/payload",
+            "pointer_sha256": "ba090a40bfc9f54af382a2ec0e0f3156f322a48cbd922d8e3efd25329aa22c5e"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 3,
+          "supporting_provision_count": 1,
+          "method": "mechanical_hash_bound_normative_payload_identity",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    },
+    {
+      "criterion_id": "AIS-07:R1",
+      "owner": "batch1",
+      "source_classification": "mechanically_source_supported",
+      "merge_action": "replace_validated_provenance",
+      "expected_base_record_sha256": "785f8acfcd13a144a4f5fab22759da37723ee62f1b9a5e30042b1602f6a47d78",
+      "replacement_record_sha256": "63ba7328724faee92db07631fdfbd87090f355db1fdcbcd66672febe6eba3a65",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+        ],
+        "source_rule_ids": [
+          "AI-c3c7e28449"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_policy_payload",
+            "source_id": "ais_e_tuition_child_r1",
+            "pointer": "/policies/0/payload",
+            "pointer_sha256": "f71d7c36fd676415a8714c869396dfd0444c52a555ce4a594e75a1a577349312"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 1,
+          "supporting_provision_count": 1,
+          "method": "mechanical_hash_bound_normative_payload_identity",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    },
+    {
+      "criterion_id": "AIS-07:manual-1",
+      "owner": "batch1",
+      "source_classification": "mechanically_source_supported",
+      "merge_action": "replace_validated_provenance",
+      "expected_base_record_sha256": "d51ca5152aa64cbc8cec1be7918c5a02dbbee5e0ee419fb792a6e50c6bd8a253",
+      "replacement_record_sha256": "99208f5babdc94aa3a712e7050f0949edf4e167571986635d7505d2b52436212",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_rule_body",
+        "source_provision_ids": [
+          "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+        ],
+        "source_rule_ids": [
+          "AI-c3c7e28449"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_policy_payload",
+            "source_id": "ais_e_tuition_child_r1",
+            "pointer": "/policies/0/payload",
+            "pointer_sha256": "f71d7c36fd676415a8714c869396dfd0444c52a555ce4a594e75a1a577349312"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 1,
+          "supporting_provision_count": 1,
+          "method": "mechanical_hash_bound_normative_payload_identity",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-01:R1",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "2f354290ff7b30e5e6c72421c94d968dfa4de36d82c296e0d31b8bd209e5cd68",
+      "replacement_record_sha256": "e558dee9cf02385a09b36e09cc6c7f3855a62e88b1f397e943f748ab3588e51d",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/48",
+            "pointer_sha256": "27dc1f8f7992a20370fbde2d73fdedae9cd7152dba3061ff099dd03e41340fd5"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/10/expected_evidence",
+            "pointer_sha256": "79b7ece0d4be32cd503fa8f58d0d8d6efef420ad85d17dafea6dda694d5ae47b"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/0",
+            "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-01:R9",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "ab4b0c26ee7db8c2647a3e093b1c5b424107e8ddb1da2f601e8eef5749b9edfd",
+      "replacement_record_sha256": "8fbafbede8371c4e91b0183a692c84ee464cb00034f0add197d89bccc0ea6249",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/10/expected_evidence",
+            "pointer_sha256": "79b7ece0d4be32cd503fa8f58d0d8d6efef420ad85d17dafea6dda694d5ae47b"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/0",
+            "pointer_sha256": "8b7a20569d74cad09861c58f4e6f61c890cc9734ac5a786bdc33caee98d2d5eb"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-02:R1",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "548c884b1726be2bd4ce1cd8b92a4a3eea5691704184e73d0adf8e324ec85a6b",
+      "replacement_record_sha256": "764cbc2d7aa78993754c68b22d5d5c86bf7028d156a398f8a61fb1332f19b225",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/55",
+            "pointer_sha256": "c60cabbc02c1b3afd316e96acc7718a8a72add708bed44e0c2940e3e45ee2be2"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/expected_evidence",
+            "pointer_sha256": "049091642528fb8ab0446687f020fecf5b49fa23ec35f17007de8d92d5563d73"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-02:R9",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "dc480a654de531784e1ed1357ed3e4f0e5c9e0eff9e21dfd8ba4008405fec606",
+      "replacement_record_sha256": "7f94b3475250c3cfd83ed100fc6ed76db2aeddead17c3b7d0b37203eae87e3be",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/expected_evidence",
+            "pointer_sha256": "049091642528fb8ab0446687f020fecf5b49fa23ec35f17007de8d92d5563d73"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-02:manual-1",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "739edd7f91b6cef17c53cee15bd40526a62d0f3cb577db05411e6684bbf74975",
+      "replacement_record_sha256": "cecef89a4c03b9a6941cd0ce4cb05cac199defd51bd27ed0ba629a2cb4510e92",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/manual_criteria/0",
+            "pointer_sha256": "67eea304391401c561efa15d1f7c1003746177b59acb9275cfd3d8cbd4e7ada2"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-02:manual-2",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "a33b13166138fb015c47b51025794c8283589829abcee4f47e6b583e934df537",
+      "replacement_record_sha256": "89782f059a0f6987fead64b34e5d0958547569ebaa046f2c9275df8dc75cceb2",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/11/manual_criteria/1",
+            "pointer_sha256": "b12dc5fa7f7553304183130d6e1e9996353b1e4517a0f5217f0def2ff84d54c1"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/1",
+            "pointer_sha256": "53e1ab5b2c177cf65ec30ee91fa8648a18bad28c79974a3446a3d56e7ae677db"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-03:R1",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "44a84c6c07e34619400fc6e7edf7dbf50ff1589eb5291c11bcc442904e3da2a6",
+      "replacement_record_sha256": "b2ea961b713f1887822857704df897dca4f3f076b859472fac951126f38b0259",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/81",
+            "pointer_sha256": "323310a097b2084d84bb8619325e79e5565709321c1855d9d9e36be9b03afa0b"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/expected_evidence",
+            "pointer_sha256": "0c7de93f20591035b57644cc7c4fc73d969726ec351f765745db0d339119089e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-03:R9",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "4e42a1f4c0b1abe82c0a202dbdabbd600547275d55c42e020a02ced06997f327",
+      "replacement_record_sha256": "a8013c94bbb47df02d57159bda1c091f7153ef5e9758473d83d4311cfe1c4f8a",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/expected_evidence",
+            "pointer_sha256": "0c7de93f20591035b57644cc7c4fc73d969726ec351f765745db0d339119089e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-03:manual-1",
+      "owner": "batch2_successor",
+      "source_classification": "unsupported_or_contradicted_rubric",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "6972d2ab5785240c601bc22415a27b3fa37516bf9c15632c456aa5eff53729b7",
+      "replacement_record_sha256": "609e48306cd44b2096706b7f8d889641f902b7dd4183c0afc1eaf5ff483b42b6",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/12/manual_criteria/0",
+            "pointer_sha256": "fcdc71942efbf246333583494dc9af024b37a4c50b7080af510bba151e2164f5"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/2",
+            "pointer_sha256": "a12ef58a28f048ce636c4095d41c0bf96ac363acfbdb964cc999b237431f4bd3"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-04:R1",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "b30a36507977eb5077636c9da3564406cc950cd06bcb3ce83fae09a6320da606",
+      "replacement_record_sha256": "00082fd3a934b1aecd8259a7ebcf5e41a91b1940a3733620ae398bad8129b81e",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/80",
+            "pointer_sha256": "2162cc2d6801df78ca0d9db3eb4bb4f6346000538216e2d444674354ca25a294"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/expected_evidence",
+            "pointer_sha256": "6c9966ab1bb6ddbf50682cb727a172b809f67031ba922941b7d17682203e2970"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-04:R9",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "bc0cd5c94392fc627dfc643892f04d348f149f31108e5608351d143b2085e96d",
+      "replacement_record_sha256": "28c8344e3d848b5542d932a22fbc5fec436bc9c5c29c27c79f7400ec5699f8ab",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/expected_evidence",
+            "pointer_sha256": "6c9966ab1bb6ddbf50682cb727a172b809f67031ba922941b7d17682203e2970"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-04:manual-1",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "87723571461e7a18901dba7f851db570a566fe821227a72a0cbf08031785935b",
+      "replacement_record_sha256": "5fa1711f9ae2975687771b52b0d3dedf55b97079fa7b64f3c96a3e2fd0e9664e",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/13/manual_criteria/0",
+            "pointer_sha256": "92d33b1e8e937b15398e2a36f2378087df4b3da0cf7a82ebe511ed0a09ff0c50"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/3",
+            "pointer_sha256": "e87345c995425e3317f6f394fbd6801645f9576cdce2312bc6cf31ba54f06c71"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-05:R1",
+      "owner": "batch2_successor",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "merge_unresolved_candidate_fields",
+      "expected_base_record_sha256": "40d59536abea84d0ed2e303e1b27a6b441c49c8c13df8b190cae9a784f9f2d19",
+      "replacement_record_sha256": "2b748ff72ae757f12353095a5822bbe07f01d77c5879dd258abff2ee1f98442e",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "22daced0bf9d5768c63eb83f1cc7df60"
+        ],
+        "source_rule_ids": [],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_1",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/68",
+            "pointer_sha256": "6f2bafa5629fffbf1eefe0f2c8f717159f88b51f04104aef461a47d9a00322dc"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/14/expected_evidence",
+            "pointer_sha256": "947f157e79a6861b928c205e3f49412bf221574204bb54f2b1da13f1908a243e"
+          },
+          {
+            "role": "batch2_normative_body_attestation",
+            "source_id": "normative_batch2_source_attestations",
+            "pointer": "/provisions/4",
+            "pointer_sha256": "96ef899700a2719225c008efdab9415b954a3e0663b87e7c4cb34f2dd49b4964"
+          }
+        ],
+        "validation_state": "unresolved_semantics",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 0,
+          "supporting_provision_count": 1,
+          "method": "hash_attested_local_normative_body_ai_review_pending_explicit_human_confirmation",
+          "semantic_support": "not_applicable"
+        }
+      }
+    },
+    {
+      "criterion_id": "HW-08:manual-1",
+      "owner": "batch3",
+      "source_classification": "mechanically_source_supported",
+      "merge_action": "replace_validated_provenance",
+      "expected_base_record_sha256": "a61cef01f18ef7ff9dbba6ff215ca4c11a0dbbc5555dd3d001bc072fbe49122a",
+      "replacement_record_sha256": "db992f63428df998f8abec74482c3ab9012e7901fdae0bd74c877fc7b9bbedf0",
+      "provenance_fields": {
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_rule_body",
+        "source_provision_ids": [
+          "df7847c17b9d31607df53fb27399b06a",
+          "e52c80ff95fb8c5af308eb6cf80b93dd"
+        ],
+        "source_rule_ids": [
+          "RULE-HW-001",
+          "RULE-HW-002",
+          "RULE-HW-003",
+          "RULE-HW-004",
+          "RULE-HW-005",
+          "RULE-HW-008"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_identity_thresholds",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/62",
+            "pointer_sha256": "3cb0767d37b9673540bfbb6899f58b6c778d09fc892d312c409243a062541305"
+          },
+          {
+            "role": "normative_identity_self_approval",
+            "source_id": "source_snapshot",
+            "pointer": "/provisions/64",
+            "pointer_sha256": "76873cf76e07de4dad5f663650461104a6abc6ebadf34c8f81295ec066c2412f"
+          },
+          {
+            "role": "normative_rule_threshold_1",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/0",
+            "pointer_sha256": "0518d7a01f2d924f97c3cbf579bf410919e0b591df1d90c6a61f4366610786a9"
+          },
+          {
+            "role": "normative_rule_threshold_2",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/1",
+            "pointer_sha256": "2a885232776ed973a7921f5a80606bfc88b485ffbe36fca772713b9b0168c918"
+          },
+          {
+            "role": "normative_rule_threshold_3",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/2",
+            "pointer_sha256": "1882d730a971c08ccfbdd11036be25a9dab6e972e948489d43281ac35fdb0a10"
+          },
+          {
+            "role": "normative_rule_threshold_4",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/3",
+            "pointer_sha256": "95dbd9ceef6fc6db980c0e02abfbb41655c4a0b2b85ec227d9e33997af45d0a6"
+          },
+          {
+            "role": "normative_rule_threshold_5",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/4",
+            "pointer_sha256": "270d30083ceb8eab69bac73d2dad447bd980700fccb5c615423bc90c31659df4"
+          },
+          {
+            "role": "normative_rule_self_approval",
+            "source_id": "hw_rules_v3_3",
+            "pointer": "/rules/7",
+            "pointer_sha256": "5ec464038b9dfacbfcdf9b0e4092808bb6595adb8dab0240c92804f84919e484"
+          },
+          {
+            "role": "frozen_expectation",
+            "source_id": "rubric_v1",
+            "pointer": "/questions/17/manual_criteria/0",
+            "pointer_sha256": "e7f201636568b248e830333ac54018430550c1087a85d682541b13acc4081e4e"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 6,
+          "supporting_provision_count": 2,
+          "method": "hash_bound_structured_rule_objects",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    }
+  ],
+  "retained_criteria": [
+    {
+      "criterion_id": "AIS-01:R3",
+      "owner": "batch1",
+      "source_classification": "product_decision_required",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-01:R4",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-01:R5",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-01:R9",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-01:manual-1",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-02:R4",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-02:R5",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-02:R9",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-02:manual-1",
+      "owner": "batch1",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-02:manual-2",
+      "owner": "batch1",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-03:R4",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-03:R5",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-03:R9",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-04:R3",
+      "owner": "batch1",
+      "source_classification": "product_decision_required",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-04:R4",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-04:R5",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-04:R9",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-05:R3",
+      "owner": "batch1",
+      "source_classification": "product_decision_required",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-05:R4",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-05:R5",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-05:R9",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-05:manual-1",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-06:R3",
+      "owner": "batch1",
+      "source_classification": "product_decision_required",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-06:R4",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-06:R5",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-06:R9",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-06:manual-1",
+      "owner": "batch1",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-06:manual-2",
+      "owner": "batch1",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-07:R3",
+      "owner": "batch1",
+      "source_classification": "product_decision_required",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-07:R4",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-07:R5",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-07:R9",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-08:R3",
+      "owner": "batch1",
+      "source_classification": "product_decision_required",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-08:R4",
+      "owner": "batch1",
+      "source_classification": "structural_harness_non_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-08:R5",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-08:manual-2",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-09:R3",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-09:R4",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-09:R5",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-10:R1",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-10:R3",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-10:R4",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-10:R5",
+      "owner": "batch2_successor",
+      "source_classification": "product_decision_required",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-10:R9",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "AIS-10:manual-1",
+      "owner": "batch2_successor",
+      "source_classification": "product_decision_required",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-01:R3",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-01:R4",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-01:R5",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-01:manual-1",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-02:R3",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-02:R4",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-02:R5",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-03:R3",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-03:R4",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-03:R5",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-04:R3",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-04:R4",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-04:R5",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-05:R3",
+      "owner": "batch2_successor",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-05:R4",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-05:R5",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-05:R9",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-05:manual-1",
+      "owner": "batch3",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-06:R1",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-06:R3",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-06:R4",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-06:R5",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-06:R9",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-06:manual-1",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-07:R1",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-07:R3",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-07:R4",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-07:R5",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-07:R9",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-07:manual-1",
+      "owner": "batch3",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-08:R1",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-08:R3",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-08:R4",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-08:R5",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-08:R9",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-08:manual-2",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-09:R1",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-09:R3",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-09:R4",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-09:R5",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-09:R9",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-09:manual-1",
+      "owner": "batch3",
+      "source_classification": "semantic_support_pending_human_confirmation",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-09:manual-2",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-09:manual-3",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-10:R1",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-10:R3",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-10:R4",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-10:R5",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-10:R9",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    },
+    {
+      "criterion_id": "HW-10:manual-1",
+      "owner": "batch3",
+      "source_classification": "structural_harness_not_product_law",
+      "merge_action": "retain_fail_closed"
+    }
+  ],
+  "invariants": [
+    "Merge only by exact criterion ID.",
+    "No AI artifact is human confirmation.",
+    "Structural and harness criteria remain outside product-law attribution.",
+    "Product-decision-required criteria remain fail-closed.",
+    "Execution remains disabled."
+  ]
+}

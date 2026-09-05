@@ -1,18 +1,18 @@
-.env
-__pycache__/
-*.pyc
-.venv/
-.venv-graph/
-venv/
-node_modules/
-dist/
-build/
-*.egg-info/
-.pytest_cache/
-apps/web/node_modules/
-apps/web/dist/
-App_Data/
-*.log
+#.env
+#__pycache__/
+#*.pyc
+#.venv/
+#.venv-graph/
+#venv/
+#node_modules/
+#dist/
+#build/
+#*.egg-info/
+#.pytest_cache/
+#apps/web/node_modules/
+#apps/web/dist/
+#App_Data/
+#*.log
 
 # Held only while scripts/mutation_check.py is running, to stop two runs
 # mutating one checkout at the same time. Runtime state, and a committed one
@@ -23,41 +23,41 @@ App_Data/
 # meaningful alongside the Postgres rows that reference them, and the database
 # is not in version control either. Sample documents that *are* source live in
 # samples/source-documents/.
-data/documents/
+#data/documents/
 
 # Local agent/session records. Keep these on the workstation; do not publish.
-AGENT_PROGRESS.md
+#AGENT_PROGRESS.md
 Instructions for Claude Opus 5_*.md
-docs/SESSION_HANDOFF.md
-docs/adr/
-docs/handoff/
-docs/security-rbac-azure-readiness-plan.md
-.impeccable/
+#docs/SESSION_HANDOFF.md
+#docs/adr/
+#docs/handoff/
+#docs/security-rbac-azure-readiness-plan.md
+#.impeccable/
 
 # Azure Developer CLI local environments may contain secrets.
-.azure/*
-!.azure/deployment-plan.md
+#.azure/*
+#!.azure/deployment-plan.md
 
 # Coverage output from test-quality audits.
-.coverage
-htmlcov/
+#.coverage
+#htmlcov/
 
 # Authoring skills: local methodology, not part of the published product.
-skills/
+#skills/
 
 # Browser-tool scratch output.
-.playwright-mcp/
+#.playwright-mcp/
 
 # Environment variable files hold real values -- endpoints, logins, keys -- and
 # stay on the workstation. Only the `*.example` templates are published, and they
 # carry placeholders rather than anything from a live resource. `.env` alone did
 # not cover `.env.local`, `.env.production` or `infra/parameters/baseline.env`,
 # which is the file the published template is a template *for*.
-.env
-.env.*
-*.env
-!.env.example
-!*.env.example
+#.env
+#.env.*
+#*.env
+#!.env.example
+#!*.env.example
 
 # Bearer tokens and session credentials written to a file.
 #
@@ -90,9 +90,9 @@ skills/
 # failure than a note that leaks. The case variant is listed because git is
 # case-sensitive where this filesystem is not, so `docs/Internal/` would
 # otherwise publish from a machine that cannot tell the two apart.
-docs/internal/
-docs/Internal/
-**/docs/internal/
+#docs/internal/
+#docs/Internal/
+#**/docs/internal/
 
 # Working notes. Decision records and task lists are reasoning aids for whoever
 # is doing the work, not documentation of the product, so they are kept beside
@@ -104,18 +104,18 @@ docs/Internal/
 # top-level `todos/` directory would have published. That is the same gap a
 # single `.env` line left for `.env.local`, found the same way -- by testing a
 # name nobody had used yet rather than by reading the list.
-docs/todo/
-docs/todos/
-todo/
-todos/
-.todo/
-.todos/
-**/todo/
-**/todos/
-TODO.md
-TODOS.md
-todo.md
-todos.md
+#docs/todo/
+#docs/todos/
+#todo/
+#todos/
+#.todo/
+#.todos/
+#**/todo/
+#**/todos/
+#TODO.md
+#TODOS.md
+#todo.md
+#todos.md
 
 # Internal reports and unfinished work. Failure analyses, drift reports, and
 # designs that have been decided but not built are written for whoever is doing
@@ -132,11 +132,11 @@ todos.md
 # on a public repository. Every other document of its kind was local. It was
 # missed because the rules named the directories that internal writing happened
 # to use and this one sat at the top level beside the product documentation.
-docs/failures/
-docs/drift-report.md
-docs/repair-passes.md
-docs/running-path.md
-docs/security-roadmap.md
+#docs/failures/
+#docs/drift-report.md
+#docs/repair-passes.md
+#docs/running-path.md
+#docs/security-roadmap.md
 
 # Session working records. The handover is written for whoever picks the work up
 # on this machine -- session history, verbatim instructions, failure analyses --
@@ -148,10 +148,10 @@ docs/security-roadmap.md
 # Deliberately narrow enough to keep the product's own handoff code published:
 # `docs/specs/docling-integration-handoff.md`, `infrastructure/docling/handoff.py`
 # and its test are source, not session notes.
-HANDOVER*
-handover*
-docs/handover/
-docs/HANDOVER.md
+#HANDOVER*
+#handover*
+#docs/handover/
+#docs/HANDOVER.md
 
 # Local credentials and the key that signs their tokens.
 #

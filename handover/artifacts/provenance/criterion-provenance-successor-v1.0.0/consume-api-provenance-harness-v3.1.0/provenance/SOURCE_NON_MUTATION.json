@@ -1,0 +1,1130 @@
+{
+  "schema_version": "criterion-provenance-source-non-mutation/2",
+  "status": "passed",
+  "compared_file_count": 79,
+  "group_count": 20,
+  "all_source_files_unchanged": true,
+  "repository_interval_byte_identical": true,
+  "repository": {
+    "canonical_non_mutation_definition": "Repository content tree excluding .git/**, plus separately hashed logical Git index, porcelain-v2 status, refs, and stash.",
+    "historical_pre_payload_snapshot": {
+      "files": 43032,
+      "bytes": 648739714,
+      "sha256": "75469f06f199ecf5da63cdb3448d329d8033606e2f7f3c4028de486eabc84c19",
+      "includes_git_directory": true,
+      "status": "historical_superseded_by_authorized_payload_changes"
+    },
+    "historical_authorized_full_tree_snapshot": {
+      "files": 43032,
+      "bytes": 648739941,
+      "sha256": "7a315f2594b804ddffaf72c5eed9ed475c70c687808692cda8cf1f8d538a4206",
+      "includes_git_directory": true,
+      "status": "superseded_by_informational_index_stat_cache_refresh"
+    },
+    "informational_index_refresh_full_tree_snapshot": {
+      "files": 43032,
+      "bytes": 648739941,
+      "sha256": "782b163be47cf0e17b6eae94d766cfda5051fe17bc70adfbfc812e2a36f5c55b",
+      "includes_git_directory": true,
+      "status": "noncanonical_physical_git_metadata_only"
+    },
+    "authorized_inter_window_change": {
+      "status": "parent_authorized_and_formally_returned",
+      "lock_return_local": "2026-09-05T02:47:00+03:00",
+      "formal_git_lock_and_interval_start": {
+        "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+        "branch": "main",
+        "index_entries": 0,
+        "stash_entries": 0,
+        "status_entries": 120,
+        "tracked_modified": 73,
+        "untracked": 47,
+        "status_enumeration": "git status --porcelain=v1",
+        "logical_index": {
+          "command": "git ls-files --stage -z",
+          "bytes": 96289,
+          "sha256": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287"
+        },
+        "porcelain_v2": {
+          "command": "git status --porcelain=v2 -z --untracked-files=all",
+          "bytes": 14502,
+          "sha256": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9"
+        },
+        "refs": {
+          "command": "git for-each-ref --format=%(refname)%09%(objectname)%09%(symref)",
+          "bytes": 210309,
+          "sha256": "390876629df355ef8bb6ad07c9f3802563ba7af49a534ba5632563ea2b860c3a"
+        },
+        "stash_state": {
+          "command": "git stash list --format=%gd%x09%H%x09%gs",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "cached_diff": {
+          "command": "git diff --cached --binary --no-ext-diff",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "physical_index_informational_only": {
+          "path": ".git/index",
+          "bytes": 120664,
+          "sha256": "bdc2eb8cbd6d29e03595b8f6c60159ae68432f865293f1c74a63456536152bb2",
+          "mtime_ns": 1788567654537250400,
+          "canonical_non_mutation_input": false,
+          "explanation": "Read-only Git status may refresh stat-cache metadata without changing logical staged content."
+        },
+        "authorized_payload_paths": [
+          {
+            "path": "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+            "bytes": 194587,
+            "sha256": "a49004c761c601a09bc81d8b58d366d4895af280efeca16660c4966fe61d3cd4"
+          },
+          {
+            "path": "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+            "bytes": 5876,
+            "sha256": "f71652c360c1b72a7cbdebab486d26a4bad779af8891a8181603c7b067de0c0f"
+          },
+          {
+            "path": "tests/unit/test_policy_case_project.py",
+            "bytes": 67001,
+            "sha256": "4eda5b467dbc7befbbc97dc602b2a5f3c81255542a93cc06edd2fbe81e7b4de7"
+          },
+          {
+            "path": "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+            "bytes": 31039,
+            "sha256": "1d0082c3aa870f9557a5922f2dd97c91690f18dcf8049e3c89333bde7a0f1890"
+          }
+        ],
+        "attributable_test_cache_paths": [
+          {
+            "path": ".pytest_cache/v/cache/lastfailed",
+            "bytes": 7822,
+            "sha256": "b856f140535c52027b1db35d8b3b878c35c69e6ca5f5b0a4219928f386a78dc4"
+          },
+          {
+            "path": ".pytest_cache/v/cache/nodeids",
+            "bytes": 912421,
+            "sha256": "2490f6a1cba74a21900e46aec860ca94fd1ca0412a103558ced45a5b63d69484"
+          },
+          {
+            "path": "src/policy_platform/infrastructure/assistants/__pycache__/ai_case_project.cpython-311.pyc",
+            "bytes": 171146,
+            "sha256": "5b510c38fd51790bb5fac03d776cd538b731f952e4948e314f69a413b401b7bb"
+          },
+          {
+            "path": "tests/unit/__pycache__/test_coverage_expansion_is_eligible_by_property.cpython-311-pytest-8.4.2.pyc",
+            "bytes": 21306,
+            "sha256": "17f7989dbe661b1b8e3b5407734c04a9aade86a889a0d23cbc73641cde2fe2be"
+          },
+          {
+            "path": "tests/unit/__pycache__/test_policy_case_project.cpython-311-pytest-8.4.2.pyc",
+            "bytes": 188128,
+            "sha256": "c326e4eee53ca5abc4c26d87746e8e0e969215e03468ccda6ad7d860f3ea011b"
+          },
+          {
+            "path": "tests/unit/__pycache__/test_rule_retrieval_is_an_explicit_mode.cpython-311-pytest-8.4.2.pyc",
+            "bytes": 88547,
+            "sha256": "b707685741f0677b57e96381f371f9aaa6523f661d2e4a4144996c32ea12fd61"
+          }
+        ]
+      },
+      "unexplained_paths": []
+    },
+    "interval_start": {
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository",
+      "files": 37199,
+      "bytes": 553349103,
+      "sha256": "a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28",
+      "record_format": "walk-order relative path + NUL + bytes + NUL + SHA-256 + LF; repository content only, excluding .git/**",
+      "excluded_paths": [
+        ".git/**"
+      ]
+    },
+    "interval_end": {
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository",
+      "files": 37199,
+      "bytes": 553349103,
+      "sha256": "a702437f485cdf04aca82c37122621cfa6e61b2f021ac1c7bf7b118684099a28",
+      "record_format": "walk-order relative path + NUL + bytes + NUL + SHA-256 + LF; repository content only, excluding .git/**",
+      "excluded_paths": [
+        ".git/**"
+      ]
+    },
+    "formal_lock_after_build": {
+      "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+      "branch": "main",
+      "index_entries": 0,
+      "stash_entries": 0,
+      "status_entries": 120,
+      "tracked_modified": 73,
+      "untracked": 47,
+      "status_enumeration": "git status --porcelain=v1",
+      "logical_index": {
+        "command": "git ls-files --stage -z",
+        "bytes": 96289,
+        "sha256": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287"
+      },
+      "porcelain_v2": {
+        "command": "git status --porcelain=v2 -z --untracked-files=all",
+        "bytes": 14502,
+        "sha256": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9"
+      },
+      "refs": {
+        "command": "git for-each-ref --format=%(refname)%09%(objectname)%09%(symref)",
+        "bytes": 210309,
+        "sha256": "390876629df355ef8bb6ad07c9f3802563ba7af49a534ba5632563ea2b860c3a"
+      },
+      "stash_state": {
+        "command": "git stash list --format=%gd%x09%H%x09%gs",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "cached_diff": {
+        "command": "git diff --cached --binary --no-ext-diff",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "physical_index_informational_only": {
+        "path": ".git/index",
+        "bytes": 120664,
+        "sha256": "bdc2eb8cbd6d29e03595b8f6c60159ae68432f865293f1c74a63456536152bb2",
+        "mtime_ns": 1788567654537250400,
+        "canonical_non_mutation_input": false,
+        "explanation": "Read-only Git status may refresh stat-cache metadata without changing logical staged content."
+      },
+      "authorized_payload_paths": [
+        {
+          "path": "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+          "bytes": 194587,
+          "sha256": "a49004c761c601a09bc81d8b58d366d4895af280efeca16660c4966fe61d3cd4"
+        },
+        {
+          "path": "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+          "bytes": 5876,
+          "sha256": "f71652c360c1b72a7cbdebab486d26a4bad779af8891a8181603c7b067de0c0f"
+        },
+        {
+          "path": "tests/unit/test_policy_case_project.py",
+          "bytes": 67001,
+          "sha256": "4eda5b467dbc7befbbc97dc602b2a5f3c81255542a93cc06edd2fbe81e7b4de7"
+        },
+        {
+          "path": "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+          "bytes": 31039,
+          "sha256": "1d0082c3aa870f9557a5922f2dd97c91690f18dcf8049e3c89333bde7a0f1890"
+        }
+      ],
+      "attributable_test_cache_paths": [
+        {
+          "path": ".pytest_cache/v/cache/lastfailed",
+          "bytes": 7822,
+          "sha256": "b856f140535c52027b1db35d8b3b878c35c69e6ca5f5b0a4219928f386a78dc4"
+        },
+        {
+          "path": ".pytest_cache/v/cache/nodeids",
+          "bytes": 912421,
+          "sha256": "2490f6a1cba74a21900e46aec860ca94fd1ca0412a103558ced45a5b63d69484"
+        },
+        {
+          "path": "src/policy_platform/infrastructure/assistants/__pycache__/ai_case_project.cpython-311.pyc",
+          "bytes": 171146,
+          "sha256": "5b510c38fd51790bb5fac03d776cd538b731f952e4948e314f69a413b401b7bb"
+        },
+        {
+          "path": "tests/unit/__pycache__/test_coverage_expansion_is_eligible_by_property.cpython-311-pytest-8.4.2.pyc",
+          "bytes": 21306,
+          "sha256": "17f7989dbe661b1b8e3b5407734c04a9aade86a889a0d23cbc73641cde2fe2be"
+        },
+        {
+          "path": "tests/unit/__pycache__/test_policy_case_project.cpython-311-pytest-8.4.2.pyc",
+          "bytes": 188128,
+          "sha256": "c326e4eee53ca5abc4c26d87746e8e0e969215e03468ccda6ad7d860f3ea011b"
+        },
+        {
+          "path": "tests/unit/__pycache__/test_rule_retrieval_is_an_explicit_mode.cpython-311-pytest-8.4.2.pyc",
+          "bytes": 88547,
+          "sha256": "b707685741f0677b57e96381f371f9aaa6523f661d2e4a4144996c32ea12fd61"
+        }
+      ]
+    },
+    "physical_index_metadata": {
+      "start": {
+        "path": ".git/index",
+        "bytes": 120664,
+        "sha256": "bdc2eb8cbd6d29e03595b8f6c60159ae68432f865293f1c74a63456536152bb2",
+        "mtime_ns": 1788567654537250400,
+        "canonical_non_mutation_input": false,
+        "explanation": "Read-only Git status may refresh stat-cache metadata without changing logical staged content."
+      },
+      "end": {
+        "path": ".git/index",
+        "bytes": 120664,
+        "sha256": "bdc2eb8cbd6d29e03595b8f6c60159ae68432f865293f1c74a63456536152bb2",
+        "mtime_ns": 1788567654537250400,
+        "canonical_non_mutation_input": false,
+        "explanation": "Read-only Git status may refresh stat-cache metadata without changing logical staged content."
+      },
+      "canonical_non_mutation_input": false
+    }
+  },
+  "network_api_model_database_search_azure_accessed": false,
+  "git_state_read_only_accessed": true,
+  "git_logical_state_modified": false,
+  "live_execution_performed": false,
+  "groups": [
+    {
+      "name": "authoritative_base_bundle",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0",
+      "file_count": 39,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_root",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch1",
+      "file_count": 6,
+      "unchanged": true
+    },
+    {
+      "name": "batch2_original_root",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch2-original",
+      "file_count": 6,
+      "unchanged": true
+    },
+    {
+      "name": "batch3_root",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch3",
+      "file_count": 5,
+      "unchanged": true
+    },
+    {
+      "name": "partition_repair_root",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair",
+      "file_count": 8,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_source_snapshot",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\source-snapshot.ais.json",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-source-snapshot.ais.json",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_response_annual",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-annual-vacation__r1.decoded",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-annual-vacation__r1.decoded",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_record_annual",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-annual-vacation__r1.json",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-annual-vacation__r1.record.json",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_response_sick",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-sick-surgery__r1.decoded",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-sick-surgery__r1.decoded",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_record_sick",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-sick-surgery__r1.json",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-sick-surgery__r1.record.json",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_response_maternity",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-maternity-leave__r1.decoded",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-maternity-leave__r1.decoded",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_record_maternity",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-maternity-leave__r1.json",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-maternity-leave__r1.record.json",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_response_overtime",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-overtime-weekend__r1.decoded",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-overtime-weekend__r1.decoded",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_record_overtime",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-overtime-weekend__r1.json",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-overtime-weekend__r1.record.json",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_response_tuition",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-tuition-child__r1.decoded",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-tuition-child__r1.decoded",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch1_record_tuition",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-tuition-child__r1.json",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-tuition-child__r1.record.json",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch2_source_document",
+      "origin_root": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch2-hardware-source.docx",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch2_rule_receipt",
+      "origin_root": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch2-case-hw-policy-rule.json",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch3_source_document",
+      "origin_root": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\samples\\source-documents\\Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch3-hardware-source.docx",
+      "file_count": 1,
+      "unchanged": true
+    },
+    {
+      "name": "batch3_rule_export",
+      "origin_root": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\samples\\policies\\hardware-policy-v3.3-import.json",
+      "staged_root": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch3-hardware-policy-v3.3-import.json",
+      "file_count": 1,
+      "unchanged": true
+    }
+  ],
+  "files": [
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "AGENT_PROGRESS.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\AGENT_PROGRESS.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\AGENT_PROGRESS.md",
+      "bytes": 8934,
+      "sha256": "85d8b9b9edd7ec0e1170786a77b92bb2865e78d21ac0e968b260c18cf10f43b2",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "BUNDLE_MANIFEST.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\BUNDLE_MANIFEST.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\BUNDLE_MANIFEST.json",
+      "bytes": 4336,
+      "sha256": "b59fd32c6e8afdc8922e001939ecf9d45db80a9d084c58ecd8239d539570e71e",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "FILE_INVENTORY.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\FILE_INVENTORY.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\FILE_INVENTORY.json",
+      "bytes": 8193,
+      "sha256": "4951c491390ac692f70eabb0aae81bcc131d9309892004e8c0b0080384fd41a9",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "HARNESS_DESIGN.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\HARNESS_DESIGN.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\HARNESS_DESIGN.md",
+      "bytes": 9935,
+      "sha256": "55004b1e326fbe3cd4c050ca5f77ec346c678569124c8d016226fe4b65811d58",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "INVENTORY.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\INVENTORY.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\INVENTORY.md",
+      "bytes": 11965,
+      "sha256": "2575932e6e70922769cc4670871ef633038453986d04548cefa89b59f0666181",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "PROVENANCE_INTEGRATION.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\PROVENANCE_INTEGRATION.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\PROVENANCE_INTEGRATION.md",
+      "bytes": 3034,
+      "sha256": "929a3c3a990ca05628ec69776099217728e106c2ab2bab5aff256fa7eaaf5bc8",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "READINESS_IMPLEMENTATION_REPORT.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\READINESS_IMPLEMENTATION_REPORT.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\READINESS_IMPLEMENTATION_REPORT.md",
+      "bytes": 6435,
+      "sha256": "1592011d0bc81d7a4e79338bbb59e09ada016a70548d829011a767909b889d45",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "RUBRIC_MIGRATION_V2.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\RUBRIC_MIGRATION_V2.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\RUBRIC_MIGRATION_V2.md",
+      "bytes": 1413,
+      "sha256": "d12f6f3082c65781069b5e6b012c6d233f896309e75cb74f21c83861c1f6ec40",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "RUBRIC_MIGRATION_V3.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\RUBRIC_MIGRATION_V3.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\RUBRIC_MIGRATION_V3.md",
+      "bytes": 1197,
+      "sha256": "95542aa524f6358baa5e4949a11ad2e9bded318ce70e3aa3a72a7f52d5d07cee",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "SOURCE_LOCK.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\SOURCE_LOCK.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\SOURCE_LOCK.json",
+      "bytes": 1401,
+      "sha256": "8b4513778fafb370c2f925a7b1823e59a6c73c866e429994b9ee26d2433fb0e7",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "__pycache__/rubric_provenance.cpython-311.pyc",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\__pycache__\\rubric_provenance.cpython-311.pyc",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\__pycache__\\rubric_provenance.cpython-311.pyc",
+      "bytes": 31807,
+      "sha256": "31c475281140cd902a1cd79d54931d85431e7251fe6f00bf8f2b301b468031c2",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "consume_matrix_runner.py",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\consume_matrix_runner.py",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\consume_matrix_runner.py",
+      "bytes": 96951,
+      "sha256": "6d5c5b43585ccbdb85fb3f2637356fcede95d24cb70b403326c3a4c88e856190",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "evaluation-rubric.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evaluation-rubric.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\evaluation-rubric.json",
+      "bytes": 176692,
+      "sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "evidence/ACTIONABLE_POLICY_FAILURE_AUDIT.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\ACTIONABLE_POLICY_FAILURE_AUDIT.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\evidence\\ACTIONABLE_POLICY_FAILURE_AUDIT.md",
+      "bytes": 13746,
+      "sha256": "a46099c8a187fbca985300097f962561c5d6c2c9b6fe4b921b03c7a436e6923a",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "evidence/AIS02_SEMANTIC_DECISION.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\AIS02_SEMANTIC_DECISION.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\evidence\\AIS02_SEMANTIC_DECISION.json",
+      "bytes": 2507,
+      "sha256": "21554676fd12f95a1dc9fddb044aa74da4351897e40e021d484e6698000b8912",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "evidence/manifest-v1.overlay.snapshot.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\manifest-v1.overlay.snapshot.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\evidence\\manifest-v1.overlay.snapshot.json",
+      "bytes": 5909,
+      "sha256": "82cfaa7a4e91031f8b7b2e441d0aba91f7ced2e323eb7a2552846116f7bd73bf",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "evidence/manifest-v1.snapshot.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\manifest-v1.snapshot.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\evidence\\manifest-v1.snapshot.json",
+      "bytes": 6190,
+      "sha256": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "evidence/rubric-v1.snapshot.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\rubric-v1.snapshot.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\evidence\\rubric-v1.snapshot.json",
+      "bytes": 21872,
+      "sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "evidence/rubric-v2.overlay.snapshot.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\rubric-v2.overlay.snapshot.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\evidence\\rubric-v2.overlay.snapshot.json",
+      "bytes": 176428,
+      "sha256": "00c7397a76d08d7f431994c649a1ace6384b0a663a0f46a66065bf52041e63ed",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "evidence/source.snapshot.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\evidence\\source.snapshot.json",
+      "bytes": 32682,
+      "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/copied-harness-tests.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\copied-harness-tests.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\copied-harness-tests.log",
+      "bytes": 3511,
+      "sha256": "e1584601a408c0e26b54866c5fabcd58c9fe6a7babe6ffd66459fd2b438544c6",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/deterministic-regeneration.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\deterministic-regeneration.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\deterministic-regeneration.log",
+      "bytes": 1120,
+      "sha256": "1536f60d36fb903c720f3f7a61c1b252ac5fbbc686676d6ab8bb833453bf2991",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/leakage-scan.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\leakage-scan.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\leakage-scan.log",
+      "bytes": 300,
+      "sha256": "84318de6e417f14220870b17b3df430a05ad7f85abd6808cb70ad2561a0d01d5",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/migration.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\migration.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\migration.log",
+      "bytes": 331,
+      "sha256": "2c58bdbc40d89259909ce5047f892b8aee63403e04a1a8dc62d920965deb0f77",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/mutation-negative-controls.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\mutation-negative-controls.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\mutation-negative-controls.log",
+      "bytes": 1778,
+      "sha256": "6754c80b3a702e0ac6451b7f1396fbf1816a75ddcb3a4b4e7eb6b10603fda78a",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/native-self-test.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\native-self-test.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\native-self-test.log",
+      "bytes": 788,
+      "sha256": "5c94664ed1a8dbce923a76c88612a4d9e28e76ab3bf5adc22b1fa9c9e25cbd2f",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/native-validate.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\native-validate.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\native-validate.log",
+      "bytes": 1769,
+      "sha256": "775aa8fa31277fb09464a9d09bf2150b71c313c60b3ed634468353fb8ef717cc",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/overlay-adoption.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\overlay-adoption.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\overlay-adoption.log",
+      "bytes": 3581,
+      "sha256": "03ee08694dd519731cc96b7233c98aff243a3978e7d2c82702fa9072a6d409da",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/source-artifact-read.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\source-artifact-read.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\source-artifact-read.log",
+      "bytes": 12586,
+      "sha256": "f1a0927ca4425b1f0a09f0b1849aee58c5d6b0e4cd1dab9b87813656c958ba92",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "logs/source-non-mutation.log",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\logs\\source-non-mutation.log",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\logs\\source-non-mutation.log",
+      "bytes": 854,
+      "sha256": "03babf9b65c433d2e612b450bc331a8c173c674270cd5f9958c72428cca6b33c",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "manifest.pending.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\manifest.pending.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\manifest.pending.json",
+      "bytes": 6025,
+      "sha256": "423dc480a9715058fe15528617cb1c47bbd0b9427818f1d3f17945074c14fa45",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "migrate_rubric_provenance.py",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\migrate_rubric_provenance.py",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\migrate_rubric_provenance.py",
+      "bytes": 26966,
+      "sha256": "63d060ed069f9b34c0903c0a68058020876cfb2b421499cba0124ca916b4fdc7",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "provenance/ADOPTION_SOURCE_LOCK.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\provenance\\ADOPTION_SOURCE_LOCK.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\provenance\\ADOPTION_SOURCE_LOCK.json",
+      "bytes": 7403,
+      "sha256": "a81f9e6894863035e8bff1851c3fb8c50de0e4264ef7b636e8a6b6e63b726a4d",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "provenance/real-harness-provenance-guard.patch",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\provenance\\real-harness-provenance-guard.patch",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\provenance\\real-harness-provenance-guard.patch",
+      "bytes": 398738,
+      "sha256": "2dfcdd21a4c6def599d0e06f55fc42e6fd5e3dd94800c49ca375a4cffdb81345",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "rubric_provenance.py",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\rubric_provenance.py",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\rubric_provenance.py",
+      "bytes": 27420,
+      "sha256": "1298c04b99cf6b9ba3d87ae9eac09a4dbd0d9d4f78a622ff87d4287c82e96507",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "schemas/derived-result.schema.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\schemas\\derived-result.schema.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\schemas\\derived-result.schema.json",
+      "bytes": 17155,
+      "sha256": "ec709090d70b03a5a7da77fc444f4416a8d82d3c0e2e81b37beea837f18d7167",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "schemas/raw-result.schema.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\schemas\\raw-result.schema.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\schemas\\raw-result.schema.json",
+      "bytes": 21431,
+      "sha256": "ae36bd89b7757862e9834d15bcb20ad179b8e8e11e1528c19b19184c78a402e7",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "tests/test_rubric_provenance_integration.py",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\tests\\test_rubric_provenance_integration.py",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\tests\\test_rubric_provenance_integration.py",
+      "bytes": 21825,
+      "sha256": "00a4fac0b8231a94ae8f0003375e876d409bd6a722d8476cb6b91914a1891ca3",
+      "unchanged": true
+    },
+    {
+      "group": "authoritative_base_bundle",
+      "relative_path": "verify_source_lock.py",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\verify_source_lock.py",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\base-v3.0.0\\verify_source_lock.py",
+      "bytes": 2080,
+      "sha256": "37a7da3e69e21fb90879cddc5f525b5f23633ef2296eda928183dd3ee3497e75",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_root",
+      "relative_path": "build_batch1_provenance.py",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\build_batch1_provenance.py",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch1\\build_batch1_provenance.py",
+      "bytes": 36210,
+      "sha256": "01f77bee569eb44c3d304254adcd360006a9d2965713624a3ac153a31471f915",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_root",
+      "relative_path": "criterion-provenance-batch1-MERGE.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-MERGE.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch1\\criterion-provenance-batch1-MERGE.md",
+      "bytes": 1615,
+      "sha256": "5d576d52e4316ba78a0bcdfc64cf54d56c2cebb7ee59547c6c9640d5176d61d3",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_root",
+      "relative_path": "criterion-provenance-batch1-ledger.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-ledger.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch1\\criterion-provenance-batch1-ledger.json",
+      "bytes": 31737,
+      "sha256": "690ffe65dc7d01faba6d61e6247bd8222b20ddf84080f4abaa701684753ce720",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_root",
+      "relative_path": "criterion-provenance-batch1-overlay.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-overlay.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch1\\criterion-provenance-batch1-overlay.json",
+      "bytes": 18671,
+      "sha256": "36ae59123a4c5cd9d19283747535a5fd9d6f0743c9554d829d6d2d664032629a",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_root",
+      "relative_path": "criterion-provenance-batch1-source-attestations.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-source-attestations.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch1\\criterion-provenance-batch1-source-attestations.json",
+      "bytes": 21929,
+      "sha256": "3e38fbde8c546f741d3e821a89024cf51fbb1917c87f083b540695a90585f307",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_root",
+      "relative_path": "criterion-provenance-batch1-validation.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\7b679b16-ef8a-4edb-8fe4-4e9dc2ff5215\\files\\criterion-provenance-batch1-validation.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch1\\criterion-provenance-batch1-validation.json",
+      "bytes": 3718,
+      "sha256": "bd3571e2923081869883595385bcc32be56c6c4364862d232a2c08cf5f90b0cc",
+      "unchanged": true
+    },
+    {
+      "group": "batch2_original_root",
+      "relative_path": "build_batch2_artifacts.py",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\build_batch2_artifacts.py",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch2-original\\build_batch2_artifacts.py",
+      "bytes": 40422,
+      "sha256": "bc1a8ae553438b006b6fa2de1dbfb7ac18481be64608b719231e83f05446bff1",
+      "unchanged": true
+    },
+    {
+      "group": "batch2_original_root",
+      "relative_path": "normative-provenance-batch2.MERGE.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.MERGE.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch2-original\\normative-provenance-batch2.MERGE.md",
+      "bytes": 2709,
+      "sha256": "5946dccc6396753bf127685531bbd93e0359620d434bd44e7fda3d9810e39c3b",
+      "unchanged": true
+    },
+    {
+      "group": "batch2_original_root",
+      "relative_path": "normative-provenance-batch2.ledger.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.ledger.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch2-original\\normative-provenance-batch2.ledger.json",
+      "bytes": 58020,
+      "sha256": "c7cd8155b58d129625ced534a17e671cb629f5347988ad1ef2cd52a36de85019",
+      "unchanged": true
+    },
+    {
+      "group": "batch2_original_root",
+      "relative_path": "normative-provenance-batch2.overlay.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.overlay.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch2-original\\normative-provenance-batch2.overlay.json",
+      "bytes": 37276,
+      "sha256": "d7c0de9ae27187b3482350d001fa6a66632c65b82cf20ee4735029af141b660e",
+      "unchanged": true
+    },
+    {
+      "group": "batch2_original_root",
+      "relative_path": "normative-provenance-batch2.source-attestations.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.source-attestations.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch2-original\\normative-provenance-batch2.source-attestations.json",
+      "bytes": 11879,
+      "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+      "unchanged": true
+    },
+    {
+      "group": "batch2_original_root",
+      "relative_path": "normative-provenance-batch2.validation.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\bfcad3f2-6146-4d34-ac69-467da06af678\\files\\normative-provenance-batch2.validation.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch2-original\\normative-provenance-batch2.validation.json",
+      "bytes": 5467,
+      "sha256": "ff08208486ec4103eb8920b72ecba0621a1ffe1a343b9d01fbf2d793630ae0ae",
+      "unchanged": true
+    },
+    {
+      "group": "batch3_root",
+      "relative_path": "criterion-provenance-batch-3.ledger.jsonl",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.ledger.jsonl",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch3\\criterion-provenance-batch-3.ledger.jsonl",
+      "bytes": 14367,
+      "sha256": "8c832a98ac7207c146ef328c56342e8e3dc75f29c429709e4b14431a6616946a",
+      "unchanged": true
+    },
+    {
+      "group": "batch3_root",
+      "relative_path": "criterion-provenance-batch-3.merge-instructions.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.merge-instructions.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch3\\criterion-provenance-batch-3.merge-instructions.md",
+      "bytes": 1922,
+      "sha256": "a3f8df45954742d3c3f6ac61ccc0cb00825161384dffd7e6d988e7cb20491b35",
+      "unchanged": true
+    },
+    {
+      "group": "batch3_root",
+      "relative_path": "criterion-provenance-batch-3.overlay.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.overlay.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch3\\criterion-provenance-batch-3.overlay.json",
+      "bytes": 7321,
+      "sha256": "4879337d894ff7e90653e248742c46a3f933abae2483209bfca6f7d66030495d",
+      "unchanged": true
+    },
+    {
+      "group": "batch3_root",
+      "relative_path": "criterion-provenance-batch-3.source-hashes.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.source-hashes.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch3\\criterion-provenance-batch-3.source-hashes.json",
+      "bytes": 7005,
+      "sha256": "178630c61ff91e4083776c0ad765d1ae42e77d88534483fa0a5f31e4e5e1663d",
+      "unchanged": true
+    },
+    {
+      "group": "batch3_root",
+      "relative_path": "criterion-provenance-batch-3.validation.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\e62880a2-2a1f-4ae4-9abf-572a62728640\\files\\criterion-provenance-batch-3.validation.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\batch3\\criterion-provenance-batch-3.validation.json",
+      "bytes": 3035,
+      "sha256": "960d354038acf33f3b7209ee72f274308948896ab311931bc4913bf04336161e",
+      "unchanged": true
+    },
+    {
+      "group": "partition_repair_root",
+      "relative_path": "AGENT_PROGRESS.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files\\AGENT_PROGRESS.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair\\AGENT_PROGRESS.md",
+      "bytes": 8258,
+      "sha256": "caefceef6c1d9be5c9783904b6f20d6b086aa9c496ca2562316a6b2103331c20",
+      "unchanged": true
+    },
+    {
+      "group": "partition_repair_root",
+      "relative_path": "build_provenance_partition_correction.py",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files\\build_provenance_partition_correction.py",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair\\build_provenance_partition_correction.py",
+      "bytes": 75185,
+      "sha256": "f89dcbbec5da3fd0336d350ba39f680a7e98e05582930231aceb439a9a856c8b",
+      "unchanged": true
+    },
+    {
+      "group": "partition_repair_root",
+      "relative_path": "criterion-provenance-batch2-successor.ledger.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files\\criterion-provenance-batch2-successor.ledger.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair\\criterion-provenance-batch2-successor.ledger.json",
+      "bytes": 58095,
+      "sha256": "ae7e00d8ecf9f3916f4ff2c0424eee9392baf00aa925fafcf113838b96ac0887",
+      "unchanged": true
+    },
+    {
+      "group": "partition_repair_root",
+      "relative_path": "criterion-provenance-batch2-successor.overlay.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files\\criterion-provenance-batch2-successor.overlay.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair\\criterion-provenance-batch2-successor.overlay.json",
+      "bytes": 37276,
+      "sha256": "5d0d9bbb374bd7ec3c3f7e5617494da3e2dd62dcd1809889d99a52aa5de9167a",
+      "unchanged": true
+    },
+    {
+      "group": "partition_repair_root",
+      "relative_path": "criterion-provenance-batch2-successor.source-attestations.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files\\criterion-provenance-batch2-successor.source-attestations.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair\\criterion-provenance-batch2-successor.source-attestations.json",
+      "bytes": 13565,
+      "sha256": "87e18c82c7418e16e2296e4188d9045653cafed056680bc277e698997e434237",
+      "unchanged": true
+    },
+    {
+      "group": "partition_repair_root",
+      "relative_path": "criterion-provenance-partition-correction.MERGE.md",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files\\criterion-provenance-partition-correction.MERGE.md",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair\\criterion-provenance-partition-correction.MERGE.md",
+      "bytes": 2482,
+      "sha256": "6cc82d9c457b328ab48713396a22b786d1c94c12aa611df53e593286a13a1b54",
+      "unchanged": true
+    },
+    {
+      "group": "partition_repair_root",
+      "relative_path": "criterion-provenance-partition-correction.manifest.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files\\criterion-provenance-partition-correction.manifest.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair\\criterion-provenance-partition-correction.manifest.json",
+      "bytes": 21866,
+      "sha256": "c49148190ba637a85c0f8d3d2d565aa616642107a0d9e88162ae05f1a36661c0",
+      "unchanged": true
+    },
+    {
+      "group": "partition_repair_root",
+      "relative_path": "criterion-provenance-partition-correction.validation.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\5c19f207-5e73-41bd-8612-089ef60b13c5\\files\\criterion-provenance-partition-correction.validation.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\repair\\criterion-provenance-partition-correction.validation.json",
+      "bytes": 9445,
+      "sha256": "092557d1bf4b7f694cb479ae95a15f23e21463d30585752c423f969a2ff905f5",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_source_snapshot",
+      "relative_path": "batch1-source-snapshot.ais.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\source-snapshot.ais.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-source-snapshot.ais.json",
+      "bytes": 15611,
+      "sha256": "95df2a9538bb5090a5ab652a57b5f7f29e614ea7b2da2343203c05a903cd4718",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_response_annual",
+      "relative_path": "batch1-E__ais-annual-vacation__r1.decoded",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-annual-vacation__r1.decoded",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-annual-vacation__r1.decoded",
+      "bytes": 27560,
+      "sha256": "c0567c8cbf547b44734fb5588bada9f3bd107f8ba94677352f994f470cafc20c",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_record_annual",
+      "relative_path": "batch1-E__ais-annual-vacation__r1.record.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-annual-vacation__r1.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-annual-vacation__r1.record.json",
+      "bytes": 6041,
+      "sha256": "7080f9d0e678803541d71a354f753e4fdb7a7921b1c336698586064a6e65a2dd",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_response_sick",
+      "relative_path": "batch1-E__ais-sick-surgery__r1.decoded",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-sick-surgery__r1.decoded",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-sick-surgery__r1.decoded",
+      "bytes": 13896,
+      "sha256": "21b1114070fcaeff604516b729c8434b754b3c9a7722cdfec1a4a38750d9e0eb",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_record_sick",
+      "relative_path": "batch1-E__ais-sick-surgery__r1.record.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-sick-surgery__r1.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-sick-surgery__r1.record.json",
+      "bytes": 5883,
+      "sha256": "5ba2c73028547badfee8055b1eeef8b2bd0892bf68c9eed2bbda24508f2fa6bf",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_response_maternity",
+      "relative_path": "batch1-E__ais-maternity-leave__r1.decoded",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-maternity-leave__r1.decoded",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-maternity-leave__r1.decoded",
+      "bytes": 11627,
+      "sha256": "92cc35e1352ad734ca6a6584dd8ee5ac3f21b22c8e31ce1c35dab841ea916f55",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_record_maternity",
+      "relative_path": "batch1-E__ais-maternity-leave__r1.record.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-maternity-leave__r1.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-maternity-leave__r1.record.json",
+      "bytes": 5817,
+      "sha256": "fc99f4b970006727e7adb9b1de638fa5870faac1465e98e029beeb8e7ee4f76b",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_response_overtime",
+      "relative_path": "batch1-E__ais-overtime-weekend__r1.decoded",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-overtime-weekend__r1.decoded",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-overtime-weekend__r1.decoded",
+      "bytes": 58581,
+      "sha256": "369175ab77079933c47d21a40ed5753cda4ad52626b578c4b51798f8b58ed54c",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_record_overtime",
+      "relative_path": "batch1-E__ais-overtime-weekend__r1.record.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-overtime-weekend__r1.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-overtime-weekend__r1.record.json",
+      "bytes": 6304,
+      "sha256": "47b12aef0beb83eacdf1f7b1782e2ca969b05a553f3caff727ec33f7e897b373",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_response_tuition",
+      "relative_path": "batch1-E__ais-tuition-child__r1.decoded",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-tuition-child__r1.decoded",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-tuition-child__r1.decoded",
+      "bytes": 5930,
+      "sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23",
+      "unchanged": true
+    },
+    {
+      "group": "batch1_record_tuition",
+      "relative_path": "batch1-E__ais-tuition-child__r1.record.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-tuition-child__r1.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch1-E__ais-tuition-child__r1.record.json",
+      "bytes": 5760,
+      "sha256": "9e9a82a36075dd5ec6767f8ad5537d016ebae7d0d4280cfbd1c45801a1b2f5a4",
+      "unchanged": true
+    },
+    {
+      "group": "batch2_source_document",
+      "relative_path": "batch2-hardware-source.docx",
+      "origin_path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch2-hardware-source.docx",
+      "bytes": 44901,
+      "sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+      "unchanged": true
+    },
+    {
+      "group": "batch2_rule_receipt",
+      "relative_path": "batch2-case-hw-policy-rule.json",
+      "origin_path": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch2-case-hw-policy-rule.json",
+      "bytes": 63966,
+      "sha256": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689",
+      "unchanged": true
+    },
+    {
+      "group": "batch3_source_document",
+      "relative_path": "batch3-hardware-source.docx",
+      "origin_path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\samples\\source-documents\\Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch3-hardware-source.docx",
+      "bytes": 44901,
+      "sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+      "unchanged": true
+    },
+    {
+      "group": "batch3_rule_export",
+      "relative_path": "batch3-hardware-policy-v3.3-import.json",
+      "origin_path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\samples\\policies\\hardware-policy-v3.3-import.json",
+      "staged_path": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\resume-inputs\\external-evidence\\batch3-hardware-policy-v3.3-import.json",
+      "bytes": 15000,
+      "sha256": "0fb6a1298d13f4d3b82da8c3571e189076bd56fec943be0e871036d0875ecfbf",
+      "unchanged": true
+    }
+  ],
+  "git_logical_state_byte_identical": true
+}

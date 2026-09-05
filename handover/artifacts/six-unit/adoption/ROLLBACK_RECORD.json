@@ -1,0 +1,29 @@
+{
+  "schema_version": "six_unit_rollback_record_v1",
+  "captured_at_utc": "2026-09-05T03:12:08.468749+00:00",
+  "repository": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository",
+  "git_dir": "C:\\Users\\taomar\\Downloads\\policy extractor\\.git",
+  "old_main": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "old_head_symbolic": "refs/heads/main",
+  "shared_index_backup": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\shared-index-before.bin",
+    "bytes": 120664,
+    "sha256": "bdc2eb8cbd6d29e03595b8f6c60159ae68432f865293f1c74a63456536152bb2"
+  },
+  "shared_head_backup": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\shared-HEAD-before.bin",
+    "bytes": 21,
+    "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+  },
+  "rollback_procedure": [
+    "git update-ref refs/heads/main <old_main> <adopted_final>",
+    "git read-tree <old_main>",
+    "re-run complete logical/content gate",
+    "restore shared-index-before.bin only if logical read-tree restoration fails"
+  ],
+  "used": false,
+  "new_main": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+  "final_tree": "5ade3ef636fd71c0a7c87b3ba9b69393f47d9e94",
+  "adopted_at_utc": "2026-09-05T03:14:44.864013+00:00",
+  "post_adoption_checks_passed": true
+}

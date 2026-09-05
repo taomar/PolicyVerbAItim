@@ -1,0 +1,103 @@
+{
+  "schema_version": "consume_request_foundation_blocked_v1",
+  "status": "resolved_by_narrow_retroactive_approval",
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "reason": "Direct archived edit-tool evidence proves authorship across all ten T1 paths, and the exact previously validated bytes received narrow retroactive approval. The historical read-only scope breach remains recorded.",
+  "request_mode_candidate": {
+    "content_exact": true,
+    "coherent": true,
+    "temporal_layer_proven": true,
+    "authorship_proven": true,
+    "publishable_patch_written": true,
+    "private_evidence_patch": {
+      "path": "private-validation\\foundation-evidence-pass1.patch",
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "bytes": 27171,
+      "regenerated_twice_identically": true,
+      "promoted_path": "03-consume-request-mode-foundation.patch"
+    },
+    "paths": [
+      "apps/consume-demo/src/App.test.tsx",
+      "apps/consume-demo/src/App.tsx",
+      "apps/consume-demo/src/components/RequestDocket.tsx",
+      "apps/consume-demo/src/contracts/caseDecision.ts",
+      "apps/consume-demo/src/copy/strings.ts",
+      "apps/consume-demo/src/lib/canonicalHash.test.ts",
+      "apps/consume-demo/src/lib/canonicalHash.ts",
+      "apps/consume-demo/src/lib/requestBody.test.ts",
+      "apps/consume-demo/src/lib/requestBody.ts",
+      "apps/consume-demo/src/playground.css"
+    ]
+  },
+  "proof": {
+    "content_sources": [
+      "consume-reconstruction-v5\\before for the four paths shared with the native layer",
+      "validation\\prior-baseline for the six paths untouched by the native worker",
+      "tracked-snapshot-file-hashes.csv for HEAD and final SHA-256 continuity"
+    ],
+    "native_journal": "The native worker journal reverses and replays 20 edits and 2 creates across exactly eight native paths. The recovered pre-edit files already contain T1.",
+    "contrary_ownership_evidence": [
+      "CONSUME_RECONSTRUCTION_DIAGNOSTIC.json says T1 has no confirmed commit owner.",
+      "COMMIT_SEQUENCE.json marks the proposed T1 unit as ownership confirmation needed.",
+      "COMMIT_DECOMPOSITION_AUDIT.md calls the T1 state older and unattributed."
+    ],
+    "attribution": {
+      "session_name": "Policy payload size audit",
+      "session_id": "d99011fe-a8c3-4032-872b-1643baaef994",
+      "agent_id": "call_NXSiPU3O1bwlEaxo3A1CGhoz",
+      "events_path": "C:\\Users\\taomar\\.copilot\\session-state\\d99011fe-a8c3-4032-872b-1643baaef994\\events.jsonl",
+      "events_sha256": "54e224651b09fb9fbeef338342b92de2370bbb3c403a9d10a061735bf6822a51",
+      "edit_event_lines": [
+        3412,
+        3419,
+        3441,
+        3450,
+        3459,
+        3466,
+        3487,
+        3494,
+        3508,
+        3515,
+        3522,
+        3543,
+        3550,
+        3564,
+        3578,
+        3585,
+        3606,
+        3641,
+        3662,
+        3683
+      ],
+      "all_ten_paths_covered": true
+    },
+    "authorization_history": {
+      "historical_status": "unauthorized read-only scope drift",
+      "warning_event_lines": [
+        3866,
+        3867
+      ],
+      "warning_turns": [
+        35,
+        36
+      ],
+      "retroactive_approval": "exact patch bytes only",
+      "other_archived_work_approved": false
+    }
+  },
+  "validation": {
+    "foundation_exact_path_set": true,
+    "foundation_changed_paths": 10,
+    "foundation_full_suite": "241/241 passed",
+    "foundation_typescript": "passed",
+    "foundation_then_native_apply_check": "passed",
+    "combined_exact_path_set": true,
+    "combined_changed_paths": 14,
+    "combined_full_suite": "260/260 passed",
+    "combined_typescript": "passed",
+    "native_parser_focused": "19/19 passed",
+    "native_parser_mutation": "expected 5 failed / 14 passed",
+    "native_parser_restored": "19/19 passed"
+  },
+  "required_unblock": "Resolved for the exact promoted bytes. Earlier Rule/backend and Payload prerequisites must still be independently cleared before staging."
+}

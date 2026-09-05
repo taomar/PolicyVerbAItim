@@ -1,0 +1,1737 @@
+{
+  "schema": "policyverbatim_bundled_artifacts/1",
+  "generated_utc": "2026-09-05T07:29:02Z",
+  "root": "handover/artifacts",
+  "path_convention": "relative to handover/artifacts, forward slashes",
+  "provenance_note": "source_path_historical_nonactionable records where each file came from on the SOURCE host. It is provenance only and is never required on the target host.",
+  "file_count": 186,
+  "total_bytes": 5148799.0,
+  "set_counts": [
+    {
+      "set": "azure",
+      "files": 2,
+      "bytes": 316176.0
+    },
+    {
+      "set": "consume-foundation",
+      "files": 17,
+      "bytes": 180161.0
+    },
+    {
+      "set": "historical",
+      "files": 3,
+      "bytes": 75004.0
+    },
+    {
+      "set": "migration",
+      "files": 7,
+      "bytes": 35415.0
+    },
+    {
+      "set": "parent",
+      "files": 9,
+      "bytes": 104605.0
+    },
+    {
+      "set": "payload",
+      "files": 6,
+      "bytes": 179239.0
+    },
+    {
+      "set": "provenance",
+      "files": 86,
+      "bytes": 2326638.0
+    },
+    {
+      "set": "publisher",
+      "files": 6,
+      "bytes": 47339.0
+    },
+    {
+      "set": "rule-foundation",
+      "files": 10,
+      "bytes": 506860.0
+    },
+    {
+      "set": "six-unit",
+      "files": 40,
+      "bytes": 1377362.0
+    }
+  ],
+  "files": [
+    {
+      "path": "azure/AZURE_3815866.patch",
+      "bytes": 294643,
+      "sha256": "d4f07127dfd05ce6e4623357a78445495fadea90b28a720c79a308308f7be40b",
+      "set": "azure",
+      "role": "off-main Azure commit evidence",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\AZURE_3815866.patch"
+    },
+    {
+      "path": "azure/AZURE_OVERLAP_ANALYSIS.json",
+      "bytes": 21533,
+      "sha256": "ebdf814d19e16d09d6f56e2a77f2e6ca9c01e25d675370238b6478c323316a19",
+      "set": "azure",
+      "role": "off-main Azure commit evidence",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\AZURE_OVERLAP_ANALYSIS.json"
+    },
+    {
+      "path": "consume-foundation/03-consume-request-mode-foundation.BLOCKED.json",
+      "bytes": 4114,
+      "sha256": "6d16f32159acd1a084eb9e70742f700c9c89f211170214b3fd63af9c20f1c09c",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\03-consume-request-mode-foundation.BLOCKED.json"
+    },
+    {
+      "path": "consume-foundation/03-consume-request-mode-foundation.patch",
+      "bytes": 27171,
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\03-consume-request-mode-foundation.patch"
+    },
+    {
+      "path": "consume-foundation/04-consume-native-parser-renderer.patch",
+      "bytes": 35998,
+      "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\04-consume-native-parser-renderer.patch"
+    },
+    {
+      "path": "consume-foundation/APPROVAL_AUTHORSHIP_EVIDENCE.json",
+      "bytes": 12197,
+      "sha256": "3c0865d7fcb285e76e1a66f49d056a43eb28959da62cedb3c22e062bdd6ad155",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\APPROVAL_AUTHORSHIP_EVIDENCE.json"
+    },
+    {
+      "path": "consume-foundation/APPROVAL_EXCLUSION_REVALIDATION.json",
+      "bytes": 1578,
+      "sha256": "0356bad60be032c690cba4cb2235236f18ca4db287f6790313f273420f82b1c2",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\APPROVAL_EXCLUSION_REVALIDATION.json"
+    },
+    {
+      "path": "consume-foundation/APPROVAL_NON_MUTATION_PROOF.json",
+      "bytes": 3418,
+      "sha256": "e6118c13c133f02f268e4448b7710b083d11c85694f336eb12e3c55dc688bd7e",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\APPROVAL_NON_MUTATION_PROOF.json"
+    },
+    {
+      "path": "consume-foundation/AZURE_OVERLAP.json",
+      "bytes": 628,
+      "sha256": "304d3d986846559e0025a7f2051bc81affe8cb681fc881094f901d77a1c13d26",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\AZURE_OVERLAP.json"
+    },
+    {
+      "path": "consume-foundation/CONSUME_REQUEST_FOUNDATION_RECONSTRUCTION.md",
+      "bytes": 10362,
+      "sha256": "c9150d409401f90ef8389aa3bed336f565531f811b261b468e6c2143c6637222",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\CONSUME_REQUEST_FOUNDATION_RECONSTRUCTION.md"
+    },
+    {
+      "path": "consume-foundation/CONTENT_LEAK_REVIEW.json",
+      "bytes": 5117,
+      "sha256": "1dccf370467d0defe46ac6f382d567a2433f7938c5039ce1f1630246326932dc",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\CONTENT_LEAK_REVIEW.json"
+    },
+    {
+      "path": "consume-foundation/END_BINDING.json",
+      "bytes": 941,
+      "sha256": "827b9d3d7d74d32a4ba177bc8c720b74b08f9d0e3ce429bebfa30c60aade8086",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\END_BINDING.json"
+    },
+    {
+      "path": "consume-foundation/EXCLUSIONS.json",
+      "bytes": 3317,
+      "sha256": "323630c2b5ba1dc956a382988f6974292a12887da1120cb54be9b24859f1c465",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\EXCLUSIONS.json"
+    },
+    {
+      "path": "consume-foundation/INPUT_OUTPUT_HASHES.json",
+      "bytes": 24509,
+      "sha256": "191686c902c1d8ee30f8e27433f3cd69ca1d6d8891f811919f0f7924306ed088",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\INPUT_OUTPUT_HASHES.json"
+    },
+    {
+      "path": "consume-foundation/NEXT_ACTION.md",
+      "bytes": 657,
+      "sha256": "fd51d36da5ae54640f42b967451d2f124a8f36fd7d68664cf249a7bb853f22b6",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\NEXT_ACTION.md"
+    },
+    {
+      "path": "consume-foundation/NON_MUTATION_PROOF.json",
+      "bytes": 3956,
+      "sha256": "b02d711c18f87b08bc8aa8457885ec33c80c13b6dad2207e00c5b5d25b457800",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\NON_MUTATION_PROOF.json"
+    },
+    {
+      "path": "consume-foundation/PATH_HUNK_MANIFEST.json",
+      "bytes": 38247,
+      "sha256": "ad47ff8e9cfd703546a46f14e1e6828a5549e3c68fd5e79407f9400eb70a9b96",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\PATH_HUNK_MANIFEST.json"
+    },
+    {
+      "path": "consume-foundation/SEQUENCE_VALIDATION.json",
+      "bytes": 7009,
+      "sha256": "1fb9af2898eae6e5e1f210cbc6247bffe18ddb679da450895052c405cc5694a1",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\SEQUENCE_VALIDATION.json"
+    },
+    {
+      "path": "consume-foundation/START_BINDING.json",
+      "bytes": 942,
+      "sha256": "bbb9e3e983d1fc769271c9cab748d62912b2d00ce19a2c8a6b455466d4657c2a",
+      "set": "consume-foundation",
+      "role": "ordinal-03/04 Consume foundation reconstruction and approval evidence",
+      "source_session": "d5da914d-1050-4c78-9b63-798ced2d1610",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\START_BINDING.json"
+    },
+    {
+      "path": "historical/ARTIFACT_INVENTORY.json",
+      "bytes": 20155,
+      "sha256": "928a673ae1b54672032a37b9db54390c2efa09f37ef497ea8b6b66aaa6e04718",
+      "set": "historical",
+      "role": "frozen source-host ledger snapshot (NON-ACTIONABLE)",
+      "source_session": "8476596b-1943-4577-8a2c-10e0d7553606",
+      "source_path_historical_nonactionable": "(generated by this handover session; superseded copy)"
+    },
+    {
+      "path": "historical/GIT_AND_WORKTREE_LEDGER.json",
+      "bytes": 37172,
+      "sha256": "7de56658746a026607c0d4765b2a8170831947182c6e75c7f79dbeb2d212a372",
+      "set": "historical",
+      "role": "frozen source-host ledger snapshot (NON-ACTIONABLE)",
+      "source_session": "8476596b-1943-4577-8a2c-10e0d7553606",
+      "source_path_historical_nonactionable": "(generated by this handover session; superseded copy)"
+    },
+    {
+      "path": "historical/PENDING_DECISIONS_AND_TASKS.json",
+      "bytes": 17677,
+      "sha256": "06f44335def78c806dd9a7793088ddb95b03780156b693469685074002c6a168",
+      "set": "historical",
+      "role": "frozen source-host ledger snapshot (NON-ACTIONABLE)",
+      "source_session": "8476596b-1943-4577-8a2c-10e0d7553606",
+      "source_path_historical_nonactionable": "(generated by this handover session; superseded copy)"
+    },
+    {
+      "path": "migration/CHILD_AZURE_HANDOVER.md",
+      "bytes": 2179,
+      "sha256": "b2937545e436073c12446b9f35dd65c2921072731e3ff56b73fb537d31a2ea57",
+      "set": "migration",
+      "role": "original migration handover",
+      "source_session": "8437f3da-491a-4139-b979-8b00996c8953",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\CHILD_AZURE_HANDOVER.md"
+    },
+    {
+      "path": "migration/CHILD_INTEGRATION_HANDOVER.md",
+      "bytes": 2196,
+      "sha256": "70688993215fce166180173cb88f2f773715a5be0d7b9678673eb97453b84fa6",
+      "set": "migration",
+      "role": "original migration handover",
+      "source_session": "8437f3da-491a-4139-b979-8b00996c8953",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\CHILD_INTEGRATION_HANDOVER.md"
+    },
+    {
+      "path": "migration/CHILD_PAYLOAD_HANDOVER.md",
+      "bytes": 2167,
+      "sha256": "3734b9d0bb10e3fca5dbcc49e1f515754715434f48911472c25054e7c406c85f",
+      "set": "migration",
+      "role": "original migration handover",
+      "source_session": "8437f3da-491a-4139-b979-8b00996c8953",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\CHILD_PAYLOAD_HANDOVER.md"
+    },
+    {
+      "path": "migration/CHILD_RULE_RETRIEVAL_HANDOVER.md",
+      "bytes": 2753,
+      "sha256": "658d8ea666e5ee322a3dfc95ba7c57bb61bc35991a614ab138b8a71501004fe6",
+      "set": "migration",
+      "role": "original migration handover",
+      "source_session": "8437f3da-491a-4139-b979-8b00996c8953",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\CHILD_RULE_RETRIEVAL_HANDOVER.md"
+    },
+    {
+      "path": "migration/OVERSIGHT_SUCCESSOR_HANDOVER.md",
+      "bytes": 21344,
+      "sha256": "cd9745e7fcdc56212b4f01dfbf4a79a1d23e973dd961c9286ace89148f872ab8",
+      "set": "migration",
+      "role": "original migration handover",
+      "source_session": "8437f3da-491a-4139-b979-8b00996c8953",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\OVERSIGHT_SUCCESSOR_HANDOVER.md"
+    },
+    {
+      "path": "migration/SPAWN_SUCCESSOR_STRUCTURE.md",
+      "bytes": 3253,
+      "sha256": "e642f5965c33f824ab1a84afa0804cdedb57340b7e50eba0692a1bff0a52c12b",
+      "set": "migration",
+      "role": "original migration handover",
+      "source_session": "8437f3da-491a-4139-b979-8b00996c8953",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\SPAWN_SUCCESSOR_STRUCTURE.md"
+    },
+    {
+      "path": "migration/TOP_LEVEL_PARENT_KICKOFF.md",
+      "bytes": 1523,
+      "sha256": "6a96ba57bf3d6a6532e6ee988457fc8e893a977f63d4400698add63dc1708d33",
+      "set": "migration",
+      "role": "original migration handover",
+      "source_session": "8437f3da-491a-4139-b979-8b00996c8953",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\TOP_LEVEL_PARENT_KICKOFF.md"
+    },
+    {
+      "path": "parent/checkpoints/001-orchestrating-consume-api-matr.md",
+      "bytes": 14664,
+      "sha256": "cbf78ce65f47cf202a569b451b0e4221e4147b52baaef4890c8d86c854b4db65",
+      "set": "parent",
+      "role": "oversight parent checkpoint",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\checkpoints\\001-orchestrating-consume-api-matr.md"
+    },
+    {
+      "path": "parent/checkpoints/002-correcting-rule-only-retrieval.md",
+      "bytes": 13528,
+      "sha256": "db306ae61d3887248d8edabeb0a552556dabd395d8c05b6980f311850f16dca6",
+      "set": "parent",
+      "role": "oversight parent checkpoint",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\checkpoints\\002-correcting-rule-only-retrieval.md"
+    },
+    {
+      "path": "parent/checkpoints/003-rule-retrieval-and-audit.md",
+      "bytes": 20925,
+      "sha256": "49a6f85eb4db359b5724c7aad97df186a331fe627294a9a305640075f51647b2",
+      "set": "parent",
+      "role": "oversight parent checkpoint",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\checkpoints\\003-rule-retrieval-and-audit.md"
+    },
+    {
+      "path": "parent/checkpoints/004-provenance-and-commit-reconstr.md",
+      "bytes": 10245,
+      "sha256": "0271a23446ad323641578f358a4a04639757553864d80def1a34b5beaf59e832",
+      "set": "parent",
+      "role": "oversight parent checkpoint",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\checkpoints\\004-provenance-and-commit-reconstr.md"
+    },
+    {
+      "path": "parent/checkpoints/005-private-base-handover.md",
+      "bytes": 15429,
+      "sha256": "de85963f53f2fb45779450f7575d0b39b2e97faf05c9993055b99420f87fc3d3",
+      "set": "parent",
+      "role": "oversight parent checkpoint",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\checkpoints\\005-private-base-handover.md"
+    },
+    {
+      "path": "parent/checkpoints/index.md",
+      "bytes": 545,
+      "sha256": "b2e5a4783302458e5dcaf77be9c1bd21b8b9c83311ef1463b2eded08cd25dc4a",
+      "set": "parent",
+      "role": "oversight parent checkpoint",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\checkpoints\\index.md"
+    },
+    {
+      "path": "parent/feature-adoption/ADOPTION_RESULT.json",
+      "bytes": 6189,
+      "sha256": "bba46e7cc219249979a777800eba2a6d9c851bbbc6981e9c86e4878060ae9bf2",
+      "set": "parent",
+      "role": "feature adoption before/after record",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\files\\feature-adoption\\ADOPTION_RESULT.json"
+    },
+    {
+      "path": "parent/feature-adoption/START_STATE.json",
+      "bytes": 17030,
+      "sha256": "e187624c1a604251d8d5e6972d400a7da7b4aa564de1a10e5df9bcd745095c7e",
+      "set": "parent",
+      "role": "feature adoption before/after record",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\files\\feature-adoption\\START_STATE.json"
+    },
+    {
+      "path": "parent/PARENT_SUCCESSOR_HANDOVER.md",
+      "bytes": 6050,
+      "sha256": "dd498498ae801a7bfb4c8e98404cec19b41edce2d5176e27743a45d12ad44c05",
+      "set": "parent",
+      "role": "oversight parent handover",
+      "source_session": "b065f09b-2a4c-479f-a012-e6e55f388234",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\b065f09b-2a4c-479f-a012-e6e55f388234\\files\\PARENT_SUCCESSOR_HANDOVER.md"
+    },
+    {
+      "path": "payload/AGENT_PROGRESS.md",
+      "bytes": 8853,
+      "sha256": "a4007786e66a9d440467bda5307cc221fd3be29b4e5d3232dbcd47ed54805c26",
+      "set": "payload",
+      "role": "payload/decision track handover and analysis",
+      "source_session": "5a06fec2-12cd-4477-b574-4d18ab814907",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907\\files\\AGENT_PROGRESS.md"
+    },
+    {
+      "path": "payload/CHILD_PAYLOAD_SUCCESSOR_HANDOVER.md",
+      "bytes": 17060,
+      "sha256": "71fb4060bdcbb405208a58b6512e7cb65abe3c3cb50c6080c1ada3b1865630b8",
+      "set": "payload",
+      "role": "payload/decision track handover and analysis",
+      "source_session": "5a06fec2-12cd-4477-b574-4d18ab814907",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907\\files\\CHILD_PAYLOAD_SUCCESSOR_HANDOVER.md"
+    },
+    {
+      "path": "payload/CONSUME_API_EVALUATION_RUBRIC.md",
+      "bytes": 54655,
+      "sha256": "66fcaae92a436c179651e045da285dacbed81fb4632f7e519169c0407abf60e5",
+      "set": "payload",
+      "role": "payload/decision track handover and analysis",
+      "source_session": "5a06fec2-12cd-4477-b574-4d18ab814907",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907\\files\\CONSUME_API_EVALUATION_RUBRIC.md"
+    },
+    {
+      "path": "payload/corpus_topic_map.json",
+      "bytes": 32682,
+      "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "set": "payload",
+      "role": "payload/decision track handover and analysis",
+      "source_session": "5a06fec2-12cd-4477-b574-4d18ab814907",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907\\files\\corpus_topic_map.json"
+    },
+    {
+      "path": "payload/IMPLEMENTATION_BLUEPRINT_26_TRUE_FAILURES.md",
+      "bytes": 45316,
+      "sha256": "a3a69f2ca6a0bcc5e96926cdf96c4740dd590ff62aa8db473ee87f0b9364fa13",
+      "set": "payload",
+      "role": "payload/decision track handover and analysis",
+      "source_session": "5a06fec2-12cd-4477-b574-4d18ab814907",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907\\files\\IMPLEMENTATION_BLUEPRINT_26_TRUE_FAILURES.md"
+    },
+    {
+      "path": "payload/REGRESSION_INVESTIGATION_38_POLICY_MODE.md",
+      "bytes": 20673,
+      "sha256": "0b523c690994d091e6c548dad165f55c170af6b816c4be08bac641c16925162d",
+      "set": "payload",
+      "role": "payload/decision track handover and analysis",
+      "source_session": "5a06fec2-12cd-4477-b574-4d18ab814907",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907\\files\\REGRESSION_INVESTIGATION_38_POLICY_MODE.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/build_criterion_provenance_successor.py",
+      "bytes": 127757,
+      "sha256": "348eca7f998424d2267e2f1b667a407d6b35d75e63e102d86be9dc1cb80b9719",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\build_criterion_provenance_successor.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/ADOPTION_AND_ROLLBACK.md",
+      "bytes": 975,
+      "sha256": "f579d041b5a0325b52fb40ab09ff8abf98f2a89260d7d7fe537ae44f6009c174",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\ADOPTION_AND_ROLLBACK.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/AGENT_PROGRESS.md",
+      "bytes": 1680,
+      "sha256": "c71a0acc71359d92376d3da48f0cfbd51123a3b0ce4bcd099c4f16bb4964df53",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\AGENT_PROGRESS.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/BUNDLE_MANIFEST.json",
+      "bytes": 5425,
+      "sha256": "341337bc303880c3637069e51192ce2db36c55dfd13d51168157b6828e4705f0",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\BUNDLE_MANIFEST.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/consume_matrix_runner.py",
+      "bytes": 96951,
+      "sha256": "58c6c180e4e49f4a1cc8213ef4bbfc3c8cd0771d5120b1bf3867675007651aba",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\consume_matrix_runner.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evaluation-rubric.json",
+      "bytes": 186031,
+      "sha256": "a2b547b74b8d7e44d853c128593aa45e475140929b55e127a2e56ad2fd3a7792",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evaluation-rubric.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/ACTIONABLE_POLICY_FAILURE_AUDIT.md",
+      "bytes": 13746,
+      "sha256": "a46099c8a187fbca985300097f962561c5d6c2c9b6fe4b921b03c7a436e6923a",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\ACTIONABLE_POLICY_FAILURE_AUDIT.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/AIS02_SEMANTIC_DECISION.json",
+      "bytes": 2507,
+      "sha256": "21554676fd12f95a1dc9fddb044aa74da4351897e40e021d484e6698000b8912",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\AIS02_SEMANTIC_DECISION.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/manifest-v1.overlay.snapshot.json",
+      "bytes": 5909,
+      "sha256": "82cfaa7a4e91031f8b7b2e441d0aba91f7ced2e323eb7a2552846116f7bd73bf",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\manifest-v1.overlay.snapshot.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/manifest-v1.snapshot.json",
+      "bytes": 6190,
+      "sha256": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\manifest-v1.snapshot.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/normative/ais_e_annual_vacation_r1.json",
+      "bytes": 27560,
+      "sha256": "c0567c8cbf547b44734fb5588bada9f3bd107f8ba94677352f994f470cafc20c",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\normative\\ais_e_annual_vacation_r1.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/normative/ais_e_maternity_leave_r1.json",
+      "bytes": 11627,
+      "sha256": "92cc35e1352ad734ca6a6584dd8ee5ac3f21b22c8e31ce1c35dab841ea916f55",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\normative\\ais_e_maternity_leave_r1.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/normative/ais_e_tuition_child_r1.json",
+      "bytes": 5930,
+      "sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\normative\\ais_e_tuition_child_r1.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/normative/hardware-policy-v3.3.rules.json",
+      "bytes": 15000,
+      "sha256": "0fb6a1298d13f4d3b82da8c3571e189076bd56fec943be0e871036d0875ecfbf",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\normative\\hardware-policy-v3.3.rules.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/normative/normative-provenance-batch2.source-attestations.json",
+      "bytes": 11879,
+      "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\normative\\normative-provenance-batch2.source-attestations.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/rubric-v1.snapshot.json",
+      "bytes": 21872,
+      "sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\rubric-v1.snapshot.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/rubric-v2.overlay.snapshot.json",
+      "bytes": 176428,
+      "sha256": "00c7397a76d08d7f431994c649a1ace6384b0a663a0f46a66065bf52041e63ed",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\rubric-v2.overlay.snapshot.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/evidence/source.snapshot.json",
+      "bytes": 32682,
+      "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\evidence\\source.snapshot.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/FILE_INVENTORY.json",
+      "bytes": 18685,
+      "sha256": "ec3dae200404cfc14b84bfadc7ffd5eda7ba90d65fabf28d27e53de960b69ebb",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\FILE_INVENTORY.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/HARNESS_DESIGN.md",
+      "bytes": 9935,
+      "sha256": "55004b1e326fbe3cd4c050ca5f77ec346c678569124c8d016226fe4b65811d58",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\HARNESS_DESIGN.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/INVENTORY.md",
+      "bytes": 11965,
+      "sha256": "2575932e6e70922769cc4670871ef633038453986d04548cefa89b59f0666181",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\INVENTORY.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/copied-harness-tests.log",
+      "bytes": 3511,
+      "sha256": "e1584601a408c0e26b54866c5fabcd58c9fe6a7babe6ffd66459fd2b438544c6",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\copied-harness-tests.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/deterministic-regeneration.log",
+      "bytes": 1120,
+      "sha256": "1536f60d36fb903c720f3f7a61c1b252ac5fbbc686676d6ab8bb833453bf2991",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\deterministic-regeneration.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/leakage-scan.log",
+      "bytes": 300,
+      "sha256": "84318de6e417f14220870b17b3df430a05ad7f85abd6808cb70ad2561a0d01d5",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\leakage-scan.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/migration.log",
+      "bytes": 331,
+      "sha256": "2c58bdbc40d89259909ce5047f892b8aee63403e04a1a8dc62d920965deb0f77",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\migration.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/mutation-negative-controls.log",
+      "bytes": 1778,
+      "sha256": "6754c80b3a702e0ac6451b7f1396fbf1816a75ddcb3a4b4e7eb6b10603fda78a",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\mutation-negative-controls.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/native-self-test.log",
+      "bytes": 788,
+      "sha256": "5c94664ed1a8dbce923a76c88612a4d9e28e76ab3bf5adc22b1fa9c9e25cbd2f",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\native-self-test.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/native-validate.log",
+      "bytes": 1769,
+      "sha256": "775aa8fa31277fb09464a9d09bf2150b71c313c60b3ed634468353fb8ef717cc",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\native-validate.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/overlay-adoption.log",
+      "bytes": 3581,
+      "sha256": "03ee08694dd519731cc96b7233c98aff243a3978e7d2c82702fa9072a6d409da",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\overlay-adoption.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/source-artifact-read.log",
+      "bytes": 12586,
+      "sha256": "f1a0927ca4425b1f0a09f0b1849aee58c5d6b0e4cd1dab9b87813656c958ba92",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\source-artifact-read.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/base-v3.0.0/source-non-mutation.log",
+      "bytes": 854,
+      "sha256": "03babf9b65c433d2e612b450bc331a8c173c674270cd5f9958c72428cca6b33c",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\base-v3.0.0\\source-non-mutation.log"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/leakage-scan.json",
+      "bytes": 299,
+      "sha256": "d75692371eb0db3ab1315e45f652766ec2612c54a6384d8f55a782da8a53c1d0",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\leakage-scan.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/mutation-negative-controls.json",
+      "bytes": 976,
+      "sha256": "e455511a920b7e935499c975a568e5f5ddfc225c78b454f3858cc057ad6a7fdd",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\mutation-negative-controls.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/native-self-test.json",
+      "bytes": 100,
+      "sha256": "e21376012ea0f639efe4517e8dae6fd54f96b59343e70bc31bd7f3486bfc5865",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\native-self-test.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/native-validate.json",
+      "bytes": 125,
+      "sha256": "808ee20cb5e360b96cd3da1eed468f6fd5f25aea7ba4d1e2d83e1c3e464d96df",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\native-validate.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/unit-tests.json",
+      "bytes": 56,
+      "sha256": "c592104eb01bae349a5af9816f51d43a62419249cc9dfb42cfbdfc882763c16d",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\unit-tests.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/logs/validation-summary.json",
+      "bytes": 2642,
+      "sha256": "a3c25e9c524948ffef28da910f92bd1b1a1e9a9830cc10ef3eade92da6816221",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\logs\\validation-summary.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/manifest.pending.json",
+      "bytes": 6043,
+      "sha256": "3e7c24a0e6c93bf3205874d63361e0fa1dbe3e52405887a983d3d1efb34cb80b",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\manifest.pending.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/MERGE_VALIDATION_REPORT.md",
+      "bytes": 2928,
+      "sha256": "14e6162d2ed85ca00ca0a4b3a624390dc9064aa3f230329e8a917228f80325eb",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\MERGE_VALIDATION_REPORT.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/migrate_rubric_provenance.py",
+      "bytes": 26966,
+      "sha256": "63d060ed069f9b34c0903c0a68058020876cfb2b421499cba0124ca916b4fdc7",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\migrate_rubric_provenance.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/PROVENANCE_INTEGRATION.md",
+      "bytes": 1180,
+      "sha256": "379cf8a70e0aece297ebd7eae6c4a1439dcaf71cbe941ab66a3a2882185c2cb5",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\PROVENANCE_INTEGRATION.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/ADOPTION_SOURCE_LOCK.json",
+      "bytes": 7403,
+      "sha256": "a81f9e6894863035e8bff1851c3fb8c50de0e4264ef7b636e8a6b6e63b726a4d",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\ADOPTION_SOURCE_LOCK.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/build_criterion_provenance_successor.py",
+      "bytes": 127757,
+      "sha256": "348eca7f998424d2267e2f1b667a407d6b35d75e63e102d86be9dc1cb80b9719",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\build_criterion_provenance_successor.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/criterion-provenance-merged-ledger.json",
+      "bytes": 63022,
+      "sha256": "80f785a0f989b25f490c84bd0b1b32f98622c3d64da818a42aed061c6e15f185",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\criterion-provenance-merged-ledger.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/criterion-provenance-merged-overlay.json",
+      "bytes": 52230,
+      "sha256": "41b66da713ca9c49b454c7958b94fb229a4f7b7d0420c2b471be50ba05ec8e88",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\criterion-provenance-merged-overlay.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/INPUT_HASH_MANIFEST.json",
+      "bytes": 14526,
+      "sha256": "0caa125fb500f127109cb2f8199391a2d8aaff0c0bf0a4dd7e385b04480918f3",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\INPUT_HASH_MANIFEST.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/real-harness-provenance-guard.patch",
+      "bytes": 398738,
+      "sha256": "2dfcdd21a4c6def599d0e06f55fc42e6fd5e3dd94800c49ca375a4cffdb81345",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\real-harness-provenance-guard.patch"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/SOURCE_NON_MUTATION.json",
+      "bytes": 68199,
+      "sha256": "43c0e9dd97b5c4248998d9af39b286f5d624dac7bb06e387a12faaeef91396b9",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\SOURCE_NON_MUTATION.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch1/build_batch1_provenance.py",
+      "bytes": 36210,
+      "sha256": "01f77bee569eb44c3d304254adcd360006a9d2965713624a3ac153a31471f915",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch1\\build_batch1_provenance.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch1/criterion-provenance-batch1-ledger.json",
+      "bytes": 31737,
+      "sha256": "690ffe65dc7d01faba6d61e6247bd8222b20ddf84080f4abaa701684753ce720",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch1\\criterion-provenance-batch1-ledger.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch1/criterion-provenance-batch1-MERGE.md",
+      "bytes": 1615,
+      "sha256": "5d576d52e4316ba78a0bcdfc64cf54d56c2cebb7ee59547c6c9640d5176d61d3",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch1\\criterion-provenance-batch1-MERGE.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch1/criterion-provenance-batch1-overlay.json",
+      "bytes": 18671,
+      "sha256": "36ae59123a4c5cd9d19283747535a5fd9d6f0743c9554d829d6d2d664032629a",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch1\\criterion-provenance-batch1-overlay.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch1/criterion-provenance-batch1-source-attestations.json",
+      "bytes": 21929,
+      "sha256": "3e38fbde8c546f741d3e821a89024cf51fbb1917c87f083b540695a90585f307",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch1\\criterion-provenance-batch1-source-attestations.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch1/criterion-provenance-batch1-validation.json",
+      "bytes": 3718,
+      "sha256": "bd3571e2923081869883595385bcc32be56c6c4364862d232a2c08cf5f90b0cc",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch1\\criterion-provenance-batch1-validation.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-original-predecessor/build_batch2_artifacts.py",
+      "bytes": 40422,
+      "sha256": "bc1a8ae553438b006b6fa2de1dbfb7ac18481be64608b719231e83f05446bff1",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-original-predecessor\\build_batch2_artifacts.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.ledger.json",
+      "bytes": 58020,
+      "sha256": "c7cd8155b58d129625ced534a17e671cb629f5347988ad1ef2cd52a36de85019",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-original-predecessor\\normative-provenance-batch2.ledger.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.MERGE.md",
+      "bytes": 2709,
+      "sha256": "5946dccc6396753bf127685531bbd93e0359620d434bd44e7fda3d9810e39c3b",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-original-predecessor\\normative-provenance-batch2.MERGE.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.overlay.json",
+      "bytes": 37276,
+      "sha256": "d7c0de9ae27187b3482350d001fa6a66632c65b82cf20ee4735029af141b660e",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-original-predecessor\\normative-provenance-batch2.overlay.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.source-attestations.json",
+      "bytes": 11879,
+      "sha256": "cef48741a6e19806b6f1bade107402c43d6ed15b04ae5a8bd2a10c80a502cc15",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-original-predecessor\\normative-provenance-batch2.source-attestations.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-original-predecessor/normative-provenance-batch2.validation.json",
+      "bytes": 5467,
+      "sha256": "ff08208486ec4103eb8920b72ecba0621a1ffe1a343b9d01fbf2d793630ae0ae",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-original-predecessor\\normative-provenance-batch2.validation.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-successor-repair/AGENT_PROGRESS.md",
+      "bytes": 8258,
+      "sha256": "caefceef6c1d9be5c9783904b6f20d6b086aa9c496ca2562316a6b2103331c20",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\AGENT_PROGRESS.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-successor-repair/build_provenance_partition_correction.py",
+      "bytes": 75185,
+      "sha256": "f89dcbbec5da3fd0336d350ba39f680a7e98e05582930231aceb439a9a856c8b",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\build_provenance_partition_correction.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-successor-repair/criterion-provenance-batch2-successor.ledger.json",
+      "bytes": 58095,
+      "sha256": "ae7e00d8ecf9f3916f4ff2c0424eee9392baf00aa925fafcf113838b96ac0887",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\criterion-provenance-batch2-successor.ledger.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-successor-repair/criterion-provenance-batch2-successor.overlay.json",
+      "bytes": 37276,
+      "sha256": "5d0d9bbb374bd7ec3c3f7e5617494da3e2dd62dcd1809889d99a52aa5de9167a",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\criterion-provenance-batch2-successor.overlay.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-successor-repair/criterion-provenance-batch2-successor.source-attestations.json",
+      "bytes": 13565,
+      "sha256": "87e18c82c7418e16e2296e4188d9045653cafed056680bc277e698997e434237",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\criterion-provenance-batch2-successor.source-attestations.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-successor-repair/criterion-provenance-partition-correction.manifest.json",
+      "bytes": 21866,
+      "sha256": "c49148190ba637a85c0f8d3d2d565aa616642107a0d9e88162ae05f1a36661c0",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\criterion-provenance-partition-correction.manifest.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-successor-repair/criterion-provenance-partition-correction.MERGE.md",
+      "bytes": 2482,
+      "sha256": "6cc82d9c457b328ab48713396a22b786d1c94c12aa611df53e593286a13a1b54",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\criterion-provenance-partition-correction.MERGE.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch2-successor-repair/criterion-provenance-partition-correction.validation.json",
+      "bytes": 9445,
+      "sha256": "092557d1bf4b7f694cb479ae95a15f23e21463d30585752c423f969a2ff905f5",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch2-successor-repair\\criterion-provenance-partition-correction.validation.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch3/criterion-provenance-batch-3.ledger.jsonl",
+      "bytes": 14367,
+      "sha256": "8c832a98ac7207c146ef328c56342e8e3dc75f29c429709e4b14431a6616946a",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch3\\criterion-provenance-batch-3.ledger.jsonl"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch3/criterion-provenance-batch-3.merge-instructions.md",
+      "bytes": 1922,
+      "sha256": "a3f8df45954742d3c3f6ac61ccc0cb00825161384dffd7e6d988e7cb20491b35",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch3\\criterion-provenance-batch-3.merge-instructions.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch3/criterion-provenance-batch-3.overlay.json",
+      "bytes": 7321,
+      "sha256": "4879337d894ff7e90653e248742c46a3f933abae2483209bfca6f7d66030495d",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch3\\criterion-provenance-batch-3.overlay.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch3/criterion-provenance-batch-3.source-hashes.json",
+      "bytes": 7005,
+      "sha256": "178630c61ff91e4083776c0ad765d1ae42e77d88534483fa0a5f31e4e5e1663d",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch3\\criterion-provenance-batch-3.source-hashes.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/provenance/source-batches/batch3/criterion-provenance-batch-3.validation.json",
+      "bytes": 3035,
+      "sha256": "960d354038acf33f3b7209ee72f274308948896ab311931bc4913bf04336161e",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\provenance\\source-batches\\batch3\\criterion-provenance-batch-3.validation.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/READINESS_IMPLEMENTATION_REPORT.md",
+      "bytes": 1481,
+      "sha256": "c0dcb5299ffd99a3b678a8a3adf855910c3c70de7f749ac5dfaa33ca6c53d2a8",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\READINESS_IMPLEMENTATION_REPORT.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/RUBRIC_MIGRATION_V2.md",
+      "bytes": 1413,
+      "sha256": "d12f6f3082c65781069b5e6b012c6d233f896309e75cb74f21c83861c1f6ec40",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\RUBRIC_MIGRATION_V2.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/RUBRIC_MIGRATION_V3_1.md",
+      "bytes": 1411,
+      "sha256": "d1edb3b329a3348e35fab745da2f10a00700eb42ec2bb6bd812402e70d8f85aa",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\RUBRIC_MIGRATION_V3_1.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/RUBRIC_MIGRATION_V3.md",
+      "bytes": 1197,
+      "sha256": "95542aa524f6358baa5e4949a11ad2e9bded318ce70e3aa3a72a7f52d5d07cee",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\RUBRIC_MIGRATION_V3.md"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/rubric_provenance.py",
+      "bytes": 27420,
+      "sha256": "1298c04b99cf6b9ba3d87ae9eac09a4dbd0d9d4f78a622ff87d4287c82e96507",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\rubric_provenance.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/schemas/derived-result.schema.json",
+      "bytes": 17155,
+      "sha256": "ec709090d70b03a5a7da77fc444f4416a8d82d3c0e2e81b37beea837f18d7167",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\schemas\\derived-result.schema.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/schemas/raw-result.schema.json",
+      "bytes": 21431,
+      "sha256": "ae36bd89b7757862e9834d15bcb20ad179b8e8e11e1528c19b19184c78a402e7",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\schemas\\raw-result.schema.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/SOURCE_LOCK.json",
+      "bytes": 1401,
+      "sha256": "8b4513778fafb370c2f925a7b1823e59a6c73c866e429994b9ee26d2433fb0e7",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\SOURCE_LOCK.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/tests/test_criterion_provenance_successor.py",
+      "bytes": 4851,
+      "sha256": "1d81b156465b27a30a55ff64bb54f00acd6d58d7160e5b3ae4e2954759077ffd",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\tests\\test_criterion_provenance_successor.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/tests/test_rubric_provenance_integration.py",
+      "bytes": 22027,
+      "sha256": "c1fff2d48b227c819bbe1a9177c5b5dced23d6800e84f5bcacf8dd40b38d6d70",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\tests\\test_rubric_provenance_integration.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/consume-api-provenance-harness-v3.1.0/verify_source_lock.py",
+      "bytes": 2080,
+      "sha256": "37a7da3e69e21fb90879cddc5f525b5f23633ef2296eda928183dd3ee3497e75",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\consume-api-provenance-harness-v3.1.0\\verify_source_lock.py"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/FULL_SOURCE_INPUT_OUTPUT_HASH_MANIFEST.json",
+      "bytes": 104076,
+      "sha256": "a12f834a304d45daca0c1d2951113c474113bda8e9573526a49c04152f4cf7bb",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\FULL_SOURCE_INPUT_OUTPUT_HASH_MANIFEST.json"
+    },
+    {
+      "path": "provenance/criterion-provenance-successor-v1.0.0/MERGE_HANDOFF.md",
+      "bytes": 678,
+      "sha256": "a491ccc14411afe6e51ddc78d37e97bbfe32a183c3102c72f83d56197727367f",
+      "set": "provenance",
+      "role": "criterion provenance successor package (complete)",
+      "source_session": "71c6d508-6a53-4419-8513-eb812f72ca69",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\71c6d508-6a53-4419-8513-eb812f72ca69\\files\\criterion-provenance-successor-v1.0.0\\MERGE_HANDOFF.md"
+    },
+    {
+      "path": "publisher/detect-secrets-scan.json",
+      "bytes": 37151,
+      "sha256": "0d90f0323eeb4ee708b5cb09c73cba2f12f3d0a4278e817d9ae377f3bf1fc9c8",
+      "set": "publisher",
+      "role": "private base publisher record",
+      "source_session": "ecd8492d-9745-4265-991a-cba401a6ebc3",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3\\files\\detect-secrets-scan.json"
+    },
+    {
+      "path": "publisher/msg-merge.txt",
+      "bytes": 1186,
+      "sha256": "f0da1fadbc937aa54c8c935a4970e91a3753d18465fce985f43138c8bf76391e",
+      "set": "publisher",
+      "role": "private base publisher record",
+      "source_session": "ecd8492d-9745-4265-991a-cba401a6ebc3",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3\\files\\msg-merge.txt"
+    },
+    {
+      "path": "publisher/msg-skills.txt",
+      "bytes": 656,
+      "sha256": "b5205f2e83146d091a7061a2fc61526a55979f7ee55a1b613cdb16d650cecd76",
+      "set": "publisher",
+      "role": "private base publisher record",
+      "source_session": "ecd8492d-9745-4265-991a-cba401a6ebc3",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3\\files\\msg-skills.txt"
+    },
+    {
+      "path": "publisher/msg-snapshot.txt",
+      "bytes": 742,
+      "sha256": "bda03de1826d4412f227be6ec09dc0d087e7e33e33503d6b5d911e5df8ca2534",
+      "set": "publisher",
+      "role": "private base publisher record",
+      "source_session": "ecd8492d-9745-4265-991a-cba401a6ebc3",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3\\files\\msg-snapshot.txt"
+    },
+    {
+      "path": "publisher/pathspec.txt",
+      "bytes": 3764,
+      "sha256": "9941c75049edd894f6663d1935948ac6543dd57c5958c76f04cbcbeaa952296c",
+      "set": "publisher",
+      "role": "private base publisher record",
+      "source_session": "ecd8492d-9745-4265-991a-cba401a6ebc3",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3\\files\\pathspec.txt"
+    },
+    {
+      "path": "publisher/safe-inflight-paths.txt",
+      "bytes": 3840,
+      "sha256": "7589e5060c0e4f4974ea7dd3d36dbadeedd6514377a73a8907ebf7ac27574978",
+      "set": "publisher",
+      "role": "private base publisher record",
+      "source_session": "ecd8492d-9745-4265-991a-cba401a6ebc3",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\ecd8492d-9745-4265-991a-cba401a6ebc3\\files\\safe-inflight-paths.txt"
+    },
+    {
+      "path": "rule-foundation/00-rule-index-foundation.patch",
+      "bytes": 51705,
+      "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\00-rule-index-foundation.patch"
+    },
+    {
+      "path": "rule-foundation/01-rule-retrieval.rebased-on-foundation.patch",
+      "bytes": 316091,
+      "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\01-rule-retrieval.rebased-on-foundation.patch"
+    },
+    {
+      "path": "rule-foundation/END_SHARED_REPOSITORY_STATE.json",
+      "bytes": 3471,
+      "sha256": "3851df4e0be61cbc2f3cd3b3ae11ac00832d4972511299cd297168a151ecafb0",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\END_SHARED_REPOSITORY_STATE.json"
+    },
+    {
+      "path": "rule-foundation/EXCLUSIONS.json",
+      "bytes": 7377,
+      "sha256": "0a6507393c6f14e1a895c0df6dd29bb004e322807af30ac87919f50c0572c062",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\EXCLUSIONS.json"
+    },
+    {
+      "path": "rule-foundation/INPUT_OUTPUT_HASHES.json",
+      "bytes": 7515,
+      "sha256": "876fa0ab9a8bde0dec03780d408313def37d3b4842bd65dac7c667a48ce4e5d7",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\INPUT_OUTPUT_HASHES.json"
+    },
+    {
+      "path": "rule-foundation/NEXT_ACTION.md",
+      "bytes": 901,
+      "sha256": "87e38b9e7e1bdf923c6ba15e5cbf9698aeae15f695f95ccd14ad88de82f3265b",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\NEXT_ACTION.md"
+    },
+    {
+      "path": "rule-foundation/PATH_HUNK_MANIFEST.json",
+      "bytes": 83382,
+      "sha256": "b0a89fecfc6806deab6ec18c6463fe74342b63a552ef7cda4903177701ea137c",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\PATH_HUNK_MANIFEST.json"
+    },
+    {
+      "path": "rule-foundation/RULE_INDEX_FOUNDATION_RECONSTRUCTION.md",
+      "bytes": 6534,
+      "sha256": "0153109783df99d6daf852b5774275dbb062a4e9d1f05cf56bca32e6fe6d240a",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\RULE_INDEX_FOUNDATION_RECONSTRUCTION.md"
+    },
+    {
+      "path": "rule-foundation/RULE_REBASE_DELTA_MANIFEST.json",
+      "bytes": 19674,
+      "sha256": "f856f71b788c3d7017ef3c18c6878a20ff2750bbdbe927ee2f1d5aba5b636fc8",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\RULE_REBASE_DELTA_MANIFEST.json"
+    },
+    {
+      "path": "rule-foundation/SEQUENCE_VALIDATION.json",
+      "bytes": 10210,
+      "sha256": "bb728b4dbb0c31bc51ee941ecb5fd0b2842a5442cd6051672e0ee11259869ff8",
+      "set": "rule-foundation",
+      "role": "ordinal-00 rule index/projection foundation reconstruction",
+      "source_session": "c17eaeeb-2be8-496d-b206-d2457f7b30f8",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\SEQUENCE_VALIDATION.json"
+    },
+    {
+      "path": "six-unit/adoption/00-commit.patch",
+      "bytes": 52545,
+      "sha256": "4cef780f5bf03302ef8f79aa4187e8e52be5c7004a95b70a572c675c1e8e2c8c",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\00-commit.patch"
+    },
+    {
+      "path": "six-unit/adoption/00-message.txt",
+      "bytes": 116,
+      "sha256": "21dff43cde25ac8ef6437a87ef717a29f7bd0ae0a91d70c3b583d2903cf86f2c",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\00-message.txt"
+    },
+    {
+      "path": "six-unit/adoption/01-commit.patch",
+      "bytes": 317914,
+      "sha256": "e5999c8b2c71c7480e63cdc518e2422415e1a4c7b4ba59f5fe384612bd98f9d7",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\01-commit.patch"
+    },
+    {
+      "path": "six-unit/adoption/01-message.txt",
+      "bytes": 106,
+      "sha256": "e482a18a3874d618df97c66e109d8d09ab26cbf5d917dbfbb7aca03dba0a396a",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\01-message.txt"
+    },
+    {
+      "path": "six-unit/adoption/01a-commit.patch",
+      "bytes": 31908,
+      "sha256": "8cc6cf2afdf44eba1931c5936e7bbefc3fd26a26eb075234c7f327bfb8d471ba",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\01a-commit.patch"
+    },
+    {
+      "path": "six-unit/adoption/01a-message.txt",
+      "bytes": 126,
+      "sha256": "20b12984b36df20075ea2d2e9aafc20c5a5672184bcca5834df3b17b0404157d",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\01a-message.txt"
+    },
+    {
+      "path": "six-unit/adoption/02-commit.patch",
+      "bytes": 87833,
+      "sha256": "4ee7a007bb8d92e0367a62973c9c124e4412e433ef5e001db867a85f0e55b1da",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\02-commit.patch"
+    },
+    {
+      "path": "six-unit/adoption/02-message.txt",
+      "bytes": 115,
+      "sha256": "0f68f6dd32a0ff647790b3943a79f9a0c3246407d1863cde020ebee87a252977",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\02-message.txt"
+    },
+    {
+      "path": "six-unit/adoption/03-commit.patch",
+      "bytes": 24016,
+      "sha256": "604f90046df6c40b9f5b5f7d1696cead600a5a4d04b9d17338101c5edc427dbc",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\03-commit.patch"
+    },
+    {
+      "path": "six-unit/adoption/03-message.txt",
+      "bytes": 114,
+      "sha256": "2adf950eb1fce01df079c2a398174d10ff1753f0e9969ecfcb073d46b8420cd0",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\03-message.txt"
+    },
+    {
+      "path": "six-unit/adoption/04-commit.patch",
+      "bytes": 35998,
+      "sha256": "f9b806e662a1cace641fb4c7c078c388285689d0b688cbeb2495f0290f85d7f4",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\04-commit.patch"
+    },
+    {
+      "path": "six-unit/adoption/04-message.txt",
+      "bytes": 113,
+      "sha256": "07ca93a0385422cb6f7597775810bdde2fae9cf3709e54dd3031eab535882d0b",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\04-message.txt"
+    },
+    {
+      "path": "six-unit/adoption/ADOPTION_RESULT.json",
+      "bytes": 29954,
+      "sha256": "e1fb80140158fa177efe99d2c48ddf4661c468f506a76d3383395cc2b2cc9500",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\ADOPTION_RESULT.json"
+    },
+    {
+      "path": "six-unit/adoption/COMMIT_CHAIN_PRE_ADOPTION.json",
+      "bytes": 12434,
+      "sha256": "d1a45ca349b774f7ed37438474249c850f3b52c58de3429edf7ff0f3b82713d9",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\COMMIT_CHAIN_PRE_ADOPTION.json"
+    },
+    {
+      "path": "six-unit/adoption/ROLLBACK_RECORD.json",
+      "bytes": 1428,
+      "sha256": "95a38120d17650c3f18e6be3ea3d734e385f0a8ffe6e414d582d5e30d55eca5d",
+      "set": "six-unit",
+      "role": "six-unit adoption record",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\adoption\\ROLLBACK_RECORD.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/00-01-rule-path-hunk-manifest.json",
+      "bytes": 83382,
+      "sha256": "b0a89fecfc6806deab6ec18c6463fe74342b63a552ef7cda4903177701ea137c",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\00-01-rule-path-hunk-manifest.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/00-rule-index-foundation.patch",
+      "bytes": 51705,
+      "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\00-rule-index-foundation.patch"
+    },
+    {
+      "path": "six-unit/final-artifacts/01-rule-retrieval.patch",
+      "bytes": 316091,
+      "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\01-rule-retrieval.patch"
+    },
+    {
+      "path": "six-unit/final-artifacts/01a-AZURE-OVERLAP.json",
+      "bytes": 2152,
+      "sha256": "c1c9e23f55c715123e5225469e6cc56b9680e3cdf5d24d43987c2bd971956423",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\01a-AZURE-OVERLAP.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/01a-earlier-payload-optimizations.patch",
+      "bytes": 31908,
+      "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\01a-earlier-payload-optimizations.patch"
+    },
+    {
+      "path": "six-unit/final-artifacts/01a-path-hunk-manifest.json",
+      "bytes": 9265,
+      "sha256": "3b2ad1a88dd2a062f1e8ec6cbf1222ce95ebb67d9d7f2ad7db27e9a59e3f5b57",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\01a-path-hunk-manifest.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/02-payload-rebase-manifest.json",
+      "bytes": 23771,
+      "sha256": "c3619afd52268a66432c3426c7aa4968c0c332f26c8251810bfcec341784c6ca",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\02-payload-rebase-manifest.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/02-payload.patch",
+      "bytes": 87833,
+      "sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\02-payload.patch"
+    },
+    {
+      "path": "six-unit/final-artifacts/03-04-consume-path-hunk-manifest.json",
+      "bytes": 38247,
+      "sha256": "ad47ff8e9cfd703546a46f14e1e6828a5549e3c68fd5e79407f9400eb70a9b96",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\03-04-consume-path-hunk-manifest.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/03-consume-request-mode-foundation.patch",
+      "bytes": 27171,
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\03-consume-request-mode-foundation.patch"
+    },
+    {
+      "path": "six-unit/final-artifacts/04-consume-native-parser-renderer.patch",
+      "bytes": 35998,
+      "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\04-consume-native-parser-renderer.patch"
+    },
+    {
+      "path": "six-unit/final-artifacts/BACKEND_VALIDATION.json",
+      "bytes": 1876,
+      "sha256": "691ae96e4d0f98e1af1714ad79fa099dad013f8ef394723987af6b652d187927",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\BACKEND_VALIDATION.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/COMMIT_SEQUENCE.json",
+      "bytes": 3124,
+      "sha256": "b6d3ff5f3c6ad5e047dee985ea54815cc3c25b278f906adadc4750b2d863fe1a",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\COMMIT_SEQUENCE.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/CONSUME_VALIDATION.json",
+      "bytes": 886,
+      "sha256": "2f283e5c2dd17288ea6eed24ba456a98f9fac04f3901f1f63138af2311e767fe",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\CONSUME_VALIDATION.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/CONTENT_REVIEW.json",
+      "bytes": 9722,
+      "sha256": "59b99e91ee91803301987de5bb73c68320a0b59c0749bb80c889e3fe1343f7e7",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\CONTENT_REVIEW.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/CURRENT_TREE_COMPARISON.json",
+      "bytes": 19343,
+      "sha256": "d3d6783771fa8b20251c10b427f212c8419b4130875fd67ebaab01569c544d50",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\CURRENT_TREE_COMPARISON.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/FINAL_ARTIFACT_HASHES.json",
+      "bytes": 3904,
+      "sha256": "3cff70cb05334cf7aa54a03e080c30a6268505ab7e9264d0cbcf47ee1ba456d9",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\FINAL_ARTIFACT_HASHES.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/FINAL_ARTIFACT_HASHES.sha256",
+      "bytes": 99,
+      "sha256": "09bbf4fd0cee6ba1a1181be77564b050b110452cccd65d241f42dbe56341415f",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\FINAL_ARTIFACT_HASHES.sha256"
+    },
+    {
+      "path": "six-unit/final-artifacts/FINAL_SIX_UNIT_SEQUENCE_AUDIT.md",
+      "bytes": 4165,
+      "sha256": "9b85d7c0036fe10aff464020e46ca415b165531669794870305c7d7ab8ec708d",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\FINAL_SIX_UNIT_SEQUENCE_AUDIT.md"
+    },
+    {
+      "path": "six-unit/final-artifacts/PATCH_HASHES.json",
+      "bytes": 2740,
+      "sha256": "1e7e5980f6e7802a7c0643bb42fd387131d223e4e30c8853ae5064728eb158a5",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\PATCH_HASHES.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/POST_TEST_INTEGRITY.json",
+      "bytes": 435,
+      "sha256": "c2dcf7019a24bb8f024f966094966e1c390f8235d822e50c4933a988ae1788af",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\POST_TEST_INTEGRITY.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/PRIVATE_TEST_FIXTURES.json",
+      "bytes": 886,
+      "sha256": "8d4151fb9ad0c3464dde1fb86d59d1277d9cf3e7d3b4d022cbeea854b44ec2ef",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\PRIVATE_TEST_FIXTURES.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/SEQUENCE_VALIDATION.json",
+      "bytes": 24813,
+      "sha256": "9fef0cf7a4f9970fab25121dc7e30c17664023f3f7c4eda117f7cd2bf9d124bb",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\SEQUENCE_VALIDATION.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/SHARED_NON_MUTATION.json",
+      "bytes": 1974,
+      "sha256": "fe425f9c733219f6302e3d6ebe0e6aaed7e3b35ea0747c11142a3a9481520e3d",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\SHARED_NON_MUTATION.json"
+    },
+    {
+      "path": "six-unit/final-artifacts/WHITESPACE_ASSESSMENT.json",
+      "bytes": 1152,
+      "sha256": "30151d508486499288f6160527965bccdf75c9a019b40d8bc00077068f8240b7",
+      "set": "six-unit",
+      "role": "six-unit validated decomposition artifact",
+      "source_session": "6713376d-9ff3-4740-9060-dcaf7afcbb08",
+      "source_path_historical_nonactionable": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\final-artifacts\\WHITESPACE_ASSESSMENT.json"
+    }
+  ]
+}

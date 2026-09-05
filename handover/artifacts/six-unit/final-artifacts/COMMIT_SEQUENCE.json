@@ -1,0 +1,103 @@
+{
+  "schema_version": "committable_six_unit_sequence_v1",
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "recommendation": "ready_for_serialized_commits",
+  "blocking_issues": [],
+  "warnings": [
+    "Exact ordinal 01 adds one blank line at EOF in tests/unit/test_policy_case_project.py. This is the sole git-apply --whitespace=error-all finding and was disclosed by the source Rule reconstruction; normal apply, exact hashes, imports, and all tests pass.",
+    "Ordinal 00 preserves the existing binary-classified CRLF form of test_the_corpus_is_indexed_in_one_language.py. Its patch passes git apply --check --whitespace=error-all."
+  ],
+  "units": [
+    {
+      "ordinal": "00",
+      "artifact": "00-rule-index-foundation.patch",
+      "message": "feat(indexing): establish the all-published-rule corpus scope",
+      "path_count": 7,
+      "depends_on": []
+    },
+    {
+      "ordinal": "01",
+      "artifact": "01-rule-retrieval.patch",
+      "message": "feat(retrieval): return native rules through audited decisions",
+      "path_count": 17,
+      "depends_on": [
+        "00"
+      ]
+    },
+    {
+      "ordinal": "01a",
+      "artifact": "01a-earlier-payload-optimizations.patch",
+      "message": "perf(retrieval): compress responses and narrow search payloads",
+      "path_count": 4,
+      "depends_on": [
+        "01"
+      ]
+    },
+    {
+      "ordinal": "02",
+      "artifact": "02-payload.patch",
+      "message": "fix(decision): close evidence and settlement gaps",
+      "path_count": 18,
+      "depends_on": [
+        "01a"
+      ],
+      "rebase": {
+        "original_patch_sha256": "d2c9594603899ff9561cef8534ca51837cfa311e2c08e8c133323cee44b889a6",
+        "unchanged_original_targets": 16,
+        "rebased_paths": [
+          "tests/unit/test_english_is_the_only_internal_language.py",
+          "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py"
+        ]
+      }
+    },
+    {
+      "ordinal": "03",
+      "artifact": "03-consume-request-mode-foundation.patch",
+      "message": "feat(consume-demo): add rule retrieval request mode",
+      "path_count": 10,
+      "depends_on": [
+        "02"
+      ]
+    },
+    {
+      "ordinal": "04",
+      "artifact": "04-consume-native-parser-renderer.patch",
+      "message": "feat(consume-demo): parse and render native rule envelopes",
+      "path_count": 8,
+      "depends_on": [
+        "03"
+      ]
+    }
+  ],
+  "gates": {
+    "six_unit_apply_base_result": "passed",
+    "imports": "passed",
+    "focused_backend": {
+      "foundation_and_01a": 231,
+      "rule": 524,
+      "payload": 448
+    },
+    "full_backend": {
+      "test_files": 246,
+      "passed": 5192,
+      "skipped": 23,
+      "shards": 9
+    },
+    "consume": {
+      "passed": 260,
+      "typescript": "passed"
+    },
+    "secret_content": {
+      "high_confidence_secrets": 0,
+      "raw_source_or_live_corpus_text": 0,
+      "live_endpoints": 0
+    },
+    "candidate_current_comparison": {
+      "paths": 48,
+      "full_matches": 43,
+      "documented_mixed_hunk_paths": 5,
+      "unexpected_mismatches": 0
+    },
+    "shared_repository_non_mutation": "passed"
+  }
+}

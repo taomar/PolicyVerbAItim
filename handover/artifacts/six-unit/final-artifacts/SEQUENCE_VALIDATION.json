@@ -1,0 +1,529 @@
+{
+  "schema_version": "six_unit_sequence_validation_v1",
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "private_tree": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\six-unit-final-tree",
+  "private_only": true,
+  "all_match": true,
+  "checks": {
+    "all_units": true,
+    "overall_changed_path_set": true,
+    "excluded_files_unchanged": true,
+    "only_reviewed_azure_overlap_changed": true,
+    "withdrawn_paths_unchanged": true,
+    "no_patch_residue": true
+  },
+  "unit_checks": {
+    "00": true,
+    "01": true,
+    "01a": true,
+    "02": true,
+    "03": true,
+    "04": true
+  },
+  "units": [
+    {
+      "name": "00",
+      "patch": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\00-rule-index-foundation.patch",
+        "bytes": 51705,
+        "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218"
+      },
+      "path_count": 7,
+      "paths": [
+        "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "src/policy_platform/infrastructure/quality/projection_faithfulness.py",
+        "src/policy_platform/infrastructure/search/policy_index.py",
+        "tests/unit/test_a_projection_is_checked_against_what_it_renders.py",
+        "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "tests/unit/test_the_corpus_is_indexed_in_one_language.py"
+      ],
+      "checks": {
+        "base_hashes": true,
+        "apply_check": true,
+        "apply": true,
+        "changed_path_set": true,
+        "result_hashes": true,
+        "excluded_files_unchanged": true,
+        "independent_regeneration_deterministic": true
+      },
+      "mismatches": {
+        "base": [],
+        "result": [],
+        "excluded": []
+      },
+      "changed_paths": [
+        "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "src/policy_platform/infrastructure/quality/projection_faithfulness.py",
+        "src/policy_platform/infrastructure/search/policy_index.py",
+        "tests/unit/test_a_projection_is_checked_against_what_it_renders.py",
+        "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "tests/unit/test_the_corpus_is_indexed_in_one_language.py"
+      ],
+      "regeneration": {
+        "source_byte_equal": false,
+        "source_byte_equality_note": "Informational: false means the independently regenerated patch uses a different context width. Base/result hashes and changed path sets are the semantic equality gates.",
+        "run_1": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\00\\regenerated-1.patch",
+          "bytes": 52545,
+          "sha256": "4cef780f5bf03302ef8f79aa4187e8e52be5c7004a95b70a572c675c1e8e2c8c"
+        },
+        "run_2": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\00\\regenerated-2.patch",
+          "bytes": 52545,
+          "sha256": "4cef780f5bf03302ef8f79aa4187e8e52be5c7004a95b70a572c675c1e8e2c8c"
+        }
+      },
+      "stdout": {
+        "path": "00_APPLY.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "00_APPLY.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lines": []
+      }
+    },
+    {
+      "name": "01",
+      "patch": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\01-rule-retrieval.rebased-on-foundation.patch",
+        "bytes": 316091,
+        "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1"
+      },
+      "path_count": 17,
+      "paths": [
+        "src/policy_platform/api/routers/policy_decisions.py",
+        "src/policy_platform/application/policy_case_decision.py",
+        "src/policy_platform/contracts/case_decision.py",
+        "src/policy_platform/contracts/case_decision_light.py",
+        "src/policy_platform/contracts/policy_retrieval.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "tests/unit/test_a_project_case_decision_carries_its_own_receipt.py",
+        "tests/unit/test_case_decision_light_contract.py",
+        "tests/unit/test_external_policy_retrieval_returns_filtered_json.py",
+        "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "tests/unit/test_p0_rest_telemetry_closes_measurement_blind_spots.py",
+        "tests/unit/test_policy_case_project.py",
+        "tests/unit/test_rule_mode_returns_rules_not_policies.py",
+        "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+        "tests/unit/test_the_retrieval_route_answers_in_the_shape_the_mode_asked_for.py"
+      ],
+      "checks": {
+        "base_hashes": true,
+        "apply_check": true,
+        "apply": true,
+        "changed_path_set": true,
+        "result_hashes": true,
+        "excluded_files_unchanged": true,
+        "independent_regeneration_deterministic": true
+      },
+      "mismatches": {
+        "base": [],
+        "result": [],
+        "excluded": []
+      },
+      "changed_paths": [
+        "src/policy_platform/api/routers/policy_decisions.py",
+        "src/policy_platform/application/policy_case_decision.py",
+        "src/policy_platform/contracts/case_decision.py",
+        "src/policy_platform/contracts/case_decision_light.py",
+        "src/policy_platform/contracts/policy_retrieval.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+        "tests/unit/test_a_project_case_decision_carries_its_own_receipt.py",
+        "tests/unit/test_case_decision_light_contract.py",
+        "tests/unit/test_external_policy_retrieval_returns_filtered_json.py",
+        "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "tests/unit/test_p0_rest_telemetry_closes_measurement_blind_spots.py",
+        "tests/unit/test_policy_case_project.py",
+        "tests/unit/test_rule_mode_returns_rules_not_policies.py",
+        "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+        "tests/unit/test_the_retrieval_route_answers_in_the_shape_the_mode_asked_for.py"
+      ],
+      "regeneration": {
+        "source_byte_equal": false,
+        "source_byte_equality_note": "Informational: false means the independently regenerated patch uses a different context width. Base/result hashes and changed path sets are the semantic equality gates.",
+        "run_1": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\01\\regenerated-1.patch",
+          "bytes": 317914,
+          "sha256": "2853208d172617b3a2b64cac716bb8bcd14e22f3e611b9d7a2e7a349d3b276e5"
+        },
+        "run_2": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\01\\regenerated-2.patch",
+          "bytes": 317914,
+          "sha256": "2853208d172617b3a2b64cac716bb8bcd14e22f3e611b9d7a2e7a349d3b276e5"
+        }
+      },
+      "stdout": {
+        "path": "01_APPLY.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "01_APPLY.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lines": []
+      }
+    },
+    {
+      "name": "01a",
+      "patch": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\01a-earlier-payload-optimizations.patch",
+        "bytes": 31908,
+        "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e"
+      },
+      "path_count": 4,
+      "paths": [
+        "src/policy_platform/api/app.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+        "tests/unit/test_large_responses_are_compressed.py"
+      ],
+      "checks": {
+        "base_hashes": true,
+        "apply_check": true,
+        "apply": true,
+        "changed_path_set": true,
+        "result_hashes": true,
+        "excluded_files_unchanged": true,
+        "independent_regeneration_deterministic": true
+      },
+      "mismatches": {
+        "base": [],
+        "result": [],
+        "excluded": []
+      },
+      "changed_paths": [
+        "src/policy_platform/api/app.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+        "tests/unit/test_large_responses_are_compressed.py"
+      ],
+      "regeneration": {
+        "source_byte_equal": true,
+        "source_byte_equality_note": "Informational: false means the independently regenerated patch uses a different context width. Base/result hashes and changed path sets are the semantic equality gates.",
+        "run_1": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\01a\\regenerated-1.patch",
+          "bytes": 31908,
+          "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e"
+        },
+        "run_2": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\01a\\regenerated-2.patch",
+          "bytes": 31908,
+          "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e"
+        }
+      },
+      "stdout": {
+        "path": "01a_APPLY.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "01a_APPLY.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lines": []
+      }
+    },
+    {
+      "name": "02",
+      "patch": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\02-payload.rebased-on-six-unit-base.patch",
+        "bytes": 87833,
+        "sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7"
+      },
+      "path_count": 18,
+      "paths": [
+        "src/policy_platform/application/policy_case_decision.py",
+        "src/policy_platform/contracts/case_decision.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_evidence_accounting.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_plan.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "tests/unit/test_a_case_asks_for_information_a_verdict_or_both.py",
+        "tests/unit/test_a_conferred_entitlement_is_not_an_approval.py",
+        "tests/unit/test_a_missing_selector_is_a_missing_fact_in_any_domain.py",
+        "tests/unit/test_a_reply_accounts_for_the_evidence_it_was_given.py",
+        "tests/unit/test_case_decision_light_contract.py",
+        "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+        "tests/unit/test_english_is_the_only_internal_language.py",
+        "tests/unit/test_held_evidence_is_accounted_for.py",
+        "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "tests/unit/test_policy_case_project.py",
+        "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+        "tests/unit/test_the_plan_decides_and_the_prose_explains.py"
+      ],
+      "checks": {
+        "base_hashes": true,
+        "apply_check": true,
+        "apply": true,
+        "changed_path_set": true,
+        "result_hashes": true,
+        "excluded_files_unchanged": true,
+        "independent_regeneration_deterministic": true
+      },
+      "mismatches": {
+        "base": [],
+        "result": [],
+        "excluded": []
+      },
+      "changed_paths": [
+        "src/policy_platform/application/policy_case_decision.py",
+        "src/policy_platform/contracts/case_decision.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_evidence_accounting.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_plan.py",
+        "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+        "tests/unit/test_a_case_asks_for_information_a_verdict_or_both.py",
+        "tests/unit/test_a_conferred_entitlement_is_not_an_approval.py",
+        "tests/unit/test_a_missing_selector_is_a_missing_fact_in_any_domain.py",
+        "tests/unit/test_a_reply_accounts_for_the_evidence_it_was_given.py",
+        "tests/unit/test_case_decision_light_contract.py",
+        "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+        "tests/unit/test_english_is_the_only_internal_language.py",
+        "tests/unit/test_held_evidence_is_accounted_for.py",
+        "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+        "tests/unit/test_policy_case_project.py",
+        "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+        "tests/unit/test_the_plan_decides_and_the_prose_explains.py"
+      ],
+      "regeneration": {
+        "source_byte_equal": true,
+        "source_byte_equality_note": "Informational: false means the independently regenerated patch uses a different context width. Base/result hashes and changed path sets are the semantic equality gates.",
+        "run_1": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\02\\regenerated-1.patch",
+          "bytes": 87833,
+          "sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7"
+        },
+        "run_2": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\02\\regenerated-2.patch",
+          "bytes": 87833,
+          "sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7"
+        }
+      },
+      "stdout": {
+        "path": "02_APPLY.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "02_APPLY.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lines": []
+      }
+    },
+    {
+      "name": "03",
+      "patch": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\03-consume-request-mode-foundation.patch",
+        "bytes": 27171,
+        "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7"
+      },
+      "path_count": 10,
+      "paths": [
+        "apps/consume-demo/src/App.test.tsx",
+        "apps/consume-demo/src/App.tsx",
+        "apps/consume-demo/src/components/RequestDocket.tsx",
+        "apps/consume-demo/src/contracts/caseDecision.ts",
+        "apps/consume-demo/src/copy/strings.ts",
+        "apps/consume-demo/src/lib/canonicalHash.test.ts",
+        "apps/consume-demo/src/lib/canonicalHash.ts",
+        "apps/consume-demo/src/lib/requestBody.test.ts",
+        "apps/consume-demo/src/lib/requestBody.ts",
+        "apps/consume-demo/src/playground.css"
+      ],
+      "checks": {
+        "base_hashes": true,
+        "apply_check": true,
+        "apply": true,
+        "changed_path_set": true,
+        "result_hashes": true,
+        "excluded_files_unchanged": true,
+        "independent_regeneration_deterministic": true
+      },
+      "mismatches": {
+        "base": [],
+        "result": [],
+        "excluded": []
+      },
+      "changed_paths": [
+        "apps/consume-demo/src/App.test.tsx",
+        "apps/consume-demo/src/App.tsx",
+        "apps/consume-demo/src/components/RequestDocket.tsx",
+        "apps/consume-demo/src/contracts/caseDecision.ts",
+        "apps/consume-demo/src/copy/strings.ts",
+        "apps/consume-demo/src/lib/canonicalHash.test.ts",
+        "apps/consume-demo/src/lib/canonicalHash.ts",
+        "apps/consume-demo/src/lib/requestBody.test.ts",
+        "apps/consume-demo/src/lib/requestBody.ts",
+        "apps/consume-demo/src/playground.css"
+      ],
+      "regeneration": {
+        "source_byte_equal": false,
+        "source_byte_equality_note": "Informational: false means the independently regenerated patch uses a different context width. Base/result hashes and changed path sets are the semantic equality gates.",
+        "run_1": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\03\\regenerated-1.patch",
+          "bytes": 24016,
+          "sha256": "604f90046df6c40b9f5b5f7d1696cead600a5a4d04b9d17338101c5edc427dbc"
+        },
+        "run_2": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\03\\regenerated-2.patch",
+          "bytes": 24016,
+          "sha256": "604f90046df6c40b9f5b5f7d1696cead600a5a4d04b9d17338101c5edc427dbc"
+        }
+      },
+      "stdout": {
+        "path": "03_APPLY.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "03_APPLY.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lines": []
+      }
+    },
+    {
+      "name": "04",
+      "patch": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\04-consume-native-parser-renderer.patch",
+        "bytes": 35998,
+        "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a"
+      },
+      "path_count": 8,
+      "paths": [
+        "apps/consume-demo/src/App.test.tsx",
+        "apps/consume-demo/src/App.tsx",
+        "apps/consume-demo/src/components/RuleRetrievalResult.tsx",
+        "apps/consume-demo/src/contracts/caseDecision.ts",
+        "apps/consume-demo/src/copy/strings.ts",
+        "apps/consume-demo/src/lib/apiClient.ts",
+        "apps/consume-demo/src/lib/errors.ts",
+        "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx"
+      ],
+      "checks": {
+        "base_hashes": true,
+        "apply_check": true,
+        "apply": true,
+        "changed_path_set": true,
+        "result_hashes": true,
+        "excluded_files_unchanged": true,
+        "independent_regeneration_deterministic": true
+      },
+      "mismatches": {
+        "base": [],
+        "result": [],
+        "excluded": []
+      },
+      "changed_paths": [
+        "apps/consume-demo/src/App.test.tsx",
+        "apps/consume-demo/src/App.tsx",
+        "apps/consume-demo/src/components/RuleRetrievalResult.tsx",
+        "apps/consume-demo/src/contracts/caseDecision.ts",
+        "apps/consume-demo/src/copy/strings.ts",
+        "apps/consume-demo/src/lib/apiClient.ts",
+        "apps/consume-demo/src/lib/errors.ts",
+        "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx"
+      ],
+      "regeneration": {
+        "source_byte_equal": true,
+        "source_byte_equality_note": "Informational: false means the independently regenerated patch uses a different context width. Base/result hashes and changed path sets are the semantic equality gates.",
+        "run_1": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\04\\regenerated-1.patch",
+          "bytes": 35998,
+          "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a"
+        },
+        "run_2": {
+          "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\sequence-regeneration\\04\\regenerated-2.patch",
+          "bytes": 35998,
+          "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a"
+        }
+      },
+      "stdout": {
+        "path": "04_APPLY.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "04_APPLY.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "lines": []
+      }
+    }
+  ],
+  "overall": {
+    "head_files": 999,
+    "final_files": 1011,
+    "changed_path_count": 48,
+    "changed_paths": [
+      "apps/consume-demo/src/App.test.tsx",
+      "apps/consume-demo/src/App.tsx",
+      "apps/consume-demo/src/components/RequestDocket.tsx",
+      "apps/consume-demo/src/components/RuleRetrievalResult.tsx",
+      "apps/consume-demo/src/contracts/caseDecision.ts",
+      "apps/consume-demo/src/copy/strings.ts",
+      "apps/consume-demo/src/lib/apiClient.ts",
+      "apps/consume-demo/src/lib/canonicalHash.test.ts",
+      "apps/consume-demo/src/lib/canonicalHash.ts",
+      "apps/consume-demo/src/lib/errors.ts",
+      "apps/consume-demo/src/lib/requestBody.test.ts",
+      "apps/consume-demo/src/lib/requestBody.ts",
+      "apps/consume-demo/src/playground.css",
+      "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "src/policy_platform/api/app.py",
+      "src/policy_platform/api/routers/policy_decisions.py",
+      "src/policy_platform/application/policy_case_decision.py",
+      "src/policy_platform/contracts/case_decision.py",
+      "src/policy_platform/contracts/case_decision_light.py",
+      "src/policy_platform/contracts/policy_retrieval.py",
+      "src/policy_platform/infrastructure/assistants/ai_case_evidence_accounting.py",
+      "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+      "src/policy_platform/infrastructure/assistants/ai_case_plan.py",
+      "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+      "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+      "src/policy_platform/infrastructure/quality/projection_faithfulness.py",
+      "src/policy_platform/infrastructure/search/policy_index.py",
+      "tests/unit/test_a_case_asks_for_information_a_verdict_or_both.py",
+      "tests/unit/test_a_conferred_entitlement_is_not_an_approval.py",
+      "tests/unit/test_a_missing_selector_is_a_missing_fact_in_any_domain.py",
+      "tests/unit/test_a_project_case_decision_carries_its_own_receipt.py",
+      "tests/unit/test_a_projection_is_checked_against_what_it_renders.py",
+      "tests/unit/test_a_reply_accounts_for_the_evidence_it_was_given.py",
+      "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "tests/unit/test_case_decision_light_contract.py",
+      "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+      "tests/unit/test_english_is_the_only_internal_language.py",
+      "tests/unit/test_external_policy_retrieval_returns_filtered_json.py",
+      "tests/unit/test_held_evidence_is_accounted_for.py",
+      "tests/unit/test_large_responses_are_compressed.py",
+      "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+      "tests/unit/test_p0_rest_telemetry_closes_measurement_blind_spots.py",
+      "tests/unit/test_policy_case_project.py",
+      "tests/unit/test_rule_mode_returns_rules_not_policies.py",
+      "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+      "tests/unit/test_the_corpus_is_indexed_in_one_language.py",
+      "tests/unit/test_the_plan_decides_and_the_prose_explains.py",
+      "tests/unit/test_the_retrieval_route_answers_in_the_shape_the_mode_asked_for.py"
+    ],
+    "excluded_head_files_checked": 963,
+    "excluded_mismatches": [],
+    "azure_changed_paths": [
+      "src/policy_platform/api/app.py"
+    ],
+    "withdrawn_changed_paths": [],
+    "residue": [],
+    "head_manifest_sha256": "51b6a1554c75e1eb6adacc0aafadf31066aa762f8c07985adc1f04a19f0c20f6",
+    "final_manifest_sha256": "a5c12ab94cb764c0c170def502641ad4d666ac113fedef3f89c232fc33a2d7b3"
+  }
+}

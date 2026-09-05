@@ -1,0 +1,280 @@
+{
+  "schema_version": "consume-api-normative-provenance-validation/1",
+  "correction_id": "criterion-provenance-batch2-successor-partition-repair",
+  "status": "passed",
+  "checks": {
+    "all_relevant_input_hashes": "passed",
+    "canonical_payload_recomputed": "passed",
+    "canonical_113_ids_reconstructed": "passed",
+    "exact_position_39_omission_reproduced": "passed",
+    "exact_position_77_overlap_reproduced": "passed",
+    "no_extras": "passed",
+    "overlap_material_conflict": "absent",
+    "missing_criterion_evidence_classified": "passed",
+    "corrected_sets_duplicate_free": "passed",
+    "corrected_sets_pairwise_disjoint": "passed",
+    "corrected_union_exactly_113": "passed",
+    "preserved_batch2_records_40_76": "passed",
+    "private_copy_combined_preflight": "passed",
+    "unsupported_upgrade_absent": "passed",
+    "ai_not_human_confirmation": "passed",
+    "leakage_and_quote_scan": "passed",
+    "source_hashes_unchanged": "passed",
+    "repository_tree_pre_post_equal": "passed"
+  },
+  "artifact_schema_checks": {
+    "overlay_schema": "passed",
+    "ledger_schema": "passed",
+    "attestation_schema": "passed",
+    "corrected_membership": "passed",
+    "classification_partition": "passed",
+    "original_evidence_binding_unchanged": "passed",
+    "unsupported_upgrade_absent": "passed",
+    "ai_not_human_confirmation": "passed"
+  },
+  "defect_reproduction": {
+    "canonical_count": 113,
+    "canonical_ids_sha256": "4a752fd8e13b1fb1d1c37bf110e4b1334ca3bbae1beaab5d630e8d3b1719acb3",
+    "batch1": {
+      "positions_1_based": [
+        1,
+        38
+      ],
+      "count": 38,
+      "ids_sha256": "f373a082d7660c051a7dceac2ce11cd3456ea37641342fdef297626531d04375"
+    },
+    "batch2_original": {
+      "positions_1_based": [
+        40,
+        77
+      ],
+      "count": 38,
+      "ids_sha256": "0af8f69bf306e0c0fbc046fa875b549dd6a7a4ee1f7725711cfd21e0162c7f61"
+    },
+    "batch3": {
+      "positions_1_based": [
+        77,
+        113
+      ],
+      "count": 37,
+      "ids_sha256": "8ef333a6d571970cc4682e939ed96c4c684518ed1eb3df19b8599efa195adb95"
+    },
+    "union_unique_count": 112,
+    "union_ids_sha256": "5e674f170340987918eade85f76b131578de705159779a400552a2abd1778dfc",
+    "overlap": {
+      "criterion_id": "HW-05:R4",
+      "canonical_position_1_based": 77
+    },
+    "omission": {
+      "criterion_id": "AIS-08:R5",
+      "canonical_position_1_based": 39
+    },
+    "extras": []
+  },
+  "overlap_resolution": {
+    "criterion_id": "HW-05:R4",
+    "material_conflict": false,
+    "canonical_owner": "criterion-provenance-batch-3",
+    "evidence_loss": false,
+    "field_checks": {
+      "criterion_id": true,
+      "canonical_position": true,
+      "canonical_pointer": true,
+      "canonical_pointer_sha256": true,
+      "question_identity": true,
+      "rubric_identity": true,
+      "project_identity": true,
+      "canonical_state": true,
+      "classification": true,
+      "scorable_effect": true,
+      "normative_evidence": true,
+      "candidate_replacement": true,
+      "human_confirmation": true,
+      "criterion_specific_attestation": true
+    }
+  },
+  "missing_criterion": {
+    "criterion_id": "AIS-08:R5",
+    "classification": "structural_harness_not_product_law",
+    "scorable": false,
+    "canonical_pointer": "/questions/7/criteria/3",
+    "canonical_record_sha256": "cf4044e597dd4713b11c7336f22ef2b18d2c5a786f509c53ad5d488fd6dcc290",
+    "normative_body_hash_available": false,
+    "normative_rule_hash_available": false,
+    "human_confirmation": false
+  },
+  "membership": {
+    "batch1": {
+      "positions_1_based": [
+        1,
+        38
+      ],
+      "count": 38,
+      "ids_sha256": "f373a082d7660c051a7dceac2ce11cd3456ea37641342fdef297626531d04375"
+    },
+    "batch2_successor": {
+      "positions_1_based": [
+        39,
+        76
+      ],
+      "count": 38,
+      "ids_sha256": "251c3289af2ae64a3312e9242129ffef08f87614766338d2df9a684dfc14b6ed"
+    },
+    "batch3": {
+      "positions_1_based": [
+        77,
+        113
+      ],
+      "count": 37,
+      "ids_sha256": "8ef333a6d571970cc4682e939ed96c4c684518ed1eb3df19b8599efa195adb95"
+    },
+    "union": {
+      "count": 113,
+      "ids_sha256": "4a752fd8e13b1fb1d1c37bf110e4b1334ca3bbae1beaab5d630e8d3b1719acb3",
+      "duplicate_ids": [],
+      "omitted_ids": [],
+      "extra_ids": []
+    },
+    "pairwise_disjoint": true
+  },
+  "preservation": {
+    "record_count": 37,
+    "record_hash_manifest_sha256": "8afd2d3a5ea6ad8b5139802e56aa3111d3f14d7ed3fb407c08b4aeb231d01914"
+  },
+  "combined_preflight": {
+    "private_copy_kind": "deep_copy_in_memory",
+    "canonical_criterion_count": 128,
+    "base": {
+      "scorable": 15,
+      "findings": 113,
+      "dispositions": {
+        "unscorable": 113
+      }
+    },
+    "combined": {
+      "scorable": 20,
+      "findings": 108,
+      "unscorable": 95,
+      "unresolved": 13,
+      "dispositions": {
+        "unresolved": 13,
+        "unscorable": 95
+      }
+    },
+    "changed_criteria_count": 18,
+    "changed_criteria_ids_sha256": "ca4398d7b62c21e708d3647a9b2e189013fe9060f351eb98a069384fd759ea29",
+    "newly_scorable_count": 5,
+    "newly_scorable_ids_sha256": "88ace0ae7bfe63255a6882b2d70d3279a464f0b085114fabaf07fa641561c1f2",
+    "provenance_preflight": "passed",
+    "source_rubric_object_unchanged": true
+  },
+  "negative_checks": {
+    "passed": 6,
+    "failed": 0,
+    "results": [
+      {
+        "name": "omitted_canonical_position",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "duplicate_owner",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "changed_untouched_batch2_record",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "bad_hash",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "unsupported_upgrade",
+        "result": "passed",
+        "expected": "rejected"
+      },
+      {
+        "name": "ai_as_human_confirmation",
+        "result": "passed",
+        "expected": "rejected"
+      }
+    ]
+  },
+  "deterministic_regeneration": {
+    "passes": 2,
+    "byte_identical": true,
+    "timestamps_embedded": false
+  },
+  "leakage_scan": {
+    "scope": [
+      "criterion-provenance-batch2-successor.ledger.json",
+      "criterion-provenance-batch2-successor.overlay.json",
+      "criterion-provenance-batch2-successor.source-attestations.json",
+      "criterion-provenance-partition-correction.MERGE.md",
+      "criterion-provenance-partition-correction.manifest.json"
+    ],
+    "question_literals_checked": 20,
+    "question_literal_hits": 0,
+    "source_literals_checked": 271,
+    "source_literal_hits": 0,
+    "forbidden_text_key_hits": [],
+    "markdown_quote_block_hits": 0,
+    "result": "passed"
+  },
+  "non_mutation": {
+    "input_file_count": 65,
+    "input_snapshot_sha256_before": "b716efbb1602c286a8bf20acfae20d97ec1f41f0a324696b96ae68899e2a3375",
+    "input_snapshot_sha256_after": "b716efbb1602c286a8bf20acfae20d97ec1f41f0a324696b96ae68899e2a3375",
+    "repository_junction": {
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository",
+      "files": 43032,
+      "bytes": 648739714,
+      "sha256": "75469f06f199ecf5da63cdb3448d329d8033606e2f7f3c4028de486eabc84c19",
+      "record_format": "walk-order relative path + NUL + bytes + NUL + SHA-256 + LF"
+    },
+    "canonical_bundle": "unchanged",
+    "batch_artifacts": "unchanged",
+    "source_documents_and_snapshots": "unchanged",
+    "repository": "unchanged",
+    "git_state": "not_accessed",
+    "live_network_api_model_database_search_azure": "not_accessed_or_mutated"
+  },
+  "artifact_hashes": {
+    "criterion-provenance-batch2-successor.overlay.json": {
+      "path": "criterion-provenance-batch2-successor.overlay.json",
+      "sha256": "5d0d9bbb374bd7ec3c3f7e5617494da3e2dd62dcd1809889d99a52aa5de9167a",
+      "bytes": 37276
+    },
+    "criterion-provenance-batch2-successor.ledger.json": {
+      "path": "criterion-provenance-batch2-successor.ledger.json",
+      "sha256": "ae7e00d8ecf9f3916f4ff2c0424eee9392baf00aa925fafcf113838b96ac0887",
+      "bytes": 58095
+    },
+    "criterion-provenance-batch2-successor.source-attestations.json": {
+      "path": "criterion-provenance-batch2-successor.source-attestations.json",
+      "sha256": "87e18c82c7418e16e2296e4188d9045653cafed056680bc277e698997e434237",
+      "bytes": 13565
+    },
+    "criterion-provenance-partition-correction.MERGE.md": {
+      "path": "criterion-provenance-partition-correction.MERGE.md",
+      "sha256": "6cc82d9c457b328ab48713396a22b786d1c94c12aa611df53e593286a13a1b54",
+      "bytes": 2482
+    },
+    "criterion-provenance-partition-correction.manifest.json": {
+      "path": "criterion-provenance-partition-correction.manifest.json",
+      "sha256": "c49148190ba637a85c0f8d3d2d565aa616642107a0d9e88162ae05f1a36661c0",
+      "bytes": 21866
+    }
+  },
+  "limitations": [
+    "AIS-08:R5 remains unscorable because the criterion belongs to a response-contract boundary, not product law.",
+    "No normative body or rule evidence was available or appropriate for AIS-08:R5.",
+    "Existing semantic-pending records still require independent human confirmation.",
+    "The original Batch2 attestation and its external evidence paths remain required and unchanged.",
+    "Final successor-bundle assembly and adoption remain the merge session's responsibility."
+  ]
+}

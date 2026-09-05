@@ -1,0 +1,5 @@
+{
+  "status": "passed",
+  "network_calls": 0,
+  "offline_guard": "socket_connect_and_dns_blocked"
+}

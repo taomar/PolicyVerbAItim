@@ -1,0 +1,434 @@
+{
+  "schema": "feature_adoption_start_v1",
+  "captured_utc": "2026-09-05T04:34:37.3580282Z",
+  "old_main": "3414811752cc2cb08bf26b87dd8d8fa2c22baf65",
+  "candidate": "d3bb0f94d58d1810a1ff24cacf8118d82f9c554f",
+  "branch": "main",
+  "normal_status_entries": 77,
+  "expanded_status_entries": 78,
+  "tracked_dirty": 42,
+  "untracked_physical": 36,
+  "normal_status_sha256": "28584ef487e36ee35bf4309b3191a33b502296df9e5891c217d94a4e80bcfb88",
+  "expanded_status_sha256": "3c7cfef96d0bd7c391fa139a70bdc15ee171c550627ab2cf3db4ac663f738f72",
+  "logical_index_sha256": "6676de77652921e53e56f2d8e327b4c9e799c33242b79a79d43d7931e9919037",
+  "dirty_file_hashes": [
+    {
+      "path": ".env.example",
+      "bytes": 7919,
+      "sha256": "e4568736f4d703c554aecdfa330fde8a92100ecb059822c2f0258007814cd35c"
+    },
+    {
+      "path": ".serena/.gitignore",
+      "bytes": 28,
+      "sha256": "441f89b8bba2252c9f7797ebc2fca741b760712e1c8261a7ad5c282175dd52f2"
+    },
+    {
+      "path": ".serena/project.yml",
+      "bytes": 9971,
+      "sha256": "db8faed9a8cffe4d26c982c674123d7492f5a011b6c8f97df99de64d109985fd"
+    },
+    {
+      "path": "alembic/versions/a1c5f0b3e284_policy_index_builds.py",
+      "bytes": 8122,
+      "sha256": "b27db138e479b2af5a3d16d605ce8c3634c1a5ca0e86dfef0235d96775b749c3"
+    },
+    {
+      "path": "alembic/versions/f4b8c2e97d31_api_subscription_keys.py",
+      "bytes": 3453,
+      "sha256": "395f9f7ce73b77a28ddac9896b22ac12b162eef0a1b73a93eecec8698109dc2e"
+    },
+    {
+      "path": "apps/web/src/api.ts",
+      "bytes": 166741,
+      "sha256": "83ca5ff2ff620de2331aadb02ec29a18aa1d62af41be5926c850c25b5f8eea26"
+    },
+    {
+      "path": "apps/web/src/App.tsx",
+      "bytes": 21237,
+      "sha256": "48240e7ccfce3b0da287eab25755f0583afd1315e2836de4f585c0a9276f2494"
+    },
+    {
+      "path": "apps/web/src/components/DocumentsPage.contentAlreadyPresent.test.tsx",
+      "bytes": 10495,
+      "sha256": "99a90cdda9cf7cca6564cc8d8ec7220b0a91954395e0c6b67e8b6e5d11bce872"
+    },
+    {
+      "path": "apps/web/src/components/DocumentsPage.tsx",
+      "bytes": 29559,
+      "sha256": "e546bdabd549c8891db2524279cb522ef8477c6c013ddada777640c9ec54f054"
+    },
+    {
+      "path": "apps/web/src/components/DocumentsPage.upload.test.tsx",
+      "bytes": 23022,
+      "sha256": "d9f7bd0ba0c0fb6363b069f235ff7e8437abbd711f0f82557b4107a44784c564"
+    },
+    {
+      "path": "apps/web/src/components/DocumentsPage.validation.test.tsx",
+      "bytes": 7577,
+      "sha256": "bc7c9b248a4e3cba3a630459d86c9007b4b3151096e5b5843758923af8b5393e"
+    },
+    {
+      "path": "apps/web/src/components/everyLongRequestAnnouncesItself.test.tsx",
+      "bytes": 5977,
+      "sha256": "a4e8451fe7e5b9205ec5d10f8cc5fe1f24841f8b8b4fb8a18af199272e990af1"
+    },
+    {
+      "path": "apps/web/src/components/PolicyIndexBuildHistoryTable.tsx",
+      "bytes": 7880,
+      "sha256": "702d1b5d60f8d8eb5047e7101bd1bb7004328bb0dc41c189e5dbfe3be8653fcf"
+    },
+    {
+      "path": "apps/web/src/components/PolicyIndexProgressPanel.test.tsx",
+      "bytes": 17066,
+      "sha256": "88d54cc51bbec1c457d9f682cee0211b90264dc462d549f35382086931f5b0ef"
+    },
+    {
+      "path": "apps/web/src/components/PolicyIndexProgressPanel.tsx",
+      "bytes": 21568,
+      "sha256": "3635f8c7e72912f8742d2d708a9b7d45d269dac0203aabc977d36bcac4f19886"
+    },
+    {
+      "path": "apps/web/src/components/ProjectOverviewTab.tsx",
+      "bytes": 48907,
+      "sha256": "9454713a8d4e003e76396ea4e2ac5a8b26c7a6ee576b20c91c4af124cb945a25"
+    },
+    {
+      "path": "apps/web/src/components/UploadProgressPanel.test.tsx",
+      "bytes": 22353,
+      "sha256": "1b61472bdcbbf96338b7cbcaad60871b2c6af7a5b24acccc3b61f1c763b5b625"
+    },
+    {
+      "path": "apps/web/src/components/UploadProgressPanel.tsx",
+      "bytes": 18053,
+      "sha256": "53c0319fb2afacc979ba740f3767ae2ccd27ea30648c181cc81abbeec65cbf21"
+    },
+    {
+      "path": "apps/web/src/integrationCapabilityIsAskedOnlyAfterSignIn.test.tsx",
+      "bytes": 12843,
+      "sha256": "07a5280847d3479dbd1f814f84611650b1f589df7fe3f38b990bedf6d74495f3"
+    },
+    {
+      "path": "apps/web/src/IntegrationPage.test.tsx",
+      "bytes": 2489,
+      "sha256": "427cbbec286c5883b0cca3f58b420a27903366898cf31526a636d42c16a0463b"
+    },
+    {
+      "path": "apps/web/src/IntegrationPage.tsx",
+      "bytes": 8541,
+      "sha256": "c25021a7774d7eb067a6fecb3ec38ba4e6b33b8f04d0945fddb12f2a2fddbbff"
+    },
+    {
+      "path": "apps/web/src/operationId.ts",
+      "bytes": 1413,
+      "sha256": "885685a8fd70b307ecf70a274a5e1cb4f34c45762f4a48cdac17b8bb9b4ff8d0"
+    },
+    {
+      "path": "apps/web/src/PolicyIndexConsolePage.test.tsx",
+      "bytes": 13977,
+      "sha256": "44bb4aa26c40d99098f32dff2f8ad4d7c2a4d87b590c2f60f334a403977629a9"
+    },
+    {
+      "path": "apps/web/src/PolicyIndexConsolePage.tsx",
+      "bytes": 14918,
+      "sha256": "42ecb72131d594d1bd90aff1471d536ac99e555080c82d96c0229d4693f62944"
+    },
+    {
+      "path": "apps/web/src/policyIndexSurfaceScope.test.tsx",
+      "bytes": 6421,
+      "sha256": "fe4417ece24068d7e5ced1d2f4299b5ab568beb3dd8874841afc0aebde7b2aa9"
+    },
+    {
+      "path": "apps/web/src/rbac.test.ts",
+      "bytes": 8935,
+      "sha256": "ab1bc755cf2a02e30a5fbb3ed34752cb98b911fa2db8c72e578452e33f097dd4"
+    },
+    {
+      "path": "apps/web/src/rbac.ts",
+      "bytes": 9488,
+      "sha256": "490e21d3672980a85414cbf0b7f4dc364c1d9f29f45f10745c10b848454a4c2f"
+    },
+    {
+      "path": "docs/api.md",
+      "bytes": 116327,
+      "sha256": "8f7fa9548f073c6893178b896fd12694afbb24cd2920ba94f4a9ea0c317c01c3"
+    },
+    {
+      "path": "docs/configuration.md",
+      "bytes": 48135,
+      "sha256": "4703b2636b55eddb6f35ea0ff0c23d6ee9eb6974104a0a41938a72d671b40854"
+    },
+    {
+      "path": "docs/known-limitations.md",
+      "bytes": 41101,
+      "sha256": "02675a7973f84504ec1e993ae284ff24e7fe8df92ffc2f176145bbd4abbd235d"
+    },
+    {
+      "path": "src/policy_platform/api/app.py",
+      "bytes": 8340,
+      "sha256": "04f10d771316cc15261334c2c7a19930dbbe2cc2443a40aee7835376442ab93d"
+    },
+    {
+      "path": "src/policy_platform/api/authz.py",
+      "bytes": 44096,
+      "sha256": "6ee35b1cfe2428592555ca04b9da74c0841736b7d6c3fbd1ca8b58a9dc02cfbf"
+    },
+    {
+      "path": "src/policy_platform/api/routers/candidate_rules.py",
+      "bytes": 42894,
+      "sha256": "a7c171e844cb5da2c5e55398ebb39a917f073aa513da59afd5dbcddf9456d30e"
+    },
+    {
+      "path": "src/policy_platform/api/routers/documents.py",
+      "bytes": 24874,
+      "sha256": "d9540c5182ca642d3e5dd179c554438c502e9a862fb85e3f39ecfc1bc555d65e"
+    },
+    {
+      "path": "src/policy_platform/api/routers/integration.py",
+      "bytes": 8747,
+      "sha256": "5b4510312dc0e2a4286e85f65b5662d364ba49c5f70afccb0510f0224040f15d"
+    },
+    {
+      "path": "src/policy_platform/api/routers/policy_index_console.py",
+      "bytes": 11620,
+      "sha256": "ba0905c9989cc9a6bff6faa12e65a54c7e91d64e9ce7ddca562ce172d3a84ea9"
+    },
+    {
+      "path": "src/policy_platform/api/routers/policy_sets.py",
+      "bytes": 55895,
+      "sha256": "3cd7b1977860ede3eb90f338e4cd53a43be42c8941abc3530b04fcad164d2d1d"
+    },
+    {
+      "path": "src/policy_platform/api/schemas.py",
+      "bytes": 30103,
+      "sha256": "2bea95ebece436cf653040a83c45501a1435db7412970f0fa174f51b36dbbc04"
+    },
+    {
+      "path": "src/policy_platform/contracts/canonical_document.py",
+      "bytes": 30992,
+      "sha256": "7441afd2abbe5b102201cdbbbb1ce1354bc1f842b9d9b22cf5c8c214889ff420"
+    },
+    {
+      "path": "src/policy_platform/domain/models.py",
+      "bytes": 100667,
+      "sha256": "3651bc0859bc13ae8c4d5b3f91e0df91e19079e15d2f12d30a1471053ae8dd65"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/ai/openai_client.py",
+      "bytes": 18919,
+      "sha256": "2f5e43608fa41f0176b0345ef18e1f7a461f59cac0af0652ad7544df47649f4b"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/errors.py",
+      "bytes": 2047,
+      "sha256": "75c71b082c091ed0f6e550f44d69e9c21a232acd631329323102a2aeed2f98e8"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/ingestion/canonical_fidelity.py",
+      "bytes": 13531,
+      "sha256": "37802dddf629e227d3bb1c4306a17b0d38dfa634f1f639b934112a20cda59e75"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/ingestion/canonical_rebuild.py",
+      "bytes": 5310,
+      "sha256": "f8f64ae1a48b0afe30a6036420f9fa08e5449ac6cf6d2861b31b9eec35be19c3"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/ingestion/document_extraction.py",
+      "bytes": 19196,
+      "sha256": "4f3393203d0f11c3a1b4a792d68b12f85e438b394606c8441c1917b5185c434f"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/ingestion/mixed_script_text.py",
+      "bytes": 4763,
+      "sha256": "7bf88d1cbcbb74f37878961900432be19d0a1bf7d6293137cdc2d920562076ab"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/ingestion/upload_progress.py",
+      "bytes": 11354,
+      "sha256": "a48cb21cb6e9fe1dafffe2b5b46a467499964a2ffa51b5e3e03ba754f3eeaa41"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/ingestion/visual_page_reading.py",
+      "bytes": 27008,
+      "sha256": "a9fa9c3161e37ad6f441b7b38e50441ae8d595e88aad6a2098651ba54600d35d"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/persistence/policy_set_teardown.py",
+      "bytes": 23308,
+      "sha256": "36b33db614faf80dba8235ed8455baafaead9b2a1972235199b2747694bfc958"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/persistence/subscription_keys.py",
+      "bytes": 6171,
+      "sha256": "4209308343532302527f38d3ff32bac5b8a0837981400e8627f24b63c41b9ade"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/projection/llm_reasoning_view.py",
+      "bytes": 12056,
+      "sha256": "dbbbe2ad70767bd1722302a3fbb97afd42a6517635475100c49a9de6888d8eb9"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/projection/policy_rule_slice.py",
+      "bytes": 67317,
+      "sha256": "6de5c90a76b6a45fda07e28bc068324e17758ffcf2f7fd75ed6e01abb5613ffa"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/search/english_projection.py",
+      "bytes": 63777,
+      "sha256": "1b73e509b015183f68578d8b5b583b710747a1ab529328c2c4ca653e30e61123"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/search/policy_index_build_progress.py",
+      "bytes": 30796,
+      "sha256": "873583c7b423b5c4ea4417d09f819b2e7e20240e8115408b9dafc2d656ac78af"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/search/policy_index.py",
+      "bytes": 126518,
+      "sha256": "83f251adbf2af665ed845af9593d5118d1877af91ca8112dcdb7065e82075809"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/search/search_client.py",
+      "bytes": 17194,
+      "sha256": "bd70673b34e33fd6b6c4acac6b261901bdd1a38fb2da1e45fa4d5ffb95be7dfd"
+    },
+    {
+      "path": "src/policy_platform/infrastructure/settings.py",
+      "bytes": 18577,
+      "sha256": "c8ca8d5cf8160093c4773ec8985dee0edf9f64f5116c91aece8cff4fe1c5d630"
+    },
+    {
+      "path": "tests/unit/test_a_flagged_page_is_read_again.py",
+      "bytes": 32653,
+      "sha256": "cf13a796930e79f4895a2bb3c0c7ff99fcc58d5a59453ef1adca576f2caec45e"
+    },
+    {
+      "path": "tests/unit/test_a_generated_key_survives_a_rendering.py",
+      "bytes": 19350,
+      "sha256": "bf1ff5c9fd46e221750e72c53dc448c7e8787da11324df9887defb02bc8fe5cb"
+    },
+    {
+      "path": "tests/unit/test_a_literal_survives_a_rendering.py",
+      "bytes": 27523,
+      "sha256": "f1c5faba4991b05bd8ea12c0c93c30fc4fd1965c637b9fba6f190aaaae726632"
+    },
+    {
+      "path": "tests/unit/test_a_number_survives_a_rendering.py",
+      "bytes": 13381,
+      "sha256": "8a75a77cbcaf6466b16b11c96bd5e1d3d57b2b6c37e3285d1544f81e3b5044f4"
+    },
+    {
+      "path": "tests/unit/test_a_recovered_reading_order_is_replayable.py",
+      "bytes": 9790,
+      "sha256": "00a5e3eb5c4424128918c94f8971f91874d7b86ae09c5c885c70424c43d0c076"
+    },
+    {
+      "path": "tests/unit/test_a_stall_does_not_cost_the_run.py",
+      "bytes": 14605,
+      "sha256": "6dd87682e629e3d6da203758d8bcaf6f7335715cfcb3fd792df5a2474e62688e"
+    },
+    {
+      "path": "tests/unit/test_a_subscription_key_is_a_credential_not_a_hint.py",
+      "bytes": 22316,
+      "sha256": "381f03ce83bd604ee7a6f0648960fef2cc8209c8fbe072f06d2e1175adaa7ab1"
+    },
+    {
+      "path": "tests/unit/test_an_administrator_can_issue_an_api_key.py",
+      "bytes": 21195,
+      "sha256": "dc2f0d21e2ddfbba9641d58d8ccab93bc5bbb7a462f7d4c0c5eb4544cef4f127"
+    },
+    {
+      "path": "tests/unit/test_an_upload_reports_its_own_progress.py",
+      "bytes": 47619,
+      "sha256": "4388088166dd40e711d4c985e4d10551d39769655216af18a1068f5f03837a22"
+    },
+    {
+      "path": "tests/unit/test_capabilities_are_reachable.py",
+      "bytes": 36489,
+      "sha256": "f745ae2c206910e133e3c08c82a34f4dea839cb448fa9a391f3291f92dd73a4d"
+    },
+    {
+      "path": "tests/unit/test_error_descriptions.py",
+      "bytes": 2768,
+      "sha256": "734b21d0eb333fc97a97dec23b62e3348f11cd008b46ece9efbabe5875ff78fe"
+    },
+    {
+      "path": "tests/unit/test_interleaved_extraction_is_reported.py",
+      "bytes": 24001,
+      "sha256": "acbab74aedaee9cb05a14752f451f459768595e8d3bed2afeb7c24362e6a6603"
+    },
+    {
+      "path": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+      "bytes": 35286,
+      "sha256": "7c8561bcd414aa14fd3a4f890e6a7a1654c6914332cdaaeb1402ae98ca4273fd"
+    },
+    {
+      "path": "tests/unit/test_one_index_build_runs_at_a_time.py",
+      "bytes": 45439,
+      "sha256": "01777688002eda961b28d1ed146924cb14bb42a1c4ce8592fd97c59f3e2db15b"
+    },
+    {
+      "path": "tests/unit/test_policy_index.py",
+      "bytes": 25229,
+      "sha256": "60c8fe81a488d5707792577077808b5b48293b4cf2a30d4f2fb268d325f4534c"
+    },
+    {
+      "path": "tests/unit/test_policy_set_policy_index_routes.py",
+      "bytes": 10603,
+      "sha256": "ce4d26f31401b6761fc870f46b8d48696509c87763efed6cb08f56fab5473338"
+    },
+    {
+      "path": "tests/unit/test_publishing_reruns_active_guards.py",
+      "bytes": 14742,
+      "sha256": "3cd4bde4b96dc07b4b51725392bb3fa30d783a58d005e582393100cdfa184a2a"
+    },
+    {
+      "path": "tests/unit/test_search_client_index_management.py",
+      "bytes": 8773,
+      "sha256": "fc443cd12c8a29eb7bae2b8bd0b3872d495f75bbfc3623aba42cde6d696a0ddf"
+    },
+    {
+      "path": "tests/unit/test_the_case_decision_migration_matches_its_model.py",
+      "bytes": 12950,
+      "sha256": "f4a096274274ebedae1e8551437d1eb4c696b8317c2b88725c4a6919acaad904"
+    },
+    {
+      "path": "tests/unit/test_the_corpus_is_indexed_in_one_language.py",
+      "bytes": 77659,
+      "sha256": "0f7f36300f1c7c86cdfbc1af59806a7ef2ac9be92de9b4b9a389132fd4caa062"
+    },
+    {
+      "path": "tests/unit/test_the_model_reads_a_reasoning_view.py",
+      "bytes": 20878,
+      "sha256": "22daa6ab5ef510c38e43b467436fa420cf446a5c5fbe000447aee2b650653961"
+    }
+  ],
+  "feature_paths": [
+    "src/policy_platform/api/routers/extraction.py",
+    "src/policy_platform/contracts/canonical_document.py",
+    "src/policy_platform/contracts/reading_plan.py",
+    "src/policy_platform/contracts/structural_graph.py",
+    "src/policy_platform/domain/models.py",
+    "src/policy_platform/infrastructure/extraction/ai_extraction.py",
+    "src/policy_platform/infrastructure/ingestion/canonical_fidelity.py",
+    "src/policy_platform/infrastructure/ingestion/canonical_rebuild.py",
+    "src/policy_platform/infrastructure/ingestion/document_extraction.py",
+    "src/policy_platform/infrastructure/ingestion/document_ingestion.py",
+    "src/policy_platform/infrastructure/search/ranking_telemetry.py",
+    "src/policy_platform/infrastructure/search/search_client.py",
+    "tests/unit/test_a_ranking_says_which_component_ranked_it.py",
+    "tests/unit/test_a_table_keeps_its_shape.py",
+    "tests/unit/test_clause_projection_boundary.py",
+    "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py"
+  ],
+  "feature_status_before": [
+    " M src/policy_platform/contracts/canonical_document.py",
+    " M src/policy_platform/domain/models.py",
+    " M src/policy_platform/infrastructure/ingestion/canonical_fidelity.py",
+    " M src/policy_platform/infrastructure/ingestion/canonical_rebuild.py",
+    " M src/policy_platform/infrastructure/ingestion/document_extraction.py",
+    " M src/policy_platform/infrastructure/search/search_client.py",
+    " M tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py"
+  ],
+  "index_backup_sha256": "1dc49e3b3203ea82bd4beeda6553e6b901b758d9f53ffe4dea26a1d4dc19389f"
+}

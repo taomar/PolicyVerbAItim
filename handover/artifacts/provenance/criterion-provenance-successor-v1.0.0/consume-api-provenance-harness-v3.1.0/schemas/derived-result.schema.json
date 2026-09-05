@@ -1,0 +1,742 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.policyverbaitim.invalid/schemas/consume-api-derived-result-v2.json",
+  "title": "PolicyVerbAItim Consume API source-grounded derived result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "arm",
+    "reasoning_effort",
+    "question",
+    "n",
+    "rubric_sha256",
+    "source_snapshot_sha256",
+    "repetitions",
+    "expected_evidence_hit",
+    "expected_evidence_miss",
+    "expected_evidence_miss_details",
+    "actionable_target_rule_conclusion",
+    "scored_result",
+    "provenance_preflight",
+    "historical_replay",
+    "R6",
+    "R10",
+    "metrics"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "consume-api-derived-result/2"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "arm": {
+      "$ref": "#/$defs/arm"
+    },
+    "reasoning_effort": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "medium",
+        null
+      ]
+    },
+    "question": {
+      "$ref": "#/$defs/question"
+    },
+    "n": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3
+    },
+    "rubric_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "source_snapshot_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "repetitions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/repetitionEvaluation"
+      }
+    },
+    "expected_evidence_hit": {
+      "$ref": "#/$defs/stringSet"
+    },
+    "expected_evidence_miss": {
+      "$ref": "#/$defs/stringSet"
+    },
+    "expected_evidence_miss_details": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidenceMissDetail"
+      }
+    },
+    "scored_result": {
+      "$ref": "#/$defs/scoredResult"
+    },
+    "actionable_target_rule_conclusion": {
+      "type": "boolean"
+    },
+    "provenance_preflight": {
+      "$ref": "#/$defs/provenancePreflightSummary"
+    },
+    "historical_replay": {
+      "$ref": "#/$defs/historicalReplay"
+    },
+    "R6": {
+      "$ref": "#/$defs/r6Measurement"
+    },
+    "R10": {
+      "$ref": "#/$defs/r10Measurement"
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "valid_latency_n",
+        "median_wall_ms"
+      ],
+      "properties": {
+        "valid_latency_n": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "median_wall_ms": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "stringSet": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "scoredResult": {
+      "enum": [
+        "pass",
+        "fail",
+        "needs_review",
+        "rubric_error",
+        "unresolved",
+        "harness_error",
+        "excluded_non_actionable"
+      ]
+    },
+    "dimensionStatus": {
+      "enum": [
+        "pass",
+        "fail",
+        "not_applicable"
+      ]
+    },
+    "dimensionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/dimensionStatus"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "arm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "surface",
+        "retrieval_mode",
+        "persists_decision"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
+          ]
+        },
+        "surface": {
+          "enum": [
+            "decision_light",
+            "full_decision",
+            "json_only_retrieval"
+          ]
+        },
+        "retrieval_mode": {
+          "enum": [
+            "policy",
+            "rule"
+          ]
+        },
+        "persists_decision": {
+          "type": "boolean"
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rubric_id",
+        "id",
+        "project",
+        "corpus",
+        "classes"
+      ],
+      "properties": {
+        "rubric_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "project": {
+          "enum": [
+            "ais-e2e",
+            "hw-policy"
+          ]
+        },
+        "corpus": {
+          "enum": [
+            "AIS",
+            "HW"
+          ]
+        },
+        "classes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "C",
+              "V",
+              "I",
+              "X"
+            ]
+          }
+        }
+      }
+    },
+    "repetitionEvaluation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repetition",
+        "job_id",
+        "raw_record_sha256",
+        "dimensions",
+        "expected_evidence_hit",
+        "expected_evidence_miss",
+        "retained_evidence_miss",
+        "citation_evidence_miss",
+        "manual_review_required",
+        "manual_criteria",
+        "manual_criterion_provenance",
+        "criterion_results",
+        "actionable_target_rule_conclusion",
+        "observed_dimension_failures",
+        "product_failures",
+        "harness_failures",
+        "rubric_findings",
+        "unresolved_criteria",
+        "scored_result",
+        "scored_failures"
+      ],
+      "properties": {
+        "repetition": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "job_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "raw_record_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "dimensions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R7",
+            "R8",
+            "R9"
+          ],
+          "properties": {
+            "R1": {
+              "$ref": "#/$defs/dimensionResult"
+            },
+            "R2": {
+              "$ref": "#/$defs/dimensionResult"
+            },
+            "R3": {
+              "$ref": "#/$defs/dimensionResult"
+            },
+            "R4": {
+              "$ref": "#/$defs/dimensionResult"
+            },
+            "R5": {
+              "$ref": "#/$defs/dimensionResult"
+            },
+            "R7": {
+              "$ref": "#/$defs/dimensionResult"
+            },
+            "R8": {
+              "$ref": "#/$defs/dimensionResult"
+            },
+            "R9": {
+              "$ref": "#/$defs/dimensionResult"
+            }
+          }
+        },
+        "expected_evidence_hit": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "expected_evidence_miss": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "retained_evidence_miss": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "citation_evidence_miss": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "manual_review_required": {
+          "type": "boolean"
+        },
+        "manual_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "manual_criterion_provenance": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/manualCriterionProvenance"
+          }
+        },
+        "criterion_results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/criterionResult"
+          }
+        },
+        "actionable_target_rule_conclusion": {
+          "type": "boolean"
+        },
+        "observed_dimension_failures": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "product_failures": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "harness_failures": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "rubric_findings": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "unresolved_criteria": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "scored_result": {
+          "$ref": "#/$defs/scoredResult"
+        },
+        "scored_failures": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "R1",
+              "R2",
+              "R3",
+              "R4",
+              "R5",
+              "R7",
+              "R8",
+              "R9"
+            ]
+          }
+        }
+      }
+    },
+    "manualCriterionProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criterion_id",
+        "description",
+        "disposition",
+        "active"
+      ],
+      "properties": {
+        "criterion_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "disposition": {
+          "enum": [
+            "scorable",
+            "unscorable",
+            "unresolved"
+          ]
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "criterionResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criterion_id",
+        "target",
+        "observed_result_preserved",
+        "reported_result",
+        "classification",
+        "charged_to_product",
+        "provenance_disposition",
+        "provenance_reason"
+      ],
+      "properties": {
+        "criterion_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "target": {
+          "enum": [
+            "R1",
+            "R3",
+            "R4",
+            "R5",
+            "R9"
+          ]
+        },
+        "observed_result_preserved": {
+          "$ref": "#/$defs/dimensionStatus"
+        },
+        "reported_result": {
+          "$ref": "#/$defs/dimensionStatus"
+        },
+        "classification": {
+          "enum": [
+            "product_fail",
+            "product_pass_or_n_a",
+            "rubric_error",
+            "unresolved",
+            "not_triggered"
+          ]
+        },
+        "charged_to_product": {
+          "type": "boolean"
+        },
+        "provenance_disposition": {
+          "enum": [
+            "scorable",
+            "unscorable",
+            "unresolved"
+          ]
+        },
+        "provenance_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "provenancePreflightSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "criterion_count",
+        "rubric_finding_count"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "ready",
+            "ready_with_rubric_findings"
+          ]
+        },
+        "criterion_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rubric_finding_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "historicalReplay": {
+      "type": "object",
+      "required": [
+        "label",
+        "comparison_valid",
+        "causal_regression_claim_allowed",
+        "limits"
+      ],
+      "properties": {
+        "label": {
+          "const": "old_rubric_replay_non_equivalent"
+        },
+        "comparison_valid": {
+          "const": false
+        },
+        "causal_regression_claim_allowed": {
+          "const": false
+        },
+        "limits": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        }
+      }
+    },
+    "stabilityFraction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "k",
+        "n"
+      ],
+      "properties": {
+        "k": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        }
+      }
+    },
+    "evidenceMissDetail": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provision_key",
+        "retrieval_control_arm_id",
+        "presence_by_repetition"
+      ],
+      "properties": {
+        "provision_key": {
+          "type": "string"
+        },
+        "retrieval_control_arm_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "E",
+            "F",
+            null
+          ]
+        },
+        "presence_by_repetition": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "repetition",
+              "present"
+            ],
+            "properties": {
+              "repetition": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3
+              },
+              "present": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "r6Measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "measurement_only",
+        "n",
+        "outcome_stability",
+        "citation_stability"
+      ],
+      "properties": {
+        "measurement_only": {
+          "const": true
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "outcome_stability": {
+          "$ref": "#/$defs/stabilityFraction"
+        },
+        "citation_stability": {
+          "$ref": "#/$defs/stabilityFraction"
+        }
+      }
+    },
+    "metricSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repetition",
+        "retained_cardinality",
+        "citation_keys",
+        "total_tokens",
+        "outcome",
+        "wall_ms",
+        "latency_valid_for_comparison",
+        "request_body_bytes",
+        "wire_body_bytes",
+        "logical_json_bytes"
+      ],
+      "properties": {
+        "repetition": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "retained_cardinality": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "citation_keys": {
+          "$ref": "#/$defs/stringSet"
+        },
+        "total_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "outcome": {
+          "type": "object"
+        },
+        "wall_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "latency_valid_for_comparison": {
+          "type": "boolean"
+        },
+        "request_body_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "wire_body_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "logical_json_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "r10Measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "measurement_only",
+        "comparison_arm_id",
+        "this_arm",
+        "comparison_arm"
+      ],
+      "properties": {
+        "measurement_only": {
+          "const": true
+        },
+        "comparison_arm_id": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
+          ]
+        },
+        "this_arm": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/metricSnapshot"
+          }
+        },
+        "comparison_arm": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "$ref": "#/$defs/metricSnapshot"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "schema_version": "six_unit_content_review_v1",
+  "passed": true,
+  "high_confidence_secret_hits": 0,
+  "raw_source_policy_or_live_corpus_text_hits": 0,
+  "live_endpoint_hits": 0,
+  "source_filename_hits": 0,
+  "patches": [
+    {
+      "ordinal": "00",
+      "patch": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\00-rule-index-foundation.patch",
+      "bytes": 51705,
+      "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218",
+      "added_lines": 697,
+      "high_confidence_secret_hits": 0,
+      "known_fake_credential_hits": 0,
+      "synthetic_fixture_hits": 0,
+      "corpus_shaped_identifier_hits": 0,
+      "source_filename_hits": 0,
+      "structural_diagnostic_hits": 0,
+      "live_endpoint_hits": 0
+    },
+    {
+      "ordinal": "01",
+      "patch": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\01-rule-retrieval.rebased-on-foundation.patch",
+      "bytes": 316091,
+      "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1",
+      "added_lines": 6144,
+      "high_confidence_secret_hits": 0,
+      "known_fake_credential_hits": 0,
+      "synthetic_fixture_hits": 0,
+      "corpus_shaped_identifier_hits": 0,
+      "source_filename_hits": 0,
+      "structural_diagnostic_hits": 0,
+      "live_endpoint_hits": 0
+    },
+    {
+      "ordinal": "01a",
+      "patch": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\01a-earlier-payload-optimizations.patch",
+      "bytes": 31908,
+      "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e",
+      "added_lines": 651,
+      "high_confidence_secret_hits": 0,
+      "known_fake_credential_hits": 2,
+      "synthetic_fixture_hits": 6,
+      "corpus_shaped_identifier_hits": 0,
+      "source_filename_hits": 0,
+      "structural_diagnostic_hits": 0,
+      "live_endpoint_hits": 0
+    },
+    {
+      "ordinal": "02",
+      "patch": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\02-payload.rebased-on-six-unit-base.patch",
+      "bytes": 87833,
+      "sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7",
+      "added_lines": 1542,
+      "high_confidence_secret_hits": 0,
+      "known_fake_credential_hits": 0,
+      "synthetic_fixture_hits": 2,
+      "corpus_shaped_identifier_hits": 0,
+      "source_filename_hits": 0,
+      "structural_diagnostic_hits": 0,
+      "live_endpoint_hits": 0
+    },
+    {
+      "ordinal": "03",
+      "patch": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\03-consume-request-mode-foundation.patch",
+      "bytes": 27171,
+      "sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+      "added_lines": 351,
+      "high_confidence_secret_hits": 0,
+      "known_fake_credential_hits": 0,
+      "synthetic_fixture_hits": 0,
+      "corpus_shaped_identifier_hits": 0,
+      "source_filename_hits": 0,
+      "structural_diagnostic_hits": 0,
+      "live_endpoint_hits": 0
+    },
+    {
+      "ordinal": "04",
+      "patch": "C:\\Users\\taomar\\.copilot\\session-state\\d5da914d-1050-4c78-9b63-798ced2d1610\\files\\04-consume-native-parser-renderer.patch",
+      "bytes": 35998,
+      "sha256": "103af6f4551f2c3437aaf4f72b711c4a73f497af08259267f6630fa8c4e7831a",
+      "added_lines": 613,
+      "high_confidence_secret_hits": 0,
+      "known_fake_credential_hits": 0,
+      "synthetic_fixture_hits": 1,
+      "corpus_shaped_identifier_hits": 0,
+      "source_filename_hits": 0,
+      "structural_diagnostic_hits": 3,
+      "live_endpoint_hits": 0
+    }
+  ],
+  "assessment": [
+    "No private key, GitHub token, cloud access key, OpenAI-style key, JWT, storage account key, SAS signature, or live endpoint was added.",
+    "Fake credential constants are limited to the gzip negative-echo test and are not real values.",
+    "Maritime, berth/pilotage, Arabic, and malformed-envelope sentinel text are invented controls, not source corpus text.",
+    "Consume malformed-response details remain structural only and never serialize the response body.",
+    "No AIS/HW source filename is added by the six candidate patches."
+  ],
+  "findings": [
+    {
+      "ordinal": "01a",
+      "patch": "01a-earlier-payload-optimizations.patch",
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "patch_line": 428,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "cb798a990c9036b2b64e0ae80ce5f667fea3c0157482a3844c3cf29f2ec2f691",
+      "redacted_preview": "<invented test fixture>"
+    },
+    {
+      "ordinal": "01a",
+      "patch": "01a-earlier-payload-optimizations.patch",
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "patch_line": 429,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "4f0a445a62375cf857ab2020e6172c3c57917fb617805fa7400d6130e119c82c",
+      "redacted_preview": "<invented test fixture>"
+    },
+    {
+      "ordinal": "01a",
+      "patch": "01a-earlier-payload-optimizations.patch",
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "patch_line": 436,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "81ec0174ad685c6f51be87df22078332a9409ed54461a232bcdfe9d912358827",
+      "redacted_preview": "<invented test fixture>"
+    },
+    {
+      "ordinal": "01a",
+      "patch": "01a-earlier-payload-optimizations.patch",
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "patch_line": 437,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "478303843ee114d6e5b08d9729b107ddbc70bd4c10899f15ad7a0fdb9dabf0a5",
+      "redacted_preview": "<invented test fixture>"
+    },
+    {
+      "ordinal": "01a",
+      "patch": "01a-earlier-payload-optimizations.patch",
+      "path": "tests/unit/test_a_search_result_carries_only_what_is_read.py",
+      "patch_line": 443,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "d1ac745ff16527c2b070d959f4c788810356656d62e7684d2678a5385b499704",
+      "redacted_preview": "<invented test fixture>"
+    },
+    {
+      "ordinal": "01a",
+      "patch": "01a-earlier-payload-optimizations.patch",
+      "path": "tests/unit/test_large_responses_are_compressed.py",
+      "patch_line": 555,
+      "classification": "known-fake-test-credential",
+      "line_sha256": "d10efd2fb99112d694fabe52c87084b52bba803483ffa1aa88bea6d4141a545f",
+      "redacted_preview": "<fake test credential>"
+    },
+    {
+      "ordinal": "01a",
+      "patch": "01a-earlier-payload-optimizations.patch",
+      "path": "tests/unit/test_large_responses_are_compressed.py",
+      "patch_line": 556,
+      "classification": "known-fake-test-credential",
+      "line_sha256": "e0ff441b4b40d8aa9aaa6cfae13bf6ce7536827df4de8ba1769c17a4de86d954",
+      "redacted_preview": "<fake test credential>"
+    },
+    {
+      "ordinal": "01a",
+      "patch": "01a-earlier-payload-optimizations.patch",
+      "path": "tests/unit/test_large_responses_are_compressed.py",
+      "patch_line": 711,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "0d38b1e1a66917d6932916379ea3f49384ae7c175333b5b57ec286d0ebcfe0e2",
+      "redacted_preview": "<invented test fixture>"
+    },
+    {
+      "ordinal": "02",
+      "patch": "02-payload.rebased-on-six-unit-base.patch",
+      "path": "tests/unit/test_a_reply_accounts_for_the_evidence_it_was_given.py",
+      "patch_line": 1292,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "1101f87c56030f1523a92c5314d51accb1511f8c57edeccd8e68ed578a486d86",
+      "redacted_preview": "<invented test fixture>"
+    },
+    {
+      "ordinal": "02",
+      "patch": "02-payload.rebased-on-six-unit-base.patch",
+      "path": "tests/unit/test_held_evidence_is_accounted_for.py",
+      "patch_line": 1717,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "1101f87c56030f1523a92c5314d51accb1511f8c57edeccd8e68ed578a486d86",
+      "redacted_preview": "<invented test fixture>"
+    },
+    {
+      "ordinal": "04",
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/lib/errors.ts",
+      "patch_line": 505,
+      "classification": "structural-only-diagnostic",
+      "line_sha256": "9ee5f5db38940ffcf1b8e212d82318f75695a7e55ae5fd0d4c71f966fe1fbf10",
+      "redacted_preview": "<structural-only diagnostic>"
+    },
+    {
+      "ordinal": "04",
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/lib/errors.ts",
+      "patch_line": 560,
+      "classification": "structural-only-diagnostic",
+      "line_sha256": "f5727d4456e9440bfb0033e0290b00bd2611542a790cc5a925e6a2cfd12bfca4",
+      "redacted_preview": "<structural-only diagnostic>"
+    },
+    {
+      "ordinal": "04",
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/lib/errors.ts",
+      "patch_line": 561,
+      "classification": "structural-only-diagnostic",
+      "line_sha256": "35b0fa27e959a1ac689d8e6fc9763fe09f69287c14ecd068cfaafd19e2a9e7bc",
+      "redacted_preview": "<structural-only diagnostic>"
+    },
+    {
+      "ordinal": "04",
+      "patch": "04-consume-native-parser-renderer.patch",
+      "path": "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx",
+      "patch_line": 608,
+      "classification": "synthetic-domain-test-fixture",
+      "line_sha256": "8494acfb52a4e0eafadc16401afd1d3400d0652c36729643af37f520b133fa2e",
+      "redacted_preview": "<invented test fixture>"
+    }
+  ]
+}

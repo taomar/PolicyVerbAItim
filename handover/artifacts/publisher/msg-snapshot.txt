@@ -1,0 +1,16 @@
+Capture the in-flight working tree as archival source
+
+The shared checkout carried work that was never committed. This records it
+against the same base it was written on, 3414811, so that a later merge
+reconciles it with the adopted feature commits by hunk rather than by
+wholesale replacement.
+
+Includes 42 modifications to tracked files and 34 previously untracked
+source, test, migration and UI files. Bytes are taken verbatim from the
+shared checkout and were verified against the pre-adoption hashes.
+
+Excludes local tool state under .serena, and carries none of the secret,
+runtime data, dependency, build or session material that the repository
+already ignores.
+
+Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>

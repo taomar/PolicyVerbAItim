@@ -1,0 +1,228 @@
+{
+  "schema_version": "consume-api-normative-source-hash-attestations/1",
+  "quote_free": true,
+  "authoritative_bundle_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+  "source_documents": [
+    {
+      "id": "hw_policy_v3_3_local_document",
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+      "sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+      "bytes": 44901,
+      "read_only": true
+    }
+  ],
+  "rule_artifacts": [
+    {
+      "id": "hw_policy_frozen_rule_receipt",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json",
+      "sha256": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689",
+      "bytes": 63966,
+      "read_only": true,
+      "limitation": "The receipt exposes provision-level rule counts and selected IDs only for retained provisions; it is not a complete rule-body export."
+    }
+  ],
+  "provisions": [
+    {
+      "source_provision_id": "230ef0dbd6d412b2007b01babc0a74a9",
+      "project": "hw-policy",
+      "heading_path": [
+        "3. Refresh and Device Age",
+        "3.1 Standard refresh interval"
+      ],
+      "bounded_description": "Standard device refresh interval, transition rule, and early-replacement boundary.",
+      "source_snapshot_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json",
+        "file_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+        "pointer": "/provisions/48",
+        "pointer_sha256": "27dc1f8f7992a20370fbde2d73fdedae9cd7152dba3061ff099dd03e41340fd5"
+      },
+      "normative_body_evidence": {
+        "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+        "file_sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+        "locator": {
+          "kind": "docx_paragraph_range",
+          "paragraph_index_base": 0,
+          "start_inclusive": 33,
+          "end_inclusive": 34
+        },
+        "body_hash_canonicalization": "exact python-docx paragraph.text joined with LF; UTF-8 SHA-256",
+        "body_sha256": "a46475b4cb55246e9047101bc86996f1304afb219f043e0a14596216dcb1d9f8",
+        "body_utf8_bytes": 503,
+        "body_text_copied": false
+      },
+      "rule_metadata_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json",
+        "file_sha256": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689",
+        "pointer": "/considered/6",
+        "pointer_sha256": "b72bd7fd473db8c7bf76876003b2548ea8c855c954ad71c70462be9134a9b935",
+        "rule_count": 5,
+        "selected_rule_ids": [],
+        "rule_bodies_available_at_pointer": false,
+        "scope": "identity_and_count_only"
+      }
+    },
+    {
+      "source_provision_id": "ebb9290859d9fe10ab4a13e486482699",
+      "project": "hw-policy",
+      "heading_path": [
+        "4. Replacement",
+        "4.4 Lost or stolen equipment"
+      ],
+      "bounded_description": "Loss and theft reporting, security handling, external-theft documentation, and replacement prerequisites.",
+      "source_snapshot_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json",
+        "file_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+        "pointer": "/provisions/55",
+        "pointer_sha256": "c60cabbc02c1b3afd316e96acc7718a8a72add708bed44e0c2940e3e45ee2be2"
+      },
+      "normative_body_evidence": {
+        "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+        "file_sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+        "locator": {
+          "kind": "docx_paragraph_range",
+          "paragraph_index_base": 0,
+          "start_inclusive": 49,
+          "end_inclusive": 50
+        },
+        "body_hash_canonicalization": "exact python-docx paragraph.text joined with LF; UTF-8 SHA-256",
+        "body_sha256": "441a31812a55b7c7c6bb9b06e126ba977d9825113f0011fc2b6b9edf9a30426f",
+        "body_utf8_bytes": 427,
+        "body_text_copied": false
+      },
+      "rule_metadata_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json",
+        "file_sha256": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689",
+        "pointer": "/considered/54",
+        "pointer_sha256": "15aa18a956ea9ba80acbd3e39f353e328f9688ef28a6314220f5f445eb599136",
+        "rule_count": 6,
+        "selected_rule_ids": [
+          "AI-5a7f52c07a",
+          "AI-7253d629c3",
+          "AI-9174d96d59",
+          "AI-b7fd545099",
+          "AI-d06b700d27",
+          "AI-df9406a998"
+        ],
+        "rule_bodies_available_at_pointer": false,
+        "scope": "identity_and_count_only"
+      }
+    },
+    {
+      "source_provision_id": "81edaa293982adfdd04cb864640ba76d",
+      "project": "hw-policy",
+      "heading_path": [
+        "15. Bring Your Own Device",
+        "15.1 Personal devices"
+      ],
+      "bounded_description": "Personal-device restrictions, approved virtual-desktop exception, and continued organizational-device entitlement.",
+      "source_snapshot_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json",
+        "file_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+        "pointer": "/provisions/81",
+        "pointer_sha256": "323310a097b2084d84bb8619325e79e5565709321c1855d9d9e36be9b03afa0b"
+      },
+      "normative_body_evidence": {
+        "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+        "file_sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+        "locator": {
+          "kind": "docx_paragraph_range",
+          "paragraph_index_base": 0,
+          "start_inclusive": 118,
+          "end_inclusive": 119
+        },
+        "body_hash_canonicalization": "exact python-docx paragraph.text joined with LF; UTF-8 SHA-256",
+        "body_sha256": "c1df32ad1b4716e0297e8f55c0647bdce6b365a54504e23f5b7997280a2ea83d",
+        "body_utf8_bytes": 377,
+        "body_text_copied": false
+      },
+      "rule_metadata_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json",
+        "file_sha256": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689",
+        "pointer": "/considered/24",
+        "pointer_sha256": "7c61eb1fbbf04492d944de8d24434a02ef6fc109283560a391fba92a0c94bcf6",
+        "rule_count": 7,
+        "selected_rule_ids": [],
+        "rule_bodies_available_at_pointer": false,
+        "scope": "identity_and_count_only"
+      }
+    },
+    {
+      "source_provision_id": "2499ce756c30f34b1da6e16171bded61",
+      "project": "hw-policy",
+      "heading_path": [
+        "14. Contractors and Non-Employees",
+        "14.2 Shorter engagements"
+      ],
+      "bounded_description": "Short-contractor loan-stock treatment and refresh exclusion.",
+      "source_snapshot_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json",
+        "file_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+        "pointer": "/provisions/80",
+        "pointer_sha256": "2162cc2d6801df78ca0d9db3eb4bb4f6346000538216e2d444674354ca25a294"
+      },
+      "normative_body_evidence": {
+        "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+        "file_sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+        "locator": {
+          "kind": "docx_paragraph_range",
+          "paragraph_index_base": 0,
+          "start_inclusive": 115,
+          "end_inclusive": 115
+        },
+        "body_hash_canonicalization": "exact python-docx paragraph.text joined with LF; UTF-8 SHA-256",
+        "body_sha256": "5208479cd26155693005e2b0cc9c25b37fda387270c815ecb7806a6e6ffb5641",
+        "body_utf8_bytes": 147,
+        "body_text_copied": false
+      },
+      "rule_metadata_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json",
+        "file_sha256": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689",
+        "pointer": "/considered/7",
+        "pointer_sha256": "9df0bdeafce327895dd745e222078bdfa0dee665498b336a463e322e1449384f",
+        "rule_count": 1,
+        "selected_rule_ids": [],
+        "rule_bodies_available_at_pointer": false,
+        "scope": "identity_and_count_only"
+      }
+    },
+    {
+      "source_provision_id": "22daced0bf9d5768c63eb83f1cc7df60",
+      "project": "hw-policy",
+      "heading_path": [
+        "9. Workplace Adjustments and Accessibility",
+        "9.1 Priority"
+      ],
+      "bounded_description": "Workplace-adjustment priority, approval basis, and overrides of ordinary financial, entitlement, and refresh limits.",
+      "source_snapshot_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json",
+        "file_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+        "pointer": "/provisions/68",
+        "pointer_sha256": "6f2bafa5629fffbf1eefe0f2c8f717159f88b51f04104aef461a47d9a00322dc"
+      },
+      "normative_body_evidence": {
+        "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents\\89e29071-ba86-419f-83eb-549c795db172_v1_Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+        "file_sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+        "locator": {
+          "kind": "docx_paragraph_range",
+          "paragraph_index_base": 0,
+          "start_inclusive": 83,
+          "end_inclusive": 84
+        },
+        "body_hash_canonicalization": "exact python-docx paragraph.text joined with LF; UTF-8 SHA-256",
+        "body_sha256": "30dc176289ecada3c9aa54660e3da71696683bf4ec2fcd13e10c5b030b789f8c",
+        "body_utf8_bytes": 423,
+        "body_text_copied": false
+      },
+      "rule_metadata_evidence": {
+        "path": "C:\\Users\\taomar\\.copilot\\session-state\\8437f3da-491a-4139-b979-8b00996c8953\\files\\runs\\case-hw-policy-rule.json",
+        "file_sha256": "8c3c0e613e668f8644450a6e144836b93b5ea96bba55ba97c53e767ada434689",
+        "pointer": "/considered/5",
+        "pointer_sha256": "102c75bf8f426a45432d383fac3980e29a528c0fc7033160f56801bf8553f8ad",
+        "rule_count": 6,
+        "selected_rule_ids": [],
+        "rule_bodies_available_at_pointer": false,
+        "scope": "identity_and_count_only"
+      }
+    }
+  ]
+}

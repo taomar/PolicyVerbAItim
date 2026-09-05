@@ -1,0 +1,949 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.policyverbaitim.invalid/schemas/consume-api-raw-result-v1.json",
+  "title": "PolicyVerbAItim Consume API raw result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "job_id",
+    "sequence",
+    "arm",
+    "question",
+    "repetition",
+    "provenance",
+    "request",
+    "attempts",
+    "timing",
+    "response",
+    "followups",
+    "token_usage",
+    "normalized",
+    "integrity"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "consume-api-raw-result/1"
+    },
+    "run_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "job_id": {
+      "$ref": "#/$defs/nonEmptyString"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 360
+    },
+    "arm": {
+      "$ref": "#/$defs/arm"
+    },
+    "question": {
+      "$ref": "#/$defs/question"
+    },
+    "repetition": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "request": {
+      "$ref": "#/$defs/request"
+    },
+    "attempts": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "$ref": "#/$defs/attempt"
+      }
+    },
+    "timing": {
+      "$ref": "#/$defs/timing"
+    },
+    "response": {
+      "$ref": "#/$defs/response"
+    },
+    "followups": {
+      "type": "array",
+      "maxItems": 1,
+      "items": {
+        "$ref": "#/$defs/followup"
+      }
+    },
+    "token_usage": {
+      "$ref": "#/$defs/tokenUsage"
+    },
+    "normalized": {
+      "$ref": "#/$defs/normalized"
+    },
+    "integrity": {
+      "$ref": "#/$defs/integrity"
+    }
+  },
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullableNonNegativeInteger": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "arm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "surface",
+        "retrieval_mode",
+        "persists_decision"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F"
+          ]
+        },
+        "surface": {
+          "enum": [
+            "decision_light",
+            "full_decision",
+            "json_only_retrieval"
+          ]
+        },
+        "retrieval_mode": {
+          "enum": [
+            "policy",
+            "rule"
+          ]
+        },
+        "persists_decision": {
+          "type": "boolean"
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "corpus",
+        "policy_set_key",
+        "exact_text",
+        "utf8_bytes",
+        "sha256"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "corpus": {
+          "enum": [
+            "AIS",
+            "HW"
+          ]
+        },
+        "policy_set_key": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "exact_text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "utf8_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_sha256",
+        "contract_sha256",
+        "questions_sha256",
+        "rubric_sha256",
+        "source_snapshot_sha256",
+        "endpoint_contract_version",
+        "captured_at_utc"
+      ],
+      "properties": {
+        "manifest_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "contract_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "questions_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "rubric_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_snapshot_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "endpoint_contract_version": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "repository_commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "service_build": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "model_deployment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prompt_versions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "policy_version_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "index_manifest_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "captured_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "path",
+        "rule_retrieval",
+        "provision_id",
+        "provision_id_sent",
+        "correlation_id",
+        "idempotency_key_sha256",
+        "content_type",
+        "content_length_header",
+        "body_path",
+        "body_bytes",
+        "body_sha256",
+        "safe_headers"
+      ],
+      "properties": {
+        "method": {
+          "const": "POST"
+        },
+        "path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "rule_retrieval": {
+          "type": "boolean"
+        },
+        "provision_id": {
+          "type": "null"
+        },
+        "provision_id_sent": {
+          "type": "boolean"
+        },
+        "correlation_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "idempotency_key_sha256": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content_type": {
+          "const": "application/json"
+        },
+        "content_length_header": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "body_path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "body_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "body_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "safe_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "authorization"
+                ]
+              },
+              {
+                "required": [
+                  "x-policy-subscription-key"
+                ]
+              },
+              {
+                "required": [
+                  "cookie"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "attempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "number",
+        "started_at_utc",
+        "completed_at_utc",
+        "result",
+        "http_status",
+        "error_type",
+        "retryable",
+        "worker_exit_code",
+        "wall_ms",
+        "suspension_detected",
+        "max_heartbeat_gap_ms",
+        "timed_out"
+      ],
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "started_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "result": {
+          "enum": [
+            "success",
+            "http_outcome",
+            "transport_failure",
+            "timeout",
+            "contract_failure"
+          ]
+        },
+        "http_status": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 100,
+          "maximum": 599
+        },
+        "error_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "worker_exit_code": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "wall_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "suspension_detected": {
+          "type": "boolean"
+        },
+        "max_heartbeat_gap_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timed_out": {
+          "type": "boolean"
+        }
+      }
+    },
+    "timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "started_at_utc",
+        "completed_at_utc",
+        "wall_ms",
+        "server_latency_ms",
+        "stage_latency_ms",
+        "suspension_detected",
+        "max_heartbeat_gap_ms",
+        "latency_valid_for_comparison"
+      ],
+      "properties": {
+        "started_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "wall_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "server_latency_ms": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "stage_latency_ms": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "suspension_detected": {
+          "type": "boolean"
+        },
+        "max_heartbeat_gap_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "latency_valid_for_comparison": {
+          "type": "boolean"
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "http_status",
+        "content_type",
+        "content_encoding",
+        "content_length_header",
+        "wire_body_path",
+        "wire_body_bytes",
+        "wire_body_sha256",
+        "decoded_body_path",
+        "decoded_body_bytes",
+        "decoded_body_sha256",
+        "logical_json_bytes",
+        "safe_headers"
+      ],
+      "properties": {
+        "http_status": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 100,
+          "maximum": 599
+        },
+        "content_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "content_encoding": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "content_length_header": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "wire_body_path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "wire_body_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "wire_body_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "decoded_body_path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "decoded_body_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "decoded_body_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "logical_json_bytes": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "safe_headers": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "followup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "method",
+        "path",
+        "wall_ms",
+        "response"
+      ],
+      "properties": {
+        "purpose": {
+          "const": "full_receipt_integrity"
+        },
+        "method": {
+          "const": "GET"
+        },
+        "path": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "wall_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "response": {
+          "$ref": "#/$defs/response"
+        }
+      }
+    },
+    "tokenUsage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "availability",
+        "source_pointer",
+        "calls",
+        "calls_without_usage",
+        "prompt_tokens",
+        "completion_tokens",
+        "reasoning_tokens",
+        "total_tokens",
+        "arithmetic_valid"
+      ],
+      "properties": {
+        "availability": {
+          "enum": [
+            "reported",
+            "not_exposed_by_contract",
+            "missing_contract_violation"
+          ]
+        },
+        "source_pointer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "calls": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "calls_without_usage": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "prompt_tokens": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "completion_tokens": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "reasoning_tokens": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "total_tokens": {
+          "$ref": "#/$defs/nullableNonNegativeInteger"
+        },
+        "arithmetic_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    "answerTrack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "availability",
+        "status",
+        "text",
+        "explanation"
+      ],
+      "properties": {
+        "availability": {
+          "enum": [
+            "present",
+            "not_requested",
+            "not_exposed_by_contract",
+            "missing_contract_violation"
+          ]
+        },
+        "status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "text": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "explanation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "citation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rule_id",
+        "provision_key",
+        "heading",
+        "source_state",
+        "source_text_sha256",
+        "page",
+        "section"
+      ],
+      "properties": {
+        "rule_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "provision_key": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "heading": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_text_sha256": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "page": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "section": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "normalized": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "response_schema_version",
+        "decision_id",
+        "correlation_id",
+        "decision_hash",
+        "hash_basis",
+        "receipt_url",
+        "retrieval_status",
+        "requested_retrieval_mode",
+        "echoed_retrieval_mode",
+        "outcome",
+        "answer",
+        "information",
+        "verdict",
+        "verdict_reached",
+        "missing_information",
+        "verification_requirements",
+        "retained_policy_keys",
+        "retained_rule_ids",
+        "citations"
+      ],
+      "properties": {
+        "response_schema_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "correlation_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decision_hash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hash_basis": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "receipt_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retrieval_status": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requested_retrieval_mode": {
+          "enum": [
+            "policy",
+            "rule"
+          ]
+        },
+        "echoed_retrieval_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "outcome": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "answer": {
+          "$ref": "#/$defs/answerTrack"
+        },
+        "information": {
+          "$ref": "#/$defs/answerTrack"
+        },
+        "verdict": {
+          "$ref": "#/$defs/answerTrack"
+        },
+        "verdict_reached": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "missing_information": {
+          "type": "array"
+        },
+        "verification_requirements": {
+          "type": "array"
+        },
+        "retained_policy_keys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "retained_rule_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/citation"
+          }
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "json_valid",
+        "contract_valid",
+        "mode_echo_valid",
+        "no_mode_downgrade",
+        "content_length_matches_wire",
+        "receipt_hash_valid",
+        "hash_basis_valid",
+        "full_light_identity_valid",
+        "token_usage_matches_receipt",
+        "stage_latency_matches_receipt",
+        "citation_integrity_valid",
+        "non_fabrication_valid",
+        "token_usage_valid",
+        "issues"
+      ],
+      "properties": {
+        "json_valid": {
+          "type": "boolean"
+        },
+        "contract_valid": {
+          "type": "boolean"
+        },
+        "mode_echo_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "no_mode_downgrade": {
+          "type": "boolean"
+        },
+        "content_length_matches_wire": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "receipt_hash_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "hash_basis_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "full_light_identity_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "token_usage_matches_receipt": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "stage_latency_matches_receipt": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "citation_integrity_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "non_fabrication_valid": {
+          "type": "boolean"
+        },
+        "token_usage_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

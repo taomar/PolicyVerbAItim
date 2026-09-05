@@ -1,0 +1,151 @@
+{
+  "authoritative_inputs": [
+    {
+      "bytes": 8696,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\FINAL_COMMIT_DECOMPOSITION.md",
+      "sha256": "05eca137e8ac2f685c50cac0509c31a8b9135bbe4bb76b30e6ea599bfddf164c"
+    },
+    {
+      "bytes": 1620,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\NEXT_ACTION_HANDOFF.md",
+      "sha256": "42638bdb9e317f161179bf0a76c0f39a35f86dc8926601345601d2582f8c7696"
+    },
+    {
+      "bytes": 4262,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\COMMIT_SEQUENCE.json",
+      "sha256": "1a095cb3a8dd481bf5adc2c57bbc34f31d87aee3d63cb4807871133a142ac650"
+    },
+    {
+      "bytes": 12181,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\PATCH_VALIDATION.json",
+      "sha256": "39d536369b5401ca4298bf2e8b81ecc2dbee8e367f64cbebdd90b4f23647c135"
+    },
+    {
+      "bytes": 215572,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\COMPLETE_PATH_LEDGER.json",
+      "sha256": "f6cea66001ac825cfdfbeeb4c8841c2ffa5005b2adb2d3e9a27974bc3b1dea4d"
+    },
+    {
+      "bytes": 82681,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\EXCLUSIONS.json",
+      "sha256": "7326bc43f2df11b2259b524682c0635eba6550f2c9f0c9afc457fe6193c66550"
+    },
+    {
+      "bytes": 18812,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\INPUT_OUTPUT_HASHES.json",
+      "sha256": "2bba7530a3be0b1b486cf27b4cc25beca9acfc0653d5d2a506b1d00860cdfe05"
+    },
+    {
+      "bytes": 344426,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\01-rule-retrieval.blocked-proven-subset.patch",
+      "sha256": "d5eea76e93425fb1a8c52f08232c960ecfacdf73003d42c75a32209544dbfc82"
+    },
+    {
+      "bytes": 32416,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\01-rule-retrieval.manifest.json",
+      "sha256": "529b763db020b4eb41fb439ca3ffc0bb359413b75bebb346e05170af6bc09b30"
+    },
+    {
+      "bytes": 20935,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\ad57ae08-1a8d-4ad3-b853-af391de7868f\\files\\COMMIT_DECOMPOSITION_AUDIT.md",
+      "sha256": "888d0ae8bf12c65310bcf3e454ad8b571b18c06155b5f23055a03f16116431e4"
+    },
+    {
+      "bytes": 18197,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\58f19b59-6aa9-4d38-8782-46cbdc7640c5\\files\\PAYLOAD_HANDOVER.md",
+      "sha256": "cbb577e0d80cbec751183aee790c027b91fb60551ab68215acc6ebbbe5bf1f10"
+    },
+    {
+      "bytes": 7425,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\d99011fe-a8c3-4032-872b-1643baaef994\\files\\payload-reduction-like-for-like-results.md",
+      "sha256": "f640151cc2e39f04ab33925edb0d3c939f6ccb1d1ba37ea3c584b4c3fb4221cb"
+    }
+  ],
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "outputs": [
+    {
+      "bytes": 51705,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\00-rule-index-foundation.patch",
+      "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218"
+    },
+    {
+      "bytes": 316091,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\01-rule-retrieval.rebased-on-foundation.patch",
+      "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1"
+    },
+    {
+      "bytes": 7377,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\EXCLUSIONS.json",
+      "sha256": "0a6507393c6f14e1a895c0df6dd29bb004e322807af30ac87919f50c0572c062"
+    },
+    {
+      "bytes": 901,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\NEXT_ACTION.md",
+      "sha256": "87e38b9e7e1bdf923c6ba15e5cbf9698aeae15f695f95ccd14ad88de82f3265b"
+    },
+    {
+      "bytes": 83382,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\PATH_HUNK_MANIFEST.json",
+      "sha256": "b0a89fecfc6806deab6ec18c6463fe74342b63a552ef7cda4903177701ea137c"
+    },
+    {
+      "bytes": 6534,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\RULE_INDEX_FOUNDATION_RECONSTRUCTION.md",
+      "sha256": "0153109783df99d6daf852b5774275dbb062a4e9d1f05cf56bca32e6fe6d240a"
+    },
+    {
+      "bytes": 19674,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\RULE_REBASE_DELTA_MANIFEST.json",
+      "sha256": "f856f71b788c3d7017ef3c18c6878a20ff2750bbdbe927ee2f1d5aba5b636fc8"
+    },
+    {
+      "bytes": 10210,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\SEQUENCE_VALIDATION.json",
+      "sha256": "bb728b4dbb0c31bc51ee941ecb5fd0b2842a5442cd6051672e0ee11259869ff8"
+    }
+  ],
+  "schema_version": "rule_index_foundation_input_output_hashes_v1",
+  "self_hash_note": "INPUT_OUTPUT_HASHES.json intentionally omits its own hash.",
+  "supporting_evidence": [
+    {
+      "bytes": 36493,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\FOUNDATION_FOCUSED_TESTS.txt",
+      "sha256": "eac819bc601eefbcdf1a8f03d2c0e76da5c08bd0e1a2e72ceb6dfbed5f7f540e"
+    },
+    {
+      "bytes": 83805,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\FOUNDATION_RULE_FOCUSED_TESTS.txt",
+      "sha256": "2705e13931fa689657684bbdb4da1d1a94cf64c0ba87f93aa50250d08d817efd"
+    },
+    {
+      "bytes": 2062,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\EXISTING_RULE_AFTER_FOUNDATION_APPLY_CHECK.txt",
+      "sha256": "9c3390179e9a381f07de27a0bfac0db83e0e2aea071e1e1352c6fbd5b36691be"
+    },
+    {
+      "bytes": 3471,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\END_SHARED_REPOSITORY_STATE.json",
+      "sha256": "3851df4e0be61cbc2f3cd3b3ae11ac00832d4972511299cd297168a151ecafb0"
+    },
+    {
+      "bytes": 334,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\END_POWERSHELL_TREE.json",
+      "sha256": "5aaeb8eb950ecab86102834d9e428d39932d73cfefac49dec4af1f9e456a1b78"
+    },
+    {
+      "bytes": 25461,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\reconstruct_candidates.py",
+      "sha256": "ec893e69517419b96b67dc7dfe1e703e50df96009ee898d7fd0ae7162a7431b8"
+    },
+    {
+      "bytes": 8136,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\verify_shared_nonmutation.py",
+      "sha256": "be6c0ee34bdd2b4d083f90fece5a43c558693f450ef2bf7a165e1b499bd0931f"
+    },
+    {
+      "bytes": 37645,
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\c17eaeeb-2be8-496d-b206-d2457f7b30f8\\files\\finalize_reconstruction.py",
+      "sha256": "52a1768b45d69b9a98ce2e382a2ee24bf280a181c1685ed55e722fdf96f9a011"
+    }
+  ]
+}

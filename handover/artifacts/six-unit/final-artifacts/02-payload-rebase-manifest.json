@@ -1,0 +1,656 @@
+{
+  "schema_version": "payload_rebase_manifest_v1",
+  "base_sequence": [
+    {
+      "ordinal": "00",
+      "sha256": "c3b2e80468878cbf1b0940e33a2c08950ac96980549a897ea8e37fd3a930c218"
+    },
+    {
+      "ordinal": "01",
+      "sha256": "c75e0bb4d990f418f9f434bc832602e01d08c3d91cbfd3e94be3aa932903e4a1"
+    },
+    {
+      "ordinal": "01a",
+      "sha256": "917e7caa44e4d5fbf32b200e846434638b4f475c1d0d4de71334ff8cf182604e"
+    }
+  ],
+  "original_patch": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\02-payload.blocked-reconstruction.patch",
+    "bytes": 86466,
+    "sha256": "d2c9594603899ff9561cef8534ca51837cfa311e2c08e8c133323cee44b889a6"
+  },
+  "rebased_patch": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\02-payload.rebased-on-six-unit-base.patch",
+    "bytes": 87833,
+    "sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7",
+    "deterministic_run_1_sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7",
+    "deterministic_run_2_sha256": "2714ca1f86e7ed0a16b8271a24aa39223692d38dc0e827cb0b6e36879e2c34b7"
+  },
+  "unchanged_exact_target_paths": [
+    "src/policy_platform/application/policy_case_decision.py",
+    "src/policy_platform/contracts/case_decision.py",
+    "src/policy_platform/infrastructure/assistants/ai_case_evidence_accounting.py",
+    "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+    "src/policy_platform/infrastructure/assistants/ai_case_plan.py",
+    "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+    "tests/unit/test_a_case_asks_for_information_a_verdict_or_both.py",
+    "tests/unit/test_a_conferred_entitlement_is_not_an_approval.py",
+    "tests/unit/test_a_missing_selector_is_a_missing_fact_in_any_domain.py",
+    "tests/unit/test_a_reply_accounts_for_the_evidence_it_was_given.py",
+    "tests/unit/test_case_decision_light_contract.py",
+    "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+    "tests/unit/test_held_evidence_is_accounted_for.py",
+    "tests/unit/test_policy_case_project.py",
+    "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+    "tests/unit/test_the_plan_decides_and_the_prose_explains.py"
+  ],
+  "rebased_paths": [
+    {
+      "path": "tests/unit/test_english_is_the_only_internal_language.py",
+      "old_expected_base_sha256": "ad4064f4420ec0cc336837b71c2a3b098be2e61d0f35669b8f035a70af3be2e6",
+      "new_base": {
+        "bytes": 111171,
+        "sha256": "5b66d3601dba8897ccf75071b4691d4f745967d43ce4650d2576f260176f816c"
+      },
+      "new_result": {
+        "bytes": 111171,
+        "sha256": "9db0ca1f30c89d753cb7004746d570b410704bfdbb721d1fe7d99f4e151281c0"
+      },
+      "decision": "Apply the Payload-owned final prompt-version pin directly from v12 to v16; v15 was an intermediate unreleased base."
+    },
+    {
+      "path": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+      "old_expected_base_sha256": "d6f10461692457ae47e1b3aebc5839ad36ca0fe163f2dad31cf11185160a6444",
+      "new_base": {
+        "bytes": 32092,
+        "sha256": "170f8e7c8bdc88dc28a627949f8f4e19db565b0f819c8c33a465176e477143aa"
+      },
+      "new_result": {
+        "bytes": 34955,
+        "sha256": "5460de849f61f1c8e330f8f27f684a0aff43335cbcd9baf7d504fd8facb15af3"
+      },
+      "decision": "Merge Payload's 1.914 registration plus float guard/control onto the ordinal-00/01 anti-corpus file. Do not import mixed_script_text or visual_page_reading because their implementations are outside the six-unit sequence."
+    }
+  ],
+  "paths": [
+    {
+      "path": "src/policy_platform/application/policy_case_decision.py",
+      "base": {
+        "bytes": 130043,
+        "sha256": "f51fcd35838b3e146973714db4405bbe5f836c68cc8d893fdf086f3a43280440"
+      },
+      "result": {
+        "bytes": 131940,
+        "sha256": "4c26dfa4382e27d10487180191f73942df44839f0c44f1e5397265b846f760a5"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -138,6 +138,8 @@ from sqlalchemy.ext.asyncio import AsyncSession",
+          "bytes": 281,
+          "sha256": "6f0d0d6667c7cb18658d04dd33c7ca30d28325b09612bf89d7769fb5eb0a072b",
+          "added_lines": 2,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -2231,6 +2233,11 @@ def build_envelope(",
+          "bytes": 584,
+          "sha256": "29b8af2f613680afa10ac4e55468f39ad8e1ba54aa6e6189625d6eb034f75988",
+          "added_lines": 5,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -2273,9 +2280,9 @@ def build_envelope(",
+          "bytes": 679,
+          "sha256": "9e1b1579cb654628bbd1b1ea7aaadc9470352f579ec62fa818b72a9234a9e69d",
+          "added_lines": 2,
+          "deleted_lines": 2
+        },
+        {
+          "ordinal": 4,
+          "header": "@@ -2684,6 +2691,43 @@ def _verification_requirement_refs(branch: dict) -> list[VerificationRequirement",
+          "bytes": 1854,
+          "sha256": "4d6508f7322fdab2bb7b16130d25fedf7d528d5e3777c08472912d2630677301",
+          "added_lines": 37,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "src/policy_platform/contracts/case_decision.py",
+      "base": {
+        "bytes": 118814,
+        "sha256": "734dcd3cff33bb33ea4e7cb12eae038efb64947b3c0e850ca78c506032735a28"
+      },
+      "result": {
+        "bytes": 121405,
+        "sha256": "07e8e83d2936dca6ca1704b23d588857229be09b169595936ec502a5689fb774"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -737,11 +737,31 @@ class ScoreDisclosureRef(BaseModel):",
+          "bytes": 1490,
+          "sha256": "2b83ce16547ec95022395e4d67f09b13f8339f698cda9963e4440bdd20858c60",
+          "added_lines": 20,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -787,6 +807,17 @@ class PolicyRef(BaseModel):",
+          "bytes": 873,
+          "sha256": "8762bc755bae17fe81780f6eb8ebe387b31d2ebb6df5306834235771ee331161",
+          "added_lines": 11,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -1924,6 +1955,44 @@ def _sealed_citations(citations: list[CitationRef]) -> list[dict[str, Any]]:",
+          "bytes": 1916,
+          "sha256": "5a0686dee78779f776deb6be8a2d53593dfb8a39ee9a8e2b1dcaad3607d28a08",
+          "added_lines": 38,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 4,
+          "header": "@@ -1933,24 +2002,7 @@ def decision_hash_preimage_v2(envelope: CaseDecisionEnvelopeV2) -> dict[str, Any",
+          "bytes": 1192,
+          "sha256": "5666609748bfbf8b6afa6d43b4edd6601a07d39fb41494c7444f3f991606f09b",
+          "added_lines": 1,
+          "deleted_lines": 18
+        }
+      ]
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_evidence_accounting.py",
+      "base": null,
+      "result": {
+        "bytes": 6681,
+        "sha256": "6f64cc74e099f3e3d0982d035e03c76141d52fcaca698b1481de747f56ac072f"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -0,0 +1,158 @@",
+          "bytes": 6699,
+          "sha256": "bf06d76b3b7f3a81dcf81cb9621bbb195cf977d4e57fcee3645240c17bda706d",
+          "added_lines": 158,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_intent.py",
+      "base": {
+        "bytes": 187651,
+        "sha256": "84fedebd9b1741322cfc6849168e306bae545ffe98c3020c7707974f56f9f086"
+      },
+      "result": {
+        "bytes": 194267,
+        "sha256": "e59bf05b15acf0a3d062e54e5752a092c96d402f4c80080a201c8720ce97c55d"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -138,6 +138,9 @@ from collections.abc import Callable",
+          "bytes": 392,
+          "sha256": "659b33f007b2147bda9ec62a18e814b02528f6825ab04726e57700cf7d73ddee",
+          "added_lines": 3,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -201,7 +204,7 @@ logger = logging.getLogger(__name__)",
+          "bytes": 399,
+          "sha256": "ebf1154195abe48badb38db0d07931e82d7c31165ce8bf8e3b8faf0343451849",
+          "added_lines": 1,
+          "deleted_lines": 1
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -2128,6 +2131,7 @@ def _decision_from_parsed(",
+          "bytes": 326,
+          "sha256": "cf1c6ddfe5f9164d4819710357d401a020e441b2b6f90bb42c19eb8cde1a2d04",
+          "added_lines": 1,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 4,
+          "header": "@@ -2348,11 +2352,6 @@ def _decision_from_parsed(",
+          "bytes": 721,
+          "sha256": "05fd038599a8ae4150d6900b2c811c6c63a8eba25a6ee24d38d21bd2ea789f03",
+          "added_lines": 0,
+          "deleted_lines": 5
+        },
+        {
+          "ordinal": 5,
+          "header": "@@ -2372,6 +2371,74 @@ def _decision_from_parsed(",
+          "bytes": 4262,
+          "sha256": "21beff60595ae54581c9342ce31ba782dc475c6a4c36d4b0a64472a5d73c6742",
+          "added_lines": 68,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 6,
+          "header": "@@ -2843,6 +2910,24 @@ which case the status is wrong, and you should return \"missing_required_facts\" n",
+          "bytes": 2207,
+          "sha256": "5e97a7be644e6db480665d26ac97fff99fae5790e28cd719b66eb7acf9034ee1",
+          "added_lines": 18,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 7,
+          "header": "@@ -3084,6 +3169,31 @@ def _policy_identity(record: dict) -> dict:",
+          "bytes": 1115,
+          "sha256": "16ee86695a5569e3496f218596ac701a68c735bc13b26da54e1f8ae0dee9c735",
+          "added_lines": 25,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 8,
+          "header": "@@ -3355,6 +3465,7 @@ async def answer_decision_over_policies(",
+          "bytes": 399,
+          "sha256": "40402955caf5aeaed73a610aad774be4774d3ebf0c6142fb78f9866de5a3bb10",
+          "added_lines": 1,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_plan.py",
+      "base": {
+        "bytes": 15367,
+        "sha256": "acb4f44db860ff25ae7bbb1e7b37c2204d981388b99fcda2c032871c5171e3d1"
+      },
+      "result": {
+        "bytes": 20527,
+        "sha256": "5a5d0ea0ffdd74c7692505e8c162e6330e27c7c0ca83d4216b8bde97b990f0fa"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -59,7 +59,7 @@ from typing import Final",
+          "bytes": 533,
+          "sha256": "0d02ee0835a3495e10a844aed5347c871980f04937544fd920166afff7e56a9c",
+          "added_lines": 1,
+          "deleted_lines": 1
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -74,6 +74,8 @@ PLAN_KEYS: Final[frozenset[str]] = frozenset(",
+          "bytes": 258,
+          "sha256": "14493d9932b9366a517a55d3dd661bb4b163c35a9c4d70a13f723328169aa4c4",
+          "added_lines": 2,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -101,7 +103,53 @@ PROSE_PRESENCE_KEYS: Final[frozenset[str]] = frozenset({\"answer\", \"verdict\"})",
+          "bytes": 2944,
+          "sha256": "b61b37c805b1c8ac42aac38dbd7953a9826c0eaaf8981ee7081740ff2f246cd1",
+          "added_lines": 47,
+          "deleted_lines": 1
+        },
+        {
+          "ordinal": 4,
+          "header": "@@ -179,6 +227,22 @@ class CasePlan:",
+          "bytes": 1254,
+          "sha256": "bf26d870c295e221c899f4850ef641b7fb07046e348c983d64b835d84c56df9d",
+          "added_lines": 16,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 5,
+          "header": "@@ -233,9 +297,51 @@ def plan_from_reply(parsed: dict) -> CasePlan:",
+          "bytes": 2129,
+          "sha256": "4889f7973b04261359a7bd95448165497bda6bd6e738b7fce13a2127ecd6bb96",
+          "added_lines": 42,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "src/policy_platform/infrastructure/assistants/ai_case_project.py",
+      "base": {
+        "bytes": 193480,
+        "sha256": "89acda62d16c7d6c9988dd463884ec2860d1078b0a9add94605cd9a290d62a31"
+      },
+      "result": {
+        "bytes": 194587,
+        "sha256": "a49004c761c601a09bc81d8b58d366d4895af280efeca16660c4966fe61d3cd4"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -354,20 +354,41 @@ DIRECT_POLICY_ORDER_HYBRID = \"hybrid_search_order_v1\"",
+          "bytes": 2981,
+          "sha256": "54d55e6638b56aae2d1c7b20bcbb4757db45451c2972dc933bee0a4b6e1cae42",
+          "added_lines": 32,
+          "deleted_lines": 11
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -3631,7 +3652,7 @@ async def _answer_project_scope(",
+          "bytes": 375,
+          "sha256": "05f541b70e2b518d6813d34ef670e72d09f26f609a78215cfa5c037fe46dae44",
+          "added_lines": 1,
+          "deleted_lines": 1
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_a_case_asks_for_information_a_verdict_or_both.py",
+      "base": {
+        "bytes": 49546,
+        "sha256": "0b09c3fd1c446d81e4e7c9fa09c4a20c9bffc7707dce76e46f0956ac83427d4d"
+      },
+      "result": {
+        "bytes": 50327,
+        "sha256": "a0dc63cefefbbf2d520fe8c07b54c28df06ea9cf83d3a4ad140cd31312264d95"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -90,6 +90,11 @@ class _StubClient:",
+          "bytes": 464,
+          "sha256": "7bbe22f35c3a8306132ae813fa5479c4d19cef7a48204d1ed20cc9da1984e5c4",
+          "added_lines": 5,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -153,6 +158,11 @@ def stubbed(monkeypatch: pytest.MonkeyPatch) -> type[_StubClient]:",
+          "bytes": 535,
+          "sha256": "f16a8ca595fc2ff5b47680ff370693d4b8bf075e7b7bd93d9bc4062325fcf6e5",
+          "added_lines": 5,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -813,6 +823,9 @@ async def test_a_verdict_that_names_nothing_outstanding_is_a_verdict(stubbed) ->",
+          "bytes": 400,
+          "sha256": "70dc5ec8ad18ac0f00b5d782b21f08fef51952572489165a2d160470c60c6eb0",
+          "added_lines": 3,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 4,
+          "header": "@@ -852,6 +865,9 @@ async def test_answered_with_no_verdict_named_is_not_reported_as_a_determination",
+          "bytes": 378,
+          "sha256": "493cd66bff52c6384d93fb38f55787eea3cd739c1540921ff93bf1b997462075",
+          "added_lines": 3,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_a_conferred_entitlement_is_not_an_approval.py",
+      "base": null,
+      "result": {
+        "bytes": 8720,
+        "sha256": "99f80d1cb605af3835596fbe38aa3214cc80d42ffdfc004e203c0f9709da580a"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -0,0 +1,248 @@",
+          "bytes": 8738,
+          "sha256": "6ec1f344893e88f74dd1749e31f0913bc2d5da29e287dd36c67683dcdcdac462",
+          "added_lines": 248,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_a_missing_selector_is_a_missing_fact_in_any_domain.py",
+      "base": {
+        "bytes": 83865,
+        "sha256": "569e569780141fcb08b929bd05b5aa9ba85d77d303e39101cd928d3412e32b90"
+      },
+      "result": {
+        "bytes": 84401,
+        "sha256": "e8c086df7ea0a2f28755221cb6df0446ca1c3b314764f67b670ce311156975da"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -513,6 +513,9 @@ async def test_a_supplied_selector_is_answered_rather_than_asked_for(",
+          "bytes": 421,
+          "sha256": "5c5192972d1f2384381238620c6262ecd98371474dd2f556d51dd545763d0440",
+          "added_lines": 3,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -548,6 +551,9 @@ async def test_a_selector_stated_in_the_reviewers_own_words_is_not_asked_for_aga",
+          "bytes": 432,
+          "sha256": "b8d5ed8644edd4c3af323f1aa96812796b31f6f77afc25d8babd4e8de737e943",
+          "added_lines": 3,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 3,
+          "header": "@@ -777,6 +783,9 @@ async def test_a_verdictless_answer_that_names_nothing_is_still_merely_unsettled",
+          "bytes": 457,
+          "sha256": "b806196601b8cbf76281533be788d9edcf951b9840e09dce624b46b6d10f51c2",
+          "added_lines": 3,
+          "deleted_lines": 0
+        },
+        {
+          "ordinal": 4,
+          "header": "@@ -869,6 +878,9 @@ async def test_the_preference_does_not_swallow_a_determination_that_is_finished(",
+          "bytes": 432,
+          "sha256": "22c023bae567e36279d899baa508ba77c066fd7c9049f374fc0cc95b6a42e3fa",
+          "added_lines": 3,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_a_reply_accounts_for_the_evidence_it_was_given.py",
+      "base": null,
+      "result": {
+        "bytes": 8380,
+        "sha256": "d33f550410d0f84e3963a600216efb9d2f76abcbb82fd007239b791d776a99e6"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -0,0 +1,246 @@",
+          "bytes": 8398,
+          "sha256": "d497d6edf6944aba7d45f6cb50f6cd4d91e719ffdf0c0cd11c4ef953b1d1652c",
+          "added_lines": 246,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_case_decision_light_contract.py",
+      "base": {
+        "bytes": 15623,
+        "sha256": "bc0cc646f253aba2b5911b24ad15111b9e4cef232ab856c061a3678db344b760"
+      },
+      "result": {
+        "bytes": 15623,
+        "sha256": "a679e8411700ee03383dce715710734d4a5fefef8126f205e0999b0bec3fbfc7"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -115,7 +115,7 @@ def test_v2_light_response_keeps_only_essential_decision_fields() -> None:",
+          "bytes": 374,
+          "sha256": "a1ca7de6236bf9657350aa5591f7be6353d2aa475c1162608ea3afb30abd3fba",
+          "added_lines": 1,
+          "deleted_lines": 1
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -156,7 +156,7 @@ def test_v2_light_response_keeps_only_essential_decision_fields() -> None:",
+          "bytes": 669,
+          "sha256": "1e1dc824e327f57d8a17661554174b734ffa473b09907d1b29f4760e36505c1a",
+          "added_lines": 1,
+          "deleted_lines": 1
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_coverage_expansion_is_eligible_by_property.py",
+      "base": null,
+      "result": {
+        "bytes": 5876,
+        "sha256": "f71652c360c1b72a7cbdebab486d26a4bad779af8891a8181603c7b067de0c0f"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -0,0 +1,153 @@",
+          "bytes": 5894,
+          "sha256": "4d64fe6b99d8b854f136581d3b334ff52d03f499b40eb7e0e2ad6204402dbbb9",
+          "added_lines": 153,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_english_is_the_only_internal_language.py",
+      "base": {
+        "bytes": 111171,
+        "sha256": "5b66d3601dba8897ccf75071b4691d4f745967d43ce4650d2576f260176f816c"
+      },
+      "result": {
+        "bytes": 111171,
+        "sha256": "9db0ca1f30c89d753cb7004746d570b410704bfdbb721d1fe7d99f4e151281c0"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -2570,7 +2570,7 @@ def test_the_case_decision_prompts_name_no_readers_language() -> None:",
+          "bytes": 464,
+          "sha256": "bdfe1603473a78251d9841abda8b3b0fd75a2c3e2d17ef4b17bbe9f2280efbc7",
+          "added_lines": 1,
+          "deleted_lines": 1
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_held_evidence_is_accounted_for.py",
+      "base": null,
+      "result": {
+        "bytes": 8891,
+        "sha256": "74afd32c82c4b512628f4d3fb56291ad9ee5c91e0180b52b2c710c5c635f4d89"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -0,0 +1,233 @@",
+          "bytes": 8909,
+          "sha256": "d5e4989a826ff7be2d6008cae45552507a875a7111f109bfd7f6d824c3372f68",
+          "added_lines": 233,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_no_m2_code_is_shaped_around_a_corpus.py",
+      "base": {
+        "bytes": 32092,
+        "sha256": "170f8e7c8bdc88dc28a627949f8f4e19db565b0f819c8c33a465176e477143aa"
+      },
+      "result": {
+        "bytes": 34955,
+        "sha256": "5460de849f61f1c8e330f8f27f684a0aff43335cbcd9baf7d504fd8facb15af3"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -158,7 +158,20 @@ DOMAIN_WORDS = (",
+          "bytes": 1367,
+          "sha256": "3c18dc7be6460baf4f05bca36cdbe8053769c473254e982c42d469abca257968",
+          "added_lines": 14,
+          "deleted_lines": 1
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -521,16 +534,61 @@ def test_no_authored_module_branches_on_a_measured_magnitude(module):",
+          "bytes": 2980,
+          "sha256": "0f78c82e36062f2dec47fe653b6ed175c61af169fa9df930f29fca0f5ec2782c",
+          "added_lines": 46,
+          "deleted_lines": 1
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_policy_case_project.py",
+      "base": {
+        "bytes": 66318,
+        "sha256": "5715f1fd7817ea1aea4bc43d9865da67fc2fbee44e028f8596f66fe3c3d95d43"
+      },
+      "result": {
+        "bytes": 67001,
+        "sha256": "4eda5b467dbc7befbbc97dc602b2a5f3c81255542a93cc06edd2fbe81e7b4de7"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -759,10 +759,12 @@ def test_every_order_whose_count_came_from_a_cut_reaches_coverage_expansion() ->",
+          "bytes": 937,
+          "sha256": "87189b2281ffe6186dd9236194c8a14c46f27dc82f649726748fd70f6e58d213",
+          "added_lines": 6,
+          "deleted_lines": 4
+        },
+        {
+          "ordinal": 2,
+          "header": "@@ -1091,6 +1093,14 @@ async def test_multi_policy_decision_citations_name_the_policy_they_came_from(",
+          "bytes": 783,
+          "sha256": "2b103a5f9411cb4b7654c0c16c8a6e0e6b5bf7cbc316fba0870b0aec51bfeada",
+          "added_lines": 8,
+          "deleted_lines": 0
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_rule_retrieval_is_an_explicit_mode.py",
+      "base": {
+        "bytes": 30744,
+        "sha256": "119c300ea52250bd3c0d1fc37cd6902b6000ef021a11394fc7dc732d49e99943"
+      },
+      "result": {
+        "bytes": 31039,
+        "sha256": "1d0082c3aa870f9557a5922f2dd97c91690f18dcf8049e3c89333bde7a0f1890"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -219,21 +219,24 @@ class TestTheCutIsOnTheRecord:",
+          "bytes": 1763,
+          "sha256": "5cef8b855ebc54cd8b76f1a7f3e769049e5f4c6380ee40c81c93883ffe84ca4a",
+          "added_lines": 15,
+          "deleted_lines": 12
+        }
+      ]
+    },
+    {
+      "path": "tests/unit/test_the_plan_decides_and_the_prose_explains.py",
+      "base": {
+        "bytes": 20055,
+        "sha256": "08ff046648b02780f527ae570ff8eab2a9020058d451727a1d43c9688e3b2f2c"
+      },
+      "result": {
+        "bytes": 20696,
+        "sha256": "ba25c5ea2331fc2c68f34fa7ff7d02e581fd17dfdf0de33a5fbc277f1d8c6b74"
+      },
+      "hunks": [
+        {
+          "ordinal": 1,
+          "header": "@@ -259,6 +259,16 @@ def test_no_field_on_the_plan_can_hold_a_sentence() -> None:",
+          "bytes": 932,
+          "sha256": "8aa02edb6064b822ccd04507d1c24179945ccbb8018d4659cf3b0413c534170a",
+          "added_lines": 10,
+          "deleted_lines": 0
+        }
+      ]
+    }
+  ]
+}

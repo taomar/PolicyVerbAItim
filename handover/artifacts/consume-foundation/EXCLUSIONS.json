@@ -1,0 +1,83 @@
+{
+  "schema_version": "consume_reconstruction_exclusions_v1",
+  "foundation_status": "approved_narrow_retroactive",
+  "excluded_from_request_foundation": {
+    "native_only_paths": [
+      "apps/consume-demo/src/components/RuleRetrievalResult.tsx",
+      "apps/consume-demo/src/lib/apiClient.ts",
+      "apps/consume-demo/src/lib/errors.ts",
+      "apps/consume-demo/src/retrievalEnvelopeIsParsedByTag.test.tsx"
+    ],
+    "native_hunks_in_shared_paths": {
+      "apps/consume-demo/src/App.test.tsx": [
+        "RULE_RETRIEVAL_SCHEMA_VERSION import",
+        "rule-envelope fixture repair",
+        "playground-rule-result expectation"
+      ],
+      "apps/consume-demo/src/App.tsx": [
+        "RetrievalEnvelope and rule-schema imports",
+        "RuleRetrievalResult import",
+        "retrieval envelope state widening",
+        "mode-aware result announcement",
+        "schema-tag renderer branch"
+      ],
+      "apps/consume-demo/src/contracts/caseDecision.ts": [
+        "rule retrieval schema tag",
+        "rule source/match/record contracts",
+        "discriminated retrieval envelope union",
+        "strict schema-tag classifier",
+        "journal-owned punctuation normalization needed for the recorded native final hash"
+      ],
+      "apps/consume-demo/src/copy/strings.ts": [
+        "replacement of the two T1 retrieval hints with native rule semantics"
+      ]
+    }
+  },
+  "style_exclusions": {
+    "included": "Only the .compose__retrieval hunk at the HEAD line 964 boundary.",
+    "excluded": "Every other playground.css difference or style change."
+  },
+  "backend_dependency_not_owned_here": [
+    "Pydantic request fields accepting rule_retrieval",
+    "server request_hash true-only compatibility behavior",
+    "rule-native retrieval and response envelope implementation",
+    "router response-model union"
+  ],
+  "azure_commit": {
+    "sha": "381586688f0337be15dcc1d42d2be7d4b0fe4936",
+    "consume_path_overlap": [],
+    "excluded_dirty_overlaps": [
+      ".env.example",
+      "apps/web/src/App.tsx",
+      "apps/web/src/api.ts",
+      "docs/api.md",
+      "docs/configuration.md",
+      "docs/known-limitations.md",
+      "src/policy_platform/api/app.py",
+      "src/policy_platform/api/authz.py",
+      "src/policy_platform/infrastructure/settings.py"
+    ]
+  },
+  "other_exclusions": [
+    "All authentication changes.",
+    "All upload and progress UI changes.",
+    "All Azure, infrastructure, deployment, and migration changes.",
+    "All docs and backend changes.",
+    "All shared-repository paths outside the 14-path union of T1 and T2.",
+    "All live data, network, API, model, database, Search, and Azure operations."
+  ],
+  "shared_status": {
+    "physical_dirty_paths": 121,
+    "consume_sequence_union_paths": 14,
+    "excluded_physical_dirty_paths": 107
+  },
+  "attribution_and_scope": {
+    "authoring_session": "d99011fe-a8c3-4032-872b-1643baaef994",
+    "agent_id": "call_NXSiPU3O1bwlEaxo3A1CGhoz",
+    "all_20_edit_starts_verified": true,
+    "historical_read_only_scope_breach_preserved": true,
+    "approval_limited_to_sha256": "3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7",
+    "approval_limited_to_bytes": 27171,
+    "other_archived_work_approved": false
+  }
+}

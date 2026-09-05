@@ -1,0 +1,114 @@
+{
+  "schema_version": "consume-api-normative-provenance-validation/1",
+  "batch_id": "batch-1",
+  "status": "passed_with_fail_closed_blockers",
+  "checks": {
+    "canonical_bundle_hash": true,
+    "canonical_rubric_hash": true,
+    "canonical_source_snapshot_hash": true,
+    "deterministic_unscorable_total_exactly_113": true,
+    "owned_slice_exactly_indices_1_through_38": true,
+    "owned_slice_id_hash_recomputed": true,
+    "no_duplicate_criterion_ids": true,
+    "no_out_of_slice_operations": true,
+    "overlay_schema_valid": true,
+    "all_source_file_hashes_match_records": true,
+    "all_json_pointers_resolve": true,
+    "all_pointer_hashes_recompute": true,
+    "all_source_and_rule_ids_bound_by_hashed_evidence": true,
+    "merged_rubric_provenance_schema_valid": true,
+    "merged_preflight_counts_match": true,
+    "confidential_source_text_absent": true,
+    "ai_review_not_marked_as_human_confirmation": true,
+    "benchmark_specific_production_guard_logic_added": false,
+    "repository_or_canonical_bundle_mutated": false
+  },
+  "counts": {
+    "base_criteria": 128,
+    "base_scorable": 15,
+    "base_unscorable_or_unresolved": 113,
+    "slice_criteria": 38,
+    "slice_first_id": "AIS-01:R1",
+    "slice_last_id": "AIS-08:R4",
+    "slice_ids_sha256": "f373a082d7660c051a7dceac2ce11cd3456ea37641342fdef297626531d04375",
+    "classification_counts": {
+      "mechanically_source_supported": 4,
+      "semantic_support_pending_human_confirmation": 4,
+      "unsupported_or_contradicted_rubric": 0,
+      "structural_harness_non_product_law": 24,
+      "unavailable_evidence": 0,
+      "product_decision_required": 6
+    },
+    "post_merge_scorable": 19,
+    "post_merge_unscorable_or_unresolved": 109
+  },
+  "blockers": [
+    {
+      "kind": "human_confirmation_required",
+      "count": 4,
+      "criterion_ids": [
+        "AIS-02:manual-1",
+        "AIS-02:manual-2",
+        "AIS-06:manual-1",
+        "AIS-06:manual-2"
+      ],
+      "effect": "retain_unscorable"
+    },
+    {
+      "kind": "product_decision_required",
+      "count": 6,
+      "criterion_ids": [
+        "AIS-01:R3",
+        "AIS-04:R3",
+        "AIS-05:R3",
+        "AIS-06:R3",
+        "AIS-07:R3",
+        "AIS-08:R3"
+      ],
+      "effect": "retain_unscorable"
+    },
+    {
+      "kind": "structural_harness_non_product_law",
+      "count": 24,
+      "criterion_ids": [
+        "AIS-01:R4",
+        "AIS-01:R5",
+        "AIS-01:R9",
+        "AIS-01:manual-1",
+        "AIS-02:R4",
+        "AIS-02:R5",
+        "AIS-02:R9",
+        "AIS-03:R4",
+        "AIS-03:R5",
+        "AIS-03:R9",
+        "AIS-04:R4",
+        "AIS-04:R5",
+        "AIS-04:R9",
+        "AIS-05:R4",
+        "AIS-05:R5",
+        "AIS-05:R9",
+        "AIS-05:manual-1",
+        "AIS-06:R4",
+        "AIS-06:R5",
+        "AIS-06:R9",
+        "AIS-07:R4",
+        "AIS-07:R5",
+        "AIS-07:R9",
+        "AIS-08:R4"
+      ],
+      "effect": "retain_unscorable_or_move_to_non_product_validation"
+    },
+    {
+      "kind": "portable_evidence_staging",
+      "count": 3,
+      "effect": "Absolute hash-pinned local evidence paths must remain available or be securely staged byte-identically before merge."
+    }
+  ],
+  "artifact_hashes": {
+    "criterion-provenance-batch1-overlay.json": "36ae59123a4c5cd9d19283747535a5fd9d6f0743c9554d829d6d2d664032629a",
+    "criterion-provenance-batch1-ledger.json": "690ffe65dc7d01faba6d61e6247bd8222b20ddf84080f4abaa701684753ce720",
+    "criterion-provenance-batch1-source-attestations.json": "3e38fbde8c546f741d3e821a89024cf51fbb1917c87f083b540695a90585f307",
+    "criterion-provenance-batch1-MERGE.md": "5d576d52e4316ba78a0bcdfc64cf54d56c2cebb7ee59547c6c9640d5176d61d3"
+  },
+  "production_guard_files_changed": []
+}

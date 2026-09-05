@@ -1,0 +1,249 @@
+{
+  "schema": "policyverbatim_portable_artifact_inventory/2",
+  "supersedes": "policyverbatim_host_migration_artifact_inventory/1",
+  "historical_snapshot": "handover/artifacts/historical/ARTIFACT_INVENTORY.json",
+  "generated_utc": "2026-09-05T07:16:00Z",
+  "path_convention": "repository-relative, forward slashes",
+  "portability_statement": "This package is self-contained. Every artifact a target host needs is vendored under handover/artifacts/. No session-state directory, no old checkout and no source-host path is required to resume.",
+
+  "package_layout": {
+    "hosthandover.md": "primary deep narrative handover, repository root",
+    "handover/RESUME_FIRST.md": "clone-and-verify first actions for the target host",
+    "handover/SESSION_LEDGER.json": "session hierarchy, roles, states, handoffs (source-host provenance; non-actionable)",
+    "handover/GIT_AND_WORKTREE_LEDGER.json": "remotes, refs, commit ledger, adoption transitions, status classification, worktrees, reachability, publication status",
+    "handover/PENDING_DECISIONS_AND_TASKS.json": "portable target-host task list, T-01 onward",
+    "handover/ARTIFACT_INVENTORY.json": "this file",
+    "handover/HANDOVER_HASHES.sha256": "recursive SHA-256 over hosthandover.md and everything under handover/, excluding itself",
+    "handover/artifacts/BUNDLED_ARTIFACTS.json": "per-file manifest of every vendored artifact with size, hash, role and source provenance",
+    "handover/artifacts/": "vendored continuity evidence"
+  },
+
+  "bundled_artifact_sets": [
+    {
+      "directory": "handover/artifacts/migration/",
+      "file_count": 7,
+      "role": "The seven original migration handovers that opened this programme. Establish the safety rules, session topology, origin mismatch and the verified starting snapshot.",
+      "contents": [
+        "OVERSIGHT_SUCCESSOR_HANDOVER.md",
+        "SPAWN_SUCCESSOR_STRUCTURE.md",
+        "TOP_LEVEL_PARENT_KICKOFF.md",
+        "CHILD_AZURE_HANDOVER.md",
+        "CHILD_INTEGRATION_HANDOVER.md",
+        "CHILD_PAYLOAD_HANDOVER.md",
+        "CHILD_RULE_RETRIEVAL_HANDOVER.md"
+      ],
+      "deliberately_excluded": ["SQLite database snapshot", "live API response JSON", "backend logs", "frozen run evidence"]
+    },
+    {
+      "directory": "handover/artifacts/parent/",
+      "file_count": 9,
+      "role": "Oversight parent narrative and the two records that define the feature adoption.",
+      "contents": [
+        "PARENT_SUCCESSOR_HANDOVER.md",
+        "checkpoints/001-orchestrating-consume-api-matr.md",
+        "checkpoints/002-correcting-rule-only-retrieval.md",
+        "checkpoints/003-rule-retrieval-and-audit.md",
+        "checkpoints/004-provenance-and-commit-reconstr.md",
+        "checkpoints/index.md",
+        "feature-adoption/START_STATE.json",
+        "feature-adoption/ADOPTION_RESULT.json"
+      ],
+      "why_it_matters": "START_STATE.json carries the 78 per-file byte hashes and the logical index/status hashes taken immediately before the feature adoption; ADOPTION_RESULT.json carries the resulting chain, trees, trailers and the full post-adoption status listing.",
+      "deliberately_excluded": ["binary index backups", "matrix API log", "git worktree directories", "session event log"]
+    },
+    {
+      "directory": "handover/artifacts/six-unit/final-artifacts/",
+      "file_count": 25,
+      "role": "The complete validated six-unit decomposition: the six ordered patches, their hunk manifests, the sequence validation, backend and Consume validation records, content review, tree comparison, non-mutation proof and hash manifests.",
+      "key_files": [
+        "00-rule-index-foundation.patch",
+        "01-rule-retrieval.patch",
+        "01a-earlier-payload-optimizations.patch",
+        "02-payload.patch",
+        "03-consume-request-mode-foundation.patch",
+        "04-consume-native-parser-renderer.patch",
+        "FINAL_SIX_UNIT_SEQUENCE_AUDIT.md",
+        "PATCH_HASHES.json",
+        "SEQUENCE_VALIDATION.json",
+        "BACKEND_VALIDATION.json",
+        "CONSUME_VALIDATION.json",
+        "CONTENT_REVIEW.json",
+        "CURRENT_TREE_COMPARISON.json",
+        "SHARED_NON_MUTATION.json",
+        "POST_TEST_INTEGRITY.json",
+        "WHITESPACE_ASSESSMENT.json",
+        "FINAL_ARTIFACT_HASHES.json",
+        "FINAL_ARTIFACT_HASHES.sha256"
+      ],
+      "ordering_rule": "Do not combine or reorder the six ordinals."
+    },
+    {
+      "directory": "handover/artifacts/six-unit/adoption/",
+      "file_count": 15,
+      "role": "How the six commits were actually created and adopted, plus the rollback contract that was prepared and never used.",
+      "contents": [
+        "ADOPTION_RESULT.json",
+        "COMMIT_CHAIN_PRE_ADOPTION.json",
+        "ROLLBACK_RECORD.json",
+        "00-commit.patch", "01-commit.patch", "01a-commit.patch", "02-commit.patch", "03-commit.patch", "04-commit.patch",
+        "00-message.txt", "01-message.txt", "01a-message.txt", "02-message.txt", "03-message.txt", "04-message.txt"
+      ],
+      "deliberately_excluded": ["shared-index-before.bin", "shared-HEAD-before.bin", "the removed detached worktree"],
+      "exclusion_reason": "Binary index and HEAD backups are only meaningful against the source host's exact .git state and are not restorable on a target host."
+    },
+    {
+      "directory": "handover/artifacts/rule-foundation/",
+      "file_count": 10,
+      "role": "Ordinal-00 reconstruction: the all-published-rule index/projection foundation that had to exist before native rule retrieval could be a coherent commit, plus the rule patch rebased onto it.",
+      "contents": [
+        "00-rule-index-foundation.patch",
+        "01-rule-retrieval.rebased-on-foundation.patch",
+        "RULE_INDEX_FOUNDATION_RECONSTRUCTION.md",
+        "RULE_REBASE_DELTA_MANIFEST.json",
+        "PATH_HUNK_MANIFEST.json",
+        "SEQUENCE_VALIDATION.json",
+        "EXCLUSIONS.json",
+        "INPUT_OUTPUT_HASHES.json",
+        "END_SHARED_REPOSITORY_STATE.json",
+        "NEXT_ACTION.md"
+      ],
+      "deliberately_excluded": ["source tree tarball", "raw focused-test transcripts", "generator scripts"]
+    },
+    {
+      "directory": "handover/artifacts/consume-foundation/",
+      "file_count": 17,
+      "role": "Ordinals 03 and 04: the older Consume request-mode foundation and the native parser/renderer, with the authorship and approval evidence that unblocked them.",
+      "governance_note": "The ordinal-03 bytes were originally written by a session whose own task was read-only - genuine scope drift. Authorship was proven from archived evidence and a NARROW retroactive approval was issued for exactly the validated patch bytes (sha256 3471d8abc20c97da7792a7f89537a7e1011670b1a9dcdd9958e91fc257fcbec7). This was not a blanket approval.",
+      "contents": [
+        "03-consume-request-mode-foundation.patch",
+        "04-consume-native-parser-renderer.patch",
+        "03-consume-request-mode-foundation.BLOCKED.json",
+        "APPROVAL_AUTHORSHIP_EVIDENCE.json",
+        "APPROVAL_NON_MUTATION_PROOF.json",
+        "APPROVAL_EXCLUSION_REVALIDATION.json",
+        "CONSUME_REQUEST_FOUNDATION_RECONSTRUCTION.md",
+        "PATH_HUNK_MANIFEST.json",
+        "SEQUENCE_VALIDATION.json",
+        "CONTENT_LEAK_REVIEW.json",
+        "EXCLUSIONS.json",
+        "INPUT_OUTPUT_HASHES.json",
+        "NON_MUTATION_PROOF.json",
+        "AZURE_OVERLAP.json",
+        "START_BINDING.json",
+        "END_BINDING.json",
+        "NEXT_ACTION.md"
+      ],
+      "deliberately_excluded": ["5 MB content-tree TSV snapshots", "ref dumps", "compressed index/status binaries", "session event logs"]
+    },
+    {
+      "directory": "handover/artifacts/payload/",
+      "file_count": 6,
+      "role": "The payload/decision track: its handover, the implementation blueprint for the true product failures, the regression investigation that proved no measured regression, and the evaluation rubric.",
+      "contents": [
+        "CHILD_PAYLOAD_SUCCESSOR_HANDOVER.md",
+        "IMPLEMENTATION_BLUEPRINT_26_TRUE_FAILURES.md",
+        "REGRESSION_INVESTIGATION_38_POLICY_MODE.md",
+        "CONSUME_API_EVALUATION_RUBRIC.md",
+        "AGENT_PROGRESS.md",
+        "corpus_topic_map.json"
+      ],
+      "deliberately_excluded": ["one-off probe and verification scripts that call live services"]
+    },
+    {
+      "directory": "handover/artifacts/provenance/criterion-provenance-successor-v1.0.0/",
+      "file_count": 86,
+      "role": "The complete final criterion-provenance successor package. Vendored in full because the remaining human provenance review (task T-12) depends on it and cannot proceed without the ledgers, overlays, evidence, schemas, tests and deterministic validation logs.",
+      "structure_preserved": true,
+      "versions": { "harness": "consume-api-provenance-harness/3.1.0", "rubric": "3.1.0", "manifest": "2.1.0" },
+      "canonical_bundle_sha256": "037a40264acdde60c2b769f37e3eba5fe4af01dc980292d90fd4cab03c569c75",
+      "self_verification": "The package carries its own BUNDLE_MANIFEST.json, FILE_INVENTORY.json and FULL_SOURCE_INPUT_OUTPUT_HASH_MANIFEST.json; its internal hashes remain valid because structure and bytes were preserved.",
+      "included_logs_exception": "Its deterministic validation logs ARE included - they are the reviewed evidence of offline determinism, negative controls and the leakage scan, not incidental run output.",
+      "execution": "DISABLED - execution.enabled=false. Do not run the matrix without new authorization.",
+      "excluded_from_copy": ["__pycache__ directories", "*.pyc"]
+    },
+    {
+      "directory": "handover/artifacts/azure/",
+      "file_count": 2,
+      "role": "The Azure production local-auth work is an OFF-MAIN commit and will not travel in the archival main. Its full content is vendored as a patch so it is not lost, together with the analysis proving it does not overlap the six-unit sequence beyond one file.",
+      "contents": ["AZURE_3815866.patch", "AZURE_OVERLAP_ANALYSIS.json"],
+      "child_handover_reference": "handover/artifacts/migration/CHILD_AZURE_HANDOVER.md",
+      "duplication": "none - the Azure child handover is referenced in the migration set rather than duplicated here",
+      "prohibition": "NEVER apply, deploy, push or merge this without new explicit authorization. See task T-13."
+    },
+    {
+      "directory": "handover/artifacts/publisher/",
+      "file_count": 6,
+      "role": "How the in-flight working tree was captured and reconciled into the archival publication, which paths were classified safe, and the secret-scan baseline taken over the result.",
+      "contents": [
+        "safe-inflight-paths.txt",
+        "pathspec.txt",
+        "msg-snapshot.txt",
+        "msg-merge.txt",
+        "msg-skills.txt",
+        "detect-secrets-scan.json"
+      ],
+      "note_on_secret_scan": "detect-scan output records only hashed secret digests and file locations. It contains no plaintext credential. It is vendored so the target host can see what was flagged and re-run the same scan.",
+      "note_on_skills_commit": "One archival commit deliberately carries ignored developer 'skills' assets, committed separately so the ignore-rule bypass is auditable in one place. The ignore rules themselves were not changed."
+    },
+    {
+      "directory": "handover/artifacts/historical/",
+      "file_count": 3,
+      "role": "NON-ACTIONABLE frozen snapshots of the source-host-oriented ledgers, kept so the earlier reasoning and exact source-host paths remain auditable.",
+      "contents": [
+        "GIT_AND_WORKTREE_LEDGER.json",
+        "PENDING_DECISIONS_AND_TASKS.json",
+        "ARTIFACT_INVENTORY.json"
+      ],
+      "warning": "These describe the machine the work was performed on. Absolute paths inside them are historical provenance, never instructions. The live task list is handover/PENDING_DECISIONS_AND_TASKS.json."
+    }
+  ],
+
+  "duplication_register": [
+    {
+      "content": "the six ordered decomposition patches",
+      "locations": ["handover/artifacts/six-unit/final-artifacts/", "handover/artifacts/six-unit/adoption/ (as *-commit.patch)"],
+      "reason": "final-artifacts holds the validated inputs; adoption holds exactly what was committed. Keeping both makes the commit reproducible and auditable independently."
+    },
+    {
+      "content": "ordinal-00 and ordinal-01 patches",
+      "locations": ["handover/artifacts/rule-foundation/", "handover/artifacts/six-unit/final-artifacts/"],
+      "reason": "rule-foundation preserves the originating reconstruction; six-unit preserves the sequence-validated copies. PATCH_HASHES.json records them as byte-identical."
+    },
+    {
+      "content": "ordinal-03 and ordinal-04 patches",
+      "locations": ["handover/artifacts/consume-foundation/", "handover/artifacts/six-unit/final-artifacts/"],
+      "reason": "same rationale as above; byte-identical."
+    },
+    {
+      "content": "GIT_AND_WORKTREE_LEDGER.json",
+      "locations": ["handover/", "handover/artifacts/historical/"],
+      "reason": "the root copy is the working ledger; the historical copy is the frozen snapshot required by the packaging instruction. Byte-identical."
+    }
+  ],
+
+  "deliberately_not_bundled": {
+    "rule": "Excluded because it is secret, machine-specific, regenerable, live-service output, or too large to be useful.",
+    "classes": {
+      "secrets_and_credentials": ["all .env family files", "local account stores", "token-signing keys", "*.pem", "file-borne tokens", "Azure CLI local environment files"],
+      "runtime_and_live_data": ["uploaded document store", "database backups", "SQLite database snapshots", "live API response captures", "frozen evaluation run outputs"],
+      "agent_infrastructure": ["session event logs", "workspace descriptors", "session databases", "research directories"],
+      "machine_specific_git_state": ["git index and HEAD binary backups", "git worktree directories", "source tree tarballs"],
+      "regenerable": ["virtual environments", "node_modules", "dist and build output", "egg-info", "__pycache__", "*.pyc", "pytest cache", "coverage output"],
+      "incidental_output": ["backend and frontend server logs", "raw test transcripts", "screenshots", "one-off probe scripts"]
+    },
+    "restoration_note": "Secrets and runtime data are restored out of band only if the system must actually run - see task T-05. Reading and reviewing this package requires none of them."
+  },
+
+  "verification": {
+    "checksums": "handover/HANDOVER_HASHES.sha256 - recursive over hosthandover.md and everything under handover/, excluding itself. Relative forward-slash paths only.",
+    "per_artifact_manifest": "handover/artifacts/BUNDLED_ARTIFACTS.json - relative path, byte length, SHA-256, source role and original source-host provenance path for every vendored file.",
+    "procedure": "handover/RESUME_FIRST.md section 2."
+  },
+
+  "unverified": [
+    "final remote SHA of the archival publication - this package asserts none; reconcile via task T-02",
+    "current live Azure, database and Search state - all recorded values are historical",
+    "whether the source host's secondary origin should become this repository's upstream - task T-09",
+    "adjudication of the vendored detect-scan baseline findings"
+  ]
+}

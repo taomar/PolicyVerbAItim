@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "source_literal_candidates": 167,
+  "source_literal_hits": 0,
+  "question_literals_checked": 20,
+  "question_literal_hits": 0,
+  "production_guard_hits": {
+    "rubric_ids": 0,
+    "question_ids": 0,
+    "provision_fixtures": 0
+  },
+  "secret_hits": 0,
+  "total_hits": 0
+}

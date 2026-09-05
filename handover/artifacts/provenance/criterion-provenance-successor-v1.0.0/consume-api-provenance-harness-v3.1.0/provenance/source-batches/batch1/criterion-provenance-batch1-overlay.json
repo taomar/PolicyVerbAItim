@@ -1,0 +1,553 @@
+{
+  "schema_version": "consume-api-normative-provenance-overlay/1",
+  "batch": {
+    "id": "batch-1",
+    "owner_slice": {
+      "start_inclusive": 1,
+      "end_inclusive": 38
+    },
+    "criterion_count": 38
+  },
+  "base_bundle": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0",
+    "canonical_payload_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+    "rubric_sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58",
+    "bundle_source_snapshot_sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c"
+  },
+  "slice_contract": {
+    "filter": "preflight disposition in {unscorable, unresolved}",
+    "sort": "criterion_id ordinal ascending",
+    "total_asserted": 113,
+    "first_owned_id": "AIS-01:R1",
+    "last_owned_id": "AIS-08:R4",
+    "owned_ids_sha256": "f373a082d7660c051a7dceac2ce11cd3456ea37641342fdef297626531d04375",
+    "owned_ids": [
+      "AIS-01:R1",
+      "AIS-01:R3",
+      "AIS-01:R4",
+      "AIS-01:R5",
+      "AIS-01:R9",
+      "AIS-01:manual-1",
+      "AIS-02:R4",
+      "AIS-02:R5",
+      "AIS-02:R9",
+      "AIS-02:manual-1",
+      "AIS-02:manual-2",
+      "AIS-03:R4",
+      "AIS-03:R5",
+      "AIS-03:R9",
+      "AIS-04:R3",
+      "AIS-04:R4",
+      "AIS-04:R5",
+      "AIS-04:R9",
+      "AIS-05:R1",
+      "AIS-05:R3",
+      "AIS-05:R4",
+      "AIS-05:R5",
+      "AIS-05:R9",
+      "AIS-05:manual-1",
+      "AIS-06:R3",
+      "AIS-06:R4",
+      "AIS-06:R5",
+      "AIS-06:R9",
+      "AIS-06:manual-1",
+      "AIS-06:manual-2",
+      "AIS-07:R1",
+      "AIS-07:R3",
+      "AIS-07:R4",
+      "AIS-07:R5",
+      "AIS-07:R9",
+      "AIS-07:manual-1",
+      "AIS-08:R3",
+      "AIS-08:R4"
+    ]
+  },
+  "classification_vocabulary": [
+    "mechanically_source_supported",
+    "semantic_support_pending_human_confirmation",
+    "unsupported_or_contradicted_rubric",
+    "structural_harness_non_product_law",
+    "unavailable_evidence",
+    "product_decision_required"
+  ],
+  "evidence_sources": [
+    {
+      "id": "ais_e_annual_vacation_r1",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-annual-vacation__r1.decoded",
+      "sha256": "c0567c8cbf547b44734fb5588bada9f3bd107f8ba94677352f994f470cafc20c",
+      "type": "json"
+    },
+    {
+      "id": "ais_e_maternity_leave_r1",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-maternity-leave__r1.decoded",
+      "sha256": "92cc35e1352ad734ca6a6584dd8ee5ac3f21b22c8e31ce1c35dab841ea916f55",
+      "type": "json"
+    },
+    {
+      "id": "ais_e_tuition_child_r1",
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-tuition-child__r1.decoded",
+      "sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23",
+      "type": "json"
+    }
+  ],
+  "operations": [
+    {
+      "criterion_id": "AIS-01:R1",
+      "classification": "mechanically_source_supported",
+      "action": "replace_criterion_provenance",
+      "evidence_source_ids": [
+        "ais_e_annual_vacation_r1"
+      ],
+      "replacement": {
+        "criterion_id": "AIS-01:R1",
+        "active": true,
+        "applies_to": {
+          "kind": "dimension",
+          "dimension": "R1"
+        },
+        "description": "All declared expected provisions are served and cited.",
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "ab87a692f3a20e95c545a0ce7718ba61"
+        ],
+        "source_rule_ids": [
+          "AI-0d3f567dc0",
+          "AI-1e6a87d232",
+          "AI-32041fedd2",
+          "AI-32e998f0c0",
+          "AI-57760a678a",
+          "AI-6da44f8da1",
+          "AI-73de523932",
+          "AI-824e6298af",
+          "AI-8af5f2ba84",
+          "AI-a5ecfab674",
+          "AI-ebe8b2ae57"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_policy_payload",
+            "source_id": "ais_e_annual_vacation_r1",
+            "pointer": "/policies/0/payload",
+            "pointer_sha256": "bce2c5afd7f4249717db185b14bfc212d7aa53ab369c871388deb65023527f79"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 11,
+          "supporting_provision_count": 1,
+          "method": "mechanical_hash_bound_normative_payload_identity",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    },
+    {
+      "criterion_id": "AIS-01:R3",
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-01:R4",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-01:R5",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-01:R9",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-01:manual-1",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-02:R4",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-02:R5",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-02:R9",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-02:manual-1",
+      "classification": "semantic_support_pending_human_confirmation",
+      "action": "retain_unscorable",
+      "review_evidence": [
+        {
+          "source_id": "ais_e_sick_surgery_r1",
+          "source_provision_ids": [
+            "28334f1a0b3c389682647d43c89d554f"
+          ],
+          "source_rule_ids": [
+            "AI-7336476841",
+            "AI-b4226cc420"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "21eef0c74aaa4a291873fb6aa0a7fea20f9b6a8a97898ced08491f73204da2a7",
+          "source_file_sha256": "21b1114070fcaeff604516b729c8434b754b3c9a7722cdfec1a4a38750d9e0eb"
+        }
+      ],
+      "candidate_outcome": "unsupported_or_contradicted_rubric",
+      "human_confirmation": "required_not_provided"
+    },
+    {
+      "criterion_id": "AIS-02:manual-2",
+      "classification": "semantic_support_pending_human_confirmation",
+      "action": "retain_unscorable",
+      "review_evidence": [
+        {
+          "source_id": "ais_e_sick_surgery_r1",
+          "source_provision_ids": [
+            "28334f1a0b3c389682647d43c89d554f"
+          ],
+          "source_rule_ids": [
+            "AI-7336476841",
+            "AI-b4226cc420"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "21eef0c74aaa4a291873fb6aa0a7fea20f9b6a8a97898ced08491f73204da2a7",
+          "source_file_sha256": "21b1114070fcaeff604516b729c8434b754b3c9a7722cdfec1a4a38750d9e0eb"
+        }
+      ],
+      "candidate_outcome": "unsupported_or_contradicted_rubric",
+      "human_confirmation": "required_not_provided"
+    },
+    {
+      "criterion_id": "AIS-03:R4",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-03:R5",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-03:R9",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-04:R3",
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-04:R4",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-04:R5",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-04:R9",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-05:R1",
+      "classification": "mechanically_source_supported",
+      "action": "replace_criterion_provenance",
+      "evidence_source_ids": [
+        "ais_e_maternity_leave_r1"
+      ],
+      "replacement": {
+        "criterion_id": "AIS-05:R1",
+        "active": true,
+        "applies_to": {
+          "kind": "dimension",
+          "dimension": "R1"
+        },
+        "description": "All declared expected provisions are served and cited.",
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "01309aeb409607211e4115e044bd8ac3"
+        ],
+        "source_rule_ids": [
+          "AI-18fe024f6d",
+          "AI-f2d7cdc964",
+          "AI-f5e995fb85"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_policy_payload",
+            "source_id": "ais_e_maternity_leave_r1",
+            "pointer": "/policies/0/payload",
+            "pointer_sha256": "ba090a40bfc9f54af382a2ec0e0f3156f322a48cbd922d8e3efd25329aa22c5e"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 3,
+          "supporting_provision_count": 1,
+          "method": "mechanical_hash_bound_normative_payload_identity",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    },
+    {
+      "criterion_id": "AIS-05:R3",
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-05:R4",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-05:R5",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-05:R9",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-05:manual-1",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-06:R3",
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-06:R4",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-06:R5",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-06:R9",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-06:manual-1",
+      "classification": "semantic_support_pending_human_confirmation",
+      "action": "retain_unscorable",
+      "review_evidence": [
+        {
+          "source_id": "ais_e_overtime_weekend_r1",
+          "source_provision_ids": [
+            "4094ad6b422dbb097ec11368c525b5a6"
+          ],
+          "source_rule_ids": [
+            "AI-5dca015982",
+            "AI-ca3d9b8901"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "a1664fd84afeb2c1092551229c9421ecb8ea30931ba349d7b4bd7d87ec494502",
+          "source_file_sha256": "369175ab77079933c47d21a40ed5753cda4ad52626b578c4b51798f8b58ed54c"
+        }
+      ],
+      "candidate_outcome": "unsupported_or_contradicted_rubric",
+      "human_confirmation": "required_not_provided"
+    },
+    {
+      "criterion_id": "AIS-06:manual-2",
+      "classification": "semantic_support_pending_human_confirmation",
+      "action": "retain_unscorable",
+      "review_evidence": [
+        {
+          "source_id": "ais_e_overtime_weekend_r1",
+          "source_provision_ids": [
+            "4094ad6b422dbb097ec11368c525b5a6"
+          ],
+          "source_rule_ids": [
+            "AI-5dca015982",
+            "AI-ca3d9b8901"
+          ],
+          "pointer": "/policies/0/payload",
+          "pointer_sha256": "a1664fd84afeb2c1092551229c9421ecb8ea30931ba349d7b4bd7d87ec494502",
+          "source_file_sha256": "369175ab77079933c47d21a40ed5753cda4ad52626b578c4b51798f8b58ed54c"
+        }
+      ],
+      "candidate_outcome": "unsupported_or_contradicted_rubric",
+      "human_confirmation": "required_not_provided"
+    },
+    {
+      "criterion_id": "AIS-07:R1",
+      "classification": "mechanically_source_supported",
+      "action": "replace_criterion_provenance",
+      "evidence_source_ids": [
+        "ais_e_tuition_child_r1"
+      ],
+      "replacement": {
+        "criterion_id": "AIS-07:R1",
+        "active": true,
+        "applies_to": {
+          "kind": "dimension",
+          "dimension": "R1"
+        },
+        "description": "All declared expected provisions are served and cited.",
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_source_body",
+        "source_provision_ids": [
+          "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+        ],
+        "source_rule_ids": [
+          "AI-c3c7e28449"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_policy_payload",
+            "source_id": "ais_e_tuition_child_r1",
+            "pointer": "/policies/0/payload",
+            "pointer_sha256": "f71d7c36fd676415a8714c869396dfd0444c52a555ce4a594e75a1a577349312"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 1,
+          "supporting_provision_count": 1,
+          "method": "mechanical_hash_bound_normative_payload_identity",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    },
+    {
+      "criterion_id": "AIS-07:R3",
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-07:R4",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-07:R5",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-07:R9",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-07:manual-1",
+      "classification": "mechanically_source_supported",
+      "action": "replace_criterion_provenance",
+      "evidence_source_ids": [
+        "ais_e_tuition_child_r1"
+      ],
+      "replacement": {
+        "criterion_id": "AIS-07:manual-1",
+        "active": true,
+        "applies_to": {
+          "kind": "manual",
+          "manual_index": 0
+        },
+        "description": "A confident information answer from salary-and-deductions without the tuition provision fails.",
+        "criterion_provenance": "rule_body",
+        "provenance_kind": "normative_rule_body",
+        "source_provision_ids": [
+          "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+        ],
+        "source_rule_ids": [
+          "AI-c3c7e28449"
+        ],
+        "evidence_refs": [
+          {
+            "role": "normative_policy_payload",
+            "source_id": "ais_e_tuition_child_r1",
+            "pointer": "/policies/0/payload",
+            "pointer_sha256": "f71d7c36fd676415a8714c869396dfd0444c52a555ce4a594e75a1a577349312"
+          }
+        ],
+        "validation_state": "validated_supported",
+        "corpus_support": {
+          "checked": true,
+          "supporting_rule_count": 1,
+          "supporting_provision_count": 1,
+          "method": "mechanical_hash_bound_normative_payload_identity",
+          "semantic_support": "mechanically_proven"
+        }
+      }
+    },
+    {
+      "criterion_id": "AIS-08:R3",
+      "classification": "product_decision_required",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    },
+    {
+      "criterion_id": "AIS-08:R4",
+      "classification": "structural_harness_non_product_law",
+      "action": "retain_unscorable",
+      "human_confirmation": "not_applicable"
+    }
+  ],
+  "expected_post_merge": {
+    "criterion_total": 128,
+    "scorable": 19,
+    "unscorable_or_unresolved": 109,
+    "batch_upgraded_to_scorable": 4,
+    "batch_retained_unscorable": 34
+  },
+  "invariants": [
+    "No criterion outside sorted unscorable slice indices 1-38 is modified.",
+    "Only mechanically source-supported criteria are upgraded to scorable.",
+    "AI review is never represented as human confirmation.",
+    "No confidential normative body text is copied into this overlay.",
+    "Execution remains disabled and no production guard logic is changed."
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "consume-api-harness-source-lock/1",
+  "base_harness": {
+    "consume_matrix_runner.py": "e11de06b69eb70c621bec788f13824c0de1491dd9d84d0b9e800d9a5115ad0c8",
+    "evaluation-rubric.json": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+    "manifest.pending.json": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+    "schemas/derived-result.schema.json": "4fdff4d40913d83ce53795bbf7c8ed5236d982baf15ae6b61496562c485ddd26",
+    "schemas/raw-result.schema.json": "ae36bd89b7757862e9834d15bcb20ad179b8e8e11e1528c19b19184c78a402e7",
+    "HARNESS_DESIGN.md": "55004b1e326fbe3cd4c050ca5f77ec346c678569124c8d016226fe4b65811d58"
+  },
+  "migration_evidence": {
+    "evidence/rubric-v1.snapshot.json": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+    "evidence/manifest-v1.snapshot.json": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+    "evidence/source.snapshot.json": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+    "evidence/ACTIONABLE_POLICY_FAILURE_AUDIT.md": "a46099c8a187fbca985300097f962561c5d6c2c9b6fe4b921b03c7a436e6923a",
+    "evidence/AIS02_SEMANTIC_DECISION.json": "21554676fd12f95a1dc9fddb044aa74da4351897e40e021d484e6698000b8912"
+  },
+  "invariant": "No base or evidence hash mismatch may be coerced, ignored, or treated as a scoring result."
+}

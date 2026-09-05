@@ -1,0 +1,72 @@
+{
+  "schema_version": "criterion-provenance-source-attestation/1",
+  "batch_id": "criterion-provenance-batch-3",
+  "reviewer_kind": "ai",
+  "human_confirmation": false,
+  "normalization": {
+    "json_pointer_hash": "SHA-256 of canonical JSON: UTF-8, sorted keys, no insignificant whitespace",
+    "docx_body_hash": "SHA-256 of UTF-8 paragraph text after trim; grouped segments join paragraphs with LF",
+    "body_text_included": false
+  },
+  "sources": [
+    {
+      "source_id": "source_snapshot",
+      "path": "evidence/source.snapshot.json",
+      "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "authority": "canonical_bundle"
+    },
+    {
+      "source_id": "rubric_v1",
+      "path": "evidence/rubric-v1.snapshot.json",
+      "sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "authority": "frozen_expectation_only"
+    },
+    {
+      "source_id": "hw_policy_v3_3_docx",
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\samples\\source-documents\\Workplace-Hardware-Provisioning-Policy-v3.3.docx",
+      "sha256": "458475a5e720be25498823fccd388f79747b62f90ec46b2cda525e73fbf6e934",
+      "authority": "local_normative_body"
+    },
+    {
+      "source_id": "hw_rules_v3_3",
+      "path": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\samples\\policies\\hardware-policy-v3.3-import.json",
+      "sha256": "0fb6a1298d13f4d3b82da8c3571e189076bd56fec943be0e871036d0875ecfbf",
+      "authority": "local_normative_rules"
+    }
+  ],
+  "canonical_provision_pointers": [
+    {"source_provision_id":"230ef0dbd6d412b2007b01babc0a74a9","pointer":"/provisions/48","pointer_sha256":"27dc1f8f7992a20370fbde2d73fdedae9cd7152dba3061ff099dd03e41340fd5"},
+    {"source_provision_id":"7f1e23fe6ad46352d7f356b90dab7d9f","pointer":"/provisions/53","pointer_sha256":"63de3e52e74d6d2d6309b29ddfba1dff39a0fc2ad5bdb1aed82bf99e238d56dd"},
+    {"source_provision_id":"df7847c17b9d31607df53fb27399b06a","pointer":"/provisions/62","pointer_sha256":"3cb0767d37b9673540bfbb6899f58b6c778d09fc892d312c409243a062541305"},
+    {"source_provision_id":"e52c80ff95fb8c5af308eb6cf80b93dd","pointer":"/provisions/64","pointer_sha256":"76873cf76e07de4dad5f663650461104a6abc6ebadf34c8f81295ec066c2412f"},
+    {"source_provision_id":"22daced0bf9d5768c63eb83f1cc7df60","pointer":"/provisions/68","pointer_sha256":"6f2bafa5629fffbf1eefe0f2c8f717159f88b51f04104aef461a47d9a00322dc"},
+    {"source_provision_id":"fa048a899108fe1ab00fae3af6a5dc98","pointer":"/provisions/74","pointer_sha256":"0111fdfc5e040a5c1d18b2c8d97df11671018f1318309deea47c913fba913115"},
+    {"source_provision_id":"904185efb2c152992cf15dc94562e85a","pointer":"/provisions/76","pointer_sha256":"b6855f9ab87feed5c14bc495e6e532e80157ac23a519897cad0ec7db459c42dd"},
+    {"source_provision_id":"22c84faafa71535eefef2f459a8ef1d0","pointer":"/provisions/93","pointer_sha256":"6cd9f148e6199f9b6cb4f8021f7777c7dd4331fbd2d1787d64d3cf09a4290e5c"}
+  ],
+  "rule_pointers": [
+    {"source_rule_id":"RULE-HW-001","pointer":"/rules/0","pointer_sha256":"0518d7a01f2d924f97c3cbf579bf410919e0b591df1d90c6a61f4366610786a9"},
+    {"source_rule_id":"RULE-HW-002","pointer":"/rules/1","pointer_sha256":"2a885232776ed973a7921f5a80606bfc88b485ffbe36fca772713b9b0168c918"},
+    {"source_rule_id":"RULE-HW-003","pointer":"/rules/2","pointer_sha256":"1882d730a971c08ccfbdd11036be25a9dab6e972e948489d43281ac35fdb0a10"},
+    {"source_rule_id":"RULE-HW-004","pointer":"/rules/3","pointer_sha256":"95dbd9ceef6fc6db980c0e02abfbb41655c4a0b2b85ec227d9e33997af45d0a6"},
+    {"source_rule_id":"RULE-HW-005","pointer":"/rules/4","pointer_sha256":"270d30083ceb8eab69bac73d2dad447bd980700fccb5c615423bc90c31659df4"},
+    {"source_rule_id":"RULE-HW-008","pointer":"/rules/7","pointer_sha256":"5ec464038b9dfacbfcdf9b0e4092808bb6595adb8dab0240c92804f84919e484"},
+    {"source_rule_id":"RULE-HW-009","pointer":"/rules/8","pointer_sha256":"47d308363e4ce47e9a7fed971d79177dac04828f163b22be87d92d898c54fcf8"}
+  ],
+  "body_attestations": [
+    {"id":"hw-3.1","source_provision_id":"230ef0dbd6d412b2007b01babc0a74a9","paragraph_indices_zero_based":[33,34],"normalized_body_sha256":"a46475b4cb55246e9047101bc86996f1304afb219f043e0a14596216dcb1d9f8","character_count":503,"summary":"Defines the standard refresh timing and limits early replacement."},
+    {"id":"hw-4.2","source_provision_id":"7f1e23fe6ad46352d7f356b90dab7d9f","paragraph_indices_zero_based":[44],"normalized_body_sha256":"f502b86141c082d18770c0c3762a20406ba992c12c52c636582fa94f5e5b541f","character_count":280,"summary":"Defines handling and authority for repeated accidental damage."},
+    {"id":"hw-7.3","source_provision_id":"e52c80ff95fb8c5af308eb6cf80b93dd","paragraph_indices_zero_based":[72],"normalized_body_sha256":"77b8ac93f1e9d63ebad1223898d71de55f8d380a418f6d465b5d42893cbed2cb","character_count":223,"summary":"Defines conflict-based self-approval restrictions and escalation."},
+    {"id":"hw-9.1","source_provision_id":"22daced0bf9d5768c63eb83f1cc7df60","paragraph_indices_zero_based":[83,84],"normalized_body_sha256":"30dc176289ecada3c9aa54660e3da71696683bf4ec2fcd13e10c5b030b789f8c","character_count":423,"summary":"Defines priority treatment, approval ownership, and limits on clinical-detail disclosure."},
+    {"id":"hw-9.2","source_provision_id":"22daced0bf9d5768c63eb83f1cc7df60","paragraph_indices_zero_based":[86],"normalized_body_sha256":"c030ae5542345214015dc1d817d3f577c78f9dc39434ff20190bf99395f9a499","character_count":177,"summary":"Defines restricted asset-record handling for underlying medical information."},
+    {"id":"hw-12.1","source_provision_id":"fa048a899108fe1ab00fae3af6a5dc98","paragraph_indices_zero_based":[100],"normalized_body_sha256":"62ec0db4de2aca503b2b7a5ba793556ad86be029c2233fc38b95bb577bee5e86","character_count":199,"summary":"Defines equipment return timing and accountability for leavers."},
+    {"id":"hw-12.3","source_provision_id":"904185efb2c152992cf15dc94562e85a","paragraph_indices_zero_based":[104],"normalized_body_sha256":"d86c7dd0910977d6c44daf3fafcd5e8debe1895f8f857c8050de7874f42883a8","character_count":183,"summary":"Defines data-destruction handling before returned-device reuse."},
+    {"id":"hw-a.1","source_provision_id":"22c84faafa71535eefef2f459a8ef1d0","paragraph_indices_zero_based":[153],"normalized_body_sha256":"70ac6ff64f22e5686580f019d89ee05f2e2dcf8b9e71dcd49d424a91f649df87","character_count":216,"summary":"Defines the executive-profile approval override without replacing lifecycle eligibility rules."}
+  ],
+  "attestation_limits": [
+    "Provision identity pointers contain heading/page metadata, not normative bodies.",
+    "Body attestations are positive-content hashes and locators; they are not human semantic confirmations.",
+    "No criterion was supported by keyword absence.",
+    "No confidential corpus text is copied into this artifact."
+  ]
+}

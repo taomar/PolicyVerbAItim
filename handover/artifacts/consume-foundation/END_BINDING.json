@@ -1,0 +1,19 @@
+{
+  "head": "c0972c8bb7ba811903e981d3806afe31cc1f514d",
+  "branch": "main",
+  "default_status_count": 120,
+  "default_modified_count": 73,
+  "default_untracked_count": 47,
+  "exhaustive_status_record_count": 121,
+  "physical_changed_file_count": 121,
+  "cached_diff_bytes": 0,
+  "stash_bytes": 0,
+  "content_tree_file_count": 37199,
+  "content_tree_sha256": "e0d88609098784a6c19e0e4943e53bf2d8f2b6325cabf40e0471caf68956ba7d",
+  "index_entries_sha256": "dc1ac15b63e6115328b590fc55f01131f4c45e709ad317683f9621bacfcb3287",
+  "status_v2_sha256": "74d6cad0dd46ec94e3945e5d1d38b3f466aa70ecdd935bfc977a01f2ea3b0ba9",
+  "cached_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "refs_sha256": "dbb57b545dd88d6949f57425eee5a546daf790e51a3ab9c7eb9cc9e9bb8e3ad8",
+  "stash_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "captured_at": "2026-09-05T01:29:36.1818942Z"
+}

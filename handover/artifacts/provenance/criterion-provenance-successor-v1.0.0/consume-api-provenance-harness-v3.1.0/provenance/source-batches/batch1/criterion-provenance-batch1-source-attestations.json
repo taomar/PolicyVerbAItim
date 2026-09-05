@@ -1,0 +1,485 @@
+{
+  "schema_version": "consume-api-source-hash-attestations/1",
+  "batch_id": "batch-1",
+  "canonical_bundle": {
+    "declared_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+    "recomputed_sha256": "fcc3cdfd8a823aa2349c5c7a033e1ea38b39b40e42831ab02a3d249e9516448c",
+    "match": true
+  },
+  "canonical_harness_inputs": [
+    {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evaluation-rubric.json",
+      "sha256": "6bd271a45d466ed048427a32ea2c7143bc23b3376e9ea06627f7239c481d7c58"
+    },
+    {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\135cb788-7072-4c5f-84d0-7458aba79def\\files\\consume-api-provenance-harness-v3.0.0\\evidence\\source.snapshot.json",
+      "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c"
+    },
+    {
+      "path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\source-snapshot.ais.json",
+      "sha256": "95df2a9538bb5090a5ab652a57b5f7f29e614ea7b2da2343203c05a903cd4718"
+    }
+  ],
+  "normative_evidence": [
+    {
+      "key": "annual",
+      "source_id": "ais_e_annual_vacation_r1",
+      "question_id": "ais-annual-vacation",
+      "response_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-annual-vacation__r1.decoded",
+      "response_file_sha256": "c0567c8cbf547b44734fb5588bada9f3bd107f8ba94677352f994f470cafc20c",
+      "record_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-annual-vacation__r1.json",
+      "record_file_sha256": "7080f9d0e678803541d71a354f753e4fdb7a7921b1c336698586064a6e65a2dd",
+      "record_response_hash_matches": true,
+      "record_source_snapshot_hash_matches": true,
+      "pointer": "/policies/0/payload",
+      "pointer_sha256": "bce2c5afd7f4249717db185b14bfc212d7aa53ab369c871388deb65023527f79",
+      "source_provision_id": "ab87a692f3a20e95c545a0ce7718ba61",
+      "source_rule_ids": [
+        "AI-0d3f567dc0",
+        "AI-1e6a87d232",
+        "AI-32041fedd2",
+        "AI-32e998f0c0",
+        "AI-57760a678a",
+        "AI-6da44f8da1",
+        "AI-73de523932",
+        "AI-824e6298af",
+        "AI-8af5f2ba84",
+        "AI-a5ecfab674",
+        "AI-ebe8b2ae57"
+      ],
+      "embedded_source_document_sha256s": [
+        "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+      ],
+      "rules": [
+        {
+          "rule_id": "AI-0d3f567dc0",
+          "pointer": "/policies/0/payload/rules/0",
+          "pointer_sha256": "2199147b90b780cee75854c4c55f79d76e65aef3f6989128b34a3b7d45f6462d",
+          "source_span_ids": [
+            "72c4de3680cb64ab"
+          ]
+        },
+        {
+          "rule_id": "AI-1e6a87d232",
+          "pointer": "/policies/0/payload/rules/1",
+          "pointer_sha256": "4dacc38fe8c7e727fd5ba32b9d6725d652a611205ba827cf2bf507ce6cefb07a",
+          "source_span_ids": [
+            "e90050d3214570e2"
+          ]
+        },
+        {
+          "rule_id": "AI-32041fedd2",
+          "pointer": "/policies/0/payload/rules/2",
+          "pointer_sha256": "549670bd5e955510ea71acc10fd5cd51ce27f387135581462d836601794d3130",
+          "source_span_ids": [
+            "1ae16710d87faa72"
+          ]
+        },
+        {
+          "rule_id": "AI-32e998f0c0",
+          "pointer": "/policies/0/payload/rules/3",
+          "pointer_sha256": "5be0a5fbf8414d844b1aa2de1b15525e6de8a95f669a9f718fc56b64b0a1fece",
+          "source_span_ids": [
+            "1bcbf939cb401157"
+          ]
+        },
+        {
+          "rule_id": "AI-57760a678a",
+          "pointer": "/policies/0/payload/rules/4",
+          "pointer_sha256": "55e6e570cb09ad665ae6eb246b96324ef2a23c4672d814fc27ac4f171535af26",
+          "source_span_ids": [
+            "255e11c1932a9516"
+          ]
+        },
+        {
+          "rule_id": "AI-6da44f8da1",
+          "pointer": "/policies/0/payload/rules/5",
+          "pointer_sha256": "b2b1a32c146cdb9a40baedfe4f3adca1aa11e73e2b5709dfbd508125297d3705",
+          "source_span_ids": [
+            "16a58793871da05e"
+          ]
+        },
+        {
+          "rule_id": "AI-73de523932",
+          "pointer": "/policies/0/payload/rules/6",
+          "pointer_sha256": "f15c773fbdc378beebea453780ed088e80ba4f0d1063c3e1f5cb2557499efb4c",
+          "source_span_ids": [
+            "81568f8f9529b59d"
+          ]
+        },
+        {
+          "rule_id": "AI-824e6298af",
+          "pointer": "/policies/0/payload/rules/7",
+          "pointer_sha256": "71e4fa62aab3a06ce19a0a9e72a64483ee8dd220c7db9fbae4e707e2219d46d7",
+          "source_span_ids": [
+            "422f97166cc64582"
+          ]
+        },
+        {
+          "rule_id": "AI-8af5f2ba84",
+          "pointer": "/policies/0/payload/rules/8",
+          "pointer_sha256": "81b98dc57155b6d197824f79002923867395a4eaf509e4cd0187bc25f69712f2",
+          "source_span_ids": [
+            "701689ed49040217"
+          ]
+        },
+        {
+          "rule_id": "AI-a5ecfab674",
+          "pointer": "/policies/0/payload/rules/9",
+          "pointer_sha256": "3714c742d554eac75da36511272c89ee9bc9ca2068176c1a553994bc7efd707b",
+          "source_span_ids": [
+            "37fd78e5fa3eaa6f"
+          ]
+        },
+        {
+          "rule_id": "AI-ebe8b2ae57",
+          "pointer": "/policies/0/payload/rules/10",
+          "pointer_sha256": "b30555389feee79f0e97b75f8ec53f4d214e797514558f5e06fb3ea7fdddb826",
+          "source_span_ids": [
+            "1171f15ec41c0017"
+          ]
+        }
+      ],
+      "spans": [
+        {
+          "span_id": "1171f15ec41c0017",
+          "pointer": "/policies/0/payload/spans/1171f15ec41c0017",
+          "pointer_sha256": "25a2de60e082c9c519becb5d6ee752acaef070b19b108ab6053da7d30a0afafa",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "16a58793871da05e",
+          "pointer": "/policies/0/payload/spans/16a58793871da05e",
+          "pointer_sha256": "f55d57d0521be973844e6ede00039282f9dd37c2d0b43107a7971ec410081150",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "1ae16710d87faa72",
+          "pointer": "/policies/0/payload/spans/1ae16710d87faa72",
+          "pointer_sha256": "bcc6f4db588ad8b24c5586a2152bd38d33119270c638af9fb53c12ecf585080e",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "1bcbf939cb401157",
+          "pointer": "/policies/0/payload/spans/1bcbf939cb401157",
+          "pointer_sha256": "34e6120fb5055902c0e924523b79e689d4a4e39d60a8c01a43fa4f7bd3783027",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "255e11c1932a9516",
+          "pointer": "/policies/0/payload/spans/255e11c1932a9516",
+          "pointer_sha256": "089535846c86f92d25e6d36689b50be8148c77bfc3e87b22bb7fe1bb3e559b64",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "37fd78e5fa3eaa6f",
+          "pointer": "/policies/0/payload/spans/37fd78e5fa3eaa6f",
+          "pointer_sha256": "27b8bb52e5f5cedc68a907df7899542dce17ff3b13b2c632422a9896fbd59d48",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "422f97166cc64582",
+          "pointer": "/policies/0/payload/spans/422f97166cc64582",
+          "pointer_sha256": "0b5ab813766c7d62eaff3872bf581abf330c4edc09d682f24df2c54243172e9d",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "701689ed49040217",
+          "pointer": "/policies/0/payload/spans/701689ed49040217",
+          "pointer_sha256": "0d36c90234e6ba6ed43477215915ac0d73b77ec221214f3af1807f09482fe424",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "72c4de3680cb64ab",
+          "pointer": "/policies/0/payload/spans/72c4de3680cb64ab",
+          "pointer_sha256": "fcc8973b4f237a5416787cf3f7ec6799c518bec3f4ba16c05ae6ac9d8fb92192",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "81568f8f9529b59d",
+          "pointer": "/policies/0/payload/spans/81568f8f9529b59d",
+          "pointer_sha256": "f69a3b551c63ed652dd1c4e3cb132884a6c630a6ae49a2521c2aae9f2a2c6ff1",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "e90050d3214570e2",
+          "pointer": "/policies/0/payload/spans/e90050d3214570e2",
+          "pointer_sha256": "9962397bbf4055e4bf5733b5845f99029fda411149e8560198bac4494605612f",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        }
+      ]
+    },
+    {
+      "key": "sick",
+      "source_id": "ais_e_sick_surgery_r1",
+      "question_id": "ais-sick-surgery",
+      "response_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-sick-surgery__r1.decoded",
+      "response_file_sha256": "21b1114070fcaeff604516b729c8434b754b3c9a7722cdfec1a4a38750d9e0eb",
+      "record_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-sick-surgery__r1.json",
+      "record_file_sha256": "5ba2c73028547badfee8055b1eeef8b2bd0892bf68c9eed2bbda24508f2fa6bf",
+      "record_response_hash_matches": true,
+      "record_source_snapshot_hash_matches": true,
+      "pointer": "/policies/0/payload",
+      "pointer_sha256": "21eef0c74aaa4a291873fb6aa0a7fea20f9b6a8a97898ced08491f73204da2a7",
+      "source_provision_id": "28334f1a0b3c389682647d43c89d554f",
+      "source_rule_ids": [
+        "AI-05daa82d28",
+        "AI-7336476841",
+        "AI-b4226cc420",
+        "AI-d858b6b2ba",
+        "AI-f6bbbe91e6"
+      ],
+      "embedded_source_document_sha256s": [
+        "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+      ],
+      "rules": [
+        {
+          "rule_id": "AI-05daa82d28",
+          "pointer": "/policies/0/payload/rules/0",
+          "pointer_sha256": "386f861ee0bfbd556fd3cdfe5ff840146595a168b3a820d19778480e67afc996",
+          "source_span_ids": [
+            "92fedec14e4b9ed9"
+          ]
+        },
+        {
+          "rule_id": "AI-7336476841",
+          "pointer": "/policies/0/payload/rules/1",
+          "pointer_sha256": "d06a85168d69c628fd28e878896e764c9c62389f9ce337ef73bbadb9faf25154",
+          "source_span_ids": [
+            "de9b053d029d8492"
+          ]
+        },
+        {
+          "rule_id": "AI-b4226cc420",
+          "pointer": "/policies/0/payload/rules/2",
+          "pointer_sha256": "ede0beccc2ad0e5b5ec6756d9e5fb641c6d5aa4331fba9b4e42cd38c26631f82",
+          "source_span_ids": [
+            "8c8b624e8e03af9c"
+          ]
+        },
+        {
+          "rule_id": "AI-d858b6b2ba",
+          "pointer": "/policies/0/payload/rules/3",
+          "pointer_sha256": "ebe54e4aad57ac3a378da477e9ae4a69d94d45206b5084bb7c209f7f75facae2",
+          "source_span_ids": [
+            "92fedec14e4b9ed9"
+          ]
+        },
+        {
+          "rule_id": "AI-f6bbbe91e6",
+          "pointer": "/policies/0/payload/rules/4",
+          "pointer_sha256": "d7dce69297538733e355b74a31ecd37cecf52b22f5bf29fadb5581462cf60d35",
+          "source_span_ids": [
+            "cc3421cb79776658"
+          ]
+        }
+      ],
+      "spans": [
+        {
+          "span_id": "8c8b624e8e03af9c",
+          "pointer": "/policies/0/payload/spans/8c8b624e8e03af9c",
+          "pointer_sha256": "dd7b5e5794802018a0c0ec2979ccad79c7e50beb8ac0c149061a02cb78224353",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "92fedec14e4b9ed9",
+          "pointer": "/policies/0/payload/spans/92fedec14e4b9ed9",
+          "pointer_sha256": "ca978c26f0d0d9f8c94299c54bfd3322af656ab9299d7f52b5cbd8fbaf1fef51",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "cc3421cb79776658",
+          "pointer": "/policies/0/payload/spans/cc3421cb79776658",
+          "pointer_sha256": "debbf740460234a071e8e9b3271d870ae5dad4cb55ac59b5170f83da5a8fcfff",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "de9b053d029d8492",
+          "pointer": "/policies/0/payload/spans/de9b053d029d8492",
+          "pointer_sha256": "3ce35d48923822b9c83ef5cb24e39f6066cbdfb9e63395df75ff0f60cfad5ecf",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        }
+      ]
+    },
+    {
+      "key": "maternity",
+      "source_id": "ais_e_maternity_leave_r1",
+      "question_id": "ais-maternity-leave",
+      "response_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-maternity-leave__r1.decoded",
+      "response_file_sha256": "92cc35e1352ad734ca6a6584dd8ee5ac3f21b22c8e31ce1c35dab841ea916f55",
+      "record_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-maternity-leave__r1.json",
+      "record_file_sha256": "fc99f4b970006727e7adb9b1de638fa5870faac1465e98e029beeb8e7ee4f76b",
+      "record_response_hash_matches": true,
+      "record_source_snapshot_hash_matches": true,
+      "pointer": "/policies/0/payload",
+      "pointer_sha256": "ba090a40bfc9f54af382a2ec0e0f3156f322a48cbd922d8e3efd25329aa22c5e",
+      "source_provision_id": "01309aeb409607211e4115e044bd8ac3",
+      "source_rule_ids": [
+        "AI-18fe024f6d",
+        "AI-f2d7cdc964",
+        "AI-f5e995fb85"
+      ],
+      "embedded_source_document_sha256s": [
+        "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+      ],
+      "rules": [
+        {
+          "rule_id": "AI-18fe024f6d",
+          "pointer": "/policies/0/payload/rules/0",
+          "pointer_sha256": "fed5d6e9efcd4132bceb9d20109816549a9986e8a795ad568662f90c5010bf6a",
+          "source_span_ids": [
+            "edfef615307e2678"
+          ]
+        },
+        {
+          "rule_id": "AI-f2d7cdc964",
+          "pointer": "/policies/0/payload/rules/1",
+          "pointer_sha256": "99586148f82e2d1374de56b47668f74efdd518b0713ee0e451a681e28654e849",
+          "source_span_ids": [
+            "53e9dde37a3b8c06"
+          ]
+        },
+        {
+          "rule_id": "AI-f5e995fb85",
+          "pointer": "/policies/0/payload/rules/2",
+          "pointer_sha256": "579682d964c4c23161ead50b57fa55c4ad06c1b0371e368b47088cd095392694",
+          "source_span_ids": [
+            "61f7d1d1858484ce"
+          ]
+        }
+      ],
+      "spans": [
+        {
+          "span_id": "53e9dde37a3b8c06",
+          "pointer": "/policies/0/payload/spans/53e9dde37a3b8c06",
+          "pointer_sha256": "6e07d00efaa2871e91901176128b94e0c1e3cb0826c25e67be0cc680df7d418e",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "61f7d1d1858484ce",
+          "pointer": "/policies/0/payload/spans/61f7d1d1858484ce",
+          "pointer_sha256": "e8e5a6599f38111d2de6d8803ae31ccefa0187a5a4d98354d35da81d1bf6e4fe",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "edfef615307e2678",
+          "pointer": "/policies/0/payload/spans/edfef615307e2678",
+          "pointer_sha256": "d877a07875cc8a56c7c2082988ac761d2085b11caf3f504d09d5a4a5b86ce31a",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        }
+      ]
+    },
+    {
+      "key": "overtime",
+      "source_id": "ais_e_overtime_weekend_r1",
+      "question_id": "ais-overtime-weekend",
+      "response_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-overtime-weekend__r1.decoded",
+      "response_file_sha256": "369175ab77079933c47d21a40ed5753cda4ad52626b578c4b51798f8b58ed54c",
+      "record_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-overtime-weekend__r1.json",
+      "record_file_sha256": "47b12aef0beb83eacdf1f7b1782e2ca969b05a553f3caff727ec33f7e897b373",
+      "record_response_hash_matches": true,
+      "record_source_snapshot_hash_matches": true,
+      "pointer": "/policies/0/payload",
+      "pointer_sha256": "a1664fd84afeb2c1092551229c9421ecb8ea30931ba349d7b4bd7d87ec494502",
+      "source_provision_id": "4094ad6b422dbb097ec11368c525b5a6",
+      "source_rule_ids": [
+        "AI-5dca015982",
+        "AI-78a4d0ad18",
+        "AI-ca3d9b8901",
+        "AI-db197470db"
+      ],
+      "embedded_source_document_sha256s": [
+        "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+      ],
+      "rules": [
+        {
+          "rule_id": "AI-5dca015982",
+          "pointer": "/policies/0/payload/rules/0",
+          "pointer_sha256": "de24fc73702076082e31138ed906bbfdef4fefda8a20b9c4392a4a37589a615b",
+          "source_span_ids": [
+            "89d280256a1427ad"
+          ]
+        },
+        {
+          "rule_id": "AI-78a4d0ad18",
+          "pointer": "/policies/0/payload/rules/1",
+          "pointer_sha256": "7c6bfee966a58f5bb7249341df4bd867bc25576fa29d181c03dd7edd19955d43",
+          "source_span_ids": [
+            "d9bf899691503f59"
+          ]
+        },
+        {
+          "rule_id": "AI-ca3d9b8901",
+          "pointer": "/policies/0/payload/rules/2",
+          "pointer_sha256": "f1352191e722d63e727906069a1d3b356e68819d7177a0837b3dfbdde31cd391",
+          "source_span_ids": [
+            "89d280256a1427ad"
+          ]
+        },
+        {
+          "rule_id": "AI-db197470db",
+          "pointer": "/policies/0/payload/rules/3",
+          "pointer_sha256": "2b4c5e2764d09a0a7d5ee78fea8a35e8c6ae4ff544d07f8df74abeb308a92aaf",
+          "source_span_ids": [
+            "d9bf899691503f59"
+          ]
+        }
+      ],
+      "spans": [
+        {
+          "span_id": "89d280256a1427ad",
+          "pointer": "/policies/0/payload/spans/89d280256a1427ad",
+          "pointer_sha256": "37f89f083203682da57a31438e62b980e72b22b5f95ee15cfa824d149a8820fe",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        },
+        {
+          "span_id": "d9bf899691503f59",
+          "pointer": "/policies/0/payload/spans/d9bf899691503f59",
+          "pointer_sha256": "3a7c902d12833befb0848de0f3ec1cc98b73c8aab1c353b4495b344591c715db",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        }
+      ]
+    },
+    {
+      "key": "tuition",
+      "source_id": "ais_e_tuition_child_r1",
+      "question_id": "ais-tuition-child",
+      "response_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\responses\\E__ais-tuition-child__r1.decoded",
+      "response_file_sha256": "907f379cf9ba4a123604ce832ef9ef17ebbb7a24b59b9b6ff8519780fd410e23",
+      "record_path": "C:\\Users\\taomar\\.copilot\\session-state\\b9e79289-63de-4596-8a76-88064fb51cf8\\files\\consume-api-matrix-ais\\runs\\consume-api-ais-six-arm-20260904\\records\\E__ais-tuition-child__r1.json",
+      "record_file_sha256": "9e9a82a36075dd5ec6767f8ad5537d016ebae7d0d4280cfbd1c45801a1b2f5a4",
+      "record_response_hash_matches": true,
+      "record_source_snapshot_hash_matches": true,
+      "pointer": "/policies/0/payload",
+      "pointer_sha256": "f71d7c36fd676415a8714c869396dfd0444c52a555ce4a594e75a1a577349312",
+      "source_provision_id": "77ec032421fdcfc11ed1dd2fb6ee7ae4",
+      "source_rule_ids": [
+        "AI-c3c7e28449"
+      ],
+      "embedded_source_document_sha256s": [
+        "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+      ],
+      "rules": [
+        {
+          "rule_id": "AI-c3c7e28449",
+          "pointer": "/policies/0/payload/rules/0",
+          "pointer_sha256": "55fff1bce023023805b45d6569b4133cab6678234a91a61ee8d7daceebef14b7",
+          "source_span_ids": [
+            "ae713c22d4ecd10d"
+          ]
+        }
+      ],
+      "spans": [
+        {
+          "span_id": "ae713c22d4ecd10d",
+          "pointer": "/policies/0/payload/spans/ae713c22d4ecd10d",
+          "pointer_sha256": "6587d3414e41933043e5b7b2b4c54b0908d922ada0daf2eaf141e706387cc40e",
+          "source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+        }
+      ]
+    }
+  ],
+  "source_document_file_available": false,
+  "embedded_source_document_sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9",
+  "confidential_source_text_included": false
+}

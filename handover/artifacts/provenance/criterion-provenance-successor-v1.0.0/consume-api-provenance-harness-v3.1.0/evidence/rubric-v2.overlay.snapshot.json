@@ -1,0 +1,4969 @@
+{
+  "schema_version": "consume-api-evaluation-rubric/2",
+  "status": "provenance_guarded_offline_overlay",
+  "source_markdown": {
+    "path": "RUBRIC_MIGRATION_V2.md",
+    "sha256": "d12f6f3082c65781069b5e6b012c6d233f896309e75cb74f21c83861c1f6ec40"
+  },
+  "authoritative_contract_override": "The corrected source markdown and harness both define A-F as three endpoint surfaces crossed with policy/rule retrieval mode.",
+  "corpus_topic_map": {
+    "path": "evidence/source.snapshot.json",
+    "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c"
+  },
+  "dimensions": {
+    "R1": {
+      "name": "evidence_grounding",
+      "scored": true
+    },
+    "R2": {
+      "name": "citation_integrity",
+      "scored": true
+    },
+    "R3": {
+      "name": "answerability_honesty",
+      "scored": true
+    },
+    "R4": {
+      "name": "verdict_discipline",
+      "scored": true
+    },
+    "R5": {
+      "name": "refusal_safety",
+      "scored": true
+    },
+    "R6": {
+      "name": "cross_run_stability",
+      "scored": false,
+      "measurement_only": true
+    },
+    "R7": {
+      "name": "receipt_integrity",
+      "scored": true
+    },
+    "R8": {
+      "name": "non_fabrication",
+      "scored": true
+    },
+    "R9": {
+      "name": "composition_completeness",
+      "scored": true
+    },
+    "R10": {
+      "name": "mode_comparison",
+      "scored": false,
+      "measurement_only": true
+    }
+  },
+  "questions": [
+    {
+      "rubric_id": "AIS-01",
+      "id": "ais-annual-vacation",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "I joined AIS eleven months ago, have not completed a one-year contract, and want five days of annual vacation next week. What does the policy provide, and am I entitled to those five days?",
+      "expected_evidence": {
+        "required": [
+          "ab87a692f3a20e95c545a0ce7718ba61"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "answered",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "If missing_required_facts, the missing item must not be the supplied service length."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-01:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "ab87a692f3a20e95c545a0ce7718ba61"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/13",
+              "pointer_sha256": "b7f8f7cb8e6503e6423bc211f786ce7185d0120a709e8bc6f55e2e2a7bd7abd2"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/0/expected_evidence",
+              "pointer_sha256": "7b80c7c53d9da934a2da8c1ea0e2feee9f179b30b9fa59c5ce37ce86665d4cd3"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-01:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/0/expected_tracks",
+              "pointer_sha256": "8418d2dc0bacf361c6707078360ba10943500aa88be8ef9afd2abc3c46f1c222"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-01:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/0/expected_tracks",
+              "pointer_sha256": "8418d2dc0bacf361c6707078360ba10943500aa88be8ef9afd2abc3c46f1c222"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-01:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/0/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-01:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/0/expected_evidence",
+              "pointer_sha256": "7b80c7c53d9da934a2da8c1ea0e2feee9f179b30b9fa59c5ce37ce86665d4cd3"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-01:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "If missing_required_facts, the missing item must not be the supplied service length.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/0/manual_criteria/0",
+              "pointer_sha256": "cb8a089d2cff8b6564026b6e954d81598be0d936741777b7459b61e008b1e56e"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-02",
+      "id": "ais-sick-surgery",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "I have surgery on Monday and expect to miss six calendar days. I do not yet have the final medical certificate. What sick leave applies, and may I treat the six days as approved now?",
+      "expected_evidence": {
+        "required": [
+          "28334f1a0b3c389682647d43c89d554f"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered",
+          "not_requested"
+        ],
+        "verdict": [
+          "missing_required_facts",
+          "not_settled_by_rules"
+        ]
+      },
+      "manual_criteria": [
+        "The absent medical certificate must surface as missing or as the reason the rules do not settle the case.",
+        "An answered verdict approving six days without the certificate fails."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-02:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All required normative provisions are served and cited.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "28334f1a0b3c389682647d43c89d554f"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/14",
+              "pointer_sha256": "41bf7fa70289ac47792a5670d015e0c2a9a16c95f77a38027d006d7000901206"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:153-159",
+              "pointer_sha256": "039b7f86a33816a7d7b4ebe62279ba2bbbdfae92de527a3b608d738340fa2073"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 1,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-02:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "A settled entitlement does not authorize immediate execution when the normative source is silent on present approval.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "28334f1a0b3c389682647d43c89d554f"
+          ],
+          "source_rule_ids": [
+            "AI-b4226cc420",
+            "AI-7336476841",
+            "AI-d858b6b2ba"
+          ],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/14",
+              "pointer_sha256": "41bf7fa70289ac47792a5670d015e0c2a9a16c95f77a38027d006d7000901206"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/1/expected_tracks",
+              "pointer_sha256": "58942278068c8b4d8ed2cc0aa2a9c60659b8ca59da3af6fb82ae94186dc4d13a"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "ais02_semantic_decision",
+              "pointer": "",
+              "pointer_sha256": "7dae5fb97a018865998580d00e32a50af9054c3bb3da15f7a18861d0fbaf28e4"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 3,
+            "supporting_provision_count": 1,
+            "method": "human_confirmed_entitlement_execution_boundary",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-02:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/1/expected_tracks",
+              "pointer_sha256": "58942278068c8b4d8ed2cc0aa2a9c60659b8ca59da3af6fb82ae94186dc4d13a"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-02:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/1/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-02:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/1/expected_evidence",
+              "pointer_sha256": "9166f17509df62939f3b3e15d89e4be77f9b188d8e8ac7f9b9e852045ba8a25b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-02:manual-1",
+          "active": false,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "The absent medical certificate must surface as missing or as the reason the rules do not settle the case.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "unsupported_expectation",
+          "source_provision_ids": [
+            "28334f1a0b3c389682647d43c89d554f"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/14",
+              "pointer_sha256": "41bf7fa70289ac47792a5670d015e0c2a9a16c95f77a38027d006d7000901206"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:153-159",
+              "pointer_sha256": "039b7f86a33816a7d7b4ebe62279ba2bbbdfae92de527a3b608d738340fa2073"
+            }
+          ],
+          "validation_state": "validated_unsupported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "human_confirmed_source_body_reconciliation",
+            "semantic_support": "human_confirmed_unsupported",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_unsupported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-02:manual-2",
+          "active": false,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 1
+          },
+          "description": "An answered verdict approving six days without the certificate fails.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "unsupported_expectation",
+          "source_provision_ids": [
+            "28334f1a0b3c389682647d43c89d554f"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/14",
+              "pointer_sha256": "41bf7fa70289ac47792a5670d015e0c2a9a16c95f77a38027d006d7000901206"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:153-159",
+              "pointer_sha256": "039b7f86a33816a7d7b4ebe62279ba2bbbdfae92de527a3b608d738340fa2073"
+            }
+          ],
+          "validation_state": "validated_unsupported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "human_confirmed_source_body_reconciliation",
+            "semantic_support": "human_confirmed_unsupported",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_unsupported"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-03",
+      "id": "ais-absence-penalty",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "recall_control": true,
+      "exact_question": "An employee was absent without written permission or an acceptable excuse for three consecutive days in one contractual year. It is the first occurrence. What consequence applies?",
+      "expected_evidence": {
+        "required": [
+          "e8326a491c60c8914b7932dd0f2607eb"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested"
+        ],
+        "verdict": [
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "The source occurrence ordinal must remain associated with its consequence through extracted and served evidence."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-03:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All required normative provisions are served and cited.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "e8326a491c60c8914b7932dd0f2607eb"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/38",
+              "pointer_sha256": "76d83e2a6934528dc7cd2af6d234b36abd6b99f928a5c81cba428fdd6c9b83d2"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:160-163",
+              "pointer_sha256": "8963b3ad81878962d1da0c4d14a853df72f53f6d97e4621f9ca5c450477a7c39"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 1,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-03:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "The first-occurrence consequence is answerable only when source ordinality survives into served evidence.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "e8326a491c60c8914b7932dd0f2607eb"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/38",
+              "pointer_sha256": "76d83e2a6934528dc7cd2af6d234b36abd6b99f928a5c81cba428fdd6c9b83d2"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:160-163",
+              "pointer_sha256": "8963b3ad81878962d1da0c4d14a853df72f53f6d97e4621f9ca5c450477a7c39"
+            }
+          ],
+          "validation_state": "known_limitation_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 1,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "known_limitation_supported"
+            }
+          },
+          "known_limitation": "The source has occurrence columns; the frozen served rule loses their associations."
+        },
+        {
+          "criterion_id": "AIS-03:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/2/expected_tracks",
+              "pointer_sha256": "529924fea8c9aab96ce16585f20bf2ba9fee5b5ccee48b92d24c2a3556fbaf1a"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-03:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/2/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-03:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/2/expected_evidence",
+              "pointer_sha256": "b2f96fb57b8623d4c44b953d2b1205766d2b3e9600af6458d8398ff8ce5a36b0"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-03:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "The source occurrence ordinal must remain associated with its consequence through extracted and served evidence.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "e8326a491c60c8914b7932dd0f2607eb"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/38",
+              "pointer_sha256": "76d83e2a6934528dc7cd2af6d234b36abd6b99f928a5c81cba428fdd6c9b83d2"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:160-163",
+              "pointer_sha256": "8963b3ad81878962d1da0c4d14a853df72f53f6d97e4621f9ca5c450477a7c39"
+            }
+          ],
+          "validation_state": "known_limitation_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 1,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "known_limitation_supported"
+            }
+          },
+          "known_limitation": "The source table has explicit occurrence columns, but the frozen served rule loses their associations."
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-04",
+      "id": "ais-conflict-vendor",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "known_defect": true,
+      "exact_question": "My sibling owns a company bidding to supply AIS, and I have been asked to score the bids. What must I disclose, and may I participate in the choice?",
+      "expected_evidence": {
+        "required": [
+          "017de08ad6e139f5b53bd1e36ec96755"
+        ],
+        "acceptable_additional": [
+          "d3b9a1390f48e961ef33515d8cc61bb9"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "answered",
+          "not_requested"
+        ],
+        "verdict": [
+          "answered",
+          "not_settled_by_rules",
+          "not_requested"
+        ]
+      },
+      "forbidden_outcome_pairs": [
+        [
+          "not_requested",
+          "no_rule_bears"
+        ],
+        [
+          "no_rule_bears",
+          "not_requested"
+        ],
+        [
+          "no_rule_bears",
+          "no_rule_bears"
+        ]
+      ],
+      "manual_criteria": [
+        "The conflict-of-interest provision is mandatory evidence."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-04:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All required normative provisions are served and cited.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "017de08ad6e139f5b53bd1e36ec96755"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/30",
+              "pointer_sha256": "4b4156c01fb07484698516470d2784d491ab7ef605f4f6573c589d554ad9a171"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:164-166",
+              "pointer_sha256": "1f7caeddce5baccec494ef453cbe00412e63deda8c55ff31c9a4b55e3300d6ab"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 1,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-04:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/3/expected_tracks",
+              "pointer_sha256": "d98bc9f29174c065651cbfe487832618253dfef03708cb4de8057e23be463ff7"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-04:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/3/expected_tracks",
+              "pointer_sha256": "d98bc9f29174c065651cbfe487832618253dfef03708cb4de8057e23be463ff7"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-04:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/3/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-04:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/3/expected_evidence",
+              "pointer_sha256": "1eff18d6476d9938e213d968515e95bf5aae7afe5ebaa3be6b0f7605c03297f0"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-04:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "The conflict-of-interest provision is mandatory evidence.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "017de08ad6e139f5b53bd1e36ec96755"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/30",
+              "pointer_sha256": "4b4156c01fb07484698516470d2784d491ab7ef605f4f6573c589d554ad9a171"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:164-166",
+              "pointer_sha256": "1f7caeddce5baccec494ef453cbe00412e63deda8c55ff31c9a4b55e3300d6ab"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 1,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-05",
+      "id": "ais-maternity-leave",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "I",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "An employee is expecting a baby in eight weeks and asks what maternity leave the AIS handbook provides and what must be submitted before taking it.",
+      "expected_evidence": {
+        "required": [
+          "01309aeb409607211e4115e044bd8ac3"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "not_requested",
+          "not_settled_by_rules"
+        ]
+      },
+      "manual_criteria": [
+        "The submission requirement must be grounded in the cited provision."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-05:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "01309aeb409607211e4115e044bd8ac3"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/15",
+              "pointer_sha256": "7963145d84249526d13c463c98eacefd75f4785ff95046e92daa3f3e5fc30486"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/4/expected_evidence",
+              "pointer_sha256": "1b07249946b9571c5a5ec654e9cb7ab33bfd18e3aac03cd68d4497453b98bfa9"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-05:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/4/expected_tracks",
+              "pointer_sha256": "c9b6f8025f5513cc57421e9d28504f2fa2d449726c86e815944b5465de0eab63"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-05:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/4/expected_tracks",
+              "pointer_sha256": "c9b6f8025f5513cc57421e9d28504f2fa2d449726c86e815944b5465de0eab63"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-05:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/4/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-05:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/4/expected_evidence",
+              "pointer_sha256": "1b07249946b9571c5a5ec654e9cb7ab33bfd18e3aac03cd68d4497453b98bfa9"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-05:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "The submission requirement must be grounded in the cited provision.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/4/manual_criteria/0",
+              "pointer_sha256": "b1788d79450111d5f50a63d4c49f9c0785241f1ee5f52b010c73f43570ece5d8"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-06",
+      "id": "ais-overtime-weekend",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "My manager verbally asked me to work six hours on Saturday, but I have no written approval. Does the AIS overtime policy entitle me to overtime for it?",
+      "expected_evidence": {
+        "required": [
+          "4094ad6b422dbb097ec11368c525b5a6"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "not_settled_by_rules",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "The absence of written approval must be the operative reason.",
+        "An answered verdict granting overtime despite no written approval fails."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-06:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All required normative provisions are served and cited.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "4094ad6b422dbb097ec11368c525b5a6"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/10",
+              "pointer_sha256": "cfafc8446559c89bfe0e81f8c51fc3168babcd14baf8be154a013fdb0c696db4"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:148-151",
+              "pointer_sha256": "a96b58eb36d5aeba6d08139877bf71ea9338e032eb51be5e8c376514b4583d46"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 1,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-06:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/5/expected_tracks",
+              "pointer_sha256": "86b4a5d01a3aae3161b10e10574e233a7b3f84a96ad40ccf4cc2a299780d80e1"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-06:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/5/expected_tracks",
+              "pointer_sha256": "86b4a5d01a3aae3161b10e10574e233a7b3f84a96ad40ccf4cc2a299780d80e1"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-06:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/5/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-06:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/5/expected_evidence",
+              "pointer_sha256": "3da561a1bb86111055df726072cc9a069ae62c8db1b9dee564ac680e753d3eb1"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-06:manual-1",
+          "active": false,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "The absence of written approval must be the operative reason.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "unsupported_expectation",
+          "source_provision_ids": [
+            "4094ad6b422dbb097ec11368c525b5a6"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/10",
+              "pointer_sha256": "cfafc8446559c89bfe0e81f8c51fc3168babcd14baf8be154a013fdb0c696db4"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:148-151",
+              "pointer_sha256": "a96b58eb36d5aeba6d08139877bf71ea9338e032eb51be5e8c376514b4583d46"
+            }
+          ],
+          "validation_state": "validated_unsupported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "human_confirmed_source_body_reconciliation",
+            "semantic_support": "human_confirmed_unsupported",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_unsupported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-06:manual-2",
+          "active": false,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 1
+          },
+          "description": "An answered verdict granting overtime despite no written approval fails.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "unsupported_expectation",
+          "source_provision_ids": [
+            "4094ad6b422dbb097ec11368c525b5a6"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/10",
+              "pointer_sha256": "cfafc8446559c89bfe0e81f8c51fc3168babcd14baf8be154a013fdb0c696db4"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:148-151",
+              "pointer_sha256": "a96b58eb36d5aeba6d08139877bf71ea9338e032eb51be5e8c376514b4583d46"
+            }
+          ],
+          "validation_state": "validated_unsupported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "human_confirmed_source_body_reconciliation",
+            "semantic_support": "human_confirmed_unsupported",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_unsupported"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-07",
+      "id": "ais-tuition-child",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "I",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "I am an AIS employee and want to enrol my child at an AIS school next term. What tuition discount does the handbook provide, and may I claim it now?",
+      "expected_evidence": {
+        "required": [
+          "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "not_settled_by_rules",
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "A confident information answer from salary-and-deductions without the tuition provision fails."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-07:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/20",
+              "pointer_sha256": "99fa191e3b5df8c1b99cdcdf80e1e4b0927e05ba8c60d7ff0a87ccda90dce5d0"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/6/expected_evidence",
+              "pointer_sha256": "386466d62c9c73d4af38f67e03bdd048ee301f0287ea20f597717fd26d9c81cb"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-07:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/6/expected_tracks",
+              "pointer_sha256": "3b2070a719aecd0680b533f3e04284452f76462acea0012635d17da360dcab57"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-07:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/6/expected_tracks",
+              "pointer_sha256": "3b2070a719aecd0680b533f3e04284452f76462acea0012635d17da360dcab57"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-07:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/6/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-07:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/6/expected_evidence",
+              "pointer_sha256": "386466d62c9c73d4af38f67e03bdd048ee301f0287ea20f597717fd26d9c81cb"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-07:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "A confident information answer from salary-and-deductions without the tuition provision fails.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/6/manual_criteria/0",
+              "pointer_sha256": "2d3a9c1c070aae77cfabf9ff671c725340226f07c04bf8e03942d485a36a1267"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-08",
+      "id": "ais-info-probation-evaluation",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "I"
+      ],
+      "historical": false,
+      "irrelevant": false,
+      "exact_question": "What does the AIS handbook state about the probation period, and what does it state about the performance evaluation that follows it?",
+      "expected_evidence": {
+        "required": [
+          "39e08eda7e9f169c6e2e1a936911c023",
+          "05cde987d85627d03bdfddaceb46140f"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "not_requested"
+        ]
+      },
+      "manual_criteria": [
+        "Both provisions must be cited.",
+        "A reached verdict fails because no decision was requested."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-08:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All required normative provisions are served and cited.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "39e08eda7e9f169c6e2e1a936911c023",
+            "05cde987d85627d03bdfddaceb46140f"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/6",
+              "pointer_sha256": "caf976b52f521fb8eb0fcf9ed067650a8854a7b9e63a61dd1fb839e376955dc7"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/7",
+              "pointer_sha256": "6222443ee0e8e619f9b754af8c006a245b34fcbe2557ddbe37298572dc6c1390"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:219-223",
+              "pointer_sha256": "14de96e1581abb5fb565b302dbbab09b6ff7eab5de86c2624405e7a1f8a115e9"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 2,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-08:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/7/expected_tracks",
+              "pointer_sha256": "a5fe6a9909838038bfc17b4a1d5c8c7353fd3535c43199b2b7481a739051943b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-08:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/7/expected_tracks",
+              "pointer_sha256": "a5fe6a9909838038bfc17b4a1d5c8c7353fd3535c43199b2b7481a739051943b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-08:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/7/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-08:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "Every required authority for a multi-part question is used.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "39e08eda7e9f169c6e2e1a936911c023",
+            "05cde987d85627d03bdfddaceb46140f"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/6",
+              "pointer_sha256": "caf976b52f521fb8eb0fcf9ed067650a8854a7b9e63a61dd1fb839e376955dc7"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/7",
+              "pointer_sha256": "6222443ee0e8e619f9b754af8c006a245b34fcbe2557ddbe37298572dc6c1390"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:219-223",
+              "pointer_sha256": "14de96e1581abb5fb565b302dbbab09b6ff7eab5de86c2624405e7a1f8a115e9"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 2,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-08:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "Both provisions must be cited.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "39e08eda7e9f169c6e2e1a936911c023",
+            "05cde987d85627d03bdfddaceb46140f"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/6",
+              "pointer_sha256": "caf976b52f521fb8eb0fcf9ed067650a8854a7b9e63a61dd1fb839e376955dc7"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/7",
+              "pointer_sha256": "6222443ee0e8e619f9b754af8c006a245b34fcbe2557ddbe37298572dc6c1390"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:219-223",
+              "pointer_sha256": "14de96e1581abb5fb565b302dbbab09b6ff7eab5de86c2624405e7a1f8a115e9"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 2,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-08:manual-2",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 1
+          },
+          "description": "A reached verdict fails because no decision was requested.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/7/manual_criteria/1",
+              "pointer_sha256": "2b6f0d08eaad25686642070035dcdef6643e77e814e435ff711e585e630ba8dd"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-09",
+      "id": "ais-leave-travel-composition",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": false,
+      "irrelevant": false,
+      "exact_question": "I am taking annual vacation abroad, leaving on a Sunday and returning on the fourteenth day. How are my day of travel and my day of return treated, and does that change the number of vacation days counted against me?",
+      "expected_evidence": {
+        "required": [
+          "ab87a692f3a20e95c545a0ce7718ba61",
+          "e1fce2fe2cd98608b209767d99ca3769"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered",
+          "missing_required_facts",
+          "not_settled_by_rules"
+        ]
+      },
+      "manual_criteria": [
+        "A confident count without the travel-and-return provision fails.",
+        "If the modifying provision is absent, only missing_required_facts or not_settled_by_rules is acceptable."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-09:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All required normative provisions are served and cited.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "ab87a692f3a20e95c545a0ce7718ba61",
+            "e1fce2fe2cd98608b209767d99ca3769"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/13",
+              "pointer_sha256": "b7f8f7cb8e6503e6423bc211f786ce7185d0120a709e8bc6f55e2e2a7bd7abd2"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/19",
+              "pointer_sha256": "9aa2d8f94ffb783c97d92fbb345b8c300c15366c912fb08715a83846c09651e9"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:228-230",
+              "pointer_sha256": "ad1cddccc9aaf15e2f6594104f420862256f4dfd48c37c56d4a0792a44e52c2a"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 2,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-09:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/8/expected_tracks",
+              "pointer_sha256": "667ffd9e947ed562989a2c149e1d0a73dd42f777b8326bbb0f3b5758672540f9"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-09:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/8/expected_tracks",
+              "pointer_sha256": "667ffd9e947ed562989a2c149e1d0a73dd42f777b8326bbb0f3b5758672540f9"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-09:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/8/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-09:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "Every required authority for a multi-part question is used.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "ab87a692f3a20e95c545a0ce7718ba61",
+            "e1fce2fe2cd98608b209767d99ca3769"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/13",
+              "pointer_sha256": "b7f8f7cb8e6503e6423bc211f786ce7185d0120a709e8bc6f55e2e2a7bd7abd2"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/19",
+              "pointer_sha256": "9aa2d8f94ffb783c97d92fbb345b8c300c15366c912fb08715a83846c09651e9"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:228-230",
+              "pointer_sha256": "ad1cddccc9aaf15e2f6594104f420862256f4dfd48c37c56d4a0792a44e52c2a"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 2,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-09:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "A confident count without the travel-and-return provision fails.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "ab87a692f3a20e95c545a0ce7718ba61",
+            "e1fce2fe2cd98608b209767d99ca3769"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/13",
+              "pointer_sha256": "b7f8f7cb8e6503e6423bc211f786ce7185d0120a709e8bc6f55e2e2a7bd7abd2"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/19",
+              "pointer_sha256": "9aa2d8f94ffb783c97d92fbb345b8c300c15366c912fb08715a83846c09651e9"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:228-230",
+              "pointer_sha256": "ad1cddccc9aaf15e2f6594104f420862256f4dfd48c37c56d4a0792a44e52c2a"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 2,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        },
+        {
+          "criterion_id": "AIS-09:manual-2",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 1
+          },
+          "description": "If the modifying provision is absent, only missing_required_facts or not_settled_by_rules is acceptable.",
+          "criterion_provenance": "rule_body",
+          "provenance_kind": "normative_source_body",
+          "source_provision_ids": [
+            "ab87a692f3a20e95c545a0ce7718ba61",
+            "e1fce2fe2cd98608b209767d99ca3769"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/13",
+              "pointer_sha256": "b7f8f7cb8e6503e6423bc211f786ce7185d0120a709e8bc6f55e2e2a7bd7abd2"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/19",
+              "pointer_sha256": "9aa2d8f94ffb783c97d92fbb345b8c300c15366c912fb08715a83846c09651e9"
+            },
+            {
+              "role": "semantic_validation",
+              "source_id": "final_audit",
+              "pointer": "line:228-230",
+              "pointer_sha256": "ad1cddccc9aaf15e2f6594104f420862256f4dfd48c37c56d4a0792a44e52c2a"
+            }
+          ],
+          "validation_state": "validated_supported",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 2,
+            "method": "human_confirmed_source_body_from_final_38_call_audit",
+            "semantic_support": "human_confirmed",
+            "human_confirmation": {
+              "confirmed": true,
+              "evidence_role": "semantic_validation",
+              "confirmation_state": "validated_supported"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "AIS-10",
+      "id": "ais-irrelevant-football",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "X"
+      ],
+      "historical": true,
+      "irrelevant": true,
+      "exact_question": "In association football, is a player offside when receiving the ball directly from a throw-in?",
+      "expected_evidence": {
+        "required": [],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "no_rule_bears"
+        ],
+        "verdict": [
+          "not_requested",
+          "no_rule_bears"
+        ]
+      },
+      "manual_criteria": [
+        "Zero citations, no reached verdict, no decision, and no information answer."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "AIS-10:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/9/expected_evidence",
+              "pointer_sha256": "845f25424d1e1d21de6b6af50ba0c68c733d435cf74a94c3a222af266d0eb036"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-10:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/9/expected_tracks",
+              "pointer_sha256": "43ebbfe85c9de7e1d63c0cd4ac021ef88891fd084c68d3cef08c9ea79b2722d4"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-10:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/9/expected_tracks",
+              "pointer_sha256": "43ebbfe85c9de7e1d63c0cd4ac021ef88891fd084c68d3cef08c9ea79b2722d4"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-10:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/9/irrelevant",
+              "pointer_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-10:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/9/expected_evidence",
+              "pointer_sha256": "845f25424d1e1d21de6b6af50ba0c68c733d435cf74a94c3a222af266d0eb036"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "AIS-10:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "Zero citations, no reached verdict, no decision, and no information answer.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/9/manual_criteria/0",
+              "pointer_sha256": "c48d3835d0ab2c01e01b4c44ffeb8ccb2cc0a7450e4a532d1b0ef6c905d991f7"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-01",
+      "id": "hw-refresh-26-months",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "known_variance": true,
+      "exact_question": "I have used my assigned laptop for 26 months. It still works. Am I eligible for replacement now, and what facts must be confirmed?",
+      "expected_evidence": {
+        "required": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "Both tracks not_evaluated is an automatic failure."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-01:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "230ef0dbd6d412b2007b01babc0a74a9"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/48",
+              "pointer_sha256": "27dc1f8f7992a20370fbde2d73fdedae9cd7152dba3061ff099dd03e41340fd5"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/10/expected_evidence",
+              "pointer_sha256": "79b7ece0d4be32cd503fa8f58d0d8d6efef420ad85d17dafea6dda694d5ae47b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-01:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/10/expected_tracks",
+              "pointer_sha256": "d0ee6848442b2625463769d91bead34e241209a937275fca2210455d3663bb58"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-01:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/10/expected_tracks",
+              "pointer_sha256": "d0ee6848442b2625463769d91bead34e241209a937275fca2210455d3663bb58"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-01:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/10/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-01:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/10/expected_evidence",
+              "pointer_sha256": "79b7ece0d4be32cd503fa8f58d0d8d6efef420ad85d17dafea6dda694d5ae47b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-01:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "Both tracks not_evaluated is an automatic failure.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/10/manual_criteria/0",
+              "pointer_sha256": "1a83e1fd8b6c8c515a388ff85efc7d5def83894f8ab41760841a486cf969d4d1"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-02",
+      "id": "hw-stolen-trip",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "My assigned laptop was stolen from a locked rental car on a work trip. What must I do, and can a replacement be released immediately?",
+      "expected_evidence": {
+        "required": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "acceptable_additional": [
+          "1a66c1d8044e484616e5b2757b20d48c",
+          "fa830a67747fc243f33aa619e14ee7d9"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "Reporting and notification must remain a missing prerequisite.",
+        "An answered verdict releasing a replacement immediately fails."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-02:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "ebb9290859d9fe10ab4a13e486482699"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/55",
+              "pointer_sha256": "c60cabbc02c1b3afd316e96acc7718a8a72add708bed44e0c2940e3e45ee2be2"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/11/expected_evidence",
+              "pointer_sha256": "049091642528fb8ab0446687f020fecf5b49fa23ec35f17007de8d92d5563d73"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-02:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/11/expected_tracks",
+              "pointer_sha256": "d0ee6848442b2625463769d91bead34e241209a937275fca2210455d3663bb58"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-02:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/11/expected_tracks",
+              "pointer_sha256": "d0ee6848442b2625463769d91bead34e241209a937275fca2210455d3663bb58"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-02:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/11/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-02:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/11/expected_evidence",
+              "pointer_sha256": "049091642528fb8ab0446687f020fecf5b49fa23ec35f17007de8d92d5563d73"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-02:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "Reporting and notification must remain a missing prerequisite.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/11/manual_criteria/0",
+              "pointer_sha256": "67eea304391401c561efa15d1f7c1003746177b59acb9275cfd3d8cbd4e7ada2"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-02:manual-2",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 1
+          },
+          "description": "An answered verdict releasing a replacement immediately fails.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/11/manual_criteria/1",
+              "pointer_sha256": "b12dc5fa7f7553304183130d6e1e9996353b1e4517a0f5217f0def2ff84d54c1"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-03",
+      "id": "hw-byod-client-files",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "May I use my personal tablet to download and edit confidential client documents when my corporate laptop is being repaired?",
+      "expected_evidence": {
+        "required": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "acceptable_additional": [
+          "eba664f59992374de093eee37bc8a4e5",
+          "9c57be246db93d93f71c82c0563c69c1",
+          "c9915d3c1d2f37acbf320456a3a7f744"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "missing_required_facts",
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "A permission-granting answered verdict fails."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-03:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "81edaa293982adfdd04cb864640ba76d"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/81",
+              "pointer_sha256": "323310a097b2084d84bb8619325e79e5565709321c1855d9d9e36be9b03afa0b"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/12/expected_evidence",
+              "pointer_sha256": "0c7de93f20591035b57644cc7c4fc73d969726ec351f765745db0d339119089e"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-03:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/12/expected_tracks",
+              "pointer_sha256": "c3dc9242dbcf93d7fcb725a8f6d3b6cb8dbbc04656b32f9c977158ca66962f4b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-03:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/12/expected_tracks",
+              "pointer_sha256": "c3dc9242dbcf93d7fcb725a8f6d3b6cb8dbbc04656b32f9c977158ca66962f4b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-03:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/12/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-03:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/12/expected_evidence",
+              "pointer_sha256": "0c7de93f20591035b57644cc7c4fc73d969726ec351f765745db0d339119089e"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-03:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "A permission-granting answered verdict fails.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/12/manual_criteria/0",
+              "pointer_sha256": "fcdc71942efbf246333583494dc9af024b37a4c50b7080af510bba151e2164f5"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-04",
+      "id": "hw-contractor-15-days",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "known_defect": true,
+      "exact_question": "A contractor will work with us for fifteen days and needs a computer. What hardware is the contractor entitled to receive?",
+      "expected_evidence": {
+        "required": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "acceptable_additional": [
+          "b57586dd9b4b4658ac08a71dc85d55da",
+          "dc3e44552ac735ea7dca71cc841f94e4"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "An answered verdict is valid only when the short-engagement provision is cited."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-04:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "2499ce756c30f34b1da6e16171bded61"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/80",
+              "pointer_sha256": "2162cc2d6801df78ca0d9db3eb4bb4f6346000538216e2d444674354ca25a294"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/13/expected_evidence",
+              "pointer_sha256": "6c9966ab1bb6ddbf50682cb727a172b809f67031ba922941b7d17682203e2970"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-04:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/13/expected_tracks",
+              "pointer_sha256": "9a9466d241a00117034117e96906c57d1ca26441b5b7b3a1511ce7a7fa5c4594"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-04:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/13/expected_tracks",
+              "pointer_sha256": "9a9466d241a00117034117e96906c57d1ca26441b5b7b3a1511ce7a7fa5c4594"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-04:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/13/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-04:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/13/expected_evidence",
+              "pointer_sha256": "6c9966ab1bb6ddbf50682cb727a172b809f67031ba922941b7d17682203e2970"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-04:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "An answered verdict is valid only when the short-engagement provision is cited.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/13/manual_criteria/0",
+              "pointer_sha256": "92d33b1e8e937b15398e2a36f2378087df4b3da0cf7a82ebe511ed0a09ff0c50"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-05",
+      "id": "hw-accessibility-monitor",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "recall_control": true,
+      "exact_question": "An occupational-health recommendation says I need a larger monitor and an ergonomic keyboard. How should the hardware policy handle this request?",
+      "expected_evidence": {
+        "required": [
+          "22daced0bf9d5768c63eb83f1cc7df60"
+        ],
+        "acceptable_additional": [
+          "ee1cc7fa8108a627ae0ac536b9652765",
+          "6df31d3421a1c35abb9e26b164b517b0",
+          "0eabeaf7eda017fb633973d8fbc3d342"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "The answer must not require disclosure of the medical basis."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-05:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "22daced0bf9d5768c63eb83f1cc7df60"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/68",
+              "pointer_sha256": "6f2bafa5629fffbf1eefe0f2c8f717159f88b51f04104aef461a47d9a00322dc"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/14/expected_evidence",
+              "pointer_sha256": "947f157e79a6861b928c205e3f49412bf221574204bb54f2b1da13f1908a243e"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-05:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/14/expected_tracks",
+              "pointer_sha256": "74b26bbae79114d78e282d834d26def43e8ecf2608e41a9f2aeb5d4a0f6d8515"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-05:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/14/expected_tracks",
+              "pointer_sha256": "74b26bbae79114d78e282d834d26def43e8ecf2608e41a9f2aeb5d4a0f6d8515"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-05:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/14/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-05:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/14/expected_evidence",
+              "pointer_sha256": "947f157e79a6861b928c205e3f49412bf221574204bb54f2b1da13f1908a243e"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-05:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "The answer must not require disclosure of the medical basis.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/14/manual_criteria/0",
+              "pointer_sha256": "e45025df29e0b5843838e59b19a1e5a15c83bd8d56eeca00ecf5ad6d3f0510a3"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-06",
+      "id": "hw-leaver-return",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "recall_control": true,
+      "exact_question": "I leave the company next Friday and have a laptop, dock, and locally stored work files. What must happen to the equipment and data?",
+      "expected_evidence": {
+        "required": [
+          "fa048a899108fe1ab00fae3af6a5dc98",
+          "904185efb2c152992cf15dc94562e85a"
+        ],
+        "acceptable_additional": [
+          "3dfb4d0e0c25323854630c1bc8e51934"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "Both equipment-return and data provisions must be cited."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-06:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "fa048a899108fe1ab00fae3af6a5dc98",
+            "904185efb2c152992cf15dc94562e85a"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/74",
+              "pointer_sha256": "0111fdfc5e040a5c1d18b2c8d97df11671018f1318309deea47c913fba913115"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/76",
+              "pointer_sha256": "b6855f9ab87feed5c14bc495e6e532e80157ac23a519897cad0ec7db459c42dd"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/15/expected_evidence",
+              "pointer_sha256": "50fd98b77316f8eb739894f6cb4cbc6625b80c7de3cac7c69e2136091434d299"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-06:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/15/expected_tracks",
+              "pointer_sha256": "74b26bbae79114d78e282d834d26def43e8ecf2608e41a9f2aeb5d4a0f6d8515"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-06:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/15/expected_tracks",
+              "pointer_sha256": "74b26bbae79114d78e282d834d26def43e8ecf2608e41a9f2aeb5d4a0f6d8515"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-06:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/15/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-06:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/15/expected_evidence",
+              "pointer_sha256": "50fd98b77316f8eb739894f6cb4cbc6625b80c7de3cac7c69e2136091434d299"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-06:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "Both equipment-return and data provisions must be cited.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/15/manual_criteria/0",
+              "pointer_sha256": "9cf98c12a05cf7eae69b709e7ded6ed0e96aacb1fad144c26c7f2ce778d6fe4e"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-07",
+      "id": "hw-third-accidental-damage",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "My laptop has suffered accidental damage for the third time within a rolling twelve-month period. Will it be replaced, and who decides what happens?",
+      "expected_evidence": {
+        "required": [
+          "7f1e23fe6ad46352d7f356b90dab7d9f"
+        ],
+        "acceptable_additional": [
+          "d039b72d52c1e87ff5028ae4ab30ed47",
+          "fa830a67747fc243f33aa619e14ee7d9",
+          "df7847c17b9d31607df53fb27399b06a"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "not_settled_by_rules",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "The deciding authority must be grounded in a named authority provision."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-07:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "7f1e23fe6ad46352d7f356b90dab7d9f"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/53",
+              "pointer_sha256": "63de3e52e74d6d2d6309b29ddfba1dff39a0fc2ad5bdb1aed82bf99e238d56dd"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/16/expected_evidence",
+              "pointer_sha256": "b94f6a4069d96dd00802354c015d0caa11349d3e19fbaef94a385ce69559f097"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-07:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/16/expected_tracks",
+              "pointer_sha256": "86b4a5d01a3aae3161b10e10574e233a7b3f84a96ad40ccf4cc2a299780d80e1"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-07:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/16/expected_tracks",
+              "pointer_sha256": "86b4a5d01a3aae3161b10e10574e233a7b3f84a96ad40ccf4cc2a299780d80e1"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-07:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/16/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-07:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/16/expected_evidence",
+              "pointer_sha256": "b94f6a4069d96dd00802354c015d0caa11349d3e19fbaef94a385ce69559f097"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-07:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "The deciding authority must be grounded in a named authority provision.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/16/manual_criteria/0",
+              "pointer_sha256": "28eeef1945f891d806459cc748bb667274852f4acd17e7313a058eed4bcc7d94"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-08",
+      "id": "hw-info-approval-thresholds",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "I"
+      ],
+      "historical": false,
+      "irrelevant": false,
+      "exact_question": "What does the hardware policy state about financial approval thresholds for equipment spend, and who is permitted to approve it?",
+      "expected_evidence": {
+        "required": [
+          "df7847c17b9d31607df53fb27399b06a",
+          "e52c80ff95fb8c5af308eb6cf80b93dd"
+        ],
+        "acceptable_additional": [
+          "d8edc5ac70f23b09522dcb77fc4be226",
+          "b6c20e65c1448628bc2ae6d041de4cfe"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "not_requested"
+        ]
+      },
+      "manual_criteria": [
+        "Thresholds without the self-approval prohibition are incomplete.",
+        "A reached verdict fails because no decision was requested."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-08:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "df7847c17b9d31607df53fb27399b06a",
+            "e52c80ff95fb8c5af308eb6cf80b93dd"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/62",
+              "pointer_sha256": "3cb0767d37b9673540bfbb6899f58b6c778d09fc892d312c409243a062541305"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/64",
+              "pointer_sha256": "76873cf76e07de4dad5f663650461104a6abc6ebadf34c8f81295ec066c2412f"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/17/expected_evidence",
+              "pointer_sha256": "480ad1e9fde89d6afffa2e9e31e50c5b76dafcf6a241843256fe60f274f5956b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-08:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/17/expected_tracks",
+              "pointer_sha256": "a5fe6a9909838038bfc17b4a1d5c8c7353fd3535c43199b2b7481a739051943b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-08:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/17/expected_tracks",
+              "pointer_sha256": "a5fe6a9909838038bfc17b4a1d5c8c7353fd3535c43199b2b7481a739051943b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-08:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/17/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-08:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/17/expected_evidence",
+              "pointer_sha256": "480ad1e9fde89d6afffa2e9e31e50c5b76dafcf6a241843256fe60f274f5956b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-08:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "Thresholds without the self-approval prohibition are incomplete.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/17/manual_criteria/0",
+              "pointer_sha256": "e7f201636568b248e830333ac54018430550c1087a85d682541b13acc4081e4e"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-08:manual-2",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 1
+          },
+          "description": "A reached verdict fails because no decision was requested.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/17/manual_criteria/1",
+              "pointer_sha256": "2b6f0d08eaad25686642070035dcdef6643e77e814e435ff711e585e630ba8dd"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-09",
+      "id": "hw-executive-refresh-override",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": false,
+      "irrelevant": false,
+      "exact_question": "A colleague on the executive profile asks to replace a twenty-month-old laptop that still works. What applies to that request, and may it be approved?",
+      "expected_evidence": {
+        "required": [
+          "230ef0dbd6d412b2007b01babc0a74a9",
+          "22c84faafa71535eefef2f459a8ef1d0"
+        ],
+        "acceptable_additional": [
+          "ba6429b402ed6d79b96c2c608ccc8f09",
+          "8494c266dbcd567b0b5d2588acf7fe84",
+          "df7847c17b9d31607df53fb27399b06a"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "The base refresh provision and executive profile must both be cited.",
+        "If the profile is absent, the standard interval must not be asserted as determinative.",
+        "Missing which profile applies fails because executive profile is supplied."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-09:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "heading_path",
+          "provenance_kind": "heading_derived",
+          "source_provision_ids": [
+            "230ef0dbd6d412b2007b01babc0a74a9",
+            "22c84faafa71535eefef2f459a8ef1d0"
+          ],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "normative_identity_1",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/48",
+              "pointer_sha256": "27dc1f8f7992a20370fbde2d73fdedae9cd7152dba3061ff099dd03e41340fd5"
+            },
+            {
+              "role": "normative_identity_2",
+              "source_id": "source_snapshot",
+              "pointer": "/provisions/93",
+              "pointer_sha256": "6cd9f148e6199f9b6cb4f8021f7777c7dd4331fbd2d1787d64d3cf09a4290e5c"
+            },
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/18/expected_evidence",
+              "pointer_sha256": "d1f0b6b0ecb4b05a46af593a7e83844d829bdba8244a2864f08c44726646574c"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "structural_heading_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-09:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/18/expected_tracks",
+              "pointer_sha256": "9a9466d241a00117034117e96906c57d1ca26441b5b7b3a1511ce7a7fa5c4594"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-09:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/18/expected_tracks",
+              "pointer_sha256": "9a9466d241a00117034117e96906c57d1ca26441b5b7b3a1511ce7a7fa5c4594"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-09:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/18/irrelevant",
+              "pointer_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-09:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/18/expected_evidence",
+              "pointer_sha256": "d1f0b6b0ecb4b05a46af593a7e83844d829bdba8244a2864f08c44726646574c"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-09:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "The base refresh provision and executive profile must both be cited.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/18/manual_criteria/0",
+              "pointer_sha256": "e89554f8b379cf918ad3dd57238f1b267da7d595d467d4f3b33af3b482856bdf"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-09:manual-2",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 1
+          },
+          "description": "If the profile is absent, the standard interval must not be asserted as determinative.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/18/manual_criteria/1",
+              "pointer_sha256": "d8b7046190050df8b8b596a92ca32473baf69d44632092f194982e59d1877682"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-09:manual-3",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 2
+          },
+          "description": "Missing which profile applies fails because executive profile is supplied.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/18/manual_criteria/2",
+              "pointer_sha256": "abd242cedf09a8775ba72063f6bcbc09dede52afa9fae0f2e5c4f96e6c392f57"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    },
+    {
+      "rubric_id": "HW-10",
+      "id": "hw-irrelevant-espresso",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "X"
+      ],
+      "historical": true,
+      "irrelevant": true,
+      "exact_question": "What grind size and extraction time should I use for a double espresso with a medium-roast coffee?",
+      "expected_evidence": {
+        "required": [],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "no_rule_bears"
+        ],
+        "verdict": [
+          "not_requested",
+          "no_rule_bears"
+        ]
+      },
+      "manual_criteria": [
+        "Zero citations, no reached verdict, no decision, and no information answer."
+      ],
+      "criteria": [
+        {
+          "criterion_id": "HW-10:R1",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R1"
+          },
+          "description": "All declared expected provisions are served and cited.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/19/expected_evidence",
+              "pointer_sha256": "845f25424d1e1d21de6b6af50ba0c68c733d435cf74a94c3a222af266d0eb036"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-10:R3",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R3"
+          },
+          "description": "Observed answer tracks match the declared expected set.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/19/expected_tracks",
+              "pointer_sha256": "43ebbfe85c9de7e1d63c0cd4ac021ef88891fd084c68d3cef08c9ea79b2722d4"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-10:R4",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R4"
+          },
+          "description": "Verdict missing-information fields are internally consistent.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/19/expected_tracks",
+              "pointer_sha256": "43ebbfe85c9de7e1d63c0cd4ac021ef88891fd084c68d3cef08c9ea79b2722d4"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-10:R5",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R5"
+          },
+          "description": "Irrelevant questions are refused safely.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/19/irrelevant",
+              "pointer_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-10:R9",
+          "active": true,
+          "applies_to": {
+            "kind": "dimension",
+            "dimension": "R9"
+          },
+          "description": "All declared composition authorities are present.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/19/expected_evidence",
+              "pointer_sha256": "845f25424d1e1d21de6b6af50ba0c68c733d435cf74a94c3a222af266d0eb036"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        },
+        {
+          "criterion_id": "HW-10:manual-1",
+          "active": true,
+          "applies_to": {
+            "kind": "manual",
+            "manual_index": 0
+          },
+          "description": "Zero citations, no reached verdict, no decision, and no information answer.",
+          "criterion_provenance": "question_only",
+          "provenance_kind": "question_inferred",
+          "source_provision_ids": [],
+          "source_rule_ids": [],
+          "evidence_refs": [
+            {
+              "role": "frozen_expectation",
+              "source_id": "rubric_v1",
+              "pointer": "/questions/19/manual_criteria/0",
+              "pointer_sha256": "c48d3835d0ab2c01e01b4c44ffeb8ccb2cc0a7450e4a532d1b0ef6c905d991f7"
+            }
+          ],
+          "validation_state": "unverified",
+          "corpus_support": {
+            "checked": true,
+            "supporting_rule_count": 0,
+            "supporting_provision_count": 0,
+            "method": "question_or_rubric_only",
+            "semantic_support": "not_applicable"
+          }
+        }
+      ]
+    }
+  ],
+  "evidence_sources": [
+    {
+      "id": "rubric_v1",
+      "path": "evidence/rubric-v1.snapshot.json",
+      "sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+      "type": "json"
+    },
+    {
+      "id": "source_snapshot",
+      "path": "evidence/source.snapshot.json",
+      "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c",
+      "type": "json"
+    },
+    {
+      "id": "final_audit",
+      "path": "evidence/ACTIONABLE_POLICY_FAILURE_AUDIT.md",
+      "sha256": "a46099c8a187fbca985300097f962561c5d6c2c9b6fe4b921b03c7a436e6923a",
+      "type": "text"
+    },
+    {
+      "id": "ais02_semantic_decision",
+      "path": "evidence/AIS02_SEMANTIC_DECISION.json",
+      "sha256": "21554676fd12f95a1dc9fddb044aa74da4351897e40e021d484e6698000b8912",
+      "type": "json"
+    }
+  ],
+  "provenance_migration": {
+    "base_rubric_sha256": "4024170d23f22c423d5b03236874f1ad88cf5cf23db287be39ac819a8050d9cc",
+    "base_manifest_sha256": "f0eb6d32e89a96e4d59cdbda8dbf4e7592ac72cc2228be1f67f894bc0ea8fff3",
+    "invariant": "Only active body/rule-derived criteria with validated non-zero source-bound support may produce product failures.",
+    "unsupported_observations": "preserve_as_rubric_error",
+    "naive_keyword_absence_is_semantic_proof": false
+  },
+  "historical_replay": {
+    "label": "old_rubric_replay_non_equivalent",
+    "comparison_valid": false,
+    "causal_regression_claim_allowed": false,
+    "ais_like_for_like": "7/8 = 87.5%",
+    "new_A_C_replay": "42/48 = 87.5%",
+    "limits": [
+      "old heading-substring rubric differs from provenance-aware scoring",
+      "scenario and repetition denominators differ",
+      "cross-era model/index identity is unavailable",
+      "B/D/F are excluded from actionable target-rule conclusions"
+    ],
+    "corrected_failure_population": {
+      "product_fail": 27,
+      "rubric_error": 11,
+      "unresolved": 0
+    }
+  }
+}

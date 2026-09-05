@@ -1,0 +1,8 @@
+GUARD_SCAN corpus_ids hits=0
+GUARD_SCAN question_ids hits=0
+GUARD_SCAN provision_fixtures hits=0
+GUARD_SCAN benchmark_files hits=0
+GUARD_SCAN benchmark_headings hits=0
+GUARD_SCAN file_special_cases hits=0
+BUNDLE_SECRET_SCAN files=33 hits=0
+LEAKAGE_SCAN=passed guard_special_cases=0 secrets=0

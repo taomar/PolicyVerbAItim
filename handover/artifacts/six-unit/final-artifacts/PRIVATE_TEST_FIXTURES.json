@@ -1,0 +1,17 @@
+{
+  "purpose": "Ignored local fixtures required by unit tests; copied read-only into the private test tree only.",
+  "source_directory": "C:\\Users\\taomar\\Downloads\\policy-extractor-local-oversight\\repository\\data\\documents",
+  "destination_directory": "C:\\Users\\taomar\\.copilot\\session-state\\6713376d-9ff3-4740-9060-dcaf7afcbb08\\files\\six-unit-audit\\six-unit-test-tree\\data\\documents",
+  "files": [
+    {
+      "name": "3c9a5f81-72b4-4e0d-9a16-5f8b2c7d4e93_v1_STAFF-HANDBOOK-GMU-2024.pdf",
+      "bytes": 601315,
+      "sha256": "3428d90c09dbb19168d6363a249b30523bf7d65d9d3c671acd2aca7116bdcebd"
+    },
+    {
+      "name": "604baab1-d441-485c-a9e9-5e3fa9d8f566_v1_b7e1c4a2-3f6d-4a91-8c25-0d3e7f184b6a_v1_AIS_Employee_Handbook-1.pdf",
+      "bytes": 857233,
+      "sha256": "a4ab80af24640509976881a36b76895b474558f3cb5a1b4fa564d0bf7faf07e9"
+    }
+  ]
+}

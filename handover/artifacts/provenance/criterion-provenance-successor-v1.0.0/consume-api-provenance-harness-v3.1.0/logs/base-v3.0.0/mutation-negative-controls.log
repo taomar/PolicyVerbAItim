@@ -1,0 +1,14 @@
+test_source_lock_accepts_only_the_exact_base_copy (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_source_lock_accepts_only_the_exact_base_copy) ... ok
+test_missing_provenance_fails_closed_before_planning (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_missing_provenance_fails_closed_before_planning) ... ok
+test_unknown_provenance_fails_closed_before_planning (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_unknown_provenance_fails_closed_before_planning) ... ok
+test_bad_pointer_hash_fails_closed_before_planning (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_bad_pointer_hash_fails_closed_before_planning) ... ok
+test_zero_support_mutation_neuters_only_the_mutated_criterion (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_zero_support_mutation_neuters_only_the_mutated_criterion) ... ok
+test_heading_and_inferred_criteria_are_unscorable_rubric_errors (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_heading_and_inferred_criteria_are_unscorable_rubric_errors) ... ok
+test_unsupported_ais06_manual_failures_are_rubric_errors (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_unsupported_ais06_manual_failures_are_rubric_errors) ... ok
+test_five_ais02_certificate_failures_cannot_be_product_failures (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_five_ais02_certificate_failures_cannot_be_product_failures) ... ok
+test_b_d_f_never_enter_actionable_conclusions (test_rubric_provenance_integration.CopiedHarnessIntegrationTests.test_b_d_f_never_enter_actionable_conclusions) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.640s
+
+OK

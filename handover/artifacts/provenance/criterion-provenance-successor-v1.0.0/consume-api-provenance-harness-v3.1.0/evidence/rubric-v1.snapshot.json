@@ -1,0 +1,741 @@
+{
+  "schema_version": "consume-api-evaluation-rubric/1",
+  "status": "finalized",
+  "source_markdown": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907\\files\\CONSUME_API_EVALUATION_RUBRIC.md",
+    "sha256": "66fcaae92a436c179651e045da285dacbed81fb4632f7e519169c0407abf60e5"
+  },
+  "authoritative_contract_override": "The corrected source markdown and harness both define A-F as three endpoint surfaces crossed with policy/rule retrieval mode.",
+  "corpus_topic_map": {
+    "path": "C:\\Users\\taomar\\.copilot\\session-state\\5a06fec2-12cd-4477-b574-4d18ab814907\\files\\corpus_topic_map.json",
+    "sha256": "01171368268bfb5c9e8bac8b8852f5bb67f6524624dd24154949978afa390c1c"
+  },
+  "dimensions": {
+    "R1": {
+      "name": "evidence_grounding",
+      "scored": true
+    },
+    "R2": {
+      "name": "citation_integrity",
+      "scored": true
+    },
+    "R3": {
+      "name": "answerability_honesty",
+      "scored": true
+    },
+    "R4": {
+      "name": "verdict_discipline",
+      "scored": true
+    },
+    "R5": {
+      "name": "refusal_safety",
+      "scored": true
+    },
+    "R6": {
+      "name": "cross_run_stability",
+      "scored": false,
+      "measurement_only": true
+    },
+    "R7": {
+      "name": "receipt_integrity",
+      "scored": true
+    },
+    "R8": {
+      "name": "non_fabrication",
+      "scored": true
+    },
+    "R9": {
+      "name": "composition_completeness",
+      "scored": true
+    },
+    "R10": {
+      "name": "mode_comparison",
+      "scored": false,
+      "measurement_only": true
+    }
+  },
+  "questions": [
+    {
+      "rubric_id": "AIS-01",
+      "id": "ais-annual-vacation",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "I joined AIS eleven months ago, have not completed a one-year contract, and want five days of annual vacation next week. What does the policy provide, and am I entitled to those five days?",
+      "expected_evidence": {
+        "required": [
+          "ab87a692f3a20e95c545a0ce7718ba61"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "answered",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "If missing_required_facts, the missing item must not be the supplied service length."
+      ]
+    },
+    {
+      "rubric_id": "AIS-02",
+      "id": "ais-sick-surgery",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "I have surgery on Monday and expect to miss six calendar days. I do not yet have the final medical certificate. What sick leave applies, and may I treat the six days as approved now?",
+      "expected_evidence": {
+        "required": [
+          "28334f1a0b3c389682647d43c89d554f"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered",
+          "not_requested"
+        ],
+        "verdict": [
+          "missing_required_facts",
+          "not_settled_by_rules"
+        ]
+      },
+      "manual_criteria": [
+        "The absent medical certificate must surface as missing or as the reason the rules do not settle the case.",
+        "An answered verdict approving six days without the certificate fails."
+      ]
+    },
+    {
+      "rubric_id": "AIS-03",
+      "id": "ais-absence-penalty",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "recall_control": true,
+      "exact_question": "An employee was absent without written permission or an acceptable excuse for three consecutive days in one contractual year. It is the first occurrence. What consequence applies?",
+      "expected_evidence": {
+        "required": [
+          "e8326a491c60c8914b7932dd0f2607eb"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested"
+        ],
+        "verdict": [
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "The recovered pages 21-27 table provision must continue serving."
+      ]
+    },
+    {
+      "rubric_id": "AIS-04",
+      "id": "ais-conflict-vendor",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "known_defect": true,
+      "exact_question": "My sibling owns a company bidding to supply AIS, and I have been asked to score the bids. What must I disclose, and may I participate in the choice?",
+      "expected_evidence": {
+        "required": [
+          "017de08ad6e139f5b53bd1e36ec96755"
+        ],
+        "acceptable_additional": [
+          "d3b9a1390f48e961ef33515d8cc61bb9"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "answered",
+          "not_requested"
+        ],
+        "verdict": [
+          "answered",
+          "not_settled_by_rules",
+          "not_requested"
+        ]
+      },
+      "forbidden_outcome_pairs": [
+        [
+          "not_requested",
+          "no_rule_bears"
+        ],
+        [
+          "no_rule_bears",
+          "not_requested"
+        ],
+        [
+          "no_rule_bears",
+          "no_rule_bears"
+        ]
+      ],
+      "manual_criteria": [
+        "The conflict-of-interest provision is mandatory evidence."
+      ]
+    },
+    {
+      "rubric_id": "AIS-05",
+      "id": "ais-maternity-leave",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "I",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "An employee is expecting a baby in eight weeks and asks what maternity leave the AIS handbook provides and what must be submitted before taking it.",
+      "expected_evidence": {
+        "required": [
+          "01309aeb409607211e4115e044bd8ac3"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "not_requested",
+          "not_settled_by_rules"
+        ]
+      },
+      "manual_criteria": [
+        "The submission requirement must be grounded in the cited provision."
+      ]
+    },
+    {
+      "rubric_id": "AIS-06",
+      "id": "ais-overtime-weekend",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "My manager verbally asked me to work six hours on Saturday, but I have no written approval. Does the AIS overtime policy entitle me to overtime for it?",
+      "expected_evidence": {
+        "required": [
+          "4094ad6b422dbb097ec11368c525b5a6"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "not_settled_by_rules",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "The absence of written approval must be the operative reason.",
+        "An answered verdict granting overtime despite no written approval fails."
+      ]
+    },
+    {
+      "rubric_id": "AIS-07",
+      "id": "ais-tuition-child",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "I",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "I am an AIS employee and want to enrol my child at an AIS school next term. What tuition discount does the handbook provide, and may I claim it now?",
+      "expected_evidence": {
+        "required": [
+          "77ec032421fdcfc11ed1dd2fb6ee7ae4"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "not_settled_by_rules",
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "A confident information answer from salary-and-deductions without the tuition provision fails."
+      ]
+    },
+    {
+      "rubric_id": "AIS-08",
+      "id": "ais-info-probation-evaluation",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "I"
+      ],
+      "historical": false,
+      "irrelevant": false,
+      "exact_question": "What does the AIS handbook state about the probation period, and what does it state about the performance evaluation that follows it?",
+      "expected_evidence": {
+        "required": [
+          "39e08eda7e9f169c6e2e1a936911c023",
+          "05cde987d85627d03bdfddaceb46140f"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "not_requested"
+        ]
+      },
+      "manual_criteria": [
+        "Both provisions must be cited.",
+        "A reached verdict fails because no decision was requested."
+      ]
+    },
+    {
+      "rubric_id": "AIS-09",
+      "id": "ais-leave-travel-composition",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": false,
+      "irrelevant": false,
+      "exact_question": "I am taking annual vacation abroad, leaving on a Sunday and returning on the fourteenth day. How are my day of travel and my day of return treated, and does that change the number of vacation days counted against me?",
+      "expected_evidence": {
+        "required": [
+          "ab87a692f3a20e95c545a0ce7718ba61",
+          "e1fce2fe2cd98608b209767d99ca3769"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered",
+          "missing_required_facts",
+          "not_settled_by_rules"
+        ]
+      },
+      "manual_criteria": [
+        "A confident count without the travel-and-return provision fails.",
+        "If the modifying provision is absent, only missing_required_facts or not_settled_by_rules is acceptable."
+      ]
+    },
+    {
+      "rubric_id": "AIS-10",
+      "id": "ais-irrelevant-football",
+      "project": "ais-e2e",
+      "corpus": "AIS",
+      "classes": [
+        "X"
+      ],
+      "historical": true,
+      "irrelevant": true,
+      "exact_question": "In association football, is a player offside when receiving the ball directly from a throw-in?",
+      "expected_evidence": {
+        "required": [],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "no_rule_bears"
+        ],
+        "verdict": [
+          "not_requested",
+          "no_rule_bears"
+        ]
+      },
+      "manual_criteria": [
+        "Zero citations, no reached verdict, no decision, and no information answer."
+      ]
+    },
+    {
+      "rubric_id": "HW-01",
+      "id": "hw-refresh-26-months",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "known_variance": true,
+      "exact_question": "I have used my assigned laptop for 26 months. It still works. Am I eligible for replacement now, and what facts must be confirmed?",
+      "expected_evidence": {
+        "required": [
+          "230ef0dbd6d412b2007b01babc0a74a9"
+        ],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "Both tracks not_evaluated is an automatic failure."
+      ]
+    },
+    {
+      "rubric_id": "HW-02",
+      "id": "hw-stolen-trip",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "My assigned laptop was stolen from a locked rental car on a work trip. What must I do, and can a replacement be released immediately?",
+      "expected_evidence": {
+        "required": [
+          "ebb9290859d9fe10ab4a13e486482699"
+        ],
+        "acceptable_additional": [
+          "1a66c1d8044e484616e5b2757b20d48c",
+          "fa830a67747fc243f33aa619e14ee7d9"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "Reporting and notification must remain a missing prerequisite.",
+        "An answered verdict releasing a replacement immediately fails."
+      ]
+    },
+    {
+      "rubric_id": "HW-03",
+      "id": "hw-byod-client-files",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "May I use my personal tablet to download and edit confidential client documents when my corporate laptop is being repaired?",
+      "expected_evidence": {
+        "required": [
+          "81edaa293982adfdd04cb864640ba76d"
+        ],
+        "acceptable_additional": [
+          "eba664f59992374de093eee37bc8a4e5",
+          "9c57be246db93d93f71c82c0563c69c1",
+          "c9915d3c1d2f37acbf320456a3a7f744"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "missing_required_facts",
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "A permission-granting answered verdict fails."
+      ]
+    },
+    {
+      "rubric_id": "HW-04",
+      "id": "hw-contractor-15-days",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "known_defect": true,
+      "exact_question": "A contractor will work with us for fifteen days and needs a computer. What hardware is the contractor entitled to receive?",
+      "expected_evidence": {
+        "required": [
+          "2499ce756c30f34b1da6e16171bded61"
+        ],
+        "acceptable_additional": [
+          "b57586dd9b4b4658ac08a71dc85d55da",
+          "dc3e44552ac735ea7dca71cc841f94e4"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "An answered verdict is valid only when the short-engagement provision is cited."
+      ]
+    },
+    {
+      "rubric_id": "HW-05",
+      "id": "hw-accessibility-monitor",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "recall_control": true,
+      "exact_question": "An occupational-health recommendation says I need a larger monitor and an ergonomic keyboard. How should the hardware policy handle this request?",
+      "expected_evidence": {
+        "required": [
+          "22daced0bf9d5768c63eb83f1cc7df60"
+        ],
+        "acceptable_additional": [
+          "ee1cc7fa8108a627ae0ac536b9652765",
+          "6df31d3421a1c35abb9e26b164b517b0",
+          "0eabeaf7eda017fb633973d8fbc3d342"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "The answer must not require disclosure of the medical basis."
+      ]
+    },
+    {
+      "rubric_id": "HW-06",
+      "id": "hw-leaver-return",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "recall_control": true,
+      "exact_question": "I leave the company next Friday and have a laptop, dock, and locally stored work files. What must happen to the equipment and data?",
+      "expected_evidence": {
+        "required": [
+          "fa048a899108fe1ab00fae3af6a5dc98",
+          "904185efb2c152992cf15dc94562e85a"
+        ],
+        "acceptable_additional": [
+          "3dfb4d0e0c25323854630c1bc8e51934"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered"
+        ]
+      },
+      "manual_criteria": [
+        "Both equipment-return and data provisions must be cited."
+      ]
+    },
+    {
+      "rubric_id": "HW-07",
+      "id": "hw-third-accidental-damage",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": true,
+      "irrelevant": false,
+      "exact_question": "My laptop has suffered accidental damage for the third time within a rolling twelve-month period. Will it be replaced, and who decides what happens?",
+      "expected_evidence": {
+        "required": [
+          "7f1e23fe6ad46352d7f356b90dab7d9f"
+        ],
+        "acceptable_additional": [
+          "d039b72d52c1e87ff5028ae4ab30ed47",
+          "fa830a67747fc243f33aa619e14ee7d9",
+          "df7847c17b9d31607df53fb27399b06a"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "not_settled_by_rules",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "The deciding authority must be grounded in a named authority provision."
+      ]
+    },
+    {
+      "rubric_id": "HW-08",
+      "id": "hw-info-approval-thresholds",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "I"
+      ],
+      "historical": false,
+      "irrelevant": false,
+      "exact_question": "What does the hardware policy state about financial approval thresholds for equipment spend, and who is permitted to approve it?",
+      "expected_evidence": {
+        "required": [
+          "df7847c17b9d31607df53fb27399b06a",
+          "e52c80ff95fb8c5af308eb6cf80b93dd"
+        ],
+        "acceptable_additional": [
+          "d8edc5ac70f23b09522dcb77fc4be226",
+          "b6c20e65c1448628bc2ae6d041de4cfe"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "answered"
+        ],
+        "verdict": [
+          "not_requested"
+        ]
+      },
+      "manual_criteria": [
+        "Thresholds without the self-approval prohibition are incomplete.",
+        "A reached verdict fails because no decision was requested."
+      ]
+    },
+    {
+      "rubric_id": "HW-09",
+      "id": "hw-executive-refresh-override",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "C",
+        "V"
+      ],
+      "historical": false,
+      "irrelevant": false,
+      "exact_question": "A colleague on the executive profile asks to replace a twenty-month-old laptop that still works. What applies to that request, and may it be approved?",
+      "expected_evidence": {
+        "required": [
+          "230ef0dbd6d412b2007b01babc0a74a9",
+          "22c84faafa71535eefef2f459a8ef1d0"
+        ],
+        "acceptable_additional": [
+          "ba6429b402ed6d79b96c2c608ccc8f09",
+          "8494c266dbcd567b0b5d2588acf7fe84",
+          "df7847c17b9d31607df53fb27399b06a"
+        ]
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "answered"
+        ],
+        "verdict": [
+          "answered",
+          "missing_required_facts"
+        ]
+      },
+      "manual_criteria": [
+        "The base refresh provision and executive profile must both be cited.",
+        "If the profile is absent, the standard interval must not be asserted as determinative.",
+        "Missing which profile applies fails because executive profile is supplied."
+      ]
+    },
+    {
+      "rubric_id": "HW-10",
+      "id": "hw-irrelevant-espresso",
+      "project": "hw-policy",
+      "corpus": "HW",
+      "classes": [
+        "X"
+      ],
+      "historical": true,
+      "irrelevant": true,
+      "exact_question": "What grind size and extraction time should I use for a double espresso with a medium-roast coffee?",
+      "expected_evidence": {
+        "required": [],
+        "acceptable_additional": []
+      },
+      "expected_tracks": {
+        "information": [
+          "not_requested",
+          "no_rule_bears"
+        ],
+        "verdict": [
+          "not_requested",
+          "no_rule_bears"
+        ]
+      },
+      "manual_criteria": [
+        "Zero citations, no reached verdict, no decision, and no information answer."
+      ]
+    }
+  ]
+}
