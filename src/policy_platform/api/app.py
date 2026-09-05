@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import update
+from starlette.middleware.gzip import GZipMiddleware
 
 from policy_platform.api.routers import (
     ai,
@@ -29,6 +30,12 @@ from policy_platform.api.authz import enforce_rbac, validate_no_dev_auth_in_prod
 from policy_platform.infrastructure.settings import get_settings
 
 logger = logging.getLogger(__name__)
+
+
+#: The smallest response body worth compressing, in bytes. Under it the gzip
+#: framing costs more than the encoding saves, so a small error body or a health
+#: check is served uncompressed and byte-identical to what it always was.
+RESPONSE_COMPRESSION_MIN_BYTES = 1000
 
 
 _INTERRUPTED_MESSAGE = (
@@ -131,6 +138,24 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
         dependencies=[Depends(enforce_rbac)],
     )
+
+    # A retrieval or receipt response is JSON carrying published policy records,
+    # and JSON of that kind compresses by roughly an order of magnitude. It is
+    # added before CORS so CORS ends up the outer layer: the allowlist decision
+    # and its headers are then made on an uncompressed exchange, and compression
+    # only ever rewrites the body of a response CORS has already approved.
+    #
+    # `minimum_size` is a floor, not a tuning knob. Below roughly a kilobyte the
+    # gzip header and trailer are a meaningful fraction of the payload, so a
+    # small error body or a health check would be made *larger* by compressing
+    # it. Responses under the floor are served exactly as they are today.
+    #
+    # It compresses; it never composes. The middleware reads only the bytes a
+    # route already produced, so nothing a request carried — a subscription key,
+    # an `Authorization` credential — can enter a response through it. See
+    # `tests/unit/test_large_responses_are_compressed.py`, which holds that as a
+    # checked property rather than an assumption.
+    app.add_middleware(GZipMiddleware, minimum_size=RESPONSE_COMPRESSION_MIN_BYTES)
 
     # CORS origins come from configuration (see Settings.allowed_cors_origins).
     # They used to be a hardcoded port range here, which meant running the UI on

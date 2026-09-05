@@ -485,16 +485,54 @@ DECISION_RULE_RESCUE_MARGIN = 0.3
 #: so the change is legible rather than a string that silently moved.
 RETRIEVAL_METHOD_POLICY_ONLY = "hybrid_vector_topk"
 
-#: What a rule-document query selects. The shared default field list does not
-#: name the fields that make a rule hit usable — which rule it is, where it sits
-#: in its policy, which policy document holds it, and the English projection the
-#: request-side selection scores against — so this names them explicitly. It is a
-#: superset of the default, so nothing a caller already read is lost.
-_RULE_SELECT = (
-    "id,policy_id,document_id,document_version,clause_id,clause_number,"
-    "section_heading,heading,body,status,content_type,rule_id,rule_ordinal,"
-    "parent_document_id,provision_key,retrieval_text,projection_profile"
+#: WHAT EACH QUERY SELECTS, AND WHY IT IS FOUR LISTS AND NOT ONE
+#:
+#: A `select` is the width of the wire. Azure AI Search returns every named
+#: field for every hit, so a list that names a field nobody reads is paid for on
+#: every result of every request — and the four queries this module makes read
+#: genuinely different things. One shared superset was the simple choice and it
+#: was the expensive one: the rule queries carried `body`, a second copy of the
+#: same text `retrieval_text` already holds, on 120 discovery hits and up to 200
+#: ranking hits per decision.
+#:
+#: So each call site names what its own consumers read, and nothing else. The
+#: rule is mechanical rather than aesthetic: a field may be dropped from a list
+#: only when no code path reads it off a hit from *that* query. `body` stays in
+#: the index schema and stays keyword-searchable — it participates in scoring,
+#: which happens service-side and needs no field to come back.
+#:
+#: Retrieval-only policy selection (`/policies`). It ranks and returns records;
+#: it never expands coverage over headings, because there is no downstream
+#: gather to reject an over-kept policy. What it reads off a hit is identity, the
+#: version the stale guard compares, and the scores Azure attaches to every
+#: result whether or not they are selected.
+_POLICY_RETRIEVAL_SELECT = "id,policy_id,document_id,document_version,content_type"
+
+#: Decision policy selection. Everything above, plus the two heading fields and
+#: the one body text `expand_policy_query_coverage` reads: a term named in a
+#: heading can admit a policy, and body text is how it recognises what the
+#: already-selected policies cover.
+_POLICY_DECISION_SELECT = (
+    "id,policy_id,document_id,document_version,content_type,"
+    "section_heading,heading,body"
 )
+
+#: Rule discovery. Which rule it is, which provision and which policy document
+#: hold it, the version the stale guard reads, and the English projection the
+#: request-side selection scores against. `policy_id` and `document_id` are read
+#: when a rule-only rescue has to synthesise the parent policy hit its policy
+#: query never returned. One text field: `retrieval_text` **is** the projection,
+#: and `body` was a verbatim second copy of it.
+_RULE_DISCOVERY_SELECT = (
+    "id,policy_id,document_id,document_version,content_type,"
+    "rule_id,parent_document_id,provision_key,retrieval_text"
+)
+
+#: Scoped rule ranking. Narrower again, because this query is already scoped to
+#: named provisions of the current version by its filter, and its consumer reads
+#: exactly three things per hit: that it is a rule document, which provision and
+#: rule it is, and its projection.
+_RULE_RANKING_SELECT = "id,content_type,rule_id,provision_key,retrieval_text"
 
 #: The two scopes a case can be put in. Named, because a reviewer who chose one
 #: policy and a reviewer who put a question to the project are doing two different
@@ -3072,6 +3110,11 @@ async def _answer_project_scope(
                         content_type=CONTENT_TYPE_POLICY,
                         projection_profile=readiness.profile,
                     ),
+                    select=(
+                        _POLICY_RETRIEVAL_SELECT
+                        if policies_only
+                        else _POLICY_DECISION_SELECT
+                    ),
                     semantic_configuration=POLICY_SEMANTIC_CONFIG,
                 )
             finally:
@@ -3111,7 +3154,7 @@ async def _answer_project_scope(
                                 projection_profile=readiness.profile,
                                 large_policies_only=not rule_retrieval,
                             ),
-                            select=_RULE_SELECT,
+                            select=_RULE_DISCOVERY_SELECT,
                             semantic_configuration=POLICY_SEMANTIC_CONFIG,
                         ),
                         RULE_INDEX_MATCHED,
@@ -3948,7 +3991,7 @@ async def _rank_rules_for_retained(
                     + " and "
                     + _provision_key_filter(large_keys)
                 ),
-                select=_RULE_SELECT,
+                select=_RULE_RANKING_SELECT,
                 semantic_configuration=semantic_configuration,
             )
             rule_index_state = RULE_INDEX_MATCHED
