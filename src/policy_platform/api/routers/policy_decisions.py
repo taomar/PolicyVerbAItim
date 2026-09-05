@@ -84,6 +84,7 @@ from policy_platform.application.policy_case_decision import (
     Caller,
     CaseDecisionError,
     compact_decision_receipt,
+    compact_rule_decision_receipt,
     decide_project_case,
     retrieve_project_policies,
 )
@@ -91,10 +92,19 @@ from policy_platform.contracts.case_decision import (
     CaseDecisionEnvelope,
     CaseDecisionEnvelopeV2,
     CaseDecisionReceipt,
+    CaseDecisionRuleEnvelope,
     validate_receipt,
 )
-from policy_platform.contracts.policy_retrieval import PolicyRetrievalEnvelope
-from policy_platform.contracts.case_decision_light import CaseDecisionLightEnvelope
+from policy_platform.contracts.policy_retrieval import (
+    PolicyRetrievalEnvelope,
+    RetrievalEnvelope,
+    RuleRetrievalEnvelope,
+)
+from policy_platform.contracts.case_decision_light import (
+    CaseDecisionLightEnvelope,
+    CaseDecisionLightReceipt,
+    CaseDecisionRuleLightEnvelope,
+)
 from policy_platform.infrastructure.assistants import ai_case_intent
 from policy_platform.infrastructure.persistence.db import get_session
 from policy_platform.infrastructure.persistence.repositories import (
@@ -291,7 +301,9 @@ class ProjectCaseDecisionRequest(BaseModel):
         default=None,
         description=(
             "Optional. Naming one policy bypasses retrieval and decides against that policy alone. "
-            "Omitted, the case is put to the project and the policies bearing on it are retrieved."
+            "Omitted, the case is put to the project and the evidence bearing on it is retrieved. "
+            "It cannot be combined with `rule_retrieval: true`, because naming a policy bypasses "
+            "the retrieval whose mode that flag selects."
         ),
     )
     reasoning_effort: str = Field(
@@ -339,6 +351,26 @@ class ProjectCaseDecisionRequest(BaseModel):
             "it is recorded beside, never instead of, the authenticated principal."
         ),
     )
+    rule_retrieval: bool = Field(
+        default=False,
+        description=(
+            "**Experimental. Omit it unless you are deliberately evaluating rule retrieval.**\n\n"
+            "Omitted or `false` — the default — selects the established policy retrieval: policy "
+            "documents are the unit of discovery and a rule may elevate the policy that holds it. "
+            "Behaviour is exactly what it has always been.\n\n"
+            "`true` selects rule-native retrieval: every published rule is a candidate on its own "
+            "terms, and the selected rules themselves are the units delivered to the gather. "
+            "No parent grouping, policy query, policy body, or policy fallback runs. "
+            "Its recall has not been shown to match policy retrieval's, so it is not recommended "
+            "for production traffic yet. It is refused rather than downgraded when the project's "
+            "index cannot serve it: a `503` with `rule_index_not_ready`, never a quiet fall back "
+            "to policy retrieval.\n\n"
+            "The mode you asked for is echoed in `request.rule_retrieval` and the mode that ran "
+            "in `retrieval.retrieval_mode`. It is part of the idempotency binding **only when "
+            "true**, so a key issued before this field existed still replays, and two requests "
+            "differing only in this field conflict on one key rather than replaying each other."
+        ),
+    )
 
 
 class ProjectPolicyRetrievalRequest(BaseModel):
@@ -355,6 +387,17 @@ class ProjectPolicyRetrievalRequest(BaseModel):
         default=None,
         description=(
             "Optional. May also be sent as X-Correlation-Id; if both are sent they must match."
+        ),
+    )
+    rule_retrieval: bool = Field(
+        default=False,
+        description=(
+            "**Experimental.** Omitted or `false` — the default — selects the established policy "
+            "retrieval and behaves exactly as this endpoint always has. `true` selects rule-first "
+            "retrieval, in which every published rule is a candidate on its own terms and a policy "
+            "is reached through the rules of it that matched. It is refused with a `503` "
+            "(`rule_index_not_ready`) rather than downgraded when the project's index cannot serve "
+            "it. The mode that ran is reported in `retrieval.retrieval_mode`."
         ),
     )
 
@@ -412,7 +455,7 @@ def _request_metadata(
     }
 
 
-@router.post("/{project_key}/policies", response_model=PolicyRetrievalEnvelope)
+@router.post("/{project_key}/policies", response_model=RetrievalEnvelope)
 async def retrieve_policies(
     project_key: str,
     body: ProjectPolicyRetrievalRequest,
@@ -420,7 +463,7 @@ async def retrieve_policies(
     correlation_id_header: str | None = Header(default=None, alias=CORRELATION_HEADER),
     _principal: Principal = Depends(require_authenticated_principal),
     session: AsyncSession = Depends(get_session),
-) -> PolicyRetrievalEnvelope:
+) -> PolicyRetrievalEnvelope | RuleRetrievalEnvelope:
     """Return filtered published policy JSON without producing a verdict.
 
     This is the light integration path. It precision-ranks policy documents,
@@ -466,6 +509,7 @@ async def retrieve_policies(
             policy_set=policy_set,
             scenario=body.scenario,
             correlation_id=correlation_id,
+            rule_retrieval=body.rule_retrieval,
         )
     except CaseDecisionError as exc:
         raise HTTPException(status_code=exc.status_code, detail=exc.as_detail()) from exc
@@ -481,7 +525,7 @@ async def _execute_case_decision(
     correlation_id_header: str | None,
     principal: Principal,
     session: AsyncSession,
-) -> CaseDecisionEnvelopeV2 | CaseDecisionEnvelope:
+) -> CaseDecisionEnvelopeV2 | CaseDecisionEnvelope | CaseDecisionRuleEnvelope:
     """One audited decision execution shared by full and light responses."""
 
     _validate_correlation_id(correlation_id_header, body.correlation_id)
@@ -530,6 +574,7 @@ async def _execute_case_decision(
                 calling_system_identity=calling_system_identity,
             ),
             additional_instructions=body.additional_instructions,
+            rule_retrieval=body.rule_retrieval,
             request_metadata=_request_metadata(
                 request,
                 idempotency_key=idempotency_key,
@@ -553,7 +598,7 @@ async def decide_case(
     correlation_id_header: str | None = Header(default=None, alias=CORRELATION_HEADER),
     principal: Principal = Depends(require_authenticated_principal),
     session: AsyncSession = Depends(get_session),
-) -> CaseDecisionEnvelopeV2 | CaseDecisionEnvelope:
+) -> CaseDecisionEnvelopeV2 | CaseDecisionEnvelope | CaseDecisionRuleEnvelope:
     """Decide a case against a project's published policies, and record it.
 
     Every decision made now is answered as `case_decision_v2`. The response is
@@ -688,7 +733,7 @@ async def decide_case(
     )
 
 
-@router.post("/{project_key}/case/light", response_model=CaseDecisionLightEnvelope)
+@router.post("/{project_key}/case/light", response_model=CaseDecisionLightReceipt)
 async def decide_case_light(
     project_key: str,
     body: ProjectCaseDecisionRequest,
@@ -698,7 +743,7 @@ async def decide_case_light(
     correlation_id_header: str | None = Header(default=None, alias=CORRELATION_HEADER),
     principal: Principal = Depends(require_authenticated_principal),
     session: AsyncSession = Depends(get_session),
-) -> CaseDecisionLightEnvelope:
+) -> CaseDecisionLightEnvelope | CaseDecisionRuleLightEnvelope:
     """Run and store the same decision, returning only its essential projection.
 
     ``receipt_url`` reads the complete stored receipt. The compact response keeps
@@ -719,6 +764,8 @@ async def decide_case_light(
         principal=principal,
         session=session,
     )
+    if isinstance(envelope, CaseDecisionRuleEnvelope):
+        return compact_rule_decision_receipt(envelope)
     return compact_decision_receipt(envelope)
 
 
@@ -728,7 +775,7 @@ async def get_decision_receipt(
     response: Response,
     principal: Principal = Depends(require_authenticated_principal),
     session: AsyncSession = Depends(get_session),
-) -> CaseDecisionEnvelopeV2 | CaseDecisionEnvelope:
+) -> CaseDecisionEnvelopeV2 | CaseDecisionEnvelope | CaseDecisionRuleEnvelope:
     """The stored receipt for one decision, byte-identical to what was returned.
 
     The envelope is replayed from storage rather than rebuilt, so verifying a

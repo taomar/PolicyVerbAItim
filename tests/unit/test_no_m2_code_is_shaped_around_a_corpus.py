@@ -64,11 +64,18 @@ os.environ.setdefault("DATABASE_URL", "******localhost:5433/test")
 os.environ.setdefault("ALEMBIC_DATABASE_URL", "******localhost:5433/test")
 
 from policy_platform.api import schemas  # noqa: E402
-from policy_platform.api.routers import ai, policy_sets  # noqa: E402
+from policy_platform.api.routers import ai, policy_decisions, policy_sets  # noqa: E402
 from policy_platform.application import policy_case_decision  # noqa: E402
-from policy_platform.contracts import case_decision  # noqa: E402
+from policy_platform.contracts import (  # noqa: E402
+    case_decision,
+    case_decision_light,
+    policy_retrieval,
+)
 from policy_platform.domain import models  # noqa: E402
-from policy_platform.infrastructure.assistants import ai_case_project  # noqa: E402
+from policy_platform.infrastructure.assistants import (  # noqa: E402
+    ai_case_intent,
+    ai_case_project,
+)
 from policy_platform.infrastructure.projection import policy_rule_slice  # noqa: E402
 from policy_platform.infrastructure.search import (  # noqa: E402
     english_projection,
@@ -95,6 +102,10 @@ AUTHORED = (
 TOUCHED = (
     policy_case_decision,
     case_decision,
+    case_decision_light,
+    policy_retrieval,
+    policy_decisions,
+    ai_case_intent,
     models,
     ai,
     policy_sets,

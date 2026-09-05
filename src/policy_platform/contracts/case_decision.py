@@ -110,7 +110,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Annotated, Any, Final, Literal
 
-from pydantic import BaseModel, Field, TypeAdapter, model_validator
+from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, model_validator
 
 from policy_platform.contracts.canonical import canonical_hash
 
@@ -363,6 +363,18 @@ class RequestRef(BaseModel):
             "may reject it, in which case the call is retried without it and the effort actually "
             "used is not observable."
         )
+    )
+    rule_retrieval: bool = Field(
+        default=False,
+        description=(
+            "Whether the caller asked for the experimental rule-first retrieval mode. `false` — "
+            "the default, and what a request that omits the field records — means the standard "
+            "policy retrieval ran. It is echoed here so a receipt shows which mode was asked for; "
+            "which mode actually ran is `retrieval.retrieval_mode`, and the two are the same "
+            "because the request is refused rather than downgraded when rule retrieval cannot be "
+            "served. It is bound into the idempotency hash only when true, so a key issued before "
+            "this field existed still replays."
+        ),
     )
     received_at: datetime = Field(description="When the request was accepted and its receipt reserved.")
 
@@ -663,6 +675,68 @@ class RuleSelectionRef(BaseModel):
     )
 
 
+class ScoreDisclosureRef(BaseModel):
+    """The named quantities behind one candidate's `best_score`.
+
+    `best_score` is whatever the selection path that ran left in the hit's
+    score, and that has been, variously, an Azure semantic reranker score, a raw
+    hybrid search score, a symmetric RRF sum over two policy rankings, a
+    weighted RRF sum over one parent's rule ranks, and a maximum over a policy's
+    child rule scores. Reporting `semantic_cutoff_score` beside one of the
+    fusion values invited a reader to compare numbers that cannot be compared —
+    and not merely across receipts, but *within a single one*. Naming the
+    quantity is the smallest repair that moves no selection.
+
+    Every field is optional and none of them can move a selection: this reports
+    what the ranking already decided, in units a reader can compare. Absent on a
+    receipt written before the quantities were named, and on a policy reference
+    that records no retrieval verdict at all — a citation names a policy, it
+    does not rank one.
+
+    No policy or source text passes through here; these are scores and counts.
+    """
+
+    best_score_kind: str | None = Field(
+        default=None,
+        description=(
+            "Which quantity `best_score` is. Null on a receipt written before the kinds were "
+            "named, which is not a claim that the score was a semantic one."
+        ),
+    )
+    semantic_score: float | None = Field(
+        default=None,
+        description=(
+            "The reranker score carried on this candidate, on the same scale as the retrieval "
+            "block's `semantic_cutoff_score`, so the cutoff can at last be related to the scores "
+            "it cut. In rule mode and on a rule-rescued policy this is a maximum over rules — "
+            "which is what `best_score_kind` says, and what the two fields below separate."
+        ),
+    )
+    rule_lead_semantic_score: float | None = Field(
+        default=None,
+        description=(
+            "The reranker score of the parent's lead counted rule — its best-*placed* rule, not "
+            "necessarily its best-*scoring* one. A single sample, so it is comparable to the "
+            "quantity the semantic elbow was calibrated on."
+        ),
+    )
+    rule_max_semantic_score: float | None = Field(
+        default=None,
+        description=(
+            "The maximum reranker score over the parent's counted rules. Carried beside the lead "
+            "rather than assumed equal to it, so whether a maximum over `k` samples is the right "
+            "summary is a question a receipt can answer instead of one a reader must infer."
+        ),
+    )
+    rule_hits_counted: int | None = Field(
+        default=None,
+        description=(
+            "How many of the parent's rules were counted towards it — the `k` the maximum above "
+            "is taken over. Without it that maximum cannot be read."
+        ),
+    )
+
+
 class PolicyRef(BaseModel):
     """One policy the decision saw, and where to read it in full.
 
@@ -706,6 +780,13 @@ class PolicyRef(BaseModel):
             "and on a policy that was never carried into an evaluation."
         ),
     )
+    score_disclosure: ScoreDisclosureRef | None = Field(
+        default=None,
+        description=(
+            "The named quantities behind `best_score`. Absent on a receipt written before they "
+            "were named, and on a policy reference that records no retrieval verdict."
+        ),
+    )
 
 
 class RetrievalRef(BaseModel):
@@ -723,6 +804,44 @@ class RetrievalRef(BaseModel):
 
     status: str
     method: str | None = None
+    retrieval_mode: str | None = Field(
+        default=None,
+        description=(
+            "Which unit discovery worked in: `policy` (the default) or `rule` (experimental, and "
+            "only when the request asked for it). Null on a receipt written before the modes were "
+            "named, which is a policy-mode retrieval either way."
+        ),
+    )
+    rule_mode_parent_cap: int | None = Field(
+        default=None,
+        description=(
+            "Rule mode only. The most rules of one policy that were allowed to contribute to that "
+            "policy's score, so a large schedule cannot outrank a smaller policy by row count."
+        ),
+    )
+    rule_mode_parents: int | None = Field(
+        default=None,
+        description="Rule mode only. Distinct policies reached through rules of their own.",
+    )
+    rule_mode_rule_hits: int | None = Field(
+        default=None,
+        description="Rule mode only. Rule documents the discovery scan returned for this question.",
+    )
+    rule_mode_policy_fallback: int | None = Field(
+        default=None,
+        description=(
+            "Rule mode only. Policies offered by the policy-document recall channel because no "
+            "rule of theirs surfaced. They fill budget the rule channel left and never reorder it."
+        ),
+    )
+    rule_mode_policy_fallback_offered: int | None = Field(
+        default=None,
+        description=(
+            "Rule mode only. Recall candidates the policy channel put forward, before the evidence "
+            "cut. Reported beside the admitted count so a zero admitted can be read as 'nothing was "
+            "offered' or 'what was offered did not clear the elbow', which are different findings."
+        ),
+    )
     precision_mode: str | None = Field(
         default=None,
         description=(
@@ -1613,19 +1732,24 @@ class CaseDecisionEnvelopeV2(BaseModel):
 
 # ── reading a stored receipt back, whichever version wrote it ────────
 
-#: The two envelopes as one type, discriminated on `schema_version`. A reader
-#: does not branch on the version by hand: the tag decides, and an unknown tag
-#: is a validation error rather than a shape silently coerced into the wrong one.
-CaseDecisionReceipt = Annotated[
+#: Historical policy receipts as one type. Kept as an explicit alias so callers
+#: that intentionally accept only the two policy-era schemas can remain closed
+#: to rule receipts while the authoritative reader below accepts every stored
+#: receipt the service can now write.
+HistoricalCaseDecisionReceipt = Annotated[
     CaseDecisionEnvelope | CaseDecisionEnvelopeV2,
     Field(discriminator="schema_version"),
 ]
 
-_RECEIPT_ADAPTER: Final[TypeAdapter] = TypeAdapter(CaseDecisionReceipt)
+_HISTORICAL_RECEIPT_ADAPTER: Final[TypeAdapter] = TypeAdapter(
+    HistoricalCaseDecisionReceipt
+)
 
 
-def validate_receipt(payload: Any) -> CaseDecisionEnvelope | CaseDecisionEnvelopeV2:
-    """Read a stored receipt back as whichever envelope wrote it.
+def validate_historical_receipt(
+    payload: Any,
+) -> CaseDecisionEnvelope | CaseDecisionEnvelopeV2:
+    """Read a historical policy receipt back as whichever envelope wrote it.
 
     The stored `schema_version` decides, which is the whole reason it is stored.
     A row written before the field was ever absent does not exist — v1 always
@@ -1635,7 +1759,7 @@ def validate_receipt(payload: Any) -> CaseDecisionEnvelope | CaseDecisionEnvelop
 
     if isinstance(payload, dict) and "schema_version" not in payload:
         payload = {**payload, "schema_version": SCHEMA_VERSION_V1}
-    return _RECEIPT_ADAPTER.validate_python(payload)
+    return _HISTORICAL_RECEIPT_ADAPTER.validate_python(payload)
 
 
 # ── the seal ─────────────────────────────────────────────────────────
@@ -2029,6 +2153,7 @@ def request_hash(
     provision_id: str | None,
     reasoning_effort: str,
     additional_instructions: str = "",
+    rule_retrieval: bool = False,
 ) -> str:
     """The canonical hash of the request an idempotency key is bound to.
 
@@ -2043,14 +2168,473 @@ def request_hash(
     is supposed to make impossible. `additional_instructions` must be the
     normalised form; see `normalise_additional_instructions` for why comparing
     the raw text would break a byte-for-byte retry.
+
+    `rule_retrieval` is part of it **only when it is true**, and that asymmetry
+    is the whole of its compatibility story. It selects which policies are
+    retrieved and which of their rules are read, so two requests differing only
+    in it are two different requests and must conflict on one key rather than
+    replay. But every key issued before the field existed was bound to a
+    preimage that had no such member, and writing `"rule_retrieval": false` into
+    it would change the hash of every one of those requests — turning a
+    legitimate retry into a `409` for callers who never sent the field at all.
+    So the default writes nothing, and a request that omits the field or sends
+    `false` hashes byte-identically to the same request made before the field
+    existed.
     """
 
-    return canonical_hash(
-        {
-            "policy_set_key": policy_set_key,
-            "scenario": scenario,
-            "provision_id": provision_id or None,
-            "reasoning_effort": reasoning_effort,
-            "additional_instructions": additional_instructions,
+    payload: dict[str, Any] = {
+        "policy_set_key": policy_set_key,
+        "scenario": scenario,
+        "provision_id": provision_id or None,
+        "reasoning_effort": reasoning_effort,
+        "additional_instructions": additional_instructions,
+    }
+    if rule_retrieval:
+        payload["rule_retrieval"] = True
+    return canonical_hash(payload)
+
+
+# ── the rule receipt: a separate contract, not a mode of the policy one ──
+
+
+#: A rule-mode decision answers under its own schema version and its own hash
+#: basis. Both are new rather than reused, and the reason is the same one that
+#: split the retrieval envelopes: a reader pinned to `case_decision_v2` must
+#: fail closed on an unknown version rather than parse a rule receipt as a
+#: policy one and find `considered` empty — which would read as "nothing was
+#: considered" when in fact rules were read, decided on, and sealed.
+SCHEMA_VERSION_RULE_V1: Final[str] = "case_decision_rule_v1"
+HASH_BASIS_RULE_V1: Final[str] = "case_decision_rule_v1"
+
+
+class RuleSourceRef(BaseModel):
+    """Where a rule came from — identifiers only, never the provision's content.
+
+    A citation has to resolve, so the provision containing the rule is named.
+    Naming it is not carrying it: no policy body, no sibling rules, no spans or
+    facts belonging to the provision at large. That line is what keeps a rule
+    receipt from becoming a policy receipt one convenience field at a time.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    provision_key: str | None = None
+    provision_id: str | None = None
+    heading_path: list[str] = Field(default_factory=list)
+
+
+class RuleCitationSourceRef(CitationSourceRef):
+    """A source quote on a rule receipt, closed to policy-shaped additions."""
+
+    model_config = ConfigDict(extra="forbid")
+
+
+class RuleRef(BaseModel):
+    """One rule the decision saw, and on what terms it was admitted.
+
+    The rule-mode counterpart of `PolicyRef`. Deliberately not a subclass and
+    not a union member: the two describe different units, and a single name
+    whose meaning depended on the mode is the cross-conversion this contract
+    forbids.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    rule_id: str
+    source: RuleSourceRef = Field(default_factory=RuleSourceRef)
+    grounded: bool = Field(
+        description="Whether this rule was carried into the evaluation.",
+    )
+    best_rank: int | None = None
+    best_score: float | None = None
+    score_kind: str | None = None
+    semantic_score: float | None = None
+    admitted_as: str | None = Field(
+        default=None,
+        description=(
+            "`matched` when the rule placed on its own evidence, or `neighbour` when a matched "
+            "rule cannot be read correctly without it."
+        ),
+    )
+    required_by_rule_id: str | None = Field(
+        default=None,
+        description="Set on a `neighbour`: the matched rule that required it.",
+    )
+    omitted_reason: str | None = Field(
+        default=None,
+        description=(
+            "Why a selected rule did not reach the answer path — over the byte or proxy-token "
+            "budget, or unresolvable in the corpus. Present instead of the rule vanishing."
+        ),
+    )
+
+
+class RuleCitationRef(BaseModel):
+    """One rule a rule-mode answer rested on.
+
+    `policy` is absent by construction. A rule-mode citation traces to the rule
+    and to the provision that contains it, and never to a `PolicyRef`.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    rule_id: str
+    source: RuleSourceRef = Field(default_factory=RuleSourceRef)
+    quote: RuleCitationSourceRef
+
+
+class MergedRuleCitationRef(RuleCitationRef):
+    """One rule citation, once, tagged with every track that used it."""
+
+    serves: list[CitationServes] = Field(default_factory=list)
+
+
+class RuleRequestRef(RequestRef):
+    """The request block of a rule receipt, closed to policy-mode values."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    rule_retrieval: Literal[True] = True
+
+
+class RuleRetrievalRef(BaseModel):
+    """What narrowing happened in rule mode, with no policy counters."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    status: str
+    method: str | None = None
+    retrieval_mode: Literal["rule"] = "rule"
+    precision_mode: str | None = None
+    semantic_candidates: int | None = None
+    semantic_selected: int | None = None
+    semantic_largest_gap: float | None = None
+    semantic_cutoff_score: float | None = None
+    semantic_elbow_applied: bool | None = None
+    direct_rule_order: str | None = None
+    rule_mode_rule_hits: int | None = None
+    rule_semantic_window: int | None = None
+    rule_semantic_candidates: int | None = None
+    projection_profile: str | None = None
+    projection_ready: bool | None = None
+    rule_documents_matched: int | None = None
+    rule_index_state: str | None = None
+    retrieval_strategy: str | None = None
+    rules_selected: int | None = None
+    rules_grounded: int | None = None
+    rules_omitted: list[dict[str, Any]] = Field(default_factory=list)
+    rule_grounding_bytes: int | None = None
+    rule_grounding_budget_bytes: int | None = None
+    rule_grounding_proxy_tokens: int | None = None
+    rule_grounding_proxy_token_budget: int | None = None
+    rule_grounding_chars: int | None = None
+    reason: str | None = None
+
+
+class RuleInformationSection(InformationSection):
+    """Rule-native information output with rule-native citations only."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    citations: list[RuleCitationRef] = Field(default_factory=list)
+
+
+class RuleVerdictSection(VerdictSection):
+    """Rule-native verdict output with rule-native citations only."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    citations: list[RuleCitationRef] = Field(default_factory=list)
+
+
+class CaseDecisionRuleEnvelope(BaseModel):
+    """A decision made from rules, sealed as one.
+
+    Mirrors `CaseDecisionEnvelopeV2` in every field that is about the decision
+    rather than about the unit of evidence, and replaces the two that are:
+    `considered_rules` in place of `considered`/`excluded`, and rule-native
+    citations. There is no `considered` field at all — an empty one would seal
+    an empty list and let a receipt verify while attesting to nothing.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    schema_version: Literal["case_decision_rule_v1"] = SCHEMA_VERSION_RULE_V1
+    receipt_status: Literal["completed"] = RECEIPT_COMPLETED
+    decision_id: str
+    correlation_id: str
+    idempotency_key: str | None = None
+    policy_set: PolicySetRef
+    active_version: VersionRef | None = None
+    caller: CallerRef
+    request: RuleRequestRef
+    language: LanguageRef | None = None
+    asked: AskedRef
+    outcome: OutcomeRef
+    information: RuleInformationSection | None = None
+    verdict: RuleVerdictSection | None = None
+    retrieval: RuleRetrievalRef
+    considered_rules: list[RuleRef] = Field(default_factory=list)
+    citations: list[MergedRuleCitationRef] = Field(default_factory=list)
+    size: SizeRef | None = None
+    trace: TraceRef
+    decision_hash: str
+    hash_basis: Literal["case_decision_rule_v1"] = HASH_BASIS_RULE_V1
+    receipt_url: str
+    decided_at: datetime
+    latency_ms: int
+
+    @model_validator(mode="after")
+    def _rule_receipt_is_consistent(self) -> "CaseDecisionRuleEnvelope":
+        rule_ids = [ref.rule_id for ref in self.considered_rules]
+        if len(rule_ids) != len(set(rule_ids)):
+            raise ValueError("considered_rules must not contain duplicate rule_id values")
+
+        citation_ids = [citation.rule_id for citation in self.citations]
+        if len(citation_ids) != len(set(citation_ids)):
+            raise ValueError("citations must not contain duplicate rule_id values")
+
+        for track, section, outcome in (
+            ("information", self.information, self.outcome.information),
+            ("verdict", self.verdict, self.outcome.verdict),
+        ):
+            if section is None:
+                if outcome not in (NOT_REQUESTED, NOT_EVALUATED):
+                    raise ValueError(
+                        f"outcome.{track} is {outcome!r} but the {track} section is null"
+                    )
+            else:
+                if outcome in (NOT_REQUESTED, NOT_EVALUATED):
+                    raise ValueError(
+                        f"outcome.{track} is {outcome!r} but a {track} section was carried"
+                    )
+                if section.status != outcome:
+                    raise ValueError(
+                        f"outcome.{track} is {outcome!r} but {track}.status is "
+                        f"{section.status!r}"
+                    )
+        return self
+
+
+def _sealed_rule_citations(
+    citations: list[RuleCitationRef],
+) -> list[dict[str, Any]]:
+    """Rule citations as the seal sees them, in canonical identity order."""
+
+    return sorted(
+        (
+            {
+                "rule_id": citation.rule_id,
+                "source": {
+                    "provision_key": citation.source.provision_key,
+                    "provision_id": citation.source.provision_id,
+                    "heading_path": list(citation.source.heading_path),
+                },
+                "quote": {
+                    "state": citation.quote.state,
+                    "text": citation.quote.text,
+                    "page": citation.quote.page,
+                    "section": citation.quote.section,
+                },
+            }
+            for citation in citations
+        ),
+        key=lambda entry: (
+            str(entry["rule_id"]),
+            str(entry["source"]["provision_key"]),
+            str(entry["source"]["provision_id"]),
+        ),
+    )
+
+
+def decision_hash_preimage_rule_v1(envelope: CaseDecisionRuleEnvelope) -> dict[str, Any]:
+    """The decision-defining subset of a rule receipt, as the hash sees it.
+
+    SEALED, AND WHY EACH ONE
+
+    Each considered rule is sealed in full: its rule and provision identities,
+    grounding decision, retrieval scores, admission path and omission reason.
+    Duplicate rule ids are refused by the envelope, so sorting by ``rule_id`` is
+    a total canonical order rather than an ambiguous one.
+
+    The requested and executed retrieval modes are read from the envelope rather
+    than asserted as constants. Both semantic sections are sealed in full except
+    for their operational grounding reports, including all prose, routes, notes,
+    missing information, verification requirements and rule-native citations.
+    The merged citations seal their track tags, and a language block seals the
+    adjudicated rendering just as the policy receipt does.
+
+    Returned rather than hashed directly so a caller verifying a receipt
+    independently can inspect exactly what was sealed.
+    """
+
+    rules = sorted(
+        (
+            {
+                "rule_id": ref.rule_id,
+                "source": {
+                    "provision_key": ref.source.provision_key,
+                    "provision_id": ref.source.provision_id,
+                    "heading_path": list(ref.source.heading_path),
+                },
+                "grounded": ref.grounded,
+                "best_rank": ref.best_rank,
+                "best_score": ref.best_score,
+                "score_kind": ref.score_kind,
+                "semantic_score": ref.semantic_score,
+                "admitted_as": ref.admitted_as,
+                "required_by_rule_id": ref.required_by_rule_id,
+                "omitted_reason": ref.omitted_reason,
+            }
+            for ref in envelope.considered_rules
+        ),
+        key=lambda entry: str(entry["rule_id"]),
+    )
+
+    information = (
+        None
+        if envelope.information is None
+        else {
+            "status": envelope.information.status,
+            "answered": envelope.information.answered,
+            "answer": envelope.information.answer,
+            "explanation": envelope.information.explanation,
+            "route": envelope.information.route,
+            "citations": _sealed_rule_citations(envelope.information.citations),
+            "note": envelope.information.note,
         }
     )
+    verdict = (
+        None
+        if envelope.verdict is None
+        else {
+            "status": envelope.verdict.status,
+            "reached": envelope.verdict.reached,
+            "decision": envelope.verdict.decision,
+            "explanation": envelope.verdict.explanation,
+            "missing_information": [
+                {
+                    "fact": item.fact,
+                    "label": item.label,
+                    "why_needed": item.why_needed,
+                    "required_by_rule_ids": list(item.required_by_rule_ids),
+                }
+                for item in envelope.verdict.missing_information
+            ],
+            "missing_required_facts": list(envelope.verdict.missing_required_facts),
+            "verification_requirements": [
+                {
+                    "fact": item.fact,
+                    "label": item.label,
+                    "why_needed": item.why_needed,
+                    "required_by_rule_ids": list(item.required_by_rule_ids),
+                }
+                for item in envelope.verdict.verification_requirements
+            ],
+            "route": envelope.verdict.route,
+            "citations": _sealed_rule_citations(envelope.verdict.citations),
+            "note": envelope.verdict.note,
+        }
+    )
+    citations = _sealed_rule_citations(envelope.citations)
+    for sealed, citation in zip(
+        citations,
+        sorted(
+            envelope.citations,
+            key=lambda item: (
+                item.rule_id,
+                str(item.source.provision_key),
+                str(item.source.provision_id),
+            ),
+        ),
+        strict=True,
+    ):
+        sealed["serves"] = sorted(citation.serves)
+
+    preimage = {
+        "schema_version": envelope.schema_version,
+        "policy_set_key": envelope.policy_set.key,
+        "active_version_id": envelope.active_version.version_id if envelope.active_version else None,
+        "version_number": envelope.active_version.version_number if envelope.active_version else None,
+        "scenario_hash": envelope.request.scenario_hash,
+        "additional_instructions_hash": envelope.request.additional_instructions_hash,
+        "scope": envelope.request.scope,
+        "rule_retrieval": envelope.request.rule_retrieval,
+        "retrieval": {
+            "status": envelope.retrieval.status,
+            "method": envelope.retrieval.method,
+            "retrieval_mode": envelope.retrieval.retrieval_mode,
+        },
+        "rules": rules,
+        "asked": {
+            "information_requested": envelope.asked.information_requested,
+            "verdict_requested": envelope.asked.verdict_requested,
+        },
+        "outcome": {
+            "information": envelope.outcome.information,
+            "verdict": envelope.outcome.verdict,
+        },
+        "information": information,
+        "verdict": verdict,
+        "citations": citations,
+    }
+    if envelope.language is not None:
+        language = envelope.language
+        preimage["processing_scenario_hash"] = language.processing_scenario_hash
+        preimage["language"] = {
+            "source_language": language.source_language,
+            "processing_language": language.processing_language,
+            "response_language": language.response_language,
+            "boundary_state": language.boundary_state,
+            "output_rendering_state": language.output_rendering_state,
+            "guidance_rendering_state": language.guidance_rendering_state,
+            "input_translation_profile": language.input_translation_profile,
+            "output_translation_profile": language.output_translation_profile,
+            "projection_profile": language.projection_profile,
+        }
+    return preimage
+
+
+def decision_hash_rule_v1(envelope: CaseDecisionRuleEnvelope) -> str:
+    """The sealed hash of a rule receipt, over its own preimage and basis."""
+
+    return canonical_hash(decision_hash_preimage_rule_v1(envelope))
+
+
+#: Every receipt this service can store, discriminated by its explicit version.
+#: The historical alias above remains available for policy-only readers.
+CaseDecisionReceipt = Annotated[
+    CaseDecisionEnvelope | CaseDecisionEnvelopeV2 | CaseDecisionRuleEnvelope,
+    Field(discriminator="schema_version"),
+]
+
+_RECEIPT_ADAPTER: Final[TypeAdapter] = TypeAdapter(CaseDecisionReceipt)
+
+
+def validate_receipt(
+    payload: Any,
+) -> CaseDecisionEnvelope | CaseDecisionEnvelopeV2 | CaseDecisionRuleEnvelope:
+    """Read any stored receipt back as the envelope that wrote it."""
+
+    if isinstance(payload, dict) and "schema_version" not in payload:
+        payload = {**payload, "schema_version": SCHEMA_VERSION_V1}
+    if isinstance(payload, dict) and payload.get("schema_version") in {
+        SCHEMA_VERSION_V1,
+        SCHEMA_VERSION_V2,
+    }:
+        request = payload.get("request")
+        retrieval = payload.get("retrieval")
+        if (
+            "considered_rules" in payload
+            or "rules" in payload
+            or (isinstance(request, dict) and request.get("rule_retrieval") is True)
+            or (
+                isinstance(retrieval, dict)
+                and retrieval.get("retrieval_mode") == "rule"
+            )
+        ):
+            raise ValueError(
+                "a policy receipt cannot carry rule-mode fields or rule-mode values"
+            )
+        return validate_historical_receipt(payload)
+    return _RECEIPT_ADAPTER.validate_python(payload)

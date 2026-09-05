@@ -35,9 +35,10 @@ async def test_light_mode_crosses_the_same_boundary_and_returns_only_selected_re
     )
     received: list[str] = []
 
-    async def _retrieve(session, *, policy_set, scenario, with_context):
+    async def _retrieve(session, *, policy_set, scenario, with_context, rule_retrieval=False):
         received.append(scenario)
         assert with_context is True
+        assert rule_retrieval is False, "the default request selects policy retrieval"
         return ai_case_project.ProjectPolicyRetrieval(
             response={
                 "scope": "project",

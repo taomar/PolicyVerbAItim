@@ -756,6 +756,9 @@ def _context_ids(rule: dict) -> list[str]:
 
     Exceptions are *inline* on the rule, so a selected rule always carries its own
     carve-outs and there is nothing to close over for them.
+
+    Exposed as :func:`context_rule_ids` as well, because rule mode needs exactly
+    this relation to preserve recall without reaching for the parent provision.
     """
 
     ids: list[str] = []
@@ -765,6 +768,12 @@ def _context_ids(rule: dict) -> list[str]:
             if text and text not in ids:
                 ids.append(text)
     return ids
+
+
+#: The same relation under a public name. Rule mode admits a matched rule's
+#: neighbours to keep it answerable; naming the relation once means the two
+#: paths cannot drift into two different ideas of what "reads with" means.
+context_rule_ids = _context_ids
 
 
 def evidence_group_keys(payload: dict) -> list[object]:

@@ -155,18 +155,29 @@ from policy_platform.contracts.case_decision import (
     CallerRef,
     CaseDecisionEnvelope,
     CaseDecisionEnvelopeV2,
+    CaseDecisionRuleEnvelope,
     CitationRef,
     CitationSourceRef,
     InformationSection,
     LanguageRef,
     MergedCitationRef,
+    MergedRuleCitationRef,
     MissingInformationItem,
     OutcomeRef,
     PolicyRef,
     PolicySetRef,
     RequestRef,
     RetrievalRef,
+    RuleCitationRef,
+    RuleCitationSourceRef,
+    RuleInformationSection,
+    RuleRef,
+    RuleRequestRef,
+    RuleRetrievalRef,
     RuleSelectionRef,
+    RuleSourceRef,
+    RuleVerdictSection,
+    ScoreDisclosureRef,
     SizeRef,
     TraceRef,
     TokenUsageRef,
@@ -175,6 +186,7 @@ from policy_platform.contracts.case_decision import (
     VersionRef,
     additional_instructions_hash,
     compute_decision_hash_v2,
+    decision_hash_rule_v1,
     normalise_additional_instructions,
     request_hash,
     scenario_hash,
@@ -186,6 +198,7 @@ from policy_platform.contracts.policy_retrieval import (
 )
 from policy_platform.contracts.case_decision_light import (
     CaseDecisionLightEnvelope,
+    CaseDecisionRuleLightEnvelope,
     LightAskedRef,
     LightCitationRef,
     LightInformationRef,
@@ -193,6 +206,12 @@ from policy_platform.contracts.case_decision_light import (
     LightPolicyRef,
     LightRequestRef,
     LightRetrievalRef,
+    LightRuleCitationRef,
+    LightRuleInformationRef,
+    LightRuleRef,
+    LightRuleRequestRef,
+    LightRuleRetrievalRef,
+    LightRuleVerdictRef,
     LightTraceRef,
     LightVerdictRef,
 )
@@ -559,7 +578,7 @@ class CaseDecisionOutcome:
     written as rather than re-projected into a shape it never had.
     """
 
-    envelope: CaseDecisionEnvelopeV2 | CaseDecisionEnvelope
+    envelope: CaseDecisionEnvelopeV2 | CaseDecisionEnvelope | CaseDecisionRuleEnvelope
     replayed: bool
 
 
@@ -609,6 +628,7 @@ async def _invoke_decider(
     reasoning_effort: str,
     additional_instructions: str,
     with_context: bool,
+    rule_retrieval: bool = False,
 ):
     """The single place in this codebase that calls the project-case decider.
 
@@ -639,6 +659,7 @@ async def _invoke_decider(
         reasoning_effort=reasoning_effort,
         additional_instructions=additional_instructions,
         with_context=with_context,
+        rule_retrieval=rule_retrieval,
     )
 
 
@@ -721,7 +742,9 @@ async def _retrieve_project_policies(
     correlation_id: str,
     usage_scope: UsageScope,
     started: float,
-) -> PolicyRetrievalEnvelope:
+    rule_retrieval: bool = False,
+
+) -> PolicyRetrievalEnvelope | RuleRetrievalEnvelope:
     """Return the filtered records the decision path would read, and stop there.
 
     This is intentionally outside the receipt lifecycle: no decision is made, so
@@ -771,6 +794,7 @@ async def _retrieve_project_policies(
             policy_set=policy_set,
             scenario=crossing.scenario,
             with_context=True,
+            rule_retrieval=rule_retrieval,
         )
     except ai_case_language.LanguageBoundaryError as exc:
         raise CaseDecisionError(
@@ -783,6 +807,15 @@ async def _retrieve_project_policies(
             correlation_id=correlation_id,
         ) from exc
     except ai_case_project.IndexProjectionUnavailable as exc:
+        raise CaseDecisionError(
+            status_code=503,
+            code=exc.code,
+            message=str(exc),
+            correlation_id=correlation_id,
+        ) from exc
+    except ai_case_project.RuleIndexNotReady as exc:
+        # Refused, never downgraded. A caller who asked for rule retrieval and
+        # silently received a policy-mode selection would have no way to tell.
         raise CaseDecisionError(
             status_code=503,
             code=exc.code,
@@ -822,21 +855,38 @@ async def _retrieve_project_policies(
         key=policy_set.key,
         name=getattr(policy_set, "name", "") or "",
     )
-    return PolicyRetrievalEnvelope(
-        correlation_id=correlation_id,
-        policy_set=project,
-        active_version=_version_ref(selected.context),
-        query=PolicyRetrievalQueryRef(
+    common = {
+        "correlation_id": correlation_id,
+        "policy_set": project,
+        "active_version": _version_ref(selected.context),
+        "query": PolicyRetrievalQueryRef(
             scenario=scenario,
             scenario_hash=scenario_hash(scenario),
         ),
+        "size": SizeRef(**(response.get("size") or {})),
+        "language": language,
+        "token_usage": _token_usage_ref(usage_scope),
+        "latency_ms": max(0, int((time.perf_counter() - started) * 1000)),
+        "stage_latency_ms": stage_latency_ms or None,
+    }
+    if rule_retrieval:
+        # Rules are returned as rules, under their own schema version. A caller
+        # pinned to `policy_retrieval_v1` fails on the unknown version rather
+        # than reading an absent `policies` field as "nothing bears on this
+        # question", which is the silent misreport this split exists to stop.
+        return RuleRetrievalEnvelope(
+            **common,
+            retrieval=RuleRetrievalRef(
+                **_rule_retrieval_fields(response.get("retrieval") or {})
+            ),
+            rules=[
+                RetrievedRuleRecord(**record) for record in response.get("rules") or []
+            ],
+        )
+    return PolicyRetrievalEnvelope(
+        **common,
         retrieval=RetrievalRef(**_retrieval_fields(response.get("retrieval") or {})),
         policies=response.get("policies") or [],
-        size=SizeRef(**(response.get("size") or {})),
-        language=language,
-        token_usage=_token_usage_ref(usage_scope),
-        latency_ms=max(0, int((time.perf_counter() - started) * 1000)),
-        stage_latency_ms=stage_latency_ms or None,
     )
 
 
@@ -846,7 +896,9 @@ async def retrieve_project_policies(
     policy_set,
     scenario: str,
     correlation_id: str,
-) -> PolicyRetrievalEnvelope:
+    rule_retrieval: bool = False,
+
+) -> PolicyRetrievalEnvelope | RuleRetrievalEnvelope:
     """Return filtered policy records with observed duration and model usage."""
 
     started = time.perf_counter()
@@ -858,6 +910,7 @@ async def retrieve_project_policies(
             correlation_id=correlation_id,
             usage_scope=usage_scope,
             started=started,
+            rule_retrieval=rule_retrieval,
         )
 
 
@@ -1018,6 +1071,7 @@ def compact_decision_receipt(
         request=LightRequestRef(
             scenario=envelope.request.scenario,
             scenario_hash=envelope.request.scenario_hash,
+            rule_retrieval=envelope.request.rule_retrieval,
         ),
         asked=asked,
         outcome=outcome,
@@ -1026,6 +1080,7 @@ def compact_decision_receipt(
         retrieval=LightRetrievalRef(
             status=envelope.retrieval.status,
             method=envelope.retrieval.method,
+            retrieval_mode=envelope.retrieval.retrieval_mode,
             policies_retained=envelope.retrieval.policies_retained,
             rule_rescued_policies=envelope.retrieval.rule_rescued_policies,
             reason=envelope.retrieval.reason,
@@ -1034,6 +1089,129 @@ def compact_decision_receipt(
         citations=citations,
         trace=LightTraceRef(
             classifier_version=asked.classifier_version,
+            prompt_version=envelope.trace.prompt_version,
+            plan_profile=grounding.get("plan_profile"),
+            selector_catalogue_version=grounding.get("selector_catalogue_version"),
+            model_deployment=envelope.trace.model_deployment,
+            stage_latency_ms=envelope.trace.stage_latency_ms,
+            token_usage=envelope.trace.token_usage,
+        ),
+        decision_hash=envelope.decision_hash,
+        hash_basis=envelope.hash_basis,
+        receipt_url=envelope.receipt_url,
+        latency_ms=envelope.latency_ms,
+    )
+
+
+def compact_rule_decision_receipt(
+    envelope: CaseDecisionRuleEnvelope,
+) -> CaseDecisionRuleLightEnvelope:
+    """Project a full rule receipt without introducing a policy-shaped field."""
+
+    if envelope.asked.information_requested and envelope.asked.verdict_requested:
+        response_type = "mixed"
+    elif envelope.asked.verdict_requested:
+        response_type = "decision"
+    elif envelope.asked.information_requested:
+        response_type = "informational"
+    else:
+        response_type = "not_evaluated"
+
+    information = (
+        LightRuleInformationRef(
+            status=envelope.information.status,
+            answer=envelope.information.answer,
+            explanation=envelope.information.explanation,
+            note=envelope.information.note,
+        )
+        if envelope.information is not None
+        else None
+    )
+    verdict = (
+        LightRuleVerdictRef(
+            status=envelope.verdict.status,
+            reached=envelope.verdict.reached,
+            decision=envelope.verdict.decision,
+            explanation=envelope.verdict.explanation,
+            missing_information=envelope.verdict.missing_information,
+            verification_requirements=envelope.verdict.verification_requirements,
+            note=envelope.verdict.note,
+        )
+        if envelope.verdict is not None
+        else None
+    )
+    grounding = (
+        (envelope.verdict.grounding if envelope.verdict else None)
+        or (envelope.information.grounding if envelope.information else None)
+        or {}
+    )
+
+    def light_rule(rule_id: str, source: RuleSourceRef) -> LightRuleRef:
+        return LightRuleRef(
+            rule_id=rule_id,
+            provision_key=source.provision_key,
+            provision_id=source.provision_id,
+            heading_path=list(source.heading_path),
+        )
+
+    return CaseDecisionRuleLightEnvelope(
+        response_type=response_type,
+        decision_id=envelope.decision_id,
+        correlation_id=envelope.correlation_id,
+        idempotency_key=envelope.idempotency_key,
+        policy_set=envelope.policy_set,
+        active_version=envelope.active_version,
+        request=LightRuleRequestRef(
+            scenario=envelope.request.scenario,
+            scenario_hash=envelope.request.scenario_hash,
+            rule_retrieval=True,
+        ),
+        asked=LightAskedRef(
+            information_requested=envelope.asked.information_requested,
+            verdict_requested=envelope.asked.verdict_requested,
+            classifier_version=envelope.asked.classifier_version,
+        ),
+        outcome=LightOutcomeRef(
+            information=envelope.outcome.information,
+            verdict=envelope.outcome.verdict,
+        ),
+        information=information,
+        verdict=verdict,
+        retrieval=LightRuleRetrievalRef(
+            status=envelope.retrieval.status,
+            method=envelope.retrieval.method,
+            retrieval_mode="rule",
+            rules_selected=envelope.retrieval.rules_selected,
+            rules_grounded=envelope.retrieval.rules_grounded,
+            rules_omitted=envelope.retrieval.rules_omitted,
+            rule_grounding_bytes=envelope.retrieval.rule_grounding_bytes,
+            rule_grounding_budget_bytes=(
+                envelope.retrieval.rule_grounding_budget_bytes
+            ),
+            rule_grounding_proxy_tokens=(
+                envelope.retrieval.rule_grounding_proxy_tokens
+            ),
+            rule_grounding_proxy_token_budget=(
+                envelope.retrieval.rule_grounding_proxy_token_budget
+            ),
+            reason=envelope.retrieval.reason,
+        ),
+        rules=[
+            light_rule(ref.rule_id, ref.source)
+            for ref in envelope.considered_rules
+            if ref.grounded
+        ],
+        citations=[
+            LightRuleCitationRef(
+                rule_id=citation.rule_id,
+                rule=light_rule(citation.rule_id, citation.source),
+                source=citation.quote,
+                serves=list(citation.serves),
+            )
+            for citation in envelope.citations
+        ],
+        trace=LightTraceRef(
+            classifier_version=envelope.asked.classifier_version,
             prompt_version=envelope.trace.prompt_version,
             plan_profile=grounding.get("plan_profile"),
             selector_catalogue_version=grounding.get("selector_catalogue_version"),
@@ -1094,6 +1272,7 @@ async def _decide_project_case(
     additional_instructions: str = "",
     request_metadata: dict | None = None,
     usage_scope: UsageScope,
+    rule_retrieval: bool = False,
 ) -> CaseDecisionOutcome:
     """Decide a project case and answer with a persisted receipt.
 
@@ -1125,6 +1304,17 @@ async def _decide_project_case(
     and a finalisation that failed. It never returns a verdict that was not
     stored, and never returns one composed from a question it could not read.
     """
+
+    if rule_retrieval and (provision_id or "").strip():
+        raise CaseDecisionError(
+            status_code=422,
+            code="rule_retrieval_requires_project_scope",
+            message=(
+                "rule_retrieval cannot be combined with provision_id; omit "
+                "provision_id so rules are retrieved across the project"
+            ),
+            correlation_id=correlation_id,
+        )
 
     settings = get_settings()
     if not settings.ai_enabled:
@@ -1193,6 +1383,7 @@ async def _decide_project_case(
         provision_id=normalised_provision_id,
         reasoning_effort=reasoning_effort,
         additional_instructions=guidance,
+        rule_retrieval=rule_retrieval,
     )
 
     # The guidance rides in the reservation's metadata as well as in the
@@ -1335,6 +1526,7 @@ async def _decide_project_case(
             reasoning_effort=reasoning_effort,
             additional_instructions=crossing.guidance,
             with_context=True,
+            rule_retrieval=rule_retrieval,
         )
     except LookupError as exc:
         raise await _fail(
@@ -1369,6 +1561,24 @@ async def _decide_project_case(
         # answer that would come back is a confident "no published policy bears
         # on this". A caller has to be able to tell that from "the corpus could
         # not be compared", which is what this code says.
+        raise await _fail(
+            session,
+            repo,
+            row,
+            decision_id=decision_id,
+            code=exc.code,
+            message=str(exc),
+            status_code=503,
+            correlation_id=correlation_id,
+            started=started,
+        ) from exc
+    except ai_case_project.RuleIndexNotReady as exc:
+        # Also before the generic `RuntimeError`, and for the same reason as the
+        # projection refusal above: a rule-first query over a corpus that holds
+        # no document for most rules would return an authoritative-looking "no
+        # rule bears on this", and the caller could not tell the two apart. The
+        # reservation is closed as a failed receipt naming what is missing;
+        # nothing falls back to policy mode.
         raise await _fail(
             session,
             repo,
@@ -1463,8 +1673,12 @@ async def _decide_project_case(
     )
 
     links_started = time.perf_counter()
-    provision_ids = await _provision_ids_by_key(
-        session, policy_set_id=project_id, response=response
+    provision_ids = (
+        {}
+        if rule_retrieval
+        else await _provision_ids_by_key(
+            session, policy_set_id=project_id, response=response
+        )
     )
     answer.context["timings_ms"]["policy_link_lookup"] = max(
         0, int((time.perf_counter() - links_started) * 1000)
@@ -1513,6 +1727,7 @@ async def _decide_project_case(
         response=response,
         context=answer.context,
         provision_ids=provision_ids,
+        rule_retrieval=rule_retrieval,
     )
     finalisation_ms["envelope_build"] = max(
         0, int((time.perf_counter() - envelope_build_started) * 1000)
@@ -1625,6 +1840,7 @@ async def decide_project_case(
     caller: Caller,
     additional_instructions: str = "",
     request_metadata: dict | None = None,
+    rule_retrieval: bool = False,
 ) -> CaseDecisionOutcome:
     """Decide and persist one case while collecting every model call's usage."""
 
@@ -1641,6 +1857,7 @@ async def decide_project_case(
             additional_instructions=additional_instructions,
             request_metadata=request_metadata,
             usage_scope=usage_scope,
+            rule_retrieval=rule_retrieval,
         )
 
 
@@ -1940,7 +2157,8 @@ def build_envelope(
     additional_instructions: str = "",
     language: LanguageRef | None = None,
     provision_ids: dict[str, str] | None = None,
-) -> CaseDecisionEnvelopeV2:
+    rule_retrieval: bool = False,
+) -> CaseDecisionEnvelopeV2 | CaseDecisionRuleEnvelope:
     """Project the decider's answer and its context into `case_decision_v2`.
 
     Kept a module-level function rather than folded into `decide_project_case`
@@ -1984,6 +2202,24 @@ def build_envelope(
     has ever returned.
     """
 
+    if rule_retrieval:
+        return _build_rule_envelope(
+            decision_id=decision_id,
+            correlation_id=correlation_id,
+            idempotency_key=idempotency_key,
+            project=project,
+            caller=caller,
+            scenario=scenario,
+            reasoning_effort=reasoning_effort,
+            received_at=received_at,
+            decided_at=decided_at,
+            latency_ms=latency_ms,
+            response=response,
+            context=context,
+            additional_instructions=additional_instructions,
+            language=language,
+        )
+
     ids = provision_ids or {}
     evaluation = response.get("evaluation")
 
@@ -2017,6 +2253,7 @@ def build_envelope(
             scope=str(response.get("scope") or ai_case_project.SCOPE_PROJECT),
             requested_provision_id=requested_provision_id,
             reasoning_effort_requested=reasoning_effort,
+            rule_retrieval=rule_retrieval,
             received_at=received_at,
         ),
         language=language,
@@ -2057,7 +2294,94 @@ def build_envelope(
     return envelope
 
 
-def legacy_decision_status(envelope: CaseDecisionEnvelopeV2) -> str:
+def _build_rule_envelope(
+    *,
+    decision_id: str,
+    correlation_id: str,
+    idempotency_key: str | None,
+    project: PolicySetRef,
+    caller: Caller,
+    scenario: str,
+    reasoning_effort: str,
+    received_at: datetime,
+    decided_at: datetime,
+    latency_ms: int,
+    response: dict,
+    context: dict,
+    additional_instructions: str,
+    language: LanguageRef | None,
+) -> CaseDecisionRuleEnvelope:
+    """Project a rule-mode decision into its own strict stored contract."""
+
+    evaluation = response.get("evaluation")
+    asked = _asked_ref(evaluation)
+    information = (
+        _rule_information_section(evaluation)
+        if asked.information_requested
+        else None
+    )
+    verdict = _rule_verdict_section(evaluation) if asked.verdict_requested else None
+    envelope = CaseDecisionRuleEnvelope(
+        decision_id=decision_id,
+        correlation_id=correlation_id,
+        idempotency_key=idempotency_key,
+        policy_set=project,
+        active_version=_version_ref(context),
+        caller=CallerRef(
+            principal_identity=caller.identity,
+            principal_role=caller.role,
+            authentication_source=caller.authentication_source,
+            calling_system_identity=caller.calling_system_identity,
+            channel=caller.channel,
+        ),
+        request=RuleRequestRef(
+            scenario=scenario,
+            scenario_hash=scenario_hash(scenario),
+            additional_instructions=additional_instructions,
+            additional_instructions_hash=additional_instructions_hash(
+                additional_instructions
+            ),
+            scope=str(response.get("scope") or ai_case_project.SCOPE_PROJECT),
+            requested_provision_id=None,
+            reasoning_effort_requested=reasoning_effort,
+            rule_retrieval=True,
+            received_at=received_at,
+        ),
+        language=language,
+        asked=asked,
+        outcome=OutcomeRef(
+            information=_track_outcome(
+                evaluated=evaluation is not None,
+                requested=asked.information_requested,
+                section=information,
+            ),
+            verdict=_track_outcome(
+                evaluated=evaluation is not None,
+                requested=asked.verdict_requested,
+                section=verdict,
+            ),
+        ),
+        information=information,
+        verdict=verdict,
+        retrieval=RuleRetrievalRef(
+            **_rule_retrieval_fields(response.get("retrieval") or {})
+        ),
+        considered_rules=_considered_rule_refs(response),
+        citations=_merged_rule_citations(information, verdict),
+        size=SizeRef(**(response.get("size") or {})) if response.get("size") else None,
+        trace=_trace_ref(response, context, evaluated=evaluation is not None),
+        decision_hash="",
+        receipt_url=RECEIPT_PATH.format(decision_id=decision_id),
+        decided_at=decided_at,
+        latency_ms=latency_ms,
+    )
+    envelope.decision_hash = decision_hash_rule_v1(envelope)
+    return envelope
+
+
+def legacy_decision_status(
+    envelope: CaseDecisionEnvelopeV2 | CaseDecisionRuleEnvelope,
+) -> str:
     """The one scalar the stored row's `decision_status` column still carries.
 
     The column predates the two-track receipt and is what operational queries —
@@ -2078,7 +2402,9 @@ def legacy_decision_status(envelope: CaseDecisionEnvelopeV2) -> str:
     return NOT_EVALUATED
 
 
-def _decision_summary(envelope: CaseDecisionEnvelopeV2) -> dict:
+def _decision_summary(
+    envelope: CaseDecisionEnvelopeV2 | CaseDecisionRuleEnvelope,
+) -> dict:
     """The row's at-a-glance summary column, in the two-track shape.
 
     A summary column that still described one branch would be read as the whole
@@ -2257,6 +2583,34 @@ def _verdict_section(
     )
 
 
+def _rule_information_section(
+    evaluation: dict | None,
+) -> RuleInformationSection | None:
+    """Project information with citations that cannot carry a policy."""
+
+    section = _information_section(evaluation)
+    if section is None:
+        return None
+    data = section.model_dump(mode="python")
+    data["citations"] = _rule_citation_refs(
+        (evaluation or {}).get("informational")
+    )
+    return RuleInformationSection.model_validate(data)
+
+
+def _rule_verdict_section(
+    evaluation: dict | None,
+) -> RuleVerdictSection | None:
+    """Project a verdict with citations that cannot carry a policy."""
+
+    section = _verdict_section(evaluation)
+    if section is None:
+        return None
+    data = section.model_dump(mode="python")
+    data["citations"] = _rule_citation_refs((evaluation or {}).get("decision"))
+    return RuleVerdictSection.model_validate(data)
+
+
 def _missing_information_refs(branch: dict, *, flat: list[str]) -> list[MissingInformationItem]:
     """The structured missing facts, from the gather or from the flat list.
 
@@ -2362,6 +2716,68 @@ def _merged_citations(
     return list(merged.values())
 
 
+def _rule_citation_refs(branch: dict | None) -> list[RuleCitationRef]:
+    """One track's rule citations, with provision identifiers and no policy."""
+
+    if not isinstance(branch, dict):
+        return []
+
+    refs: list[RuleCitationRef] = []
+    for citation in branch.get("citations") or []:
+        if not isinstance(citation, dict):
+            continue
+        source = citation.get("source") or {}
+        provision = (
+            citation.get("source_provision")
+            or citation.get("policy")
+            or {}
+        )
+        refs.append(
+            RuleCitationRef(
+                rule_id=str(citation.get("rule_id") or ""),
+                source=RuleSourceRef(
+                    provision_key=provision.get("provision_key"),
+                    provision_id=provision.get("provision_id"),
+                    heading_path=list(provision.get("heading_path") or []),
+                ),
+                quote=RuleCitationSourceRef(
+                    state=str(source.get("state") or "unresolved"),
+                    text=source.get("text"),
+                    page=source.get("page"),
+                    section=source.get("section"),
+                ),
+            )
+        )
+    return refs
+
+
+def _merged_rule_citations(
+    information: RuleInformationSection | None,
+    verdict: RuleVerdictSection | None,
+) -> list[MergedRuleCitationRef]:
+    """Every cited rule once, tagged with the tracks that used it."""
+
+    merged: dict[str, MergedRuleCitationRef] = {}
+    for section, tag in (
+        (information, SERVES_INFORMATION),
+        (verdict, SERVES_VERDICT),
+    ):
+        if section is None:
+            continue
+        for citation in section.citations:
+            existing = merged.get(citation.rule_id)
+            if existing is None:
+                merged[citation.rule_id] = MergedRuleCitationRef(
+                    rule_id=citation.rule_id,
+                    source=citation.source,
+                    quote=citation.quote,
+                    serves=[tag],  # type: ignore[list-item]
+                )
+            elif tag not in existing.serves:
+                existing.serves.append(tag)  # type: ignore[arg-type]
+    return list(merged.values())
+
+
 def _version_ref(context: dict) -> VersionRef | None:
     version_id = context.get("policy_version_id")
     if not version_id:
@@ -2377,13 +2793,19 @@ def _version_ref(context: dict) -> VersionRef | None:
 _RETRIEVAL_FIELDS = (
     "status",
     "method",
+    "retrieval_mode",
+    "rule_mode_parent_cap",
+    "rule_mode_parents",
+    "rule_mode_rule_hits",
+    "rule_mode_policy_fallback",
+    "rule_mode_policy_fallback_offered",
     "precision_mode",
     "semantic_candidates",
     "semantic_selected",
     "semantic_largest_gap",
     "semantic_cutoff_score",
     "semantic_elbow_applied",
-    "direct_policy_order",
+    "direct_rule_order",
     "coverage_expanded_policies",
     "coverage_semantic_floor",
     "rule_rescue_candidates",
@@ -2421,6 +2843,36 @@ _RETRIEVAL_FIELDS = (
     "reason",
 )
 
+_RULE_RETRIEVAL_FIELDS = (
+    "status",
+    "method",
+    "retrieval_mode",
+    "precision_mode",
+    "semantic_candidates",
+    "semantic_selected",
+    "semantic_largest_gap",
+    "semantic_cutoff_score",
+    "semantic_elbow_applied",
+    "direct_policy_order",
+    "rule_mode_rule_hits",
+    "rule_semantic_window",
+    "rule_semantic_candidates",
+    "projection_profile",
+    "projection_ready",
+    "rule_documents_matched",
+    "rule_index_state",
+    "retrieval_strategy",
+    "rules_selected",
+    "rules_grounded",
+    "rules_omitted",
+    "rule_grounding_bytes",
+    "rule_grounding_budget_bytes",
+    "rule_grounding_proxy_tokens",
+    "rule_grounding_proxy_token_budget",
+    "rule_grounding_chars",
+    "reason",
+)
+
 
 def _retrieval_fields(retrieval: dict) -> dict:
     """Only the fields the contract names, so a decider addition cannot leak in.
@@ -2432,6 +2884,19 @@ def _retrieval_fields(retrieval: dict) -> dict:
 
     fields = {name: retrieval.get(name) for name in _RETRIEVAL_FIELDS if name in retrieval}
     fields.setdefault("status", str(retrieval.get("status") or "unknown"))
+    return fields
+
+
+def _rule_retrieval_fields(retrieval: dict) -> dict:
+    """Only rule-native retrieval facts; policy counters cannot cross."""
+
+    fields = {
+        name: retrieval.get(name)
+        for name in _RULE_RETRIEVAL_FIELDS
+        if name in retrieval
+    }
+    fields.setdefault("status", str(retrieval.get("status") or "unknown"))
+    fields.setdefault("retrieval_mode", "rule")
     return fields
 
 
@@ -2457,6 +2922,7 @@ def _policy_ref(entry: dict, *, provision_ids: dict[str, str] | None = None) -> 
     provision_key = entry.get("provision_key")
     provision_id = entry.get("provision_id") or (provision_ids or {}).get(str(provision_key or ""))
     selection = entry.get("rule_selection")
+    disclosure = entry.get("score_disclosure")
     return PolicyRef(
         provision_id=str(provision_id) if provision_id else None,
         provision_key=provision_key,
@@ -2470,6 +2936,9 @@ def _policy_ref(entry: dict, *, provision_ids: dict[str, str] | None = None) -> 
         reason=entry.get("reason"),
         payload_url=_payload_url(provision_id),
         rule_selection=RuleSelectionRef(**selection) if isinstance(selection, dict) else None,
+        score_disclosure=(
+            ScoreDisclosureRef(**disclosure) if isinstance(disclosure, dict) else None
+        ),
     )
 
 
@@ -2494,6 +2963,15 @@ def _considered_refs(response: dict, *, provision_ids: dict[str, str] | None = N
             {**provision, "retained": response.get("evaluation") is not None},
             provision_ids=provision_ids,
         )
+    ]
+
+
+def _considered_rule_refs(response: dict) -> list[RuleRef]:
+    """The complete selected rule set, including named omissions."""
+
+    return [
+        RuleRef.model_validate(entry)
+        for entry in (response.get("rule_considered") or [])
     ]
 
 

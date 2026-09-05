@@ -173,6 +173,8 @@ from policy_platform.infrastructure.ai.openai_client import AzureOpenAIClient
 from policy_platform.infrastructure.assistants.ai_case_intent import (
     _MAX_RECORD_CHARS,
     answer_case_over_policies,
+    answer_case_over_rules,
+    selector_catalogue,
 )
 from policy_platform.infrastructure.assistants.ai_case_language import (
     ENGLISH_PROJECTION_PROFILE,
@@ -187,6 +189,8 @@ from policy_platform.infrastructure.projection.policy_rule_slice import (
     RULE_INDEX_UNAVAILABLE,
     SELECTED_RULE_BUDGET,
     RRF_K,
+    build_slice,
+    context_rule_ids,
     select_rules_for_scenario,
 )
 from policy_platform.infrastructure.projection.policy_semantic_identity import (
@@ -204,12 +208,14 @@ from policy_platform.infrastructure.search.policy_index import (
     CONTENT_TYPE_POLICY,
     CONTENT_TYPE_RULE,
     POLICY_SEMANTIC_CONFIG,
+    RULE_INDEX_SCOPE_ALL,
     odata_string,
     policy_document_id,
     policy_index_filter,
     policy_index_name,
     policy_rule_content_filter,
     read_projection_readiness,
+    read_rule_index_scope,
 )
 from policy_platform.infrastructure.search.search_client import AzureSearchClient
 from policy_platform.infrastructure.settings import get_settings
@@ -268,6 +274,63 @@ RETRIEVAL_METHOD_LEGACY = "hybrid_policy_rule_rrf_v1"
 RETRIEVAL_METHOD = "direct_policy_rrf_elbow_rule_rescue_v1"
 LIGHT_RETRIEVAL_METHOD = "semantic_policy_elbow_v1"
 
+#: THE TWO RETRIEVAL MODES, AND WHY THE DEFAULT IS NAMED RATHER THAN IMPLIED.
+#:
+#: `policy` is what this module has always done and what every request that does
+#: not ask otherwise still gets: policy documents are the unit of discovery, and
+#: rule documents elevate a parent. `rule` inverts that — rules are the unit of
+#: discovery and a policy is reached through its rules — and it is reached only
+#: by an explicit request. Naming both means a disclosure can say which one ran
+#: instead of a reader inferring it from a method string, and it means the
+#: default is a choice on the record rather than the absence of one.
+RETRIEVAL_MODE_POLICY = "policy"
+RETRIEVAL_MODE_RULE = "rule"
+
+#: The methods rule mode names. Kept distinct from the policy-mode methods
+#: because they are different narrowings and a receipt must not report one as
+#: the other.
+RULE_RETRIEVAL_METHOD = "rule_native_v1"
+LIGHT_RULE_RETRIEVAL_METHOD = "rule_native_light_v1"
+
+#: How many rule documents the rule-first discovery pass examines. Deeper than
+#: the policy-mode discovery scan because in this mode the rule scan *is* the
+#: discovery: a provision that no rule of it surfaced in is reachable only
+#: through the policy channel, which this mode keeps as recall and not as its
+#: primary evidence.
+RETRIEVAL_RULE_MODE_SCAN = 200
+
+#: The most rows of one policy that may contribute to that policy's own score.
+#:
+#: Without a cap, aggregating a parent's rule hits makes retrieval a count: a
+#: seventy-four-row schedule with many weakly matching rows outranks a four-rule
+#: provision that answers the question, purely because it has more rows to
+#: contribute. That is the same defect the payload-budget pass exists to undo,
+#: moved earlier and made harder to see. A policy is elevated by *holding rules
+#: that bear*, and past a small number of them further rows say the same thing
+#: again — so only the best few of any policy count, and every policy, large or
+#: small, gets the same number of opportunities.
+RULE_MODE_PARENT_CAP = 3
+
+#: How much a supporting rule counts beside the best-placed one.
+#:
+#: A cap alone is not enough, and the arithmetic is the reason. Reciprocal-rank
+#: scores are deliberately flat — `RRF_K` is 60 precisely so a rank-0 hit cannot
+#: dominate a rank-1 hit — so an unweighted sum of three of them exceeds a single
+#: rank-0 score even when all three sit a hundred places lower. Capped or not,
+#: that is still "the policy with more rows wins", just bounded at three.
+#:
+#: So the parent's best-placed rule carries its full reciprocal rank and each
+#: further counted rule carries a quarter of its own. The bound that follows is
+#: the property worth stating: a parent's score can never exceed
+#: ``1 + RULE_MODE_SUPPORT_WEIGHT * (RULE_MODE_PARENT_CAP - 1)`` times its own
+#: lead score — one and a half times, as configured — so support can lift a
+#: policy past a close neighbour and can never lift one past a policy whose best
+#: rule placed far better. Breadth of evidence is rewarded; volume of rows is
+#: not.
+RULE_MODE_SUPPORT_WEIGHT = 0.25
+
+
+
 #: Retrieval-only callers value a small, precise context over the decision
 #: path's deliberate recall bias. Semantic scores are cut at the first meaningful
 #: elbow; when the ranking has no such elbow, three policies remain available
@@ -283,6 +346,133 @@ DECISION_COVERAGE_IDF_SMOOTHING = 0.25
 DIRECT_POLICY_ORDER_SEMANTIC = "semantic_strong_lead_v1"
 DIRECT_POLICY_ORDER_RRF = "rrf_hybrid_semantic_v1"
 DIRECT_POLICY_ORDER_HYBRID = "hybrid_search_order_v1"
+#: Rule mode's own ordering, named for what it actually is. A parent's score is
+#: a *weighted reciprocal-rank sum over the ranks of its own rules* — one
+#: ranking, weighted by the support device — and not the symmetric fusion of a
+#: policy's hybrid and semantic ranks that `DIRECT_POLICY_ORDER_RRF` names.
+#: Reporting the latter here would claim two channels fused where one was
+#: aggregated, so it gets a name of its own.
+DIRECT_POLICY_ORDER_RULE = "rule_weighted_rrf_v1"
+
+#: The orders whose cardinality was decided by an evidence cut rather than by
+#: the retention budget.
+#:
+#: Coverage expansion exists to spend budget a *cut* left unspent — it adds a
+#: policy whose heading names an explicit query term the cut selection does not
+#: cover. That is only meaningful where a cut happened: under
+#: `DIRECT_POLICY_ORDER_HYBRID` no cut was made and the pool already reaches the
+#: budget, so there is nothing left to spend. Rule mode belongs here for exactly
+#: the same reason policy-mode RRF does, and it was silently absent — the gate
+#: read one order rather than the property the orders share, so rule mode never
+#: reached the expansion even when its cut had left the budget half empty.
+COVERAGE_EXPANDABLE_POLICY_ORDERS = frozenset(
+    {DIRECT_POLICY_ORDER_RRF, DIRECT_POLICY_ORDER_RULE}
+)
+
+#: The key each ranked hit carries naming *what quantity* its ``@search.score``
+#: holds, written where that score is established rather than inferred later.
+#:
+#: `@search.score` is overwritten by whichever selection path ran, so the number
+#: on a considered entry has been, variously, an Azure semantic reranker score,
+#: a raw hybrid search score, a symmetric RRF sum over two policy rankings, and
+#: a weighted RRF sum over one parent's rule ranks. Those are four different
+#: quantities on four different scales, and a receipt that reported
+#: `semantic_cutoff_score` beside one of the fusion scores invited a reader to
+#: compare numbers that cannot be compared. Naming the quantity is the smallest
+#: repair that does not move any selection.
+SCORE_KIND_FIELD = "score_kind"
+
+#: `@search.score` is the Azure semantic reranker score for this hit. This is
+#: the only kind on the same scale as `semantic_cutoff_score`.
+BEST_SCORE_KIND_SEMANTIC = "semantic_reranker_v1"
+#: `@search.score` is the raw hybrid lexical/vector search score.
+BEST_SCORE_KIND_HYBRID = "hybrid_search_v1"
+#: `@search.score` is the fused score of the ordering of the same name. These
+#: two kinds *are* the order constants, because under those orders the score is
+#: that order's own output. The two above are not order names, because a score
+#: can be a reranker or a raw hybrid value under more than one ordering — which
+#: is exactly why the kind is recorded per hit and not per retrieval.
+BEST_SCORE_KIND_POLICY_RRF = DIRECT_POLICY_ORDER_RRF
+BEST_SCORE_KIND_RULE_RRF = DIRECT_POLICY_ORDER_RULE
+#: `@search.score` is the maximum reranker score over a policy's *child rules*,
+#: not that policy document's own score. It is on the reranker scale, which is
+#: exactly why it needs a name of its own rather than the semantic one: a reader
+#: who saw `semantic_reranker_v1` here would compare a maximum over `k` samples
+#: against a cutoff calibrated on a single document score, which is the same
+#: category error this field set out to remove. Rule mode already separates the
+#: two; the policy-mode rule rescue reaches the same quantity by another route
+#: and is named the same way.
+BEST_SCORE_KIND_RULE_MAX_SEMANTIC = "rule_max_reranker_v1"
+
+#: Rule mode only. The reranker score of the parent's *lead* counted rule and
+#: the maximum over all of its counted rules, carried separately.
+#:
+#: The parent's `@search.rerankerScore` is the maximum, and the elbow consumes
+#: it. Whether a maximum over `k` counted rules is the right summary — against,
+#: say, the lead alone — is a question about calibration that cannot be asked
+#: while only the answer is observable. Both, plus the `k` already recorded as
+#: `rule_hits_counted`, make it measurable without changing what is selected.
+RULE_LEAD_SEMANTIC_FIELD = "rule_lead_reranker_score"
+RULE_MAX_SEMANTIC_FIELD = "rule_max_reranker_score"
+
+#: Rule mode selects rules and delivers rules. These name that path so a receipt
+#: cannot be read as the parent-grouped one it replaced.
+RULE_ONLY_RETRIEVAL_METHOD = "rule_documents_semantic_v1"
+DIRECT_RULE_ORDER_SEMANTIC = "rule_semantic_v1"
+
+#: How a rule reached the answer path: on its own evidence, or because a matched
+#: rule cannot be read correctly without it. Recall in rule mode is preserved by
+#: admitting *neighbouring rules* — conditions, exceptions and overrides — and
+#: never by widening back out to the parent provision's content.
+RULE_ADMITTED_AS_FIELD = "admitted_as"
+RULE_ADMITTED_MATCHED = "matched"
+RULE_ADMITTED_NEIGHBOUR = "neighbour"
+RULE_REQUIRED_BY_FIELD = "required_by_rule_id"
+
+#: The most rules one rule-mode answer may rest on before the evidence cut is
+#: asked to narrow further. It is a bound, not a target: the elbow decides how
+#: many of them the evidence actually separates.
+RETRIEVAL_RULE_BUDGET = 12
+
+#: The strict total size of a rule-mode answer's grounding.
+#:
+#: Type separation alone does **not** bound this. A rule record is smaller than
+#: the provision containing it, but several compact rules can still exceed one
+#: small policy, so "rule mode is smaller" is not a theorem about the contract
+#: and must not be asserted as one.
+#:
+#: Two budgets, because they measure different things and either can be the
+#: binding one:
+#:
+#: * **bytes** — the exact canonical serialized UTF-8 length. Characters are not
+#:   bytes. This corpus is multilingual, and one non-ASCII character can be two,
+#:   three or four bytes, so a character count silently understates a rendered
+#:   Arabic or CJK rule by up to a factor of three. Transport is billed in bytes.
+#: * **proxy tokens** — one per UTF-8 byte. Every token of a byte-level BPE
+#:   vocabulary maps to at least one byte, so real tokens never exceed bytes and
+#:   this bound holds without the deployed tokenizer. It is a proxy and is named
+#:   one; the byte ceiling is the hard guarantee and this restates it in tokens.
+RULE_GROUNDING_BUDGET_BYTES = 40_000
+RULE_GROUNDING_PROXY_TOKEN_BUDGET = RULE_GROUNDING_BUDGET_BYTES
+
+#: Why a selected rule did not reach the answer path. Truncation happens only at
+#: whole-rule boundaries — half a rule is not a smaller answer, it is an
+#: unreadable one — and every rule dropped is named with its reason.
+RULE_OMITTED_OVER_BUDGET_BYTES = "over_rule_grounding_byte_budget"
+RULE_OMITTED_OVER_PROXY_TOKEN_BUDGET = "over_rule_grounding_proxy_token_budget"
+RULE_OMITTED_UNRESOLVED = "neighbour_not_in_corpus"
+RULE_OMITTED_NO_SLOT = "no_rule_slot_remaining"
+
+#: Rule mode names its own strategy. The policy-fallback vocabulary is not
+#: carried forward: there is no such channel here, and a field named after one
+#: invites a reader to believe there is. Historical `rule_first_parent_grouped_v1`
+#: receipts keep their own counters, which is where that vocabulary belongs.
+RULE_ONLY_STRATEGY = "rule_only_v1"
+#: The `k` those two range over. Declared beside them rather than written as a
+#: literal at each site, for the same reason they are: a selector that carries a
+#: bare string is indistinguishable, to the guard that reads it, from one that
+#: has started naming domain vocabulary.
+RULE_HITS_COUNTED_FIELD = "rule_hits_counted"
 
 #: A rule may rescue a policy the direct semantic policy ranking omitted, but it
 #: must be strong in absolute terms and materially stronger than the weakest
@@ -311,6 +501,7 @@ _RULE_SELECT = (
 #: things, and only the second one retrieves.
 SCOPE_SINGLE = "single"
 SCOPE_PROJECT = "project"
+
 
 
 def _gather_kwargs(additional_instructions: str) -> dict:
@@ -361,6 +552,13 @@ RETRIEVAL_POLICY_NOT_PUBLISHED = "policy_not_published"
 #: that way would read as "nothing bears on your question" when the truth is
 #: "nothing could be compared".
 RETRIEVAL_INDEX_PROJECTION_UNAVAILABLE = INDEX_PROJECTION_UNAVAILABLE
+
+#: The state a rule-first request reaches when the project's index does not hold
+#: a document for every published rule. Raised rather than returned, for the same
+#: reason `index_projection_unavailable` is: running the query anyway would
+#: return silence about every provision whose rules were never indexed, and
+#: silence is indistinguishable from "nothing here bears on your question".
+RETRIEVAL_RULE_INDEX_NOT_READY = "rule_index_not_ready"
 
 #: Why a candidate policy was discarded, told apart so "seen and set aside" never
 #: reads the same as "never surfaced".
@@ -426,6 +624,32 @@ class IndexProjectionUnavailable(RuntimeError):
         self.readiness = readiness
 
 
+class RuleIndexNotReady(RuntimeError):
+    """A rule-first retrieval was asked for over a corpus that cannot answer it.
+
+    Raised rather than returned, and for the same reason
+    :class:`IndexProjectionUnavailable` is. A rule-first query over an index that
+    holds rule documents only for large provisions returns nothing at all about
+    every small provision's rules — not a low score, an absence — and an absence
+    reads exactly like "no rule here bears on your question". The one thing this
+    module must never do is answer a narrower question than the one asked while
+    presenting it as the same question, so the request fails and says what is
+    missing.
+
+    It is never a silent fall back to policy mode. A caller who asked for rule
+    retrieval and received a policy-mode answer would have no way to know, and
+    the disclosure would name a mode that did not run.
+
+    `scope` is what the index actually reports holding, so the refusal names the
+    state rather than only the remedy.
+    """
+
+    def __init__(self, scope: str | None, message: str) -> None:
+        super().__init__(message)
+        self.code = RETRIEVAL_RULE_INDEX_NOT_READY
+        self.scope = scope
+
+
 def is_rule_hit(hit: dict) -> bool:
     """Whether this search result is a rule document, on its own evidence.
 
@@ -476,6 +700,10 @@ def select_semantic_policy_hits(
     ]
     if not ranked:
         selected = [dict(hit) for hit in hits[:default_budget]]
+        for hit in selected:
+            # No reranker score exists, so `@search.score` is still whatever the
+            # hybrid search returned. Named as that, not as a semantic score.
+            hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_HYBRID
         return selected, {
             "precision_mode": f"{LIGHT_RETRIEVAL_METHOD}_score_unavailable",
             "semantic_candidates": len(hits),
@@ -507,6 +735,7 @@ def select_semantic_policy_hits(
         # mode the semantic score, not the pre-rerank hybrid score, is the value
         # that decided inclusion.
         hit["@search.score"] = float(hit["@search.rerankerScore"])
+        hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_SEMANTIC
 
     return selected, {
         "precision_mode": LIGHT_RETRIEVAL_METHOD,
@@ -553,6 +782,8 @@ def select_decision_policy_hits(
         return (1, index, str(hit.get("id") or ""))
 
     hybrid_direct = [dict(hit) for _, hit in sorted(indexed, key=hybrid_order)]
+    for hit in hybrid_direct:
+        hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_HYBRID
     scored_in_window = min(
         RETRIEVAL_POLICY_BUDGET,
         len(
@@ -585,6 +816,12 @@ def select_decision_policy_hits(
         for hit in ranked_direct:
             if isinstance(hit.get("@search.rerankerScore"), (int, float)):
                 hit["@search.score"] = float(hit["@search.rerankerScore"])
+                hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_SEMANTIC
+            else:
+                # It kept its hybrid score because it has no semantic one. The
+                # order is the strong-lead order either way; the *quantity* is
+                # not, and that is what this field names.
+                hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_HYBRID
         direct = ranked_direct[: len(semantic_direct)]
         direct_policy_order = DIRECT_POLICY_ORDER_SEMANTIC
     elif elbow_applied:
@@ -623,6 +860,7 @@ def select_decision_policy_hits(
                 1.0 / (RRF_K + hybrid_rank[identity])
                 + 1.0 / (RRF_K + semantic_rank[identity])
             )
+            ranked[SCORE_KIND_FIELD] = BEST_SCORE_KIND_POLICY_RRF
             ranked_direct.append(ranked)
         ranked_direct.sort(
             key=lambda hit: (
@@ -681,6 +919,12 @@ def select_decision_policy_hits(
         rescued = dict(source)
         rescued["@search.score"] = score
         rescued["@search.rerankerScore"] = score
+        # Named for what it is. The score is a maximum over this policy's child
+        # rules, not its document's own reranker score, and the two are not the
+        # same quantity even though they share a scale.
+        rescued[RULE_MAX_SEMANTIC_FIELD] = score
+        rescued[RULE_HITS_COUNTED_FIELD] = len(scores)
+        rescued[SCORE_KIND_FIELD] = BEST_SCORE_KIND_RULE_MAX_SEMANTIC
         rescued["elevated_by_rule"] = True
         rescues.append((score, parent, rescued))
 
@@ -729,6 +973,420 @@ def select_decision_policy_hits(
         ),
         "coverage_semantic_floor": DECISION_COVERAGE_SEMANTIC_FLOOR,
     }
+
+
+def select_rules_only(
+    rule_hits: list[dict],
+    *,
+    budget: int = RETRIEVAL_RULE_BUDGET,
+    minimum_gap: float = DECISION_SEMANTIC_GAP,
+) -> tuple[list[dict], list[dict], dict]:
+    """Rule mode's selection: rules ranked as rules, and nothing else.
+
+    THE CONTRACT THIS EXISTS TO KEEP
+
+    ``rule_retrieval=true`` searches rule documents and returns rule records. A
+    rule is the unit of discovery *and* the unit of delivery. There is no policy
+    query, no parent grouping, no policy recall channel, and no provision body:
+    a caller asking for rules is given rules.
+
+    That is a correction of a real defect, not a preference. The previous design
+    ranked rules and then delivered their *parent policies*, so the evidence that
+    selected a record and the record handed to the model were different things —
+    and the second was the whole provision, which is how a mode meant to be
+    narrower became wider. Grouping by parent is what made that possible, so
+    grouping by parent is what is gone.
+
+    WHAT IS KEPT
+
+    The same elbow, floor and degradation as every other selection here
+    (:func:`select_semantic_policy_hits`), read over each rule's own reranker
+    score. One elbow, one threshold, one behaviour when scores are missing. No
+    second notion of "relevant enough", and no constant tuned to a corpus.
+
+    Returns ``(selected, ranked, disclosure)``. ``ranked`` keeps every rule the
+    scan placed, in rank order, so a receipt can still show what was considered.
+    """
+
+    ranked: list[dict] = []
+    seen: set[str] = set()
+    for hit in rule_hits:
+        rule_id = str(hit.get("rule_id") or hit.get("id") or "")
+        if not rule_id or rule_id in seen:
+            continue
+        seen.add(rule_id)
+        ranked.append(hit)
+
+    # THE ABSOLUTE FLOOR, AND WHY THE ELBOW IS NOT ENOUGH ON ITS OWN.
+    #
+    # The elbow is a *relative* test: it looks for a drop. Twenty rules that all
+    # score weakly have no drop between them, so the elbow correctly declines to
+    # cut — and the bounded default then takes the budget. That is the original
+    # defect exactly, moved one contract along: a question the corpus does not
+    # answer grounds the budget because the budget exists.
+    #
+    # A rule scoring below the floor is not weak *relative* to its neighbours,
+    # it is weak in absolute terms, and no amount of company makes it relevant.
+    # The floor is the one the decision path already uses for the same purpose;
+    # it is not a new constant and it is not fitted to any question set.
+    above_floor = [
+        hit
+        for hit in ranked
+        if isinstance(hit.get("@search.rerankerScore"), (int, float))
+        and float(hit["@search.rerankerScore"]) >= DECISION_COVERAGE_SEMANTIC_FLOOR
+    ]
+    # Rules with no reranker score at all are kept as candidates: the floor can
+    # only judge a score that exists, and dropping the unscored would let a
+    # missing reranker read as irrelevance.
+    unscored = [
+        hit
+        for hit in ranked
+        if not isinstance(hit.get("@search.rerankerScore"), (int, float))
+    ]
+    eligible = above_floor if above_floor else unscored
+
+    if not ranked:
+        return [], [], {
+            "precision_mode": RULE_ONLY_RETRIEVAL_METHOD,
+            "retrieval_mode": RETRIEVAL_MODE_RULE,
+            "semantic_candidates": 0,
+            "semantic_selected": 0,
+            "direct_rule_order": DIRECT_RULE_ORDER_SEMANTIC,
+            "rule_mode_rule_hits": 0,
+            "rules_selected": 0,
+        }
+
+    selected, evidence = select_semantic_policy_hits(
+        eligible, default_budget=budget, max_budget=budget, minimum_gap=minimum_gap
+    )
+    selected_ids = {str(hit.get("rule_id") or hit.get("id") or "") for hit in selected}
+    # The selector works on copies, so the originals are re-read here rather
+    # than returned from it: the rules a receipt reports must be the ones the
+    # scan produced, not a selector's private duplicates of them.
+    chosen = [
+        hit
+        for hit in ranked
+        if str(hit.get("rule_id") or hit.get("id") or "") in selected_ids
+    ]
+    for hit in chosen:
+        reranker_score = hit.get("@search.rerankerScore")
+        if isinstance(reranker_score, (int, float)):
+            hit["@search.score"] = float(reranker_score)
+            hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_SEMANTIC
+        else:
+            hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_HYBRID
+        hit[RULE_ADMITTED_AS_FIELD] = RULE_ADMITTED_MATCHED
+
+    scored_candidates = sum(
+        1 for hit in ranked if isinstance(hit.get("@search.rerankerScore"), (int, float))
+    )
+    largest_gap = evidence.get("semantic_largest_gap")
+    return chosen, ranked, {
+        "precision_mode": RULE_ONLY_RETRIEVAL_METHOD,
+        "retrieval_mode": RETRIEVAL_MODE_RULE,
+        "semantic_candidates": evidence.get("semantic_candidates", 0),
+        "semantic_selected": len(chosen),
+        "semantic_largest_gap": largest_gap,
+        "semantic_cutoff_score": evidence.get("semantic_cutoff_score"),
+        "semantic_elbow_applied": bool(
+            min(budget, scored_candidates) > 1
+            and largest_gap is not None
+            and float(largest_gap) >= minimum_gap
+            and len(chosen) < min(budget, scored_candidates)
+        ),
+        "direct_rule_order": DIRECT_RULE_ORDER_SEMANTIC,
+        "rule_mode_rule_hits": len(rule_hits),
+        "rule_semantic_window": SEMANTIC_RERANKER_LIMIT,
+        "rule_semantic_candidates": scored_candidates,
+        "rules_selected": len(chosen),
+        # Rule mode names its own strategy. The policy-fallback counters are not
+        # carried forward at all: there is no such channel here, and a field
+        # named after one — even reporting zero, even reporting "not
+        # applicable" — invites a reader to believe a channel ran. Historical
+        # `rule_first_parent_grouped_v1` receipts keep those counters, which is
+        # the only place that vocabulary now means anything.
+        "retrieval_strategy": RULE_ONLY_STRATEGY,
+    }
+
+
+class RuleGroundingBudgetExceeded(Exception):
+    """The highest-ranked rule alone does not fit either hard budget.
+
+    A refusal rather than an exception to the ceiling. The alternatives were
+    both worse and both were tried in the design: returning nothing reads as
+    "no rule bears on this question", which is a false negative a caller cannot
+    distinguish from a true one; returning the rule anyway breaks the ceiling
+    the contract promises, and a budget with an exception in it is not a budget.
+
+    Carries identifiers and measured sizes only — never the rule's text, which
+    is the thing that did not fit.
+    """
+
+    code = "rule_grounding_budget_exceeded"
+
+    def __init__(self, *, rule_id: str, bytes_measured: int, proxy_tokens_measured: int) -> None:
+        self.rule_id = rule_id
+        self.bytes_measured = bytes_measured
+        self.proxy_tokens_measured = proxy_tokens_measured
+        super().__init__(
+            f"rule {rule_id!r} alone measures {bytes_measured} bytes and about "
+            f"{proxy_tokens_measured} tokens, over the {RULE_GROUNDING_BUDGET_BYTES}-byte and "
+            f"{RULE_GROUNDING_PROXY_TOKEN_BUDGET}-token limits one rule-mode answer may rest on. "
+            "No rule was truncated and no answer was composed from part of one."
+        )
+
+
+def canonical_rule_bytes(rule: dict) -> int:
+    """The exact serialized UTF-8 length of one rule record, as sent.
+
+    Measured on the same canonical serialization the gather is handed, and in
+    **bytes**. A character count is not this number: one non-ASCII character can
+    be up to four bytes, so on a multilingual corpus a character budget silently
+    admits several times what it claims to.
+    """
+
+    return len(_rule_grounding_transport([rule]).encode("utf-8"))
+
+
+def _rule_grounding_transport(
+    rules: list[dict],
+    *,
+    include_selector_catalogue: bool = True,
+) -> str:
+    """The exact transport measured for a rule set.
+
+    Production candidates carry the one-rule record that the gather will see
+    under `_grounding_record`. Unit-level callers pass bare rules and retain the
+    original compact `{"rules": [...]}` contract.
+    """
+
+    if rules and all("_grounding_record" in rule for rule in rules):
+        rule_views = [rule["_grounding_record"] for rule in rules]
+        records = [
+            {
+                "payload": {
+                    "rules": [view["rule"]],
+                    "spans": view.get("spans") or {},
+                    "facts": view.get("facts") or {},
+                }
+            }
+            for view in rule_views
+        ]
+    else:
+        rule_views = rules
+        records = [{"payload": {"rules": rules, "facts": {}}}]
+
+    transport: dict = {"rules": rule_views}
+    if include_selector_catalogue:
+        transport["selector_catalogue"] = [
+            entry["key"]
+            for entry in selector_catalogue(records)["selectors"]
+        ]
+    return to_compact(transport)
+
+
+def estimate_input_tokens(text: str) -> int:
+    """A deliberately conservative PROXY for model input tokens: one per UTF-8 byte.
+
+    THE PROXY
+
+        len(text.encode("utf-8"))
+
+    WHY THIS AND NOT A RATIO
+
+    An earlier version used ``ceil(bytes / 2.5)`` and called it conservative.
+    That was wrong, and the mistake is worth recording. Without the deployed
+    model's tokenizer there is nothing to check a ratio against, so 2.5 was a
+    guess wearing the word "safe"; and a test asserting
+    ``estimate >= bytes / 2.5`` only restates the formula, so it validated
+    nothing at all.
+
+    One token per byte is different in kind, because it is an upper bound that
+    follows from how tokenizers are built rather than from a measurement nobody
+    took. Every token of a byte-level BPE vocabulary — which is what the
+    supported models use — maps to at least one byte of input, so
+
+        real_tokens <= utf8_bytes
+
+    for any input. Bounding bytes therefore bounds real tokens, and the bound
+    holds without knowing which tokenizer runs.
+
+    WHAT THIS COSTS, AND WHY THAT IS THE RIGHT TRADE
+
+    Real text is roughly 3-4 bytes per token, so this over-states by about that
+    factor and the envelope is under-utilised. That is deliberate: accuracy
+    takes precedence over utilisation. An over-strict cap admits less than it
+    could; an under-strict one silently admits more than the operator asked
+    for, and only the second is a correctness failure.
+
+    It is a **proxy**, and is named one everywhere it is reported. The exact
+    UTF-8 byte ceiling is the hard guarantee; this is what lets that ceiling
+    also be stated in tokens.
+    """
+
+    return len(text.encode("utf-8"))
+
+
+def fit_rules_within_budget(
+    rules: list[dict],
+    *,
+    budget_bytes: int = RULE_GROUNDING_BUDGET_BYTES,
+    budget_proxy_tokens: int = RULE_GROUNDING_PROXY_TOKEN_BUDGET,
+) -> tuple[list[dict], list[dict], dict]:
+    """Hold the whole rule envelope to two strict totals, at rule boundaries only.
+
+    WHY THIS IS PRODUCTION LOGIC AND NOT A TEST
+
+    Separating the types stops rule mode shipping provision bodies, but it does
+    **not** bound the total: several compact rules can outweigh one small
+    policy. "Rule mode is smaller" is therefore not a theorem about the
+    contract, and asserting it as one would be exactly the sort of claim that
+    holds on the questions it was written against and fails on the next corpus.
+
+    TWO BUDGETS, NEITHER OPTIONAL
+
+    Bytes are what transport carries; tokens are what the model is charged and
+    bounded by. Neither predicts the other across scripts, so both are measured
+    and the first to bind decides.
+
+    WHAT IT REFUSES TO DO
+
+    A rule is admitted whole or not at all. Trimming inside a rule would put
+    half an instruction in front of the model while the receipt still named the
+    rule — the narrowing a reader cannot see.
+
+    There is **no exception for the first rule**. If the highest-ranked rule
+    alone exceeds either budget this raises
+    :class:`RuleGroundingBudgetExceeded`, so the ceiling means what it says.
+    Returning it anyway would make the budget advisory; returning nothing would
+    manufacture a false "no rule bears on this question".
+
+    Rules are offered in rank order, so the first thing dropped is the
+    least-warranted, and the result is deterministic for a given ranking. Every
+    omission is returned with its id and reason.
+
+    Returns ``(kept, omitted, measured)``.
+    """
+
+    kept: list[dict] = []
+    omitted: list[dict] = []
+    used_bytes = 0
+    used_tokens = 0
+
+    for rule in rules:
+        rule_id = str(rule.get("rule_id") or rule.get("id") or "")
+        proposed = [*kept, rule]
+        transport = _rule_grounding_transport(proposed)
+        proposed_bytes = len(transport.encode("utf-8"))
+        proposed_tokens = estimate_input_tokens(transport)
+
+        if not kept and (
+            canonical_rule_bytes(rule) > budget_bytes
+            or proposed_tokens > budget_proxy_tokens
+        ):
+            raise RuleGroundingBudgetExceeded(
+                rule_id=rule_id,
+                bytes_measured=proposed_bytes,
+                proxy_tokens_measured=proposed_tokens,
+            )
+
+        if proposed_bytes > budget_bytes:
+            omitted.append({"rule_id": rule_id, "reason": RULE_OMITTED_OVER_BUDGET_BYTES})
+            continue
+        if proposed_tokens > budget_proxy_tokens:
+            omitted.append({"rule_id": rule_id, "reason": RULE_OMITTED_OVER_PROXY_TOKEN_BUDGET})
+            continue
+
+        kept.append(rule)
+        used_bytes = proposed_bytes
+        used_tokens = proposed_tokens
+
+    return kept, omitted, {
+        "rule_grounding_bytes": used_bytes,
+        "rule_grounding_budget_bytes": budget_bytes,
+        "rule_grounding_proxy_tokens": used_tokens,
+        "rule_grounding_proxy_token_budget": budget_proxy_tokens,
+        # Characters are reported beside the bytes as a supplement, never as the
+        # bound: they are what a reader sees and bytes are what is spent.
+        "rule_grounding_chars": len(_rule_grounding_transport(kept)),
+    }
+
+
+def expand_rule_neighbours(
+    selected: list[dict],
+    *,
+    rules_by_id: dict[str, dict],
+    budget: int = RETRIEVAL_RULE_BUDGET,
+) -> tuple[list[dict], list[str]]:
+    """Admit the rules a matched rule cannot be read correctly without.
+
+    A rule that states an entitlement and a rule that states the condition on it
+    are one instruction split across two records. Delivering the first alone is
+    not a smaller answer, it is a wrong one — which is the recall failure that
+    made "matched rules only" too dangerous to ship before.
+
+    So recall is preserved *within the rule contract*: what is admitted is the
+    matched rule's explicit neighbours — `supersedes_rule_ids` (an override
+    shown without what it overrides is half a change) and `related_rule_ids`
+    (the drafter's own "read these together"). Exceptions are inline on a rule,
+    so a matched rule always carries its own carve-outs already.
+
+    What is **not** admitted, at any point and for any reason, is the parent
+    provision's content. Widening back out to the policy is the defect this
+    whole path exists to remove, and a recall argument is exactly how it would
+    come back.
+
+    Neighbours fill only the slots the matched rules left, in rank order, and
+    one that cannot be admitted is named rather than dropped in silence.
+    Returns ``(rules, omitted_ids)``.
+    """
+
+    admitted: list[dict] = list(selected)
+    present = {str(hit.get("rule_id") or hit.get("id") or "") for hit in selected}
+    omitted: list[dict] = []
+
+    for hit in selected:
+        rule_id = str(hit.get("rule_id") or hit.get("id") or "")
+        record = rules_by_id.get(rule_id)
+        if not isinstance(record, dict):
+            continue
+        for neighbour_id in context_rule_ids(record):
+            if neighbour_id in present:
+                continue
+            present.add(neighbour_id)
+            neighbour = rules_by_id.get(neighbour_id)
+            if not isinstance(neighbour, dict):
+                # Named, not silently skipped: a reference the corpus cannot
+                # resolve is a fact about the corpus a reader should see.
+                omitted.append(
+                    {
+                        "rule_id": neighbour_id,
+                        "reason": RULE_OMITTED_UNRESOLVED,
+                        RULE_REQUIRED_BY_FIELD: rule_id,
+                    }
+                )
+                continue
+            if len(admitted) >= budget:
+                omitted.append(
+                    {
+                        "rule_id": neighbour_id,
+                        "reason": RULE_OMITTED_NO_SLOT,
+                        RULE_REQUIRED_BY_FIELD: rule_id,
+                    }
+                )
+                continue
+            admitted.append(
+                {
+                    **neighbour,
+                    "rule_id": neighbour_id,
+                    "content_type": CONTENT_TYPE_RULE,
+                    RULE_ADMITTED_AS_FIELD: RULE_ADMITTED_NEIGHBOUR,
+                    RULE_REQUIRED_BY_FIELD: rule_id,
+                }
+            )
+
+    return admitted, omitted
+
 
 
 def expand_policy_query_coverage(
@@ -1172,6 +1830,42 @@ def order_by_normative_diversity(
     return firsts + later, set(later)
 
 
+def _score_disclosure(hit: dict | None) -> dict:
+    """The named quantities behind one candidate's `best_score`.
+
+    All additive, all optional, none of them able to move a selection: this
+    reports what the ranking already decided in units a reader can compare.
+    `semantic_score` is the one that matters most — it is the same quantity as
+    the retrieval block's `semantic_cutoff_score`, in every path, so the cutoff
+    can finally be related to the scores it cut.
+
+    No policy or source text passes through here; these are scores, ranks and
+    counts only.
+    """
+
+    def _number(value: object) -> float | None:
+        return float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) else None
+
+    if not hit:
+        return {
+            "best_score_kind": None,
+            "semantic_score": None,
+            "rule_lead_semantic_score": None,
+            "rule_max_semantic_score": None,
+            "rule_hits_counted": None,
+        }
+    counted = hit.get(RULE_HITS_COUNTED_FIELD)
+    return {
+        "best_score_kind": hit.get(SCORE_KIND_FIELD),
+        "semantic_score": _number(hit.get("@search.rerankerScore")),
+        "rule_lead_semantic_score": _number(hit.get(RULE_LEAD_SEMANTIC_FIELD)),
+        "rule_max_semantic_score": _number(hit.get(RULE_MAX_SEMANTIC_FIELD)),
+        "rule_hits_counted": (
+            int(counted) if isinstance(counted, int) and not isinstance(counted, bool) else None
+        ),
+    }
+
+
 def select_retained(
     candidates: list[dict],
     hits: list[dict],
@@ -1213,6 +1907,12 @@ def select_retained(
             continue
         ranked.append((rank, str(hid), hit.get("@search.score")))
 
+    # The hits are kept by identity as well as by rank, because the scores a
+    # receipt reports have to be *named*, and only the hit knows which quantity
+    # its score is. Nothing here is read by a selection: `ranked` above remains
+    # the whole of what decides retention.
+    hit_by_id = {str(hit["id"]): hit for hit in hits if hit.get("id") is not None}
+
     duplicates = duplicates or {}
     key_by_search_id = {
         str(c.get("search_document_id")): c.get("provision_key")
@@ -1234,6 +1934,7 @@ def select_retained(
             in_budget = [m for m in matches if m[1] in in_budget_ids]
         identity = _identity(candidate)
         collapsed = duplicates.get(str(key)) if key else None
+        disclosure = _score_disclosure(hit_by_id.get(str(key)) if key else None)
 
         if collapsed is not None:
             # It surfaced, and an identically-governing policy surfaced above it.
@@ -1247,6 +1948,7 @@ def select_retained(
                 "best_rank": collapsed.get("rank"),
                 "best_score": collapsed.get("score"),
                 "matched_policies": 0,
+                "score_disclosure": disclosure,
                 "discard_reason": DISCARD_DUPLICATE_POLICY_CONTENT,
                 "duplicate_of_provision_key": key_by_search_id.get(str(representative)),
             }
@@ -1258,6 +1960,7 @@ def select_retained(
                 "best_rank": min(m[0] for m in in_budget),
                 "best_score": _max_score([m[2] for m in matches]),
                 "matched_policies": len({m[1] for m in in_budget}),
+                "score_disclosure": disclosure,
             }
             retained.append(entry)
         else:
@@ -1275,6 +1978,7 @@ def select_retained(
                 "best_rank": best_rank,
                 "best_score": best_score,
                 "matched_policies": 0,
+                "score_disclosure": disclosure,
                 "discard_reason": reason,
             }
             discarded.append(entry)
@@ -1533,6 +2237,12 @@ def _retrieval_block(
     policies_elevated_by_rule: int = 0,
     rule_index_state: str | None = None,
     retrieval_method: str = RETRIEVAL_METHOD,
+    retrieval_mode: str = RETRIEVAL_MODE_POLICY,
+    rule_mode_parent_cap: int | None = None,
+    rule_mode_parents: int | None = None,
+    rule_mode_rule_hits: int | None = None,
+    rule_mode_policy_fallback: int | None = None,
+    rule_mode_policy_fallback_offered: int | None = None,
     precision_mode: str | None = None,
     semantic_candidates: int | None = None,
     semantic_selected: int | None = None,
@@ -1540,6 +2250,7 @@ def _retrieval_block(
     semantic_cutoff_score: float | None = None,
     semantic_elbow_applied: bool | None = None,
     direct_policy_order: str | None = None,
+    direct_rule_order: str | None = None,
     coverage_expanded_policies: int | None = None,
     coverage_semantic_floor: float | None = None,
     rule_rescue_candidates: int | None = None,
@@ -1548,10 +2259,58 @@ def _retrieval_block(
     rule_rescue_margin: float | None = None,
     rule_semantic_window: int | None = None,
     rule_semantic_candidates: int | None = None,
+    retrieval_strategy: str | None = None,
+    rules_selected: int | None = None,
+    rules_grounded: int | None = None,
+    rules_omitted: list[dict] | None = None,
+    rule_grounding_bytes: int | None = None,
+    rule_grounding_budget_bytes: int | None = None,
+    rule_grounding_proxy_tokens: int | None = None,
+    rule_grounding_proxy_token_budget: int | None = None,
+    rule_grounding_chars: int | None = None,
 ) -> dict:
+    if retrieval_mode == RETRIEVAL_MODE_RULE:
+        block = {
+            "status": status,
+            "method": retrieval_method,
+            "retrieval_mode": retrieval_mode,
+            "projection_profile": projection_profile,
+            "projection_ready": projection_ready,
+            "rule_documents_matched": rule_documents_matched,
+            "rule_index_state": rule_index_state,
+            "precision_mode": precision_mode,
+            "semantic_candidates": semantic_candidates,
+            "semantic_selected": semantic_selected,
+            "semantic_largest_gap": semantic_largest_gap,
+            "semantic_cutoff_score": semantic_cutoff_score,
+            "semantic_elbow_applied": semantic_elbow_applied,
+            "direct_rule_order": direct_rule_order,
+            "rule_mode_rule_hits": rule_mode_rule_hits,
+            "rule_semantic_window": rule_semantic_window,
+            "rule_semantic_candidates": rule_semantic_candidates,
+            "retrieval_strategy": retrieval_strategy,
+            "rules_selected": rules_selected,
+            "rules_grounded": rules_grounded,
+            "rules_omitted": list(rules_omitted or []),
+            "rule_grounding_bytes": rule_grounding_bytes,
+            "rule_grounding_budget_bytes": rule_grounding_budget_bytes,
+            "rule_grounding_proxy_tokens": rule_grounding_proxy_tokens,
+            "rule_grounding_proxy_token_budget": (
+                rule_grounding_proxy_token_budget
+            ),
+            "rule_grounding_chars": rule_grounding_chars,
+        }
+        if reason is not None:
+            block["reason"] = reason
+        return block
+
     block = {
         "status": status,
         "method": retrieval_method,
+        # Which unit discovery worked in. Reported on every retrieval, including
+        # the default one, so "policy mode ran" is a statement on the record
+        # rather than the absence of a statement about rule mode.
+        "retrieval_mode": retrieval_mode,
         "policy_budget": RETRIEVAL_POLICY_BUDGET,
         "policy_scan": RETRIEVAL_POLICY_SCAN,
         "rule_scan": RETRIEVAL_RULE_SCAN,
@@ -1648,7 +2407,15 @@ def _project_response(
     policies_elevated_by_rule: int = 0,
     rule_index_state: str | None = None,
     policy_records: list[dict] | None = None,
+    rule_records: list[dict] | None = None,
+    rule_considered_records: list[dict] | None = None,
     retrieval_method: str = RETRIEVAL_METHOD,
+    retrieval_mode: str = RETRIEVAL_MODE_POLICY,
+    rule_mode_parent_cap: int | None = None,
+    rule_mode_parents: int | None = None,
+    rule_mode_rule_hits: int | None = None,
+    rule_mode_policy_fallback: int | None = None,
+    rule_mode_policy_fallback_offered: int | None = None,
     precision_mode: str | None = None,
     semantic_candidates: int | None = None,
     semantic_selected: int | None = None,
@@ -1656,6 +2423,7 @@ def _project_response(
     semantic_cutoff_score: float | None = None,
     semantic_elbow_applied: bool | None = None,
     direct_policy_order: str | None = None,
+    direct_rule_order: str | None = None,
     coverage_expanded_policies: int | None = None,
     coverage_semantic_floor: float | None = None,
     rule_rescue_candidates: int | None = None,
@@ -1664,6 +2432,15 @@ def _project_response(
     rule_rescue_margin: float | None = None,
     rule_semantic_window: int | None = None,
     rule_semantic_candidates: int | None = None,
+    retrieval_strategy: str | None = None,
+    rules_selected: int | None = None,
+    rules_grounded: int | None = None,
+    rules_omitted: list[dict] | None = None,
+    rule_grounding_bytes: int | None = None,
+    rule_grounding_budget_bytes: int | None = None,
+    rule_grounding_proxy_tokens: int | None = None,
+    rule_grounding_proxy_token_budget: int | None = None,
+    rule_grounding_chars: int | None = None,
 ) -> dict:
     response = {
         "scope": SCOPE_PROJECT,
@@ -1687,6 +2464,12 @@ def _project_response(
             policies_elevated_by_rule=policies_elevated_by_rule,
             rule_index_state=rule_index_state,
             retrieval_method=retrieval_method,
+            retrieval_mode=retrieval_mode,
+            rule_mode_parent_cap=rule_mode_parent_cap,
+            rule_mode_parents=rule_mode_parents,
+            rule_mode_rule_hits=rule_mode_rule_hits,
+            rule_mode_policy_fallback=rule_mode_policy_fallback,
+            rule_mode_policy_fallback_offered=rule_mode_policy_fallback_offered,
             precision_mode=precision_mode,
             semantic_candidates=semantic_candidates,
             semantic_selected=semantic_selected,
@@ -1694,6 +2477,7 @@ def _project_response(
             semantic_cutoff_score=semantic_cutoff_score,
             semantic_elbow_applied=semantic_elbow_applied,
             direct_policy_order=direct_policy_order,
+            direct_rule_order=direct_rule_order,
             coverage_expanded_policies=coverage_expanded_policies,
             coverage_semantic_floor=coverage_semantic_floor,
             rule_rescue_candidates=rule_rescue_candidates,
@@ -1702,6 +2486,15 @@ def _project_response(
             rule_rescue_margin=rule_rescue_margin,
             rule_semantic_window=rule_semantic_window,
             rule_semantic_candidates=rule_semantic_candidates,
+            retrieval_strategy=retrieval_strategy,
+            rules_selected=rules_selected,
+            rules_grounded=rules_grounded,
+            rules_omitted=rules_omitted,
+            rule_grounding_bytes=rule_grounding_bytes,
+            rule_grounding_budget_bytes=rule_grounding_budget_bytes,
+            rule_grounding_proxy_tokens=rule_grounding_proxy_tokens,
+            rule_grounding_proxy_token_budget=rule_grounding_proxy_token_budget,
+            rule_grounding_chars=rule_grounding_chars,
         ),
         "considered": considered,
         "excluded": excluded,
@@ -1710,6 +2503,15 @@ def _project_response(
     }
     if policy_records is not None:
         response["policies"] = policy_records
+    if rule_records is not None:
+        # Rules ride in their own key, never in `policies`. The separation is
+        # kept at every layer it could be lost at: here, in the envelope types,
+        # and on the wire.
+        response["rules"] = rule_records
+    if rule_considered_records is not None:
+        # Internal receipt evidence. `/policies` projects only `rules`; the
+        # audited `/case` projector consumes this complete selected/omitted set.
+        response["rule_considered"] = rule_considered_records
     return response
 
 
@@ -1902,6 +2704,7 @@ async def _answer_project_scope(
     additional_instructions: str = "",
     context: dict | None = None,
     policies_only: bool = False,
+    rule_retrieval: bool = False,
 ) -> dict:
     """No policy was named: retrieve the ones that bear on the question, discard
     the rest, and evaluate only the survivors — never the whole set.
@@ -1949,7 +2752,18 @@ async def _answer_project_scope(
     # that quietly disagrees with the others.
     disclosure: dict = {}
     policy_records: list[dict] | None = [] if policies_only else None
-    retrieval_method = LIGHT_RETRIEVAL_METHOD if policies_only else RETRIEVAL_METHOD
+    # Rule mode collects rule records. Separate list, separate shape: a rule is
+    # never appended to `policy_records`, so the two cannot be confused at the
+    # point they are built any more than they can on the wire.
+    rule_records: list[dict] | None = [] if rule_retrieval else None
+    rule_considered_records: list[dict] | None = [] if rule_retrieval else None
+    retrieval_mode = RETRIEVAL_MODE_RULE if rule_retrieval else RETRIEVAL_MODE_POLICY
+    if rule_retrieval:
+        retrieval_method = (
+            LIGHT_RULE_RETRIEVAL_METHOD if policies_only else RULE_RETRIEVAL_METHOD
+        )
+    else:
+        retrieval_method = LIGHT_RETRIEVAL_METHOD if policies_only else RETRIEVAL_METHOD
 
     def respond(
         status: str,
@@ -1982,7 +2796,10 @@ async def _answer_project_scope(
             policies_duplicate_collapsed=policies_duplicate_collapsed,
             policies_diversity_deferred=policies_diversity_deferred,
             policy_records=policy_records,
+            rule_records=rule_records,
+            rule_considered_records=rule_considered_records,
             retrieval_method=retrieval_method,
+            retrieval_mode=retrieval_mode,
             **disclosure,
         )
 
@@ -2036,6 +2853,7 @@ async def _answer_project_scope(
         context["index_name"] = index_name
         context["index_version_id"] = active_version_id
         context["retrieval_method"] = retrieval_method
+        context["retrieval_mode"] = retrieval_mode
     rule_index_state = RULE_INDEX_UNAVAILABLE
     try:
         # THE GATE, BEFORE THE QUERY — asked as two questions at once.
@@ -2198,6 +3016,49 @@ async def _answer_project_scope(
                 raise embedded
             vector = embedded
 
+        # THE SECOND GATE, AND ONLY ON THE PATH THAT NEEDS IT.
+        #
+        # A rule-first query is answerable only over a corpus that gave every
+        # published rule a document. One extra round trip, made on the rule-mode
+        # path and nowhere else — the default mode's timings and call count are
+        # exactly what they were.
+        if rule_retrieval:
+            rule_scope_started = time.perf_counter()
+            try:
+                rule_index_scope = await read_rule_index_scope(
+                    search_client,
+                    index_name,
+                    policy_set_key=policy_set.key,
+                    projection_profile=readiness.profile,
+                )
+            except Exception as exc:  # noqa: BLE001 - reported as the refusal it is
+                # An index built before the scope existed does not carry the
+                # field *in its schema*, and a `select` naming an unknown field
+                # is refused by the service. That is the same corpus state the
+                # probe exists to detect and the same repair — a rebuild — so it
+                # is reported as unreadiness rather than as an outage. It is not
+                # mistaken for one: the existence and readiness probes above have
+                # already succeeded against this index on this call.
+                logger.warning(
+                    "rule index scope probe failed for set %s: %s", policy_set.key, exc
+                )
+                rule_index_scope = None
+            finally:
+                if timings is not None:
+                    timings["rule_index_scope"] = elapsed_ms(rule_scope_started)
+            if rule_index_scope != RULE_INDEX_SCOPE_ALL:
+                raise RuleIndexNotReady(
+                    rule_index_scope,
+                    "rule retrieval was requested, but this project's policy index does not report "
+                    f"holding rule documents under `{RULE_INDEX_SCOPE_ALL}` — it reports "
+                    f"`{rule_index_scope or 'no recorded scope'}`. The rules of every policy at or "
+                    f"under {LARGE_POLICY_RULE_THRESHOLD} rules are therefore not in it, and a "
+                    "rule-first query would report them as absent rather than as unindexed; no "
+                    "evaluation was made and policy retrieval was not silently substituted. "
+                    "Rebuild the policy index, then retry — or omit `rule_retrieval` to use "
+                    "policy retrieval.",
+                )
+
         async def policy_search() -> list[dict]:
             started = time.perf_counter()
             try:
@@ -2217,7 +3078,7 @@ async def _answer_project_scope(
                 if timings is not None:
                     timings["policy_search"] = elapsed_ms(started)
 
-        if policies_only:
+        if policies_only and not rule_retrieval:
             policy_task = asyncio.create_task(policy_search())
             policy_scan = await policy_task
             rule_scan = []
@@ -2234,22 +3095,32 @@ async def _answer_project_scope(
                             index_name,
                             query_text=scenario,
                             vector=vector,
-                            top=RETRIEVAL_RULE_SCAN,
-                            # The corpus now holds every published rule,
-                            # while policy mode keeps querying the legacy large-
-                            # provision subset until a caller explicitly asks for
-                            # native rule retrieval.
+                            top=(
+                                RETRIEVAL_RULE_MODE_SCAN
+                                if rule_retrieval
+                                else RETRIEVAL_RULE_SCAN
+                            ),
+                            # The one clause that separates the modes. Policy
+                            # mode asks only for the rules of large provisions —
+                            # exactly the set the index held before it carried a
+                            # document for every rule — so its result is what it
+                            # always was. Rule mode asks for all of them, which
+                            # is the whole point of asking.
                             filter_expr=policy_rule_content_filter(
                                 policy_set.key,
                                 projection_profile=readiness.profile,
-                                large_policies_only=True,
+                                large_policies_only=not rule_retrieval,
                             ),
                             select=_RULE_SELECT,
                             semantic_configuration=POLICY_SEMANTIC_CONFIG,
                         ),
                         RULE_INDEX_MATCHED,
                     )
-                except Exception as exc:  # noqa: BLE001 - recoverable and disclosed
+                except Exception as exc:  # noqa: BLE001 - mode decides recoverability
+                    if rule_retrieval:
+                        raise RuntimeError(
+                            "rule retrieval failed; no policy retrieval was substituted"
+                        ) from exc
                     logger.warning(
                         "project-case rule retrieval failed for set %s: %s",
                         policy_set.key,
@@ -2261,18 +3132,37 @@ async def _answer_project_scope(
                         timings["rule_discovery"] = elapsed_ms(started)
 
             discovery_started = time.perf_counter()
-            policy_task = asyncio.create_task(policy_search())
-            rule_task = asyncio.create_task(rule_search())
-            policy_scan, (rule_scan, rule_index_state) = await asyncio.gather(
-                policy_task, rule_task
-            )
+            if rule_retrieval:
+                # THE CONTRACT, ENFORCED AT THE QUERY.
+                #
+                # `rule_retrieval=true` searches rule documents. Not rule
+                # documents *and* policy documents: there is no policy channel
+                # in this mode, so the policy query is never issued. Making it
+                # unreachable here rather than discarding its results later is
+                # the difference between a mode that does not ask and one that
+                # asks and pretends it did not — and only the first can be shown
+                # to a reader as "no policy was read".
+                rule_scan, rule_index_state = await rule_search()
+                policy_scan = []
+            else:
+                policy_task = asyncio.create_task(policy_search())
+                rule_task = asyncio.create_task(rule_search())
+                policy_scan, (rule_scan, rule_index_state) = await asyncio.gather(
+                    policy_task, rule_task
+                )
             if timings is not None:
                 timings["retrieval_discovery_wall"] = elapsed_ms(discovery_started)
             hits = [*policy_scan, *rule_scan]
             rule_hits_by_document = {}
     except IndexProjectionUnavailable:
         raise
+    except RuleIndexNotReady:
+        raise
     except Exception as exc:  # noqa: BLE001 - a failed search is its own reported state
+        if rule_retrieval:
+            raise RuntimeError(
+                "rule retrieval failed; no policy retrieval was substituted"
+            ) from exc
         logger.warning("project-case retrieval failed for set %s: %s", policy_set.key, exc)
         return respond(
             RETRIEVAL_FAILED,
@@ -2403,7 +3293,242 @@ async def _answer_project_scope(
     ]
     by_search_id = {c["search_document_id"]: c for c in candidates}
     selection_started = time.perf_counter()
-    if policies_only:
+    if rule_retrieval:
+        # Rules are selected as rules. No parent grouping, no policy channel,
+        # and nothing downstream is handed a provision.
+        selected_rule_hits, ranked_rule_hits, precision = select_rules_only(
+            current_rule_hits
+        )
+        rule_context_by_id = {
+            str(rule.get("rule_id")): {
+                "rule": rule,
+                "payload": candidate.get("payload") or {},
+                "source": {
+                    "provision_key": (
+                        (candidate.get("payload") or {})
+                        .get("envelope", {})
+                        .get("provision_key")
+                        or candidate.get("provision_key")
+                    ),
+                    "provision_id": (
+                        (candidate.get("payload") or {})
+                        .get("envelope", {})
+                        .get("provision_id")
+                        or candidate.get("provision_id")
+                    ),
+                    "heading_path": list(
+                        (candidate.get("payload") or {})
+                        .get("envelope", {})
+                        .get("heading_path")
+                        or candidate.get("heading_path")
+                        or []
+                    ),
+                },
+            }
+            for candidate in candidates
+            for rule in (candidate.get("payload") or {}).get("rules") or []
+            if rule.get("rule_id")
+        }
+        rules_by_id = {
+            rule_id: context["rule"]
+            for rule_id, context in rule_context_by_id.items()
+        }
+        # Recall inside the contract: a matched rule brings the conditions,
+        # exceptions and overrides it cannot be read without — and never the
+        # provision that contains them.
+        with_neighbours, neighbours_omitted = expand_rule_neighbours(
+            selected_rule_hits, rules_by_id=rules_by_id
+        )
+        grounding_candidates: list[dict] = []
+        unresolvable_selected: list[dict] = []
+        for hit in with_neighbours:
+            rule_id = str(hit.get("rule_id") or hit.get("id") or "")
+            context_for_rule = rule_context_by_id.get(rule_id) or {}
+            rule = context_for_rule.get("rule")
+            payload = context_for_rule.get("payload")
+            if not isinstance(rule, dict) or not isinstance(payload, dict):
+                unresolvable_selected.append(
+                    {
+                        "rule_id": rule_id,
+                        "reason": RULE_OMITTED_UNRESOLVED,
+                        RULE_REQUIRED_BY_FIELD: hit.get(RULE_REQUIRED_BY_FIELD),
+                    }
+                )
+                continue
+            sliced = build_slice(payload, [rule])
+            grounding_candidates.append(
+                {
+                    **hit,
+                    "_grounding_record": {
+                        "rule": rule,
+                        "source": context_for_rule.get("source") or {},
+                        "spans": sliced.get("spans") or {},
+                        "facts": sliced.get("facts") or {},
+                    },
+                }
+            )
+        grounded_rules, over_budget, measured = fit_rules_within_budget(
+            grounding_candidates
+        )
+        all_omitted = [
+            *neighbours_omitted,
+            *unresolvable_selected,
+            *over_budget,
+        ]
+        precision = {
+            **precision,
+            **measured,
+            "rules_grounded": len(grounded_rules),
+            "rules_omitted": all_omitted,
+        }
+        # The mode is already supplied explicitly by `respond`; keeping the
+        # selector's same disclosure key would pass it twice to the projector.
+        precision.pop("retrieval_mode", None)
+        disclosure.update(precision)
+        current_hits = []
+        ranked_current_hits = []
+        rule_hits_by_document = {}
+        # Rule mode answers here. Everything below this point is the policy
+        # pipeline — duplicate collapse over provisions, the provision budget,
+        # provision records — and none of it applies to an answer made of
+        # rules. Returning before it is what keeps the two modes two contracts
+        # rather than one contract with a flag.
+        grounded_ids = {
+            str(hit.get("rule_id") or hit.get("id") or "")
+            for hit in grounded_rules
+        }
+        omitted_by_id = {
+            str(item.get("rule_id") or ""): item
+            for item in all_omitted
+        }
+
+        def rule_entry(hit: dict, *, index: int, grounded: bool) -> dict:
+            rule_id = str(hit.get("rule_id") or hit.get("id") or "")
+            context_for_rule = rule_context_by_id.get(rule_id) or {}
+            omitted = omitted_by_id.get(rule_id) or {}
+            return {
+                "rule_id": rule_id,
+                "source": context_for_rule.get("source") or {
+                    "provision_key": hit.get("provision_key"),
+                    "provision_id": hit.get("provision_id"),
+                    "heading_path": list(hit.get("heading_path") or []),
+                },
+                "grounded": grounded,
+                "best_rank": index,
+                "best_score": hit.get("@search.score"),
+                "score_kind": hit.get(SCORE_KIND_FIELD),
+                "semantic_score": hit.get("@search.rerankerScore"),
+                "admitted_as": hit.get(
+                    RULE_ADMITTED_AS_FIELD, RULE_ADMITTED_MATCHED
+                ),
+                RULE_REQUIRED_BY_FIELD: (
+                    hit.get(RULE_REQUIRED_BY_FIELD)
+                    or omitted.get(RULE_REQUIRED_BY_FIELD)
+                ),
+                "omitted_reason": omitted.get("reason"),
+            }
+
+        considered_entries = [
+            rule_entry(
+                hit,
+                index=index,
+                grounded=(
+                    str(hit.get("rule_id") or hit.get("id") or "")
+                    in grounded_ids
+                ),
+            )
+            for index, hit in enumerate(with_neighbours)
+        ]
+        present_considered = {entry["rule_id"] for entry in considered_entries}
+        for omitted in [*neighbours_omitted, *unresolvable_selected]:
+            rule_id = str(omitted.get("rule_id") or "")
+            if not rule_id or rule_id in present_considered:
+                continue
+            considered_entries.append(
+                rule_entry(
+                    {
+                        "rule_id": rule_id,
+                        RULE_ADMITTED_AS_FIELD: RULE_ADMITTED_NEIGHBOUR,
+                    },
+                    index=len(considered_entries),
+                    grounded=False,
+                )
+            )
+            present_considered.add(rule_id)
+
+        if rule_considered_records is not None:
+            rule_considered_records.extend(considered_entries)
+
+        if rule_records is not None:
+            for index, hit in enumerate(grounded_rules):
+                rule_id = str(hit.get("rule_id") or hit.get("id") or "")
+                context_for_rule = rule_context_by_id.get(rule_id) or {}
+                match = rule_entry(hit, index=index, grounded=True)
+                rule_records.append(
+                    {
+                        "rule_id": rule_id,
+                        "source": match["source"],
+                        "match": {
+                            key: match[key]
+                            for key in (
+                                "best_rank",
+                                "best_score",
+                                "score_kind",
+                                "semantic_score",
+                                "admitted_as",
+                                RULE_REQUIRED_BY_FIELD,
+                            )
+                        },
+                        "rule": context_for_rule.get("rule")
+                        or {"rule_id": rule_id},
+                    }
+                )
+
+        evaluation = None
+        if grounded_rules and not policies_only:
+            grounding_records = [
+                {
+                    # The budget measured this exact identity and one-rule
+                    # record under the gather's rule-native transport wrapper.
+                    "source": hit["_grounding_record"]["source"],
+                    "payload": {
+                        "rules": [hit["_grounding_record"]["rule"]],
+                        "spans": hit["_grounding_record"]["spans"],
+                        "facts": hit["_grounding_record"]["facts"],
+                    },
+                }
+                for hit in grounded_rules
+            ]
+            if grounding_records:
+                gather_started = time.perf_counter()
+                evaluation = await answer_case_over_rules(
+                    grounding_records,
+                    scenario=scenario,
+                    reasoning_effort=reasoning_effort,
+                    **_gather_kwargs(additional_instructions),
+                )
+                if timings is not None:
+                    timings.update(getattr(evaluation, "stage_latency_ms", {}))
+                    timings["gather_total"] = elapsed_ms(gather_started)
+        return respond(
+            RETRIEVAL_NARROWED if grounded_rules else RETRIEVAL_NO_MATCH,
+            considered=[],
+            retained=[],
+            discarded=[],
+            policies_retrieved=len(ranked_rule_hits),
+            evaluation=evaluation,
+            size={
+                "combined_chars": measured.get("rule_grounding_chars", 0),
+                "budget_chars": None,
+                "oversize": False,
+            },
+            reason=(
+                None
+                if grounded_rules
+                else "no published rule matched this question"
+            ),
+        )
+    elif policies_only:
         current_hits, precision = select_semantic_policy_hits(current_policy_hits)
         ranked_current_hits = sorted(
             (dict(hit) for hit in current_policy_hits),
@@ -2418,6 +3543,9 @@ async def _answer_project_scope(
         for hit in ranked_current_hits:
             if isinstance(hit.get("@search.rerankerScore"), (int, float)):
                 hit["@search.score"] = float(hit["@search.rerankerScore"])
+                hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_SEMANTIC
+            else:
+                hit[SCORE_KIND_FIELD] = BEST_SCORE_KIND_HYBRID
         disclosure.update(precision)
     else:
         (
@@ -2460,7 +3588,7 @@ async def _answer_project_scope(
     # consumed a slot is a slot the provision deciding the case never got.
     if (
         not policies_only
-        and precision["direct_policy_order"] == DIRECT_POLICY_ORDER_RRF
+        and precision.get("direct_policy_order") in COVERAGE_EXPANDABLE_POLICY_ORDERS
     ):
         (
             current_hits,
@@ -2489,7 +3617,12 @@ async def _answer_project_scope(
         if hit.get("id") and hit.get("elevated_by_rule")
     }
     final_rescued = len(in_budget_ids & rescued_ids)
-    disclosure["rule_rescued_policies"] = final_rescued
+    if not rule_retrieval:
+        # A rescue is a policy-mode event: a parent the *policy* ranking omitted,
+        # lifted by independently strong rule evidence. In rule mode every parent
+        # is reached through its rules, so there is nothing for a rescue to mean
+        # and the field stays null rather than restating the mode's own count.
+        disclosure["rule_rescued_policies"] = final_rescued
     disclosure["policies_elevated_by_rule"] = final_rescued
     # What the ordering actually *cost* a candidate: it would have been read on
     # rank alone and is not read now. A later group member that ranked outside
@@ -2894,6 +4027,7 @@ async def answer_project_case(
     reasoning_effort: str = "medium",
     additional_instructions: str = "",
     with_context: bool = False,
+    rule_retrieval: bool = False,
 ) -> dict | ProjectCaseAnswer:
     """Answer a case put to a project, at the scope the reviewer chose.
 
@@ -2920,6 +4054,11 @@ async def answer_project_case(
     retrieval query, never the intent classifier — and is wrapped there in the
     invariants it may not cross. Empty by default, in which case nothing about
     this function's behaviour changes at all.
+
+    ``rule_retrieval`` selects the experimental rule-first retrieval mode. Left
+    at its default the policy-mode path runs and is byte-for-byte what it always
+    was. It is ignored when a ``provision_id`` is named, because that scope
+    retrieves nothing at all.
     """
 
     context: dict | None = {} if with_context else None
@@ -2942,6 +4081,7 @@ async def answer_project_case(
             reasoning_effort=reasoning_effort,
             additional_instructions=additional_instructions,
             context=context,
+            rule_retrieval=rule_retrieval,
         )
 
     if context is None:
@@ -2955,6 +4095,7 @@ async def retrieve_project_policies(
     policy_set,
     scenario: str,
     with_context: bool = False,
+    rule_retrieval: bool = False,
 ) -> dict | ProjectPolicyRetrieval:
     """Return a precision-ranked published policy subset without a decision.
 
@@ -2963,6 +4104,10 @@ async def retrieve_project_policies(
     Its policy cut is intentionally narrower: semantic policy ranking replaces
     the decision path's recall-heavy policy/rule fusion because no downstream
     gather exists to reject over-kept records.
+
+    ``rule_retrieval`` selects the experimental rule-first mode here too, so the
+    light path can be used to inspect exactly what that mode would put in front
+    of a gather. Left at its default, nothing about this function changes.
     """
 
     context: dict | None = {} if with_context else None
@@ -2974,6 +4119,7 @@ async def retrieve_project_policies(
         additional_instructions="",
         context=context,
         policies_only=True,
+        rule_retrieval=rule_retrieval,
     )
     if context is None:
         return response

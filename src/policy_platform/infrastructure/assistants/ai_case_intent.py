@@ -135,7 +135,7 @@ import logging
 import secrets
 import time
 from collections.abc import Callable
-from typing import Final
+from typing import Final, Literal
 
 from policy_platform.infrastructure.ai.openai_client import AzureOpenAIClient
 from policy_platform.infrastructure.assistants.ai_case_plan import (
@@ -193,7 +193,15 @@ logger = logging.getLogger(__name__)
 #: `v5` marked the boundary between `missing_required_facts` and
 #: `not_settled_by_rules` being made explicit and enforced in post-processing
 #: (see `_SETTLEMENT_BOUNDARY`).
-PROMPT_VERSION = "ai-case-intent-v12"
+#:
+#: `v15` restores v12's complete `grounding_projection_v1` input and wording.
+#: It cannot reuse the v12 identifier because two intervening inputs were served
+#: and recorded: v13 flattened the record, while v14 kept its joins but removed
+#: span/envelope provenance. Both moved `hw-refresh-26-months` from
+#: `missing_required_facts` to `answered` and were withdrawn. Their measured
+#: builders remain as unwired analysis; a token reduction that moves a
+#: missing-fact boundary is not a serving optimization.
+PROMPT_VERSION = "ai-case-intent-v15"
 
 VALID_REASONING_EFFORTS = ("low", "medium", "high")
 
@@ -2839,6 +2847,44 @@ other than the retained policies not settling the case. Normally false.
 string if you have nothing to add."""
 
 
+def _rule_native_multi_prompt(prompt: str) -> str:
+    """Express the same semantic contract over rule records, not policies."""
+
+    transformed = (
+        prompt.replace("Policies", "Rules")
+        .replace("policies", "rules")
+        .replace("Policy", "Rule")
+        .replace("policy", "rule")
+        .replace("the rule's rules", "the selected rule")
+    )
+    transformed = transformed.replace(
+        "rules arrive as a JSON list under `rules`; each entry is "
+        '`{"rule": <its identity>, "record": <the rule>}`, and each '
+        "`record` is one lean `grounding_projection_v1`.",
+        "rules arrive as a JSON list under `rules`; each entry carries one "
+        "`rule`, its source-provision identifiers in `source`, and only the "
+        "`spans` and `facts` that rule references.",
+    )
+    return transformed.replace(
+        "Each `record` has four parts:",
+        "Each rule entry has four parts:",
+    ).replace(
+        "- `envelope`: the rule's identity and the values every rule shares",
+        "- `source`: identifiers for the provision containing the rule",
+    ).replace(
+        "- `rules`: the selected rule.",
+        "- `rule`: the selected rule.",
+    )
+
+
+_INFORMATIONAL_RULE_SYSTEM_PROMPT = _rule_native_multi_prompt(
+    _INFORMATIONAL_MULTI_SYSTEM_PROMPT
+)
+_DECISION_RULE_SYSTEM_PROMPT = _rule_native_multi_prompt(
+    _DECISION_MULTI_SYSTEM_PROMPT
+)
+
+
 #: Identifier of the framing below, reported in a decision receipt's `trace` so
 #: a caller can tell which contract their guidance was applied under. Bumped
 #: whenever the wording of that framing changes in a way that could change how
@@ -3038,7 +3084,11 @@ def _policy_identity(record: dict) -> dict:
     return identity
 
 
-def _union_over_records(records: list[dict]) -> tuple[list[dict], dict, dict, list[dict]]:
+def _union_over_records(
+    records: list[dict],
+    *,
+    evidence_kind: Literal["policy", "rule"] = "policy",
+) -> tuple[list[dict], dict, dict, list[dict]]:
     """Fold the retained records into the one closed set an answer may draw on.
 
     Returns the concatenated rules (the union an id is checked against), the
@@ -3056,7 +3106,11 @@ def _union_over_records(records: list[dict]) -> tuple[list[dict], dict, dict, li
 
     for record in records:
         payload = record.get("payload") or {}
-        identity = _policy_identity(record)
+        identity = (
+            dict(record.get("source") or {})
+            if evidence_kind == "rule"
+            else _policy_identity(record)
+        )
         rules = payload.get("rules") or []
         for rule in rules:
             all_rules.append(rule)
@@ -3065,7 +3119,18 @@ def _union_over_records(records: list[dict]) -> tuple[list[dict], dict, dict, li
                 rule_to_policy[str(rid)] = identity
         for span_id, span in (payload.get("spans") or {}).items():
             merged_spans.setdefault(span_id, span)
-        policies_view.append({"policy": identity, "record": payload})
+        if evidence_kind == "rule":
+            rule_id = str(rules[0].get("rule_id") or "") if rules else ""
+            policies_view.append(
+                {
+                    "rule": rules[0] if rules else {"rule_id": rule_id},
+                    "source": identity,
+                    "spans": payload.get("spans") or {},
+                    "facts": payload.get("facts") or {},
+                }
+            )
+        else:
+            policies_view.append({"policy": identity, "record": payload})
 
     return all_rules, merged_spans, rule_to_policy, policies_view
 
@@ -3076,6 +3141,7 @@ async def answer_informational_over_policies(
     scenario: str,
     reasoning_effort: str = "medium",
     additional_instructions: str = "",
+    _evidence_kind: Literal["policy", "rule"] = "policy",
 ) -> dict:
     """Gather and state what the *retained* policies provide on the subject.
 
@@ -3107,12 +3173,15 @@ async def answer_informational_over_policies(
     function has always built.
     """
 
-    all_rules, merged_spans, rule_to_policy, policies_view = _union_over_records(records)
+    all_rules, merged_spans, rule_to_policy, policies_view = _union_over_records(
+        records, evidence_kind=_evidence_kind
+    )
     available_ids = {str(rule.get("rule_id")) for rule in all_rules if rule.get("rule_id")}
     rules_available = len(all_rules)
-    policies_grounded = len(records)
+    grounded_count = len(records)
+    evidence_key = "rules" if _evidence_kind == "rule" else "policies"
 
-    transport = to_compact({"policies": policies_view})
+    transport = to_compact({evidence_key: policies_view})
     if len(transport) > _MAX_RECORD_CHARS:
         # The retained policies together do not fit one grounded gather. Refuse
         # rather than trim: an answer composed from some of the retained set and
@@ -3127,27 +3196,36 @@ async def answer_informational_over_policies(
             fabricated=[],
             oversize=True,
         )
-        grounding["policies_grounded"] = policies_grounded
+        grounding[f"{evidence_key}_grounded"] = grounded_count
         return {
             "status": DECLINED,
             "answer": "",
             "citations": [],
             "note": (
-                "The retained policies' records together are larger than can be read in one grounded "
-                "pass, so no single answer was composed from them. The policies are listed to read "
+                f"The retained {evidence_key}' records together are larger than can be read in one grounded "
+                f"pass, so no single answer was composed from them. The {evidence_key} are listed to read "
                 "directly."
             ),
             "grounding": grounding,
         }
 
+    evidence_label = (
+        "Rules (a JSON list; each entry carries one rule, its source "
+        "provision identifiers, and only its referenced spans and facts)"
+        if _evidence_kind == "rule"
+        else "Policies (a JSON list, each entry a policy's identity and "
+        "its grounding_projection_v1 record)"
+    )
     user_content = (
-        f"Question: {scenario}\n\n"
-        f"Policies (a JSON list, each entry a policy's identity and its grounding_projection_v1 "
-        f"record):\n{transport}"
+        f"Question: {scenario}\n\n{evidence_label}:\n{transport}"
     ) + caller_guidance_block(additional_instructions)
 
     parsed = await _chat_json(
-        _INFORMATIONAL_MULTI_SYSTEM_PROMPT,
+        (
+            _INFORMATIONAL_RULE_SYSTEM_PROMPT
+            if _evidence_kind == "rule"
+            else _INFORMATIONAL_MULTI_SYSTEM_PROMPT
+        ),
         user_content,
         reasoning_effort=reasoning_effort,
     )
@@ -3163,7 +3241,7 @@ async def answer_informational_over_policies(
         fabricated=fabricated,
         oversize=False,
     )
-    grounding["policies_grounded"] = policies_grounded
+    grounding[f"{evidence_key}_grounded"] = grounded_count
 
     if parsed.get("declined"):
         return {"status": DECLINED, "answer": "", "citations": [], "note": note, "grounding": grounding}
@@ -3183,7 +3261,9 @@ async def answer_informational_over_policies(
     # than one policy is in play.
     citations = _citations(cited_ids, _rules_by_id(all_rules), merged_spans)
     for citation in citations:
-        citation["policy"] = rule_to_policy.get(citation["rule_id"], {})
+        citation[
+            "source_provision" if _evidence_kind == "rule" else "policy"
+        ] = rule_to_policy.get(citation["rule_id"], {})
     return {"status": ANSWERED, "answer": answer, "citations": citations, "note": note, "grounding": grounding}
 
 
@@ -3193,6 +3273,7 @@ async def answer_decision_over_policies(
     scenario: str,
     reasoning_effort: str = "medium",
     additional_instructions: str = "",
+    _evidence_kind: Literal["policy", "rule"] = "policy",
 ) -> dict:
     """Apply the retained policies to a decision case in one grounded gather.
 
@@ -3212,14 +3293,16 @@ async def answer_decision_over_policies(
     asked for.
     """
 
-    all_rules, merged_spans, rule_to_policy, policies_view = _union_over_records(records)
-    policies_grounded = len(records)
+    all_rules, merged_spans, rule_to_policy, policies_view = _union_over_records(
+        records, evidence_kind=_evidence_kind
+    )
+    grounded_count = len(records)
+    evidence_key = "rules" if _evidence_kind == "rule" else "policies"
+    selectors = [entry["key"] for entry in selector_catalogue(records)["selectors"]]
     transport = to_compact(
         {
-            "policies": policies_view,
-            "selector_catalogue": [
-                entry["key"] for entry in selector_catalogue(records)["selectors"]
-            ],
+            evidence_key: policies_view,
+            "selector_catalogue": selectors,
         }
     )
     if len(transport) > _MAX_RECORD_CHARS:
@@ -3230,7 +3313,7 @@ async def answer_decision_over_policies(
             fabricated=[],
             oversize=True,
         )
-        grounding["policies_grounded"] = policies_grounded
+        grounding[f"{evidence_key}_grounded"] = grounded_count
         return {
             "status": DECLINED,
             "verdict": "",
@@ -3240,30 +3323,47 @@ async def answer_decision_over_policies(
             "verification_requirements": [],
             "citations": [],
             "note": (
-                "The retained policies' records together are larger than can be read in one grounded "
-                "pass, so no judgement was composed from them. The policies are listed to read directly."
+                f"The retained {evidence_key}' records together are larger than can be read in one grounded "
+                f"pass, so no judgement was composed from them. The {evidence_key} are listed to read directly."
             ),
             "grounding": grounding,
         }
 
+    evidence_label = (
+        "Rules (a JSON list; each entry carries one rule, its source "
+        "provision identifiers, and only its referenced spans and facts)"
+        if _evidence_kind == "rule"
+        else "Policies (a JSON list, each entry a policy's identity and "
+        "its grounding_projection_v1 record)"
+    )
     user_content = (
-        f"Question: {scenario}\n\n"
-        f"Policies (a JSON list, each entry a policy's identity and its grounding_projection_v1 "
-        f"record):\n{transport}"
+        f"Question: {scenario}\n\n{evidence_label}:\n{transport}"
     ) + caller_guidance_block(additional_instructions)
     parsed = await _chat_json(
-        _DECISION_MULTI_SYSTEM_PROMPT,
+        (
+            _DECISION_RULE_SYSTEM_PROMPT
+            if _evidence_kind == "rule"
+            else _DECISION_MULTI_SYSTEM_PROMPT
+        ),
         user_content,
         reasoning_effort=reasoning_effort,
     )
-    return _decision_from_parsed(
+    result = _decision_from_parsed(
         parsed,
         rules=all_rules,
         spans=merged_spans,
-        policies_grounded=policies_grounded,
+        policies_grounded=grounded_count,
         rule_to_policy=rule_to_policy,
         selector_membership=_selector_membership_for_records(records),
     )
+    if _evidence_kind == "rule":
+        for citation in result.get("citations") or []:
+            citation["source_provision"] = citation.pop("policy", {})
+        grounding = result.get("grounding")
+        if isinstance(grounding, dict):
+            grounded = grounding.pop("policies_grounded", None)
+            grounding["rules_grounded"] = grounded_count if grounded is None else grounded
+    return result
 
 
 class _ObservedCaseEvaluation(dict):
@@ -3280,6 +3380,7 @@ async def answer_case_over_policies(
     scenario: str,
     reasoning_effort: str = "medium",
     additional_instructions: str = "",
+    _evidence_kind: Literal["policy", "rule"] = "policy",
 ) -> dict:
     """Read what a case asks for, then gather each requested answer in parallel.
 
@@ -3354,7 +3455,9 @@ async def answer_case_over_policies(
     verdict_requested = needs["verdict_requested"]
 
     def _failed_grounding() -> dict:
-        all_rules, _, _, _ = _union_over_records(records)
+        all_rules, _, _, _ = _union_over_records(
+            records, evidence_kind=_evidence_kind
+        )
         grounding = _grounding(
             rules_available=len(all_rules),
             citations_requested=0,
@@ -3362,7 +3465,9 @@ async def answer_case_over_policies(
             fabricated=[],
             oversize=False,
         )
-        grounding["policies_grounded"] = len(records)
+        grounding[
+            "rules_grounded" if _evidence_kind == "rule" else "policies_grounded"
+        ] = len(records)
         return grounding
 
     def _note_failure(track: str, exc: Exception) -> None:
@@ -3395,11 +3500,17 @@ async def answer_case_over_policies(
     async def _gather_informational() -> dict:
         started = time.perf_counter()
         try:
+            evidence_kwargs = (
+                {"_evidence_kind": "rule"}
+                if _evidence_kind == "rule"
+                else {}
+            )
             return await answer_informational_over_policies(
                 records,
                 scenario=scenario,
                 reasoning_effort=effort,
                 **_guidance_kwargs(additional_instructions),
+                **evidence_kwargs,
             )
         except Exception as exc:  # noqa: BLE001 - a failed track is a reported state
             _note_failure(INFORMATIONAL, exc)
@@ -3418,11 +3529,17 @@ async def answer_case_over_policies(
     async def _gather_decision() -> dict:
         started = time.perf_counter()
         try:
+            evidence_kwargs = (
+                {"_evidence_kind": "rule"}
+                if _evidence_kind == "rule"
+                else {}
+            )
             return await answer_decision_over_policies(
                 records,
                 scenario=scenario,
                 reasoning_effort=effort,
                 **_guidance_kwargs(additional_instructions),
+                **evidence_kwargs,
             )
         except Exception as exc:  # noqa: BLE001 - a failed track is a reported state
             _note_failure(DECISION, exc)
@@ -3477,3 +3594,21 @@ async def answer_case_over_policies(
         "decision": by_track.get(DECISION),
         "reasoning_effort": effort,
     }, stage_latency_ms=stage_latency_ms)
+
+
+async def answer_case_over_rules(
+    records: list[dict],
+    *,
+    scenario: str,
+    reasoning_effort: str = "medium",
+    additional_instructions: str = "",
+) -> dict:
+    """Run the shared two-track decision over rule-native records."""
+
+    return await answer_case_over_policies(
+        records,
+        scenario=scenario,
+        reasoning_effort=reasoning_effort,
+        additional_instructions=additional_instructions,
+        _evidence_kind="rule",
+    )

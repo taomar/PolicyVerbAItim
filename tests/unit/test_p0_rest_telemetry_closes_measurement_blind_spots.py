@@ -91,7 +91,7 @@ def _retrieval_response(**overrides: Any) -> dict:
 def _install_retrieval(monkeypatch, *, timings: dict[str, int] | None) -> None:
     """Stand in for the scope helper, returning the context it really returns."""
 
-    async def _retrieve(session, *, policy_set, scenario, with_context):
+    async def _retrieve(session, *, policy_set, scenario, with_context, rule_retrieval=False):
         context: dict[str, Any] = {
             "policy_version_id": "33333333-3333-4333-8333-333333333333",
             "version_number": 4,

@@ -70,8 +70,10 @@ from policy_platform.application import policy_case_decision  # noqa: E402
 from policy_platform.contracts.case_decision import (  # noqa: E402
     MAX_ADDITIONAL_INSTRUCTIONS_CHARS,
     CaseDecisionEnvelopeV2,
+    CaseDecisionRuleEnvelope,
     additional_instructions_hash,
     compute_decision_hash_v2,
+    decision_hash_rule_v1,
     decision_hash_preimage_v2_lang,
     normalise_additional_instructions,
 )
@@ -103,6 +105,7 @@ from policy_platform.infrastructure.persistence.policy_version_import import (  
     import_approved_policy_version,
 )
 from policy_platform.infrastructure.persistence.provision_snapshot import ProvisionSnapshot  # noqa: E402
+from policy_platform.infrastructure.projection.policy_case_payload import to_compact  # noqa: E402
 from policy_platform.infrastructure.persistence.repositories.case_decisions import (  # noqa: E402
     PolicyCaseDecisionRepository,
 )
@@ -224,7 +227,33 @@ class _StubSearchClient:
 
     async def vector_search(self, index: str, **kwargs: Any) -> list[dict]:
         if "'rule'" in (kwargs.get("filter_expr") or ""):
-            return []
+            return [
+                {
+                    "id": f"rule-{rule_id}",
+                    "policy_id": key,
+                    "document_id": PROJECT_KEY,
+                    "document_version": type(self).version_id,
+                    "content_type": ai_case_project.CONTENT_TYPE_RULE,
+                    "rule_id": rule_id,
+                    "parent_document_id": policy_document_id(
+                        policy_version_id=type(self).version_id,
+                        provision_key=key,
+                    ),
+                    "provision_key": key,
+                    "retrieval_text": source,
+                    "@search.score": score,
+                    "@search.rerankerScore": score,
+                }
+                for rule_id, key, source, score in (
+                    (_ALPHA_RULE, _ALPHA_KEY, _ALPHA_SOURCE, 3.2),
+                    (
+                        _BETA_RULE,
+                        _BETA_KEY,
+                        "Managers must record the approval.",
+                        2.6,
+                    ),
+                )
+            ]
         return [
             {
                 "id": policy_document_id(
@@ -238,6 +267,15 @@ class _StubSearchClient:
 
     async def find_ids_by_filter(self, index: str, **kwargs: Any) -> list[str]:
         return manifest_ids(kwargs.get("filter_expr", ""))
+
+    async def find_documents_by_filter(
+        self, index: str, **kwargs: Any
+    ) -> list[dict]:
+        return [
+            {
+                "rule_index_scope": ai_case_project.RULE_INDEX_SCOPE_ALL,
+            }
+        ]
 
 
 class _Gather:
@@ -468,6 +506,7 @@ class _Harness:
             "correlation_id",
             "calling_system_identity",
             "additional_instructions",
+            "rule_retrieval",
         ):
             if name in kwargs:
                 body[name] = kwargs.pop(name)
@@ -476,8 +515,12 @@ class _Harness:
         if token is not None:
             headers.update(_auth(token))
         key = kwargs.pop("project_key", PROJECT_KEY)
+        light = kwargs.pop("light", False)
         assert not kwargs, f"unexpected arguments: {sorted(kwargs)}"
-        return await self.client.post(f"/api/policy-decisions/{key}/case", json=body, headers=headers)
+        suffix = "/case/light" if light else "/case"
+        return await self.client.post(
+            f"/api/policy-decisions/{key}{suffix}", json=body, headers=headers
+        )
 
     async def get_receipt(self, decision_id: str, *, token: str | None = None):
         headers = _auth(token if token is not None else self.owner_token) if token is not False else {}
@@ -530,6 +573,7 @@ async def harness(monkeypatch, tmp_path):
     monkeypatch.setattr(ai_case_project, "AzureOpenAIClient", _StubEmbeddingClient)
     monkeypatch.setattr(ai_case_project, "AzureSearchClient", _StubSearchClient)
     monkeypatch.setattr(ai_case_project, "answer_case_over_policies", _gather)
+    monkeypatch.setattr(ai_case_project, "answer_case_over_rules", _gather)
     # The third network call. Left at its identity default, so every assertion in
     # this file means what it meant before the boundary existed: the question is
     # reported as already being in the processing language and is passed on
@@ -667,6 +711,143 @@ async def test_a_decision_returns_a_receipt_that_reads_back_identically(harness)
     receipt = await harness.get_receipt(body["decision_id"])
     assert receipt.status_code == 200, receipt.text
     assert receipt.json() == body
+
+
+async def test_rule_mode_runs_the_real_case_path_and_stores_a_rule_receipt(
+    harness,
+) -> None:
+    response = await harness.post(rule_retrieval=True)
+    assert response.status_code == 200, response.text
+    body = response.json()
+
+    assert body["schema_version"] == "case_decision_rule_v1"
+    assert body["receipt_status"] == "completed"
+    assert body["request"]["rule_retrieval"] is True
+    assert body["retrieval"]["retrieval_mode"] == "rule"
+    assert body["retrieval"]["method"] == "rule_native_v1"
+    assert "policies_retained" not in body["retrieval"]
+    assert "rule_mode_policy_fallback" not in body["retrieval"]
+    assert body["retrieval"]["rules_grounded"] == len(body["considered_rules"])
+    assert 0 < body["retrieval"]["rules_grounded"] <= 12
+    assert body["retrieval"]["rule_grounding_bytes"] <= 40_000
+    assert "considered" not in body
+    assert "excluded" not in body
+    assert "policies" not in body
+    assert all(rule["grounded"] is True for rule in body["considered_rules"])
+    assert body["citations"][0]["source"]["provision_key"] == _ALPHA_KEY
+    assert body["citations"][0]["quote"]["text"] == _ALPHA_SOURCE
+    assert "policy" not in body["citations"][0]
+    assert "payload_url" not in json.dumps(body["citations"])
+
+    envelope = CaseDecisionRuleEnvelope.model_validate(body)
+    assert decision_hash_rule_v1(envelope) == body["decision_hash"]
+
+    assert _Gather.calls
+    grounded_records = _Gather.calls[-1]["records"]
+    assert all(len(record["payload"]["rules"]) == 1 for record in grounded_records)
+    actual_grounding = to_compact(
+        {
+            "rules": [
+                {
+                    "rule": record["payload"]["rules"][0],
+                    "source": record["source"],
+                    "spans": record["payload"]["spans"],
+                    "facts": record["payload"]["facts"],
+                }
+                for record in grounded_records
+            ],
+            "selector_catalogue": [
+                entry["key"]
+                for entry in ai_case_intent.selector_catalogue(
+                    grounded_records
+                )["selectors"]
+            ],
+        }
+    )
+    assert len(actual_grounding.encode("utf-8")) == body["retrieval"][
+        "rule_grounding_bytes"
+    ]
+    assert {
+        rule["rule_id"]
+        for record in grounded_records
+        for rule in record["payload"]["rules"]
+    } == {
+        rule["rule_id"]
+        for rule in body["considered_rules"]
+        if rule["grounded"]
+    }
+
+    receipt = await harness.get_receipt(body["decision_id"])
+    assert receipt.status_code == 200, receipt.text
+    assert receipt.json() == body
+
+
+async def test_rule_mode_light_is_a_separate_rule_projection(harness) -> None:
+    response = await harness.post(rule_retrieval=True, light=True)
+    assert response.status_code == 200, response.text
+    body = response.json()
+
+    assert body["schema_version"] == "case_decision_rule_light_v1"
+    assert body["hash_basis"] == "case_decision_rule_v1"
+    assert body["request"]["rule_retrieval"] is True
+    assert body["retrieval"]["retrieval_mode"] == "rule"
+    assert body["rules"]
+    assert "policies" not in body
+    assert body["citations"][0]["rule"]["provision_key"] == _ALPHA_KEY
+    assert "policy" not in body["citations"][0]
+
+
+async def test_policy_mode_light_remains_the_policy_projection(harness) -> None:
+    response = await harness.post(light=True)
+    assert response.status_code == 200, response.text
+    body = response.json()
+
+    assert body["schema_version"] == "case_decision_light_v1"
+    assert body["request"]["rule_retrieval"] is False
+    assert "policies" in body
+    assert "rules" not in body
+
+
+async def test_rule_mode_cannot_be_combined_with_a_named_policy(harness) -> None:
+    response = await harness.post(
+        rule_retrieval=True,
+        provision_id="00000000-0000-4000-8000-000000c0de01",
+    )
+
+    assert response.status_code == 422
+    assert response.json()["detail"]["code"] == "rule_retrieval_requires_project_scope"
+
+
+async def test_openapi_discriminates_policy_and_rule_full_and_light_receipts(
+    harness,
+) -> None:
+    document = (await harness.client.get("/openapi.json")).json()
+
+    def response_schema(path: str) -> dict:
+        return document["paths"][path]["post"]["responses"]["200"]["content"][
+            "application/json"
+        ]["schema"]
+
+    full = response_schema(f"/api/policy-decisions/{{project_key}}/case")
+    light = response_schema(f"/api/policy-decisions/{{project_key}}/case/light")
+
+    assert full["discriminator"]["propertyName"] == "schema_version"
+    assert light["discriminator"]["propertyName"] == "schema_version"
+    assert {
+        item["$ref"].rsplit("/", 1)[-1]
+        for item in full["oneOf"]
+    } == {
+        "CaseDecisionEnvelope",
+        "CaseDecisionEnvelopeV2",
+        "CaseDecisionRuleEnvelope",
+    }
+    assert {
+        item["$ref"].rsplit("/", 1)[-1]
+        for item in light["oneOf"]
+    } == {
+        "CaseDecisionLightEnvelope",
+        "CaseDecisionRuleLightEnvelope",
+    }
 
 
 async def test_a_case_receipt_never_enters_the_deterministic_decision_log(harness) -> None:
@@ -1953,6 +2134,10 @@ def _settings_with_subscription_key(base: Settings, **overrides: Any) -> Setting
             "policy_subscription_key": "a-configured-pre-shared-key-0123456789",
             "policy_subscription_key_identity": "expenses-agent",
             "policy_subscription_key_role": VIEWER,
+            # Pinned rather than inherited from the developer's `.env`: with
+            # `LOCAL=true` the resolver also consults the issued-key store, and
+            # these tests are about the configured key.
+            "local": False,
             **overrides,
         }
     )

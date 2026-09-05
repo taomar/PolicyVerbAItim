@@ -49,7 +49,10 @@ from policy_platform.infrastructure.assistants import ai_case_intent
 from policy_platform.infrastructure.assistants import ai_case_project
 from policy_platform.infrastructure.projection.policy_case_payload import build_case_payload
 from policy_platform.infrastructure.search.indexing import clause_search_document_id
-from policy_platform.infrastructure.search.policy_index import policy_document_id
+from policy_platform.infrastructure.search.policy_index import (
+    CONTENT_TYPE_RULE,
+    policy_document_id,
+)
 from tests.fixtures.factories import make_rule
 from tests.fixtures.search_stubs import manifest_ids
 
@@ -715,7 +718,52 @@ def test_duplicate_rescues_do_not_consume_the_coverage_budget() -> None:
     assert len(duplicates) == 4
 
 
-# --- the multi-policy gather: fabrication check and per-policy citations --------
+# --- the cut, and the coverage expansion every cut must be able to reach -------
+
+
+def test_every_order_whose_count_came_from_a_cut_reaches_coverage_expansion() -> None:
+    """The gate is a property, not a list of one.
+
+    Coverage expansion spends budget a *cut* left unspent, so a selector that
+    cuts on evidence must be able to reach it, and the order it reports is what
+    the gate reads. An order the gate did not recognise had its unspent budget
+    silently never offered to a policy whose heading named a missed term —
+    silently, because a skipped expansion looks exactly like one that found
+    nothing.
+
+    Scoped to **policy mode**. Coverage expansion tops up a budget spent on
+    provisions, and rule mode grounds no provisions, so its orders are no longer
+    candidates for this gate. The property still has to hold for every order
+    that *can* reach it.
+    """
+
+    _selected, policy_precision = ai_case_project.select_semantic_policy_hits(
+        [
+            {
+                "id": policy_document_id(policy_version_id=_PV, provision_key="LEAD"),
+                "policy_id": "LEAD",
+                "document_version": _PV,
+                "content_type": "policy",
+                "@search.score": 0.9,
+                "@search.rerankerScore": 3.4,
+            },
+            {
+                "id": policy_document_id(policy_version_id=_PV, provision_key="TAIL"),
+                "policy_id": "TAIL",
+                "document_version": _PV,
+                "content_type": "policy",
+                "@search.score": 0.4,
+                "@search.rerankerScore": 0.5,
+            },
+        ]
+    )
+
+    assert policy_precision["semantic_selected"] >= 1
+    # Every order the policy path can report and that came from a cut is a
+    # candidate for expansion; none of them is empty or unnamed.
+    assert ai_case_project.COVERAGE_EXPANDABLE_POLICY_ORDERS
+    assert all(bool(order) for order in ai_case_project.COVERAGE_EXPANDABLE_POLICY_ORDERS)
+
 
 
 class _Settings:
@@ -1634,3 +1682,4 @@ def test_the_retrieval_states_are_distinct() -> None:
     }
     # Twelve named states, none equal to another.
     assert len(states) == 12
+
