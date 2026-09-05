@@ -37,8 +37,21 @@ function jsonResponse(body: unknown) {
 let fetchMock: ReturnType<typeof vi.fn>;
 
 /** How many times the upload endpoint was actually called. */
+/** Only the upload POST.
+ *
+ * `/api/documents/upload-progress/{id}` is a prefix match for the upload path,
+ * so a plain `includes(UPLOAD_URL)` counts every progress poll as an upload and
+ * this file's central claim — how many uploads were sent — silently becomes
+ * "how many requests began with that path". Matching the POST exactly keeps the
+ * count meaning what it says, and makes it stricter rather than looser: a poll
+ * can no longer be mistaken for a send.
+ */
+function isUploadPost(url: string): boolean {
+  return url.includes(`${UPLOAD_URL}?`) || url.endsWith(UPLOAD_URL);
+}
+
 function uploadCalls(): number {
-  return fetchMock.mock.calls.filter((c) => String(c[0]).includes(UPLOAD_URL)).length;
+  return fetchMock.mock.calls.filter((c) => isUploadPost(String(c[0]))).length;
 }
 
 function attachFile() {
@@ -180,7 +193,7 @@ describe("required fields are enforced before the upload is sent", () => {
 
     await waitFor(() => expect(uploadCalls()).toBe(1));
     // The guard must not silently drop the values the reviewer typed.
-    const call = fetchMock.mock.calls.find((c) => String(c[0]).includes(UPLOAD_URL));
+    const call = fetchMock.mock.calls.find((c) => isUploadPost(String(c[0])));
     const url = String(call?.[0] ?? "");
     expect(url).toContain("title=Staff+Handbook");
     expect(url).toContain("owner=hr-team");

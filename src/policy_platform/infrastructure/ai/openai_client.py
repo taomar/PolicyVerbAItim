@@ -37,6 +37,7 @@ import random
 import httpx
 
 from policy_platform.infrastructure.ai.usage_metering import record_call_usage
+from policy_platform.infrastructure.errors import describe_exception
 from policy_platform.infrastructure.settings import Settings, get_settings
 
 logger = logging.getLogger(__name__)
@@ -57,6 +58,36 @@ _RETRYABLE_STATUSES = frozenset({408, 429, 500, 502, 503, 504})
 _MAX_ATTEMPTS = 4
 _BACKOFF_BASE_SECONDS = 2.0
 _BACKOFF_CAP_SECONDS = 20.0
+
+#: How long we will wait to *establish* a connection, as opposed to how long we
+#: will wait for the model to think.
+#:
+#: These are one number in httpx unless they are separated: `AsyncClient(
+#: timeout=600.0)` sets connect, read, write and pool to 600 seconds alike. A
+#: read budget of ten minutes is correct for a reasoning deployment — that is the
+#: work we are waiting on. A *connect* budget of ten minutes is not correct for
+#: anything: no healthy TCP handshake takes minutes, so a stalled connect that
+#: would have been retried in two seconds instead occupies the run for ten
+#: minutes and then retries. The failure mode is silent, because a stall is
+#: indistinguishable from slow rendering while it is happening.
+#:
+#: Splitting them keeps the long budget where the long work is and puts a short,
+#: honest bound on the parts that are pure transport.
+_CONNECT_TIMEOUT_SECONDS = 15.0
+_WRITE_TIMEOUT_SECONDS = 60.0
+_POOL_TIMEOUT_SECONDS = 30.0
+
+
+def _request_timeout(read_timeout: float) -> httpx.Timeout:
+    """The caller's budget for the reply; short, fixed bounds for the transport."""
+
+    return httpx.Timeout(
+        read_timeout,
+        connect=_CONNECT_TIMEOUT_SECONDS,
+        write=_WRITE_TIMEOUT_SECONDS,
+        pool=_POOL_TIMEOUT_SECONDS,
+    )
+
 
 #: Passed on every extraction call. For the record, not for the effect.
 #:
@@ -137,13 +168,19 @@ async def _post_with_retry(
         if attempt > 1:
             delay = _retry_delay(attempt - 1, retry_after)
             logger.warning(
+                # describe_exception, not the exception: httpx's timeout and
+                # transport errors carry no message, so "%s" on one of them
+                # prints nothing and the line reads as though the call failed
+                # for no reason. Observed live during an index rebuild on
+                # 2026-09-03 — "failed (attempt 1 of 4):  — retrying in 2.0s".
+                # The class name is the only identification these carry.
                 "%s failed (attempt %d of %d): %s — retrying in %.1fs",
-                label, attempt - 1, _MAX_ATTEMPTS, last_error, delay,
+                label, attempt - 1, _MAX_ATTEMPTS, describe_exception(last_error), delay,
             )
             await asyncio.sleep(delay)
         retry_after = None
         try:
-            async with httpx.AsyncClient(timeout=timeout) as client:
+            async with httpx.AsyncClient(timeout=_request_timeout(timeout)) as client:
                 resp = await client.post(url, headers=headers, json=body)
         except (httpx.TimeoutException, httpx.TransportError) as exc:
             # The reply never arrived. Whether the service did the work is
@@ -161,8 +198,14 @@ async def _post_with_retry(
 
         return resp
 
+    # The reason travels, not the exception. Every attempt can have failed with a
+    # message-less transport error, and "…after 4 attempts: " ending in a colon
+    # tells an operator nothing — worse, it reads like a truncated log line
+    # rather than a real answer. This sentence is what the projection classifier
+    # sees and what ends up recorded against the index build, so it has to name
+    # something.
     raise AzureOpenAITransientError(
-        f"{label} failed after {_MAX_ATTEMPTS} attempts: {last_error}"
+        f"{label} failed after {_MAX_ATTEMPTS} attempts: {describe_exception(last_error)}"
     ) from last_error
 
 

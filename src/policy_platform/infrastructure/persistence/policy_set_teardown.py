@@ -339,6 +339,13 @@ _DELETION_ORDER: tuple[tuple[str, str], ...] = (
     ),
     ("policy_aggregate_limits", "DELETE FROM policy_aggregate_limits WHERE policy_set_id = :sid"),
     ("policy_index_states", "DELETE FROM policy_index_states WHERE policy_set_id = :sid"),
+    # The project's index build history goes with the project. It is an
+    # operational record of work done on a corpus that is about to stop
+    # existing, not governance evidence — the audited fact that a project was
+    # deleted is appended to `audit_events`, which is retained. Keeping these
+    # rows would leave history entries pointing at a `policy_set_id` with no
+    # project, and the foreign key would refuse the delete anyway.
+    ("policy_index_builds", "DELETE FROM policy_index_builds WHERE policy_set_id = :sid"),
     ("approved_policy_versions", "DELETE FROM approved_policy_versions WHERE policy_set_id = :sid"),
 )
 

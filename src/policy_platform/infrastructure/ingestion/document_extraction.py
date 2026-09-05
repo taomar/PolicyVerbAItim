@@ -38,6 +38,11 @@ from policy_platform.infrastructure.ingestion.document_ingestion import (  # noq
     IngestionError,
     ingest_document,
 )
+from policy_platform.infrastructure.ingestion import canonical_rebuild
+from policy_platform.infrastructure.ingestion.mixed_script_text import (
+    INTERLEAVED_TEXT_CODE,
+    interleaved_tokens,
+)
 from policy_platform.infrastructure.settings import get_settings
 
 
@@ -152,6 +157,15 @@ def extract_document(
     glyphs = detect_display_glyphs(document)
     if glyphs is not None:
         document.diagnostics.append(glyphs)
+
+    # The second fidelity check at the same seam, for the same reason: text read
+    # across two columns instead of down them is a property of the extracted
+    # text rather than of the extractor, and reporting it here means the portal
+    # upload and every other caller of this function are told about it without
+    # any of them carrying its own copy of the rule.
+    interleaved = detect_interleaved_text(document)
+    if interleaved is not None:
+        document.diagnostics.append(interleaved)
     return document
 
 
@@ -242,6 +256,75 @@ def detect_display_glyphs(document: CanonicalDocument) -> IngestionDiagnostic | 
     )
 
 
+def detect_interleaved_text(document: CanonicalDocument) -> IngestionDiagnostic | None:
+    """Report text whose characters were read across columns instead of down them.
+
+    A page that sets two columns side by side can be read the wrong way by an
+    extractor, producing a single string with the two columns' letters
+    alternating inside individual tokens. Both texts are entirely present, but
+    neither can be read, and nothing downstream can tell the difference between
+    this and a document that genuinely contains such words.
+
+    Deterministic coordinate-based reading order (`reading_order`,
+    `document_ingestion._text_from_words`) already recovers the overwhelming
+    majority of these, including right-to-left runs and side-by-side contexts.
+    This reports only what survived that — residual damage in text that has
+    already been through ordinary ingestion.
+
+    DETECTION, NOT REPAIR
+    ---------------------
+    Same rule as `detect_display_glyphs`, for the same reason: the text is left
+    exactly as extracted. A defect a reviewer can see is worth more than a
+    silent rewrite nobody can audit, and the fix belongs in the source file. The
+    diagnostic therefore says where to look and what to do about it, and carries
+    counts and locations only — never the passage itself, which is policy
+    wording and does not belong in a stored diagnostic or a log.
+
+    INFORMATIONAL
+    -------------
+    A warning, never an error: the upload succeeds, the clauses persist and the
+    document indexes exactly as it would have without this check. Returns
+    ``None`` for a clean document, so a caller appends only when there is
+    something to say.
+    """
+
+    affected_pages: set[int] = set()
+    affected_elements = 0
+    tokens = 0
+    for element in document.elements:
+        found = interleaved_tokens(element.text)
+        if not found:
+            continue
+        tokens += len(found)
+        affected_elements += 1
+        affected_pages.update(
+            fragment.page
+            for fragment in element.source_fragments
+            if isinstance(fragment, SourceFragment)
+        )
+
+    if not tokens:
+        return None
+
+    pages = sorted(affected_pages)
+    where = f"pages {pages[:20]}" if pages else "page numbers unavailable"
+    return IngestionDiagnostic(
+        code=INTERLEAVED_TEXT_CODE,
+        # The document loaded and its structure is sound. What is not sound is
+        # the source file, and only the author can put that right.
+        severity="warning",
+        detail=(
+            f"{tokens} word(s) across {affected_elements} passage(s) have the letters of "
+            f"two writing systems alternating inside them ({where}) — the sign of columns "
+            "set side by side being read across instead of down. The text was stored "
+            "exactly as extracted and nothing was reordered or rewritten, so these "
+            "passages will read as nonsense wherever they are shown or quoted. Open the "
+            "affected pages in the document viewer to see them. To resolve it, correct "
+            "the layout in the original PDF or Word file and upload it as a new version."
+        ),
+    )
+
+
 def _extract_with_docling(
     storage_path: str, *, document_id: str, source_hash: str, converter: Any | None
 ) -> CanonicalDocument:
@@ -304,6 +387,14 @@ def clauses_from_document(document: CanonicalDocument) -> list[ClauseData]:
             # so a reader after fragments never mistakes this for one.
             provenance.append(
                 {TABLE_STRUCTURE_KEY: structure.model_dump(exclude_none=True)}
+            )
+        if element.reading_order is not None:
+            # Rides with the fragments because that list *is* this clause's
+            # provenance. Persisting the recovered text without it would keep the
+            # reordering and lose the proof that it is a permutation of the
+            # parser's own characters, leaving the fidelity check to trust it.
+            provenance.append(
+                {canonical_rebuild.READING_ORDER_KEY: element.reading_order.model_dump()}
             )
         clauses.append(
             ClauseData(

@@ -14,7 +14,7 @@ FastAPI generates and serves the OpenAPI description automatically. With the API
 
 Swagger UI is the fastest way to explore the API: pick a tag, expand an operation, and the exact schema for that request is right there. Treat the generated description as authoritative — this page only orients you. The description is generated from the same Pydantic contracts the evaluator consumes, so it cannot drift from the implementation.
 
-The current surface is **97 paths / 108 operations** across 15 tags.
+The current surface is **104 paths / 116 operations** across 17 tags.
 
 ### Where the API lives in a deployment
 
@@ -26,13 +26,13 @@ All routes are prefixed with `/api`, except `GET /health`.
 
 | Tag | Prefix | Operations | What it covers |
 |---|---|---|---|
-| `policy-sets` | `/api/policy-sets` | 20 | Projects: CRUD, portfolio and workspace counts, review scheduling, versions, exports, and policy-index health. |
+| `policy-sets` | `/api/policy-sets` | 21 | Projects: CRUD, portfolio and workspace counts, review scheduling, versions, exports, policy-index health, and a project's index build history. |
 | `candidate-rules` | `/api/policy-sets/{key}/candidate-rules` | 11 | The review queue, the same rules grouped by passage, and publication. |
 | `ai` | `/api/ai` | 31 | Everything AI-assisted: extraction, grounded answers, rewrites, quality, correlation, and case testing. |
 | `policy-decisions` | `/api/policy-decisions` | 4 | External consumption: full or compact audited decisions, precision-ranked policy JSON, and receipt replay. Authenticated. [Detail below](#audited-external-decisions-policy-decisions). |
 | `evaluations` | `/api/evaluations` | 3 | Run a deterministic evaluation, and browse the append-only decision log (list + detail). |
 | `extraction` | `/api/extraction/{document_version_id}` | 4 | What a run actually saw: the canonical document, its structural graph, the reading plan, and element coverage. |
-| `documents` | `/api/documents` | 4 | List documents, multipart upload, list a version's clauses, assign a document to a project. Upload returns `clauses_search_indexed`, the count written to the search index. |
+| `documents` | `/api/documents` | 5 | List documents, multipart upload, read an in-flight upload's stage, list a version's clauses, assign a document to a project. Upload returns `clauses_search_indexed`, the count written to the search index. |
 | `policy-tests` | `/api/policy-tests` | 10 | Saved tests: list, create, propose (AI), review a proposal, run now, run history, failing tests, and validation batches. |
 | `policy-exceptions` | `/api/policy-exceptions` | 4 | Request a waiver, list, read, and grant/deny it. |
 | `policy-attestations` | `/api/policy-attestations` | 4 | Launch an acknowledgement campaign, list, search, acknowledge. |
@@ -40,6 +40,8 @@ All routes are prefixed with `/api`, except `GET /health`.
 | `policy-payload` | `/api/policy-payload` | 1 | The lean projection of one policy for a model to read. |
 | `notes` | `/api/notes` | 3 | Free-form notes attached to an entity. |
 | `audit` | `/api/audit-events` | 1 | Read the immutable audit trail. |
+| `integration` | `/api/integration` | 4 | Issue, list and revoke the subscription keys a machine caller presents to the decision API. Administrator-only, and offered only where no gateway fronts the deployment (`LOCAL=true`). [Detail below](#subscription-keys-integration). |
+| `policy-index` | `/api/policy-index` | 2 | Every project's grounding-index health in one read, and one build's stages by operation id. The aggregate is administrator-only. [Detail below](#policy-index-health-and-builds-policy-index). |
 | `system` | `/health`, `/api/auth/*` | 3 | Liveness, local sign-in, and resolved principal. |
 
 The three largest groups carry more than a table cell can hold, so their detail is below rather than inside the row. `extraction` is read-only, and the fastest way to answer "why was this clause not extracted?".
@@ -76,6 +78,131 @@ Three of its groups are worth stating precisely:
 - **Case answering** works on one policy or a whole project. The project scope retrieves the policies bearing on the question from that project's own policy index and discards the rest before anything is evaluated — never the whole set. A question is read as asking for what the policies *state*, for a *verdict* on the case, or for both, and each requested answer is gathered in its own right over the same retrieved policies.
 
 `POST /api/ai/policy-sets/{key}/case-answer` remains what it has always been: the in-product reviewer surface. It persists nothing, returns no decision identity, and its response keys are unchanged — `intent`, `informational` and `decision` all still mean what they meant, with `information_requested`, `verdict_requested` and `classifier_version` added beside them. When an external system needs a verdict it can cite later, use `policy-decisions` below instead.
+
+### What `documents` covers
+
+List documents, multipart upload, read an in-flight upload's stage, list a version's clauses, and assign a document to a project.
+
+#### `GET /api/documents/upload-progress/{operation_id}`
+
+Reads how far the upload identified by `operation_id` has got. **Read band**, and internal to the loader UI: the browser generates the id, sends it as a query parameter on the upload `POST`, and polls this route while that request is still open, because the upload replies once at the end and has nothing to report until then.
+
+It exists so a long parse is distinguishable from a stopped one. Everything it returns is measured, never interpolated:
+
+| Field | Meaning |
+|---|---|
+| `active` | Whether a record for this id is known. `false` is the honest answer before the handler has started and after the record is discarded — the caller keeps its own "sending" state. |
+| `status` | `running`, `completed` or `failed`. Polling stops on the last two. |
+| `stage`, `stage_index`, `stage_total`, `stages` | Position in a fixed, ordered pipeline. This is what makes "step N of M" true rather than a guess. |
+| `clause_count`, `indexed_count`, `warning_count` | Counts the server has actually taken. **`null` means not measured yet and `0` means none found**; a document nobody has read and an empty one must not look the same. |
+| `has_interleaved_warning` | Whether residual interleaved text was found in the source file. Informational — it gates nothing. |
+| `started_at`, `updated_at`, `elapsed_seconds` | Server clock only. A client that computed staleness from its own clock would call a healthy upload stalled whenever the two disagreed. |
+| `error` | Terminal failure text, or `null`. |
+
+It carries no document text and no credentials — counts, stage names and timestamps only. A finished record is retained briefly so the last poll can read the outcome, then discarded; an unknown or expired id answers `active: false` rather than erroring.
+
+## Subscription keys (`integration`)
+
+The credentials a machine caller presents to the decision API, and where they
+come from.
+
+**Offered only where no gateway fronts the deployment** — that is, where
+`LOCAL=true`. Behind API Management the gateway owns caller subscriptions and
+its policy overwrites `X-Policy-Subscription-Key` with its own Key Vault-backed
+backend credential, so a key issued here would be discarded before the request
+arrived. With `LOCAL=false` every operation below answers `404`: the feature
+does not exist rather than being forbidden. The refusal is server-side, so
+hiding the menu item is a courtesy and not the control.
+
+| Operation | Band | What it does |
+|---|---|---|
+| `GET /api/integration/capability` | read | Reports one boolean, `manages_subscription_keys`. Readable by any role because the menu has to be drawn before anyone knows whether the page exists; it names nothing else. |
+| `GET /api/integration/keys` | administer | Every key, newest first, revoked ones included. Carries no part of any secret. |
+| `POST /api/integration/keys` | administer | Issues a key. **The only response that contains the plaintext.** |
+| `DELETE /api/integration/keys/{key_id}` | administer | Revokes a key. The row is kept; only its usability ends. |
+
+Three properties worth stating plainly:
+
+- **The key is shown once.** Only a SHA-256 hash is stored, so no later call can
+  return it — the list endpoint could not disclose one if it tried. A key that
+  was not copied at generation is replaced, not recovered.
+- **Several keys may be active at once.** That is what makes rotation a
+  migration rather than a cutover: issue the new key, move the caller across,
+  then revoke the old one. Issuing never invalidates anything, including the
+  configured `POLICY_SUBSCRIPTION_KEY`.
+- **Every key resolves to the same principal.** Issued keys carry the configured
+  `POLICY_SUBSCRIPTION_KEY_IDENTITY` and `POLICY_SUBSCRIPTION_KEY_ROLE`, not
+  their own. Keys are told apart by label in the admin screen, not by privilege.
+
+Issuance and revocation are written to `audit_events` as
+`api_subscription_key.issued` and `api_subscription_key.revoked`. Those records
+name the label and the row id and never the key, because `GET /api/audit-events`
+is read-band and therefore visible to every viewer.
+
+Listing is banded with the writes rather than at read: these rows describe how
+machine callers reach the decision API, which is reconnaissance about the
+deployment rather than governed content.
+
+## Policy index health and builds (`policy-index`)
+
+A project's grounding index is rebuilt by two things: publishing a version (best
+effort, after the publish has already committed) and pressing rebuild. Both run
+the same work through one server-side mechanism, and these operations are how
+that mechanism is watched.
+
+| Operation | Band | What it does |
+|---|---|---|
+| `GET /api/policy-index/states` | `ADMINISTER` | Every project's recorded index state, its health classification, its quality verdict, and its most recent build. Plus `active`, the build currently holding the one build slot. |
+| `GET /api/policy-index/builds/{operation_id}` | `AUTHOR` | One build's stages, counters and outcome. Answers `{"active": false}` for an id nothing is recorded against, which is a normal state and not an error. |
+| `GET /api/policy-sets/{key}/policy-index/builds` | `AUTHOR` | One project's build attempts, newest first, plus the same `active` field. |
+
+The aggregate is administrator-only for the reason the subscription-key list is:
+it enumerates every project in the deployment with its index name, its failure
+reasons and how long each has been broken, which describes the estate rather than
+governed content.
+
+### One build at a time, across the whole deployment
+
+A build re-renders and re-embeds an entire corpus through rate-limited model
+endpoints and then rewrites a whole search index. Two at once compete for the
+same quota, and two on one project race each other's manifest writes. So exactly
+one runs at a time **across every replica and process**, coordinated by a UNIQUE
+constraint on `policy_index_builds.active_slot` — one row may hold the live
+value, every finished row holds NULL, and NULLs do not collide. A process that
+dies mid-build has its slot reclaimed once the row stops heartbeating for longer
+than the build lease, so a crash cannot leave the guard stuck closed.
+
+The two callers differ in what happens when the slot is busy:
+
+- `POST /api/policy-sets/{key}/policy-index/rebuild` is refused with **409**. The
+  detail carries `active` — the operation id, project key and stage of the build
+  in the way — and `operation_id`, the deferred attempt's own handle. It is
+  refused rather than queued: a queue needs a worker to drain it and an answer
+  for what happens when the process holding it dies, and saying no is smaller.
+- `POST /api/policy-sets/{key}/publish` **still succeeds**. The version is
+  published either way; what did not happen is the rebuild. The response's
+  `policy_index_build` carries `deferred: true`, and the attempt is recorded in
+  the history as `deferred` — never ran, which is a different fact from ran and
+  failed, and points at a different repair.
+
+### Watching a build
+
+Both `rebuild` and `publish` accept an optional `operation_id` query parameter.
+It is generated by the client *before* the request, exactly as a document
+upload's is, because a request that takes minutes cannot be watched through its
+own response — the response does not exist until the work has finished. Omitting
+it changes nothing about the build; the server allocates one and returns it in
+`policy_index_build.operation_id`.
+
+Build statuses are `running`, `completed`, `failed` and `deferred`. Health
+classifications on the aggregate are `healthy`, `unvalidated`, `stale`, `failed`,
+`building`, `not_built` and `empty`; they are deliberately not collapsed, because
+`unvalidated` is repaired by a validation rather than a rebuild and `empty` is
+not a fault at all.
+
+None of these payloads carries policy text, rendered text, a service reply body
+or a credential. Counts, stage keys, timestamps, an actor, and a failure
+description bounded before it is written.
 
 ## Audited external decisions (`policy-decisions`)
 
@@ -1024,7 +1151,7 @@ assert receipt.hash_basis in {
 - **JSON in, JSON out**, except document upload (`multipart/form-data`) and export endpoints (which return JSON, JSONL or CSV as an attachment, selected with a `format` query parameter). See [Capabilities](../README.md#capabilities) for what each output is for.
 - **Policy sets are addressed by `key`** — a stable slug such as `expense-policy` — while most other resources use UUIDs. A project's UUID `id` is trace identity and its `name` is a display string; neither is ever a path segment.
 - **AI endpoints require configuration.** Azure OpenAI is a product requirement, not an option: if it is not configured, every AI route returns `503` before doing any work and the platform is in a degraded diagnostic mode. Retrieval- backed grounding additionally needs `AZURE_SEARCH_*`. Check `GET /api/ai/status` first — it reports both `ai_enabled` and `search_enabled`.
-- **Role-based access control, off by default.** All 108 operations are classified into a capability band — read, use, author, administer — and one dependency enforces the whole registry, so a route cannot be reachable without a classification. It is disabled unless `RBAC_ENABLED` is set; see [configuration](configuration.md) for what to set up first. When enabled, an insufficient role gets `403` with a structured `detail` carrying `code`, `required_role` and `band` rather than a sentence, so clients can render their own wording. Note that the bands do not follow HTTP verbs: many `POST /api/ai/*` routes change nothing and are readable by any role, while a few that write nothing — the ones that exist to compose an edit — require an author.
+- **Role-based access control, off by default.** All 116 operations are classified into a capability band — read, use, author, administer — and one dependency enforces the whole registry, so a route cannot be reachable without a classification. It is disabled unless `RBAC_ENABLED` is set; see [configuration](configuration.md) for what to set up first. When enabled, an insufficient role gets `403` with a structured `detail` carrying `code`, `required_role` and `band` rather than a sentence, so clients can render their own wording. Note that the bands do not follow HTTP verbs: many `POST /api/ai/*` routes change nothing and are readable by any role, while a few that write nothing — the ones that exist to compose an edit — require an author.
 - **Four operations require authentication regardless of that flag.** `POST /api/policy-decisions/{project_key}/policies`, both full and light case `POST`s, and `GET /api/policy-decisions/{decision_id}` refuse an unauthenticated caller with `401` even where global enforcement is off. The retrieval route exposes filtered policy JSON; the other three write, project, or serve an audited receipt that must name who asked. Nothing else bypasses the flag.
 - **Getting a token.** `POST /api/auth/login` with `{username, password}` returns `access_token`; send it as `Authorization: Bearer <token>`. `GET /api/auth/me` reports the principal the server resolved, which is the quickest way to see what a token is actually granting. Both are `read`-band, so a caller who has not signed in can reach them — an unauthenticated request resolves to the least privilege, which satisfies `read`. A wrong password and an unknown username both return `401`, deliberately indistinguishable.
 - **`401` and `403` mean different things.** `401` is "this session is not valid" — the token is missing, expired or not verifiable. `403` is "your role may not do this". A client should clear its session on the first and explain the refusal on the second; merging them logs people out for asking to do something they were never allowed to do.

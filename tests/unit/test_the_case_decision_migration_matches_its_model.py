@@ -49,12 +49,17 @@ ALTERATIONS = (VERSIONS / "b8f3d2a67c14_case_decision_v2_columns.py",)
 #: follows whatever the tree happens to contain — a check that derives the
 #: expected head from the tree cannot detect a second one.
 #:
-#: Moved by the projection-faithfulness gate, which added the
-#: `policy_index_states.quality_*` columns on top of the corpus-projection
-#: milestone's `projection_profile`. All three migrations are unrelated in
-#: subject and strictly ordered in history, which is exactly what this constant
-#: is here to make visible.
-EXPECTED_HEAD = "e3a7c9d15b82"
+#: Moved by the Integration screen, which added `api_subscription_keys` — a
+#: store for keys an administrator issues, so that rotation is a migration
+#: rather than an environment edit and a restart. It touches no existing table,
+#: which is why nothing in the column comparison below changes; the only thing
+#: that moved is where the history ends.
+#:
+#: Moved again by the policy-index build console, which added
+#: `policy_index_builds` — the append-only record of index build attempts, which
+#: is also the cross-process slot that keeps two builds from running at once.
+#: It likewise touches no existing table.
+EXPECTED_HEAD = "a1c5f0b3e284"
 
 TABLE = "policy_case_decisions"
 

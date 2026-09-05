@@ -51,8 +51,9 @@ import json
 import logging
 import re
 import secrets
+import string
 import unicodedata
-from collections.abc import Iterator, Sequence
+from collections.abc import Iterator, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Final
 
@@ -168,6 +169,13 @@ _DIGIT_RUN: Final[re.Pattern[str]] = re.compile(r"\d+(?:[.,]\d+)*")
 
 #: A whitespace-delimited token, for the identifier check below.
 _TOKEN: Final[re.Pattern[str]] = re.compile(r"\S+")
+
+#: Punctuation that can belong *inside* an identifier. Other punctuation means
+#: the token is ordinary prose adjacent to a quantity — for example
+#: ``20%deduction`` or ``item(3`` — and the number check already guards the
+#: decision-bearing value. Treating those runs as codes made faithful renderings
+#: fail whenever a translator inserted the missing space.
+_IDENTIFIER_PUNCTUATION: Final[frozenset[str]] = frozenset("-._/")
 
 _SYSTEM_PROMPT = """You are given a JSON object whose values are passages of text taken from a \
 governance document, and a target language. The object arrives inside the marked region below, \
@@ -427,6 +435,50 @@ class _BatchOverBudget(Exception):
         self.failure = failure
 
 
+class _BatchUnfaithful(Exception):
+    """Internal signal: the reply was readable, and could not be trusted.
+
+    The distinction this carries is narrow and was learned from a live build. A
+    batch whose replies parsed but kept losing a protected literal is *not* the
+    same condition as a service saying no: the model answered, twice, and each
+    time dropped markers it was told to copy. A live rebuild of 293 rules ended
+    here — `class=rendering_rejected batch=1 items=2 chars=1529`, one value
+    carrying 19 protected literals, the first attempt missing one and the second
+    missing fourteen.
+
+    Repeating that call a third time is asking the same question. Sending each
+    item *on its own* is a different one — a shorter prompt, fewer markers to
+    carry, and no neighbouring value to confuse them with — and it is the same
+    remedy the module already applies to a call refused for budget. So this is a
+    signal rather than a refusal: `_render_batch` reports the condition,
+    `_render_group` decides whether there is anything smaller to send.
+
+    Like `_BatchOverBudget` it never leaves the module, and like it, it carries
+    only a bounded :class:`ProjectionFailure` and a reason this module wrote —
+    which names the check that refused and the key's position in the call, never
+    the passage, the marker, or the literal that went missing.
+    """
+
+    def __init__(self, failure: ProjectionFailure, *, reason: str) -> None:
+        super().__init__(f"{failure}: {reason}")
+        self.failure = failure
+        self.reason = reason
+
+
+def _projection_refusal(failure: ProjectionFailure, reason: str | None) -> str:
+    """The one sentence a rendering failure is allowed to say.
+
+    Written once and used by every raise site, so a refusal reported after a
+    batch was divided is word for word the refusal the undivided batch would
+    have reported. Both halves are already bounded: `failure` is a fixed set of
+    classes, counts and machine tokens, and `reason` is a string this module
+    composed from the name of the check that refused.
+    """
+
+    detail = f": {reason}" if reason else ""
+    return f"the corpus could not be rendered into {PROCESSING_LANGUAGE}: {failure}{detail}"
+
+
 # ── the structural checks a rendering has to survive ─────────────────
 
 
@@ -475,11 +527,120 @@ def _identifiers(text: str) -> set[str]:
         stripped = token.strip("([{<>}]),.;:\"'")
         if not stripped:
             continue
+        if any(
+            not (char.isalnum() or char in _IDENTIFIER_PUNCTUATION)
+            for char in stripped
+        ):
+            continue
         has_digit = any(char.isdigit() for char in stripped)
         has_letter = any(char.isalpha() for char in stripped)
         if has_digit and has_letter:
             found.add(stripped.casefold())
     return found
+
+
+def _number_spans(text: str) -> tuple[tuple[int, int], ...]:
+    """Where every numeric run sits in ``text``.
+
+    Positions, not values. :func:`_ascii_digits` maps one character to exactly
+    one character, so an index into the normalised string is the same index into
+    the original — which is what lets a run *found* in ASCII be *sliced* out of
+    the text the document actually holds. The slice therefore keeps the source's
+    own digit set and its own separators: an Arabic-Indic ٣٠ is restored as ٣٠
+    and not as 30, and ``1.5`` is not tidied into ``1,5``.
+
+    The pattern is the one :func:`_numbers` already uses, deliberately. The guard
+    that refuses a rendering for losing a number and the protection that stops it
+    being lost must agree on what a number is, or the protection would cover
+    something other than the thing being checked.
+    """
+
+    return tuple((m.start(), m.end()) for m in _DIGIT_RUN.finditer(_ascii_digits(text)))
+
+
+def _identifier_spans(text: str) -> tuple[tuple[int, int], ...]:
+    """Where every identifier-shaped token sits in ``text``.
+
+    The same definition :func:`_identifiers` checks: a token mixing letters and
+    digits, made only of alphanumerics and identifier punctuation, with
+    surrounding brackets and sentence punctuation stripped off. Located in the
+    ASCII-normalised copy and sliced from the original, for the reason
+    :func:`_number_spans` gives.
+
+    Protected as one unit rather than left to have its digits replaced piecemeal.
+    ``AL-2024-07`` perforated into ``AL-<marker>-<marker>`` is longer than the
+    thing it stands for, and a renderer that merely puts a space beside it has
+    destroyed the token — which the identifier check would then report as a lost
+    identifier. Withholding the whole token means there is nothing in it for a
+    renderer to get wrong.
+    """
+
+    normalised = _ascii_digits(text)
+    spans: list[tuple[int, int]] = []
+    for match in _TOKEN.finditer(normalised):
+        token = match.group()
+        stripped = token.strip("([{<>}]),.;:\"'")
+        if not stripped:
+            continue
+        if any(
+            not (char.isalnum() or char in _IDENTIFIER_PUNCTUATION) for char in stripped
+        ):
+            continue
+        if not (
+            any(char.isdigit() for char in stripped)
+            and any(char.isalpha() for char in stripped)
+        ):
+            continue
+        start = match.start() + token.find(stripped)
+        spans.append((start, start + len(stripped)))
+    return tuple(spans)
+
+
+def _overlaps(span: tuple[int, int], others: Sequence[tuple[int, int]]) -> bool:
+    start, end = span
+    return any(start < other_end and other_start < end for other_start, other_end in others)
+
+
+#: A protected occurrence, as it appears in a text on its way to a renderer.
+#: Derived from the marker shape rather than from any particular build's prefix,
+#: so a check can recognise one in a text it did not create.
+_PROTECTED_MARKER: Final[re.Pattern[str]] = re.compile(r"\b[A-Z]{6,}ZQ\b")
+
+
+def protected_literal_failure(source: str, rendered: str) -> str | None:
+    """Why this rendering lost a literal that was withheld from it, or None.
+
+    Checked before the general preservation questions, and separately from them,
+    because the two failures call for different responses and reporting them
+    with one message hides that. A missing *number* means the renderer was shown
+    a literal and dropped it. A missing *marker* means the renderer was shown a
+    placeholder standing for a literal it never saw, and dropped that — which is
+    a copying failure of a different kind, and the one worth reporting when the
+    protection is doing its job and there are no bare literals left to lose.
+
+    Counts only, never a value: the markers stand for policy text, and a message
+    naming which one went missing would say where in the passage the loss was.
+    """
+
+    expected = _PROTECTED_MARKER.findall(source)
+    if not expected:
+        return None
+
+    missing = 0
+    duplicated = 0
+    for marker in expected:
+        seen = rendered.count(marker)
+        if seen == 0:
+            missing += 1
+        elif seen > 1:
+            duplicated += 1
+
+    if missing or duplicated:
+        return (
+            f"the rendering did not carry {missing} of the {len(expected)} "
+            f"protected literal(s) its source withholds, and repeated {duplicated}"
+        )
+    return None
 
 
 def preservation_failure(source: str, rendered: str) -> str | None:
@@ -515,15 +676,25 @@ def preservation_failure(source: str, rendered: str) -> str | None:
     source_numbers = _numbers(source)
     if source_numbers:
         rendered_numbers = _numbers(rendered)
+        missing_numbers = 0
         for number in source_numbers:
             try:
                 rendered_numbers.remove(number)
             except ValueError:
-                return "the rendering did not carry every number its source states"
+                missing_numbers += 1
+        if missing_numbers:
+            return (
+                f"the rendering did not carry {missing_numbers} of the "
+                f"{len(source_numbers)} number(s) its source states"
+            )
 
     missing = _identifiers(source) - _identifiers(rendered)
     if missing:
-        return "the rendering did not carry every identifier its source states"
+        return (
+            f"the rendering did not carry {len(missing)} of the "
+            f"{len(_identifiers(source))} identifier(s) its source states "
+            f"(longest missing: {max(len(item) for item in missing)} chars)"
+        )
 
     return None
 
@@ -688,6 +859,13 @@ async def _render_batch(
     a retry stops meaning anything; that failure is raised as
     :class:`_BatchOverBudget` so the caller can make the call *smaller* instead.
 
+    **A reply that kept losing a protected literal is handed upward the same
+    way.** After both attempts, it leaves as :class:`_BatchUnfaithful` rather
+    than as a refusal — because a batch of several is not the only size this
+    call can be, and deciding that is the caller's job, not this one's. Nothing
+    unfaithful is ever returned: a value that failed either check is dropped
+    with the rest of the reply, never repaired and never partially kept.
+
     Keys sent to the model are positional and opaque (`t0`, `t1`, …) rather than
     rule ids: the model has no use for an identifier, and an id that never leaves
     this process cannot be echoed back into a document.
@@ -702,6 +880,11 @@ async def _render_batch(
     #: rebuild endpoint's response.
     last_failure: ProjectionFailure | None = None
     last_reason: str | None = None
+    #: Whether the *last* attempt failed a preservation check rather than
+    #: arriving unreadable. Only that condition is answered by sending less: a
+    #: reply that never parsed says nothing about how many markers one call was
+    #: asking a model to carry.
+    last_lost_a_literal = False
 
     for attempt in range(2):
         nonce = secrets.token_hex(_NONCE_BYTES)
@@ -742,6 +925,7 @@ async def _render_batch(
                 raise _BatchOverBudget(failure) from None
             last_failure = failure
             last_reason = f"the call did not return a readable object ({failure.kind})"
+            last_lost_a_literal = False
             logger.warning(
                 "a corpus-projection reply could not be read (attempt %s): %s",
                 attempt,
@@ -751,33 +935,53 @@ async def _render_batch(
 
         rendered: dict[str, str] = {}
         rejected: str | None = None
+        lost_a_literal = False
         for index, (key, source) in enumerate(batch):
             value = parsed.get(f"t{index}")
             if not isinstance(value, str):
                 rejected = f"the value for key t{index} was missing or was not a string"
                 break
-            reason = preservation_failure(source, value)
+            reason = protected_literal_failure(source, value) or preservation_failure(
+                source, value
+            )
             if reason is not None:
                 rejected = f"the value for key t{index} was rejected: {reason}"
+                lost_a_literal = True
                 break
             rendered[key] = value
         if rejected is None:
             return rendered
 
         last_reason = rejected
+        last_lost_a_literal = lost_a_literal
         last_failure = ProjectionFailure(
             kind=PROJECTION_UNFAITHFUL, items=len(batch), chars=chars, ordinal=ordinal
         )
         logger.warning(
-            "a corpus-projection reply was rejected (attempt %s): %s", attempt, last_failure
+            "a corpus-projection reply was rejected (attempt %s): %s — %s",
+            attempt,
+            last_failure,
+            last_reason,
         )
 
     failure = last_failure or ProjectionFailure(
         kind=PROJECTION_UNREADABLE, items=len(batch), chars=chars, ordinal=ordinal
     )
-    raise EnglishProjectionError(
-        f"the corpus could not be rendered into {PROCESSING_LANGUAGE}: {failure}"
-    )
+    # A reply that arrived and kept losing a literal is handed upward rather
+    # than refused here, for the same reason an over-budget call is: a batch of
+    # one is a materially smaller request than a batch of several — fewer
+    # markers to carry, no neighbouring value to confuse them with — so there
+    # may still be something different to send. Whether there is, is a question
+    # about the batch, and the batch is the caller's. Nothing is accepted,
+    # repaired or restored on the way past.
+    if last_lost_a_literal and last_failure is not None:
+        raise _BatchUnfaithful(last_failure, reason=last_reason or "")
+
+    # The reason names which check refused and never quotes the passage, so it
+    # belongs in the error a build reports. Without it the failure says only
+    # that something was wrong somewhere in a batch, which is the difference
+    # between a diagnosis and a rerun.
+    raise EnglishProjectionError(_projection_refusal(failure, last_reason))
 
 
 async def _render_group(
@@ -787,23 +991,36 @@ async def _render_group(
     deployment: str,
     ordinal: int,
 ) -> dict[str, str]:
-    """Render one batch, halving it deterministically when it is over budget.
+    """Render one batch, halving it deterministically when a smaller call is a different call.
 
-    A budget refusal says the call was too large, so the answer is a smaller
-    call — not the same one again. The batch is cut in half at a fixed point, the
-    halves are rendered in order, and either half may be cut again. Every retry
-    is therefore strictly smaller than the call it replaces, and no call is ever
+    Two conditions say that, and only two. A **budget refusal** says the call
+    was too large. A **rendering rejected for losing a protected literal**, twice
+    over, says the call was asking one reply to carry more markers than it
+    carried — which a live rebuild showed directly: two items, nineteen
+    protected literals in one of them, one lost on the first attempt and
+    fourteen on the second. In both cases the answer is a smaller call, not the
+    same one again. The batch is cut in half at a fixed point, the halves are
+    rendered in order, and either half may be cut again. Every retry is
+    therefore strictly smaller than the call it replaces, and no call is ever
     repeated identically.
+
+    Nothing else is answered this way. A timeout, a transport failure, an
+    unreadable reply or a service saying no are not size, and dividing a batch
+    because a smaller one exists would turn one refusal into several. Only the
+    typed signals this module raises reach the split.
 
     Deterministic: the split point is arithmetic, the halves keep the order they
     had, and the results are merged under their own keys, so the same corpus
     against the same service produces the same units in the same order however
     many times it had to be divided.
 
-    A **single** piece that is still refused is the end of it. It is already
-    inside the per-item ceiling, so there is nothing left to make smaller, and
-    the honest answer is a refusal that names the class and the size rather than
-    a rendering nobody can trust.
+    A **single** piece that is still refused is the end of it. For a budget
+    refusal it is already inside the per-item ceiling; for a rejected rendering
+    it is already alone in its call. Either way there is nothing left to make
+    smaller, and the honest answer is a refusal that names the class, the size
+    and the check that refused rather than a rendering nobody can trust. No
+    marker is ever accepted as missing, repaired, appended or restored to make
+    one succeed.
     """
 
     try:
@@ -817,6 +1034,15 @@ async def _render_group(
                 f"{PROCESSING_LANGUAGE}: {over_budget.failure}; a single piece "
                 "already inside the per-item ceiling was still refused, so there "
                 "is nothing smaller to send"
+            ) from None
+    except _BatchUnfaithful as unfaithful:
+        if len(batch) <= 1:
+            # Word for word what the undivided call would have reported: the
+            # class, the size and position of the call, and the name of the
+            # check that refused. Dividing a batch changes which call fails, not
+            # what a failure is allowed to say.
+            raise EnglishProjectionError(
+                _projection_refusal(unfaithful.failure, unfaithful.reason)
             ) from None
 
     middle = (len(batch) + 1) // 2
@@ -839,6 +1065,7 @@ async def project_texts_to_english(
     *,
     settings: Settings | None = None,
     openai_client: AzureOpenAIClient | None = None,
+    opaque_spans: Mapping[str, Sequence[tuple[int, int]]] | None = None,
 ) -> dict[str, str]:
     """Render one policy's retrieval texts into the processing language.
 
@@ -846,6 +1073,19 @@ async def project_texts_to_english(
     policy** — the caller is responsible for that, and it is what keeps
     terminology consistent within the unit the relevance weighting is computed
     over. Returns ``{id: english text}`` for exactly the ids it was given.
+
+    ``opaque_spans`` says *where*, in each of those texts, the machine-made
+    strings are — slugs this system generated, closed vocabularies — as
+    ``{id: [(start, end), ...]}`` taken from the projection that composed the
+    string. Those stretches are held out of the rendering entirely and put back
+    afterwards byte for byte.
+
+    Positions, not words, and per item rather than one list for the group. Both
+    of those are deliberate and both were measured: a generated key spells
+    ordinary words like ``action`` or ``leave``, so protecting *every* place its
+    letters appear silently refuses to render prose that merely said the same
+    thing; and a key belonging to one rule says nothing about where those
+    letters fall in another rule or in the policy's own text.
 
     Raises :class:`EnglishProjectionError` when any text could not be rendered or
     a rendering failed a preservation check. Whole-batch, deliberately: a policy
@@ -873,6 +1113,16 @@ async def project_texts_to_english(
         or getattr(settings, "azure_openai_secondary_deployment", None)
         or ""
     )
+
+    # Text is rendered exactly as the corpus holds it. Extraction damage — two
+    # columns read as one interleaved string, say — is reported by the shared
+    # detector at ingestion and on rebuild, and is deliberately NOT repaired
+    # here: this product does not alter the words it attributes to a source, and
+    # a reading that is not literally in the document is a defect nobody can
+    # see. The damaged text is rendered like any other, and the warning tells an
+    # author to fix the original file.
+    protector = _OpaqueText(dict(opaque_spans or {}), texts=[text for _, text in kept])
+    kept = [(key, protector.hide(key, text)) for key, text in kept]
 
     # A text longer than one call may carry becomes several rendering units,
     # cut at whitespace it already contains. The order of the units is the order
@@ -909,5 +1159,197 @@ async def project_texts_to_english(
                 f"a text was rendered in {len(parts)} of {len(unit_keys)} parts; "
                 "a partly rendered passage is not a rendering"
             )
-        rendered[key] = parts[0] if len(parts) == 1 else "\n".join(parts)
+        rendered[key] = protector.show(
+            key, parts[0] if len(parts) == 1 else "\n".join(parts)
+        )
     return rendered
+
+
+class _OpaqueText:
+    """Holds literals out of a rendering and puts them back unchanged.
+
+    Two kinds of literal: machine-made terms, whose positions the projection
+    records, and numbers, which are found in the text itself. Both are things a
+    faithful rendering must copy rather than translate, and both are things a
+    renderer will helpfully alter if left in place.
+
+    A generated slug is a key. It has no meaning to translate, and a renderer
+    that treats it as language will hyphen-split it, reorder it, or tidy its
+    digits — all reasonable things to do to a phrase and all destructive to an
+    identifier that something later has to match exactly.
+
+    A number is the other half. Governance text is quantities, and a rendering
+    that silently drops one has changed what the passage can be found by. This
+    was measured, not supposed: a build of this corpus failed because a single
+    item lost one of the seventy-seven numbers it states. The guard that caught
+    it is right and stays; what changes here is that the renderer is no longer
+    given the chance to lose them.
+
+    WHY THIS WORKS ON POSITIONS AND NOT ON WORDS
+
+    The obvious implementation replaces every occurrence of a term. It is wrong
+    twice over, and both ways were measured on a live corpus rather than
+    imagined. A generated key spells something: ``action``, ``leave``, ``you``
+    — so searching a passage for its text also finds the places the document was
+    merely speaking, and forty-one records here contain exactly that. Protecting
+    those means refusing to render a stretch of ordinary prose. And the same key
+    legitimately occurs more than once — fourteen hundred records here repeat
+    one, and the passage this boundary was built for carries its key twice — so
+    a single marker standing for "that term, wherever it is" cannot be checked
+    for having come back the right number of times.
+
+    So each *occurrence* gets its own marker, taken from the positions the
+    projection recorded when it built the string. One occurrence, one marker,
+    one restoration.
+
+    Items do not share markers either. The policy text and each of its rules are
+    separate documents that happen to be rendered in one call; a key generated
+    for one of them says nothing about where those letters fall in another.
+
+    The marker is identifier-shaped — letters and digits, no other punctuation —
+    for two reasons. It is what the existing preservation check already looks
+    for, so a renderer that drops or mangles one is caught by a guard that was
+    there before this class. And it is the shape a renderer is least tempted to
+    translate.
+
+    Each expected marker must come back exactly once. Zero means the renderer
+    dropped it, more than one means it duplicated a passage, and a surviving
+    prefix means one was altered or that a marker arrived in an item it does not
+    belong to. All of those are refused, because the text that would result is
+    not the text that was sent.
+    """
+
+    #: Ends the marker. The start is generated per build by :meth:`_prefix_for`.
+    _SUFFIX: Final[str] = "ZQ"
+    _STEM: Final[str] = "ZQKEEP"
+    #: How many letters carry the ordinal. Letters, not digits, and this is the
+    #: point rather than a detail -- see :meth:`_marker`.
+    _ORDINAL_LETTERS: Final[int] = 4
+
+    def __init__(
+        self,
+        spans_by_key: Mapping[str, Sequence[tuple[int, int]]],
+        texts: Sequence[str] = (),
+    ) -> None:
+        self._spans = {key: tuple(spans) for key, spans in spans_by_key.items()}
+        self._prefix = self._prefix_for(texts)
+        self._original: dict[str, str] = {}
+        self._expected: dict[str, tuple[str, ...]] = {}
+
+    @classmethod
+    def _prefix_for(cls, texts: Sequence[str]) -> str:
+        """A marker stem no source text already contains.
+
+        A marker only works because nothing else looks like it. Rather than
+        assert that, this checks — and lengthens the stem until it is true, so a
+        document that happens to spell the stem cannot make an unrelated passage
+        look like a protected term.
+        """
+
+        prefix = cls._STEM
+        while any(prefix in text for text in texts):
+            prefix += secrets.choice(string.ascii_uppercase)
+        return prefix
+
+    def _marker(self, ordinal: int) -> str:
+        """One marker, carrying its ordinal in letters rather than digits.
+
+        THE INVARIANT: A MARKER MUST BE INERT TO EVERY CHECK THE VALIDATOR MAKES
+
+        The validator asks two questions of a text — which numbers does it state,
+        and which identifier-shaped tokens does it state. A marker that answers
+        either of them is not neutral: it *is* a literal, so protecting a literal
+        would create one. That is not a theory. With a digit-bearing marker,
+        measured over one real corpus: 2,277 identifier tokens existed only
+        because a number had been protected, against 83 that the documents
+        themselves stated. Every one of those 2,277 was a token the renderer had
+        to reproduce exactly or be refused, and it was manufactured by the very
+        mechanism meant to reduce what could go wrong.
+
+        Letters alone satisfy neither predicate — no digit run, and no
+        letter-and-digit token — so a protected literal adds nothing for the
+        validator to require. The ordinal is base-26 over the alphabet, which is
+        as unique per occurrence as the decimal form was.
+
+        Still identifier-*shaped* in the sense that matters for a renderer: one
+        uppercase run with no spaces or punctuation inside it, which is the shape
+        least likely to be split, reordered or translated.
+        """
+
+        letters = []
+        value = ordinal
+        for _ in range(self._ORDINAL_LETTERS):
+            letters.append(string.ascii_uppercase[value % 26])
+            value //= 26
+        return f"{self._prefix}{''.join(reversed(letters))}{self._SUFFIX}"
+
+    def hide(self, key: str, text: str) -> str:
+        """Replace this item's protected occurrences with one marker each.
+
+        THREE KINDS OF OCCURRENCE, ONE MECHANISM, ONE ORDER OF PRECEDENCE
+
+        - the machine-made terms whose positions the projection recorded;
+        - every identifier-shaped token, as `_identifiers` defines one;
+        - every numeric run, as `_numbers` defines one.
+
+        The second and third are exactly what :func:`preservation_failure` checks
+        for, and they are found here with the same predicates it uses. That is
+        the point: a validator requiring a literal the protection does not cover
+        can only detect the loss, and detection is a failed build. Protection and
+        validation deriving from one definition is what makes "every literal the
+        validator requires is structurally protected" a property rather than a
+        hope, and it stays true when either predicate changes.
+
+        Precedence runs outermost first. A recorded machine span wins, then an
+        identifier, then a number — so `AL-2024-07` is withheld whole rather than
+        perforated into `AL-<marker>-<marker>`, which is longer than the token it
+        replaces and breaks the moment a renderer puts a space beside it. A
+        literal nested inside a protected one needs no marker of its own: it is
+        already going back exactly as it came.
+        """
+
+        machine = sorted(self._spans.get(key, ()))
+        last_end = 0
+        for start, end in machine:
+            if start < last_end or end > len(text) or start >= end:
+                raise EnglishProjectionError(
+                    "a protected term's position did not fit the text it came "
+                    "from, so the text and its provenance are not the same text"
+                )
+            last_end = end
+
+        identifiers = [
+            span for span in _identifier_spans(text) if not _overlaps(span, machine)
+        ]
+        outer = machine + identifiers
+        numbers = [span for span in _number_spans(text) if not _overlaps(span, outer)]
+        spans = sorted(outer + numbers)
+
+        markers: list[str] = []
+        # Backwards, so a replacement never moves a position not yet used.
+        for start, end in reversed(spans):
+            marker = self._marker(len(self._original))
+            self._original[marker] = text[start:end]
+            markers.append(marker)
+            text = text[:start] + marker + text[end:]
+        self._expected[key] = tuple(reversed(markers))
+        return text
+
+    def show(self, key: str, text: str) -> str:
+        """Put this item's originals back, refusing anything that does not match."""
+
+        for marker in self._expected.get(key, ()):
+            seen = text.count(marker)
+            if seen != 1:
+                raise EnglishProjectionError(
+                    f"a rendering carried a protected identifier {seen} times "
+                    "where the source carried it once"
+                )
+            text = text.replace(marker, self._original[marker])
+        if self._prefix in text:
+            raise EnglishProjectionError(
+                "a rendering carried a protected identifier's marker that was "
+                "altered, or that belongs to another text, so the identifier "
+                "could not be restored"
+            )
+        return text

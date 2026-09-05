@@ -23,6 +23,7 @@ from policy_platform.infrastructure.assistants.ai_case_language import (  # noqa
 )
 from policy_platform.infrastructure.persistence.db import get_session  # noqa: E402
 from policy_platform.infrastructure.persistence.policy_set_teardown import DeletionOutcome  # noqa: E402
+from policy_platform.infrastructure.search import policy_index as policy_index_module  # noqa: E402
 from policy_platform.infrastructure.search.policy_index import (  # noqa: E402
     PolicyIndexBuildOutcome,
     PolicyIndexDropOutcome,
@@ -85,7 +86,12 @@ async def test_manual_policy_index_rebuild_reports_empty_project_without_crashin
             indexed_at="2026-08-18T12:00:00+00:00",
         )
 
-    monkeypatch.setattr(policy_sets_router, "rebuild_project_policy_index", _fake_rebuild)
+    # The seam moved when publish and manual rebuild were unified behind
+    # `run_tracked_policy_index_build`: the router no longer calls the build
+    # itself, the orchestrator inside `policy_index` does. Patching the module
+    # that owns the function — rather than a name the router happened to import
+    # — is also the seam that cannot be bypassed by a third caller.
+    monkeypatch.setattr(policy_index_module, "rebuild_project_policy_index", _fake_rebuild)
 
     response = await http.post("/api/policy-sets/xx/policy-index/rebuild")
 

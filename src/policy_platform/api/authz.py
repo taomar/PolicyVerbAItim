@@ -55,6 +55,8 @@ from policy_platform.api.roles import (
     VIEWER,
     role_satisfies,
 )
+from policy_platform.infrastructure.persistence.db import get_sessionmaker
+from policy_platform.infrastructure.persistence.subscription_keys import verify_key
 from policy_platform.infrastructure.settings import Settings, get_settings
 
 logger = logging.getLogger(__name__)
@@ -128,7 +130,7 @@ def _try_local_token(token: str, settings: Settings) -> Principal:
     return Principal(role=role, identity=identity_from_claims(claims), source="local-token")
 
 
-def _resolve_principal(request: Request, settings: Settings) -> Principal:
+async def _resolve_principal(request: Request, settings: Settings) -> Principal:
     """Determine who is calling and what role they hold.
 
     Order, strongest evidence first:
@@ -157,7 +159,7 @@ def _resolve_principal(request: Request, settings: Settings) -> Principal:
     if not settings.rbac_enabled:
         return _PERMISSIVE_PRINCIPAL
 
-    return _establish_principal(request, settings)
+    return await _establish_principal(request, settings)
 
 
 def _subscription_key_refused(message: str) -> HTTPException:
@@ -169,12 +171,101 @@ def _subscription_key_refused(message: str) -> HTTPException:
     )
 
 
-def _try_subscription_key(presented: str, settings: Settings) -> Principal:
-    """Check a presented key against the configured one, or raise 401.
+def _configured_key_principal(settings: Settings) -> Principal:
+    """The principal a valid subscription key resolves to.
+
+    Shared by both key sources — the configured environment key and a key
+    issued through the Integration screen — because they name the same caller.
+    Issued keys deliberately do **not** carry their own identity or role: doing
+    so would let an administrator mint a non-expiring bearer credential holding
+    any role in the product, which is a materially different security question
+    from "let me rotate the key my integration uses". Keys are distinguished
+    from one another by their label in the admin screen, not by privilege.
+
+    THE CONFIGURED ROLE IS VALIDATED, NOT TRUSTED
+
+    A typo in `POLICY_SUBSCRIPTION_KEY_ROLE` would otherwise produce a
+    principal holding a role no band recognises. That is not a safe failure —
+    it is an unreadable one, refused later by the capability layer with a
+    message about permissions rather than about configuration — so it is
+    refused here, where the fault actually is.
+    """
+
+    role = (settings.policy_subscription_key_role or "").strip() or VIEWER
+    if role not in ALL_ROLES:
+        logger.error(
+            "POLICY_SUBSCRIPTION_KEY_ROLE is %r, which is not one of %s; refusing the key",
+            role,
+            ", ".join(ALL_ROLES),
+        )
+        raise _subscription_key_refused(
+            "The subscription key is configured with a role this product does not define, "
+            "so it cannot be used until the deployment is corrected."
+        )
+
+    identity = (settings.policy_subscription_key_identity or "").strip() or "external-api-client"
+    return Principal(role=role, identity=identity, source=SUBSCRIPTION_KEY_SOURCE)
+
+
+async def _try_managed_key(presented: str) -> bool:
+    """Whether an active issued key matches, stamping its last-used time.
+
+    THIS IS THE ONLY PLACE THE REQUEST PATH TOUCHES THE DATABASE
+
+    A session is opened here, from the sessionmaker rather than through
+    `Depends(get_session)`, and only after the caller has actually presented a
+    subscription-key header that the configured key did not match. That
+    placement is the whole point: `enforce_rbac` runs in front of every route in
+    the application, and the overwhelming majority of requests are a browser
+    holding a bearer token or nothing at all. Those requests must not pay for a
+    connection to support a credential type they are not using.
+
+    Failure to reach the store is a refusal, not an exception. A key cannot be
+    *shown* to be valid, so it is not accepted. The catch is deliberately broad:
+    the alternative is that a database blip, a closed event loop during
+    shutdown, or a driver-level fault becomes a 500 for machine callers while
+    every other caller sees a normal response — a different failure mode for one
+    credential type, which is confusing to diagnose and leaks that the key path
+    exists. `logger.exception` keeps the traceback, so a genuine programming
+    error here is loud in the log rather than silently reported as "bad key".
+    """
+
+    session_factory = get_sessionmaker()
+    try:
+        async with session_factory() as session:
+            record = await verify_key(session, presented)
+            if record is None:
+                return False
+            await session.commit()
+            return True
+    except Exception:
+        logger.exception("Subscription key could not be checked against the store")
+        return False
+
+
+async def _try_subscription_key(presented: str, settings: Settings) -> Principal:
+    """Check a presented key against the configured one and the store, or 401.
 
     Called only when the caller actually sent the header, and only after the
     bearer paths above have declined to claim the request — see
     `_establish_principal` for why that order and not the reverse.
+
+    TWO SOURCES, ONE CREDENTIAL TYPE
+
+    The configured `POLICY_SUBSCRIPTION_KEY` is tried first, and issued keys are
+    consulted only if it does not match. The environment key is never superseded
+    by an issued one: where an API gateway fronts this deployment its policy
+    rewrites this header with its own backend credential, so disabling the
+    configured value would sever the gateway from the API entirely. Keeping both
+    live means a deployment that has mis-declared `LOCAL` shows an administrator
+    a screen it should not, rather than going dark.
+
+    Issued keys are consulted **only when `local` is set**. When a gateway owns
+    machine-caller access this feature does not exist — not in the menu and not
+    in the backend — so a key that was issued while the deployment was local
+    stops working when it stops being local. That is the intended direction: the
+    alternative leaves live credentials in place that no longer appear on any
+    screen an operator can reach, and so cannot be revoked.
 
     THE COMPARISON
 
@@ -194,37 +285,48 @@ def _try_subscription_key(presented: str, settings: Settings) -> Principal:
     none, and an integration with a stale key would look like it was working
     right up until it hit an operation that needed a role.
 
-    THE CONFIGURED ROLE IS VALIDATED, NOT TRUSTED
+    ONE REFUSAL FOR EVERY FAILURE
 
-    A typo in `POLICY_SUBSCRIPTION_KEY_ROLE` would otherwise produce a
-    principal holding a role no band recognises. That is not a safe failure —
-    it is an unreadable one, refused later by the capability layer with a
-    message about permissions rather than about configuration — so it is
-    refused here, where the fault actually is.
+    An unknown key, a revoked key and a key from a deployment that has since
+    moved behind a gateway all produce the same 401. Distinguishing them would
+    confirm to a caller holding a rejected key that it was once real, which is
+    exactly the information an attacker who found an old key in a log wants.
     """
 
     configured = (settings.policy_subscription_key or "").strip()
-    if not secrets.compare_digest(presented.encode("utf-8"), configured.encode("utf-8")):
+    if configured and secrets.compare_digest(presented.encode("utf-8"), configured.encode("utf-8")):
+        return _configured_key_principal(settings)
+
+    if settings.local and await _try_managed_key(presented):
+        return _configured_key_principal(settings)
+
+    # Distinct server-side lines for two failures that produce the same 401.
+    #
+    # The caller is told nothing either way — an unauthenticated caller learning
+    # *why* a credential was refused learns whether it was ever real — but an
+    # operator reading logs needs to tell "this key is wrong" from "this
+    # deployment no longer accepts issued keys at all", which are hours apart to
+    # diagnose and seconds apart to distinguish here.
+    #
+    # Note what this line does **not** claim. It does not say a managed key was
+    # presented, because with `local` unset the store is never consulted and
+    # this code cannot know whether the value was an issued key or noise.
+    # Looking it up to make the message better would reintroduce the database
+    # round trip that gating on `local` exists to avoid, on a path that is
+    # meant to be closed. So the line reports the two things that are actually
+    # true: a key was presented, and issued keys are not accepted here.
+    if settings.local:
         logger.warning("Subscription key rejected")
-        raise _subscription_key_refused("The subscription key is not valid.")
-
-    role = (settings.policy_subscription_key_role or "").strip() or VIEWER
-    if role not in ALL_ROLES:
-        logger.error(
-            "POLICY_SUBSCRIPTION_KEY_ROLE is %r, which is not one of %s; refusing the key",
-            role,
-            ", ".join(ALL_ROLES),
+    else:
+        logger.warning(
+            "Subscription key rejected; it did not match the configured key, and issued "
+            "keys are not accepted because this deployment is not marked LOCAL. A key "
+            "issued before the deployment mode changed would fail exactly like this."
         )
-        raise _subscription_key_refused(
-            "The subscription key is configured with a role this product does not define, "
-            "so it cannot be used until the deployment is corrected."
-        )
-
-    identity = (settings.policy_subscription_key_identity or "").strip() or "external-api-client"
-    return Principal(role=role, identity=identity, source=SUBSCRIPTION_KEY_SOURCE)
+    raise _subscription_key_refused("The subscription key is not valid.")
 
 
-def _establish_principal(request: Request, settings: Settings) -> Principal:
+async def _establish_principal(request: Request, settings: Settings) -> Principal:
     """Steps 2–5 above, with the ``rbac_enabled`` short circuit removed.
 
     Split out because two questions were being answered by one function. "Is
@@ -305,18 +407,19 @@ def _establish_principal(request: Request, settings: Settings) -> Principal:
     if token and settings.local_accounts_enabled:
         return _try_local_token(token, settings)
 
-    # A subscription key, when one is configured and one was sent. Both halves
-    # matter: with no key configured the header is not read at all, so a
-    # deployment that never enabled the mechanism cannot be probed through it;
-    # and with the header absent nothing here runs, so an ordinary browser
-    # request is unaffected.
+    # A subscription key, when the mechanism exists here and one was sent. Two
+    # things can make it exist: a configured key, or `local` — which turns on
+    # keys issued through the Integration screen. With neither, the header is
+    # not read at all, so a deployment that never enabled the mechanism cannot
+    # be probed through it; and with the header absent nothing here runs, so an
+    # ordinary browser request is unaffected and opens no database session.
     presented_key = (request.headers.get(SUBSCRIPTION_KEY_HEADER) or "").strip()
-    if presented_key and (settings.policy_subscription_key or "").strip():
-        return _try_subscription_key(presented_key, settings)
+    if presented_key and ((settings.policy_subscription_key or "").strip() or settings.local):
+        return await _try_subscription_key(presented_key, settings)
     if presented_key:
-        # Sent, but the server has no key. Refused rather than ignored: an
-        # integration whose credential silently does nothing is one that
-        # appears to work until it meets an operation with a role.
+        # Sent, but this server has no way to accept one. Refused rather than
+        # ignored: an integration whose credential silently does nothing is one
+        # that appears to work until it meets an operation with a role.
         logger.warning("Subscription key presented while none is configured")
         raise _subscription_key_refused(
             "Subscription-key authentication is not configured on this server."
@@ -412,9 +515,32 @@ OPERATION_BANDS: Final[dict[tuple[str, str], str]] = {
     ("POST", "/api/ai/correlate/findings/{finding_id}/disposition"): AUTHOR,
     # ── audit ────────────────────────────────────────────────────────
     ("GET", "/api/audit-events"): READ,
+    # ── integration: subscription keys ───────────────────────────────
+    # ADMINISTER, all of it, including the list. The usual reasoning — "a read
+    # is a read, so READ" — does not hold here. These rows describe the
+    # credentials that authenticate machine access to the decision API, and
+    # knowing how many exist, what they are called, when they were issued and
+    # which are still live is reconnaissance about how this deployment is
+    # reachable. It is not governed content, which is what the READ band is
+    # calibrated for.
+    #
+    # The capability probe is the deliberate exception at READ: it answers one
+    # boolean about deployment shape and names nothing. It has to be readable by
+    # whoever renders the menu, and a menu that could only be drawn correctly by
+    # an administrator would force every other role to request a page in order
+    # to be told it does not exist.
+    ("GET", "/api/integration/capability"): READ,
+    ("GET", "/api/integration/keys"): ADMINISTER,
+    ("POST", "/api/integration/keys"): ADMINISTER,
+    ("DELETE", "/api/integration/keys/{key_id}"): ADMINISTER,
     # ── documents ────────────────────────────────────────────────────
     ("GET", "/api/documents"): READ,
     ("POST", "/api/documents/upload"): AUTHOR,
+    # The upload's own progress. READ, not AUTHOR: it authors nothing and
+    # changes nothing — it reports the stage of a request the caller has already
+    # been authorised to make. Classified alongside the extraction-progress read
+    # above for the same reason.
+    ("GET", "/api/documents/upload-progress/{operation_id}"): READ,
     ("PATCH", "/api/documents/{document_id}/assign"): AUTHOR,
     ("GET", "/api/documents/{document_version_id}/clauses"): READ,
     # ── evaluations ──────────────────────────────────────────────────
@@ -473,6 +599,19 @@ OPERATION_BANDS: Final[dict[tuple[str, str], str]] = {
     # open request. The band permits any viewer; the handler itself checks
     # that the caller is the submitter (record-level ownership, not band).
     ("DELETE", "/api/policy-review-requests/{request_id}"): USE,
+    # ── policy index console ─────────────────────────────────────────
+    # ADMINISTER. The usual "a read is a read, so READ" does not reach this
+    # one, for the same reason it does not reach the subscription-key list: it
+    # enumerates every project in the deployment together with its index name,
+    # its failure reasons and how long each has been broken. That is a
+    # description of the estate's operational health, not governed content, and
+    # the READ band is calibrated for governed content.
+    ("GET", "/api/policy-index/states"): ADMINISTER,
+    # One build's stages by the id its caller polls on. AUTHOR, matching the
+    # project history read it is the operation-keyed twin of: it reports a build
+    # only an author could have started, on a project it names, and it is what
+    # the rebuild control polls while its own request is still open.
+    ("GET", "/api/policy-index/builds/{operation_id}"): AUTHOR,
     # ── policy sets ──────────────────────────────────────────────────
     ("GET", "/api/policy-sets"): READ,
     ("POST", "/api/policy-sets"): AUTHOR,
@@ -491,6 +630,19 @@ OPERATION_BANDS: Final[dict[tuple[str, str], str]] = {
     ("POST", "/api/policy-sets/{key}/candidate-rules/{candidate_id}/review"): AUTHOR,
     ("GET", "/api/policy-sets/{key}/policies"): READ,
     ("GET", "/api/policy-sets/{key}/policy-index"): READ,
+    # A project's build history, and whatever build holds the single global
+    # slot. AUTHOR rather than READ, unlike the state read above it and unlike
+    # the upload's progress read.
+    #
+    # The distinction is not "is it a read". It is what the payload is *for*:
+    # the state read answers "can this project's index be matched against",
+    # which is the same class of fact as the project page's other badges. This
+    # one exists to serve the retry decision — it is the history somebody
+    # consults before pressing rebuild, and it names the build currently holding
+    # the slot so the control can say why it is disabled. A read whose only
+    # purpose is to compose an authoring action inherits that action's band,
+    # which is the rule the AI rewrite endpoints are classified under.
+    ("GET", "/api/policy-sets/{key}/policy-index/builds"): AUTHOR,
     ("POST", "/api/policy-sets/{key}/policy-index/rebuild"): AUTHOR,
     ("POST", "/api/policy-sets/{key}/policy-index/validate"): AUTHOR,
     ("GET", "/api/policy-sets/{key}/provisions/{provision_key}/history"): READ,
@@ -529,9 +681,9 @@ _FRAMEWORK_PATHS: Final[frozenset[str]] = frozenset(
 # ── enforcement dependency ───────────────────────────────────────────
 
 
-def get_principal(request: Request) -> Principal:
+async def get_principal(request: Request) -> Principal:
     """FastAPI dependency: resolve the calling principal."""
-    return _resolve_principal(request, get_settings())
+    return await _resolve_principal(request, get_settings())
 
 
 #: The `Principal.source` values that mean an identity was *proved*, not merely
@@ -557,7 +709,7 @@ AUTHENTICATED_SOURCES: Final[frozenset[str]] = frozenset(
 )
 
 
-def require_authenticated_principal(request: Request) -> Principal:
+async def require_authenticated_principal(request: Request) -> Principal:
     """FastAPI dependency: the caller's proved identity, or 401.
 
     Used by the audited decision endpoints, which need something the global
@@ -572,7 +724,7 @@ def require_authenticated_principal(request: Request) -> Principal:
     global guard's decision, and this only narrows who may reach the route.
     """
 
-    principal = _establish_principal(request, get_settings())
+    principal = await _establish_principal(request, get_settings())
     if principal.source not in AUTHENTICATED_SOURCES:
         raise HTTPException(
             status_code=401,
@@ -590,7 +742,7 @@ def require_authenticated_principal(request: Request) -> Principal:
     return principal
 
 
-def enforce_rbac(request: Request, principal: Principal = Depends(get_principal)) -> None:
+async def enforce_rbac(request: Request, principal: Principal = Depends(get_principal)) -> None:
     """FastAPI global dependency: refuse when the principal lacks the capability.
 
     Runs before every handler. When ``rbac_enabled`` is False the principal

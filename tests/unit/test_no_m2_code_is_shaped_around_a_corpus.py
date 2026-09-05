@@ -76,6 +76,10 @@ from policy_platform.infrastructure.assistants import (  # noqa: E402
     ai_case_intent,
     ai_case_project,
 )
+from policy_platform.infrastructure.ingestion import (  # noqa: E402
+    mixed_script_text,
+    visual_page_reading,
+)
 from policy_platform.infrastructure.projection import policy_rule_slice  # noqa: E402
 from policy_platform.infrastructure.search import (  # noqa: E402
     english_projection,
@@ -94,6 +98,10 @@ AUTHORED = (
     search_client,
     policy_rule_slice,
     ai_case_project,
+    mixed_script_text,
+    # Decides which pages a model may re-read, and carries the instruction it is
+    # read with. A prompt is a string, so the absolute ban covers it here.
+    visual_page_reading,
     # Reads nothing but the request it was handed and the scores that came back,
     # and is held to the same ban for the same reason: a record of *why* a
     # ranking came out as it did is the thing a future decision will be argued

@@ -263,6 +263,17 @@ class PolicyIndexBuildResponse(BaseModel):
     #: this and `projection_profile`: a complete corpus that was never checked
     #: against the record behind it is refused exactly as a half-built one is.
     quality: ProjectionQualityResponse | None = None
+    #: The handle this build is watched on, echoed back. A caller may generate
+    #: one before the POST — exactly as an upload does, because it cannot learn a
+    #: server-side id until the response arrives, which is after the work it
+    #: wanted to watch has ended — and one is allocated when it does not, so a
+    #: caller that brought none can still find this build in the history.
+    operation_id: str | None = None
+    #: True when the build never ran because another one held the single global
+    #: build slot. Distinct from a failure: the repair is to retry once the slot
+    #: frees, not to investigate a broken build. Only ever set on publish, which
+    #: succeeds regardless; a manual rebuild is refused with 409 instead.
+    deferred: bool = False
 
 
 class PolicyIndexValidationResponse(BaseModel):

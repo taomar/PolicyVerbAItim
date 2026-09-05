@@ -183,6 +183,163 @@ class PolicyIndexState(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     )
 
 
+class PolicyIndexBuild(Base, UUIDPrimaryKeyMixin, TimestampMixin):
+    """One policy-index build attempt: its progress while it runs, its outcome
+    once it ends, and — while it runs — the slot that stops a second one starting.
+
+    WHY THIS EXISTS BESIDE `policy_index_states`, RATHER THAN INSIDE IT
+
+    `PolicyIndexState` is a *latest-state* row: one per project, overwritten by
+    every attempt. It answers "what does this project's index look like now",
+    which is the question the retrieval side and the project page ask, and it
+    answers it in one indexed read. It cannot answer "what has happened to this
+    index", because each attempt erases the previous one's record — so a
+    publisher whose build failed an hour ago, was retried, and failed again has
+    exactly one row that says `failed` and no way to tell that from a first
+    failure. Deriving a history from one mutable row would be inventing one.
+
+    So attempts are appended here and the latest-state row is left doing the job
+    it already does well. The two are written from the same place and describe
+    the same attempt (`policy_index.run_tracked_policy_index_build`), so they
+    cannot disagree about an outcome; where their vocabularies differ, this one
+    is the wider of the two — see `status` below.
+
+    THREE JOBS IN ONE ROW, AND WHY THAT IS NOT OVERLOADING
+
+    A build's progress, its history entry and its claim on the single build slot
+    are three views of one fact: *this attempt, at this moment*. Splitting them
+    across three tables would need all three kept consistent by hand, and the
+    interesting failures are exactly the ones where a process dies between two
+    writes. One row moves from `running` to a terminal status in a single
+    statement, so there is no window in which a build is finished for one reader
+    and running for another.
+
+    THE SLOT IS `active_slot`, AND IT IS THE WHOLE COORDINATION MECHANISM
+
+    A build renders and embeds an entire corpus through rate-limited model
+    endpoints and then rewrites a whole search index. Two at once compete for the
+    same quota and, on one project, race each other's manifest writes. The
+    process-local flag this reached for first cannot say anything about a second
+    replica, and Azure runs more than one.
+
+    `active_slot` holds the single constant while a build is running and NULL
+    once it has ended. Under a UNIQUE constraint, NULLs are distinct in both
+    PostgreSQL and SQLite, so any number of finished builds coexist while at most
+    one row may hold the live value — and the refusal is the database rejecting
+    an INSERT, which is decided in one place for every replica and every process.
+    Releasing the slot is setting the column to NULL, which is part of the same
+    statement that writes the terminal status: a build cannot end without
+    releasing, or release without ending.
+
+    WHAT THIS TABLE MAY NEVER HOLD
+
+    Stage keys, counts, timestamps, an actor, and a bounded failure description.
+    No rendered text, no source text, no service reply body, no credential, no
+    prompt. This row is read by the browser and copied into logs, and a progress
+    readout is not a place customer wording should reach.
+    """
+
+    __tablename__ = "policy_index_builds"
+    __table_args__ = (
+        # The slot. One row may hold `ACTIVE_SLOT_VALUE`; every finished row
+        # holds NULL and NULLs do not collide.
+        UniqueConstraint("active_slot", name="uq_policy_index_builds_active_slot"),
+        # `operation_id` is the handle the client polls on and may generate
+        # before the request that starts the work, exactly as an upload does.
+        UniqueConstraint("operation_id", name="uq_policy_index_builds_operation"),
+        CheckConstraint(
+            "status IN ('running', 'completed', 'failed', 'deferred')",
+            name="ck_policy_index_builds_status",
+        ),
+        CheckConstraint(
+            "trigger IN ('publish', 'rebuild')",
+            name="ck_policy_index_builds_trigger",
+        ),
+        # The history read is "this project's attempts, newest first".
+        Index("ix_policy_index_builds_set_started", "policy_set_id", "started_at"),
+    )
+
+    #: The handle a client polls on. Client-generated where the client has one,
+    #: because it cannot learn a server-side id until the response arrives —
+    #: which is after the work it wanted to watch has ended.
+    operation_id: Mapped[str] = mapped_column(String(64), nullable=False)
+    policy_set_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("policy_sets.id"), nullable=False, index=True
+    )
+    #: Carried beside the foreign key so a progress poll — which is keyed on an
+    #: operation and knows no project — can name the project without a join. The
+    #: key is already public in every index response.
+    policy_set_key: Mapped[str] = mapped_column(String(200), nullable=False)
+    #: What started it: a publish's best-effort build, or somebody pressing
+    #: rebuild. The two run identical work through one code path; this is the
+    #: only thing that distinguishes them afterwards, and a history that could
+    #: not say which is a history that cannot explain a pattern of failures.
+    trigger: Mapped[str] = mapped_column(String(20), nullable=False)
+    #: Who asked, when the surface knows. Null rather than "unknown": a publish
+    #: carries an approver, a manual rebuild currently does not, and inventing a
+    #: value would make an absent one unrecognisable.
+    actor: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    #: `running` while the slot is held. `completed` / `failed` once the build
+    #: has ended. `deferred` when it never ran at all because another build held
+    #: the slot — a distinct fact from a build that ran and failed, pointing at a
+    #: different repair (wait and retry, rather than investigate).
+    #:
+    #: `policy_index_states.status` has no `deferred` in its check constraint and
+    #: is not widened here: a deferred attempt records `failed` there, because
+    #: what that row reports is whether the index can be trusted, and on that
+    #: question a build that never ran and one that failed say the same thing.
+    status: Mapped[str] = mapped_column(String(20), nullable=False)
+    #: Which stage of the fixed pipeline is running, as a stable key. The reader
+    #: turns it into a label, so wording can change without breaking a client.
+    stage: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    #: Every counter is nullable, and NULL is load-bearing: it means "this build
+    #: has not measured that yet", which is a different fact from zero. A reader
+    #: that showed both as 0 would report a project with no policies identically
+    #: to one whose rendering has not started.
+    projection_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    policy_unit_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    rule_unit_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    rendered_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    embedded_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    #: How many documents this build expects to write, known once rendering has
+    #: finished. It is the one honest denominator the build ever has, and it is
+    #: published rather than turned into a percentage — the stages before it have
+    #: none, and a bar that interpolated across them would be a guess wearing the
+    #: clothes of a measurement.
+    expected_document_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    submitted_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    #: Acknowledged, not submitted. Azure AI Search answers a partly-rejected
+    #: batch with a 207 the transport does not raise, so the number that landed
+    #: is the only one worth showing.
+    acknowledged_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    swept_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+    #: The outcome, mirroring `PolicyIndexBuildOutcome` so a history entry can be
+    #: read without joining back to the latest-state row it also wrote.
+    index_name: Mapped[str | None] = mapped_column(String(128), nullable=True)
+    version_number: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    document_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    policy_document_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    rule_document_count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    projection_profile: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    manifest_state: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    quality_state: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    quality_profile: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    quality_checked_documents: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    quality_structural_findings: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    quality_min_similarity: Mapped[float | None] = mapped_column(Float, nullable=True)
+    quality_mean_similarity: Mapped[float | None] = mapped_column(Float, nullable=True)
+    #: A bounded description produced by `describe_exception` and cut to a
+    #: ceiling before it is written. Never a service reply body: those carry
+    #: request echoes, and a request echo for this build carries retrieval text.
+    error: Mapped[str | None] = mapped_column(Text, nullable=True)
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    #: The slot itself. See the class docstring: a single constant while running,
+    #: NULL once ended, unique across the table and therefore across replicas.
+    active_slot: Mapped[str | None] = mapped_column(String(16), nullable=True)
+
+
 class PolicyAuthority(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     """Authority level + owner + rank used for deterministic precedence (Section 15.4)."""
 
@@ -1151,6 +1308,77 @@ class QualityRun(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     not_applicable_json: Mapped[list | None] = mapped_column(JSONB, nullable=True)
     triggered_by: Mapped[str] = mapped_column(String(200), nullable=False, default="")
     run_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class ApiSubscriptionKey(Base, UUIDPrimaryKeyMixin, TimestampMixin):
+    """A subscription key an administrator issued, stored as a hash.
+
+    WHY A HASH AND NEVER THE KEY
+
+    A row here is not the credential; it is a record that a credential exists.
+    Storing the key itself would mean a database read, a backup, a replica or a
+    support query each disclose a live credential, and this table is read by an
+    admin screen that lists every key. The plaintext is generated, returned once
+    in the response to the call that created it, and then exists only wherever
+    the operator put it.
+
+    The consequence is deliberate and is visible in the UI: there is no "show me
+    the key" screen, because there is nothing to show. A key that was not copied
+    at generation is not recoverable — it is replaced.
+
+    WHY UNSALTED SHA-256, WHICH IS NOT THE USUAL ANSWER
+
+    Passwords get a salted, deliberately slow hash because they are chosen by
+    people, are drawn from a small space, and are reused. None of that is true
+    here: the key is `secrets.token_urlsafe(32)`, 256 bits from the OS CSPRNG,
+    never chosen and never reused. Against that input the property needed is
+    preimage resistance, which SHA-256 provides; stretching would be defending
+    a threat model that does not apply.
+
+    A per-key salt would also be actively harmful in this position. Salted
+    digests cannot be looked up, so verification would have to fetch every
+    active key and run the KDF against each one — on an unauthenticated request
+    path, where the caller chooses how often to make it. That is a
+    denial-of-service amplifier bought with no security. An unsalted digest is a
+    single indexed equality regardless of how many keys exist.
+
+    WHY NO PREFIX OR HINT COLUMN
+
+    The obvious convenience — store the first few characters so the list can
+    show `pk_a1b2…` — is refused. `GET /api/audit-events` is a READ-band
+    operation, so anything written into an audit body is readable by every
+    viewer, and a key issuance event naturally wants to name the key it issued.
+    Keys are identified by `label` and `id` instead, which sidesteps the
+    argument about how many characters of a secret are safe to publish rather
+    than trying to win it.
+
+    WHY MORE THAN ONE MAY BE ACTIVE
+
+    Revocation is a column, not a delete, and nothing here limits how many rows
+    are unrevoked at once. That is what makes rotation a migration rather than
+    an outage: issue the new key, let both work, move the caller, then revoke
+    the old one. A single-slot design would make every regeneration break the
+    live integration at the instant of the click.
+    """
+
+    __tablename__ = "api_subscription_keys"
+
+    #: Operator-supplied name. The only human-readable handle on a key, since
+    #: the key itself is unrecoverable — so this is how an admin decides which
+    #: row to revoke.
+    label: Mapped[str] = mapped_column(String(200), nullable=False)
+    #: SHA-256 of the key, hex. Unique so verification is one indexed equality,
+    #: and so the same key cannot be recorded twice.
+    key_hash: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, index=True)
+    created_by: Mapped[str] = mapped_column(String(200), nullable=False)
+    #: NULL means active. A revoked row is kept rather than deleted: the audit
+    #: trail names it, and a deleted row would make that reference dangle.
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    revoked_by: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    #: Last time this key authenticated a request, so an admin can tell a live
+    #: key from an abandoned one before revoking it. Coarse by design — this is
+    #: not a usage log, and no request detail is recorded here.
+    last_used_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class AuditEvent(Base, UUIDPrimaryKeyMixin, TimestampMixin):

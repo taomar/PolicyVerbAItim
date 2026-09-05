@@ -37,6 +37,9 @@ const SOURCES = import.meta.glob(
     "./RuleScenarioTester.tsx",
     "./DocumentsPage.tsx",
     "./ProjectCaseRunner.tsx",
+    // The upload wait delegates its announcement to this panel, so the claim
+    // about DocumentsPage is only checkable by reading it too.
+    "./UploadProgressPanel.tsx",
   ],
   { query: "?raw", import: "default", eager: true },
 ) as Record<string, string>;
@@ -102,13 +105,23 @@ describe("every slow surface uses it", () => {
   it("the two surfaces that already had a wait panel still have one", () => {
     // Guards the refactor in the other direction: extracting a shared panel
     // must not quietly remove the two implementations it was modelled on.
-    for (const [file, marker] of [
-      ["DocumentsPage.tsx", "upload-wait"],
-      ["ProjectCaseRunner.tsx", "project-case-wait"],
-    ] as const) {
-      const source = componentSource(file);
-      expect(source, file).toContain(marker);
-      expect(source, file).toContain('role="status"');
-    }
+    //
+    // DocumentsPage is checked differently from ProjectCaseRunner because the
+    // upload wait no longer announces itself directly — it delegates to
+    // UploadProgressPanel, which owns the single live region for that wait.
+    // Searching DocumentsPage's own source for `role="status"` would now be
+    // satisfied by a comment mentioning the attribute, which is a guard that
+    // cannot fail for the right reason. So the announcement is followed to
+    // where it actually lives.
+    const documents = componentSource("DocumentsPage.tsx");
+    expect(documents, "DocumentsPage.tsx").toContain("upload-wait");
+    expect(documents, "DocumentsPage.tsx").toContain("<UploadProgressPanel");
+    const panel = componentSource("UploadProgressPanel.tsx");
+    expect(panel, "UploadProgressPanel.tsx").toContain('role="status"');
+    expect(panel, "UploadProgressPanel.tsx").toContain('aria-live="polite"');
+
+    const caseRunner = componentSource("ProjectCaseRunner.tsx");
+    expect(caseRunner, "ProjectCaseRunner.tsx").toContain("project-case-wait");
+    expect(caseRunner, "ProjectCaseRunner.tsx").toContain('role="status"');
   });
 });

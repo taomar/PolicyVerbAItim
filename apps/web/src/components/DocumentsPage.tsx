@@ -29,6 +29,7 @@ import { ingestionOutcome } from "../ingestionOutcome";
 import ExtractionInsightDrawer from "./ExtractionInsightDrawer";
 import ExtractionProgressPanel from "./ExtractionProgressPanel";
 import ExtractionRunHistory from "./ExtractionRunHistory";
+import UploadProgressPanel from "./UploadProgressPanel";
 import { useActor } from "../ActorContext";
 import { canAuthor } from "../rbac";
 
@@ -94,6 +95,11 @@ export function DocumentsPage({ onNavigate, policySetKey, policySetName }: Docum
   // so it has to keep moving on its own rather than only on other state changes.
   const [uploadStartedAt, setUploadStartedAt] = useState<number | null>(null);
   const [uploadElapsedMs, setUploadElapsedMs] = useState(0);
+  // Id for this upload, generated here and sent with the POST so the page can
+  // read the server's stage while the request is still open. It has to be
+  // client-generated: the server's own ids do not reach the browser until the
+  // response arrives, which is after the work worth watching has finished.
+  const [uploadOperationId, setUploadOperationId] = useState<string | null>(null);
   const [uploadMessage, setUploadMessage] = useState<string | null>(null);
   const [uploadProblem, setUploadProblem] = useState<string | null>(null);
   const [uploadNotes, setUploadNotes] = useState<string[]>([]);
@@ -183,11 +189,19 @@ export function DocumentsPage({ onNavigate, policySetKey, policySetName }: Docum
       return;
     }
     const uploaded = file;
+    // `crypto.randomUUID` where the browser has it; a timestamp-and-random
+    // fallback otherwise. The id only has to be unique among uploads this
+    // server is currently tracking, so it needs no stronger guarantee — and a
+    // collision costs a wrong progress readout, never a wrong document.
+    const operationId =
+      globalThis.crypto?.randomUUID?.() ??
+      `upload-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    setUploadOperationId(operationId);
     setUploading(true);
     setUploadStartedAt(Date.now());
     setUploadElapsedMs(0);
     try {
-      const result = await api.uploadDocument(title, owner, uploaded, policySetKey);
+      const result = await api.uploadDocument(title, owner, uploaded, policySetKey, operationId);
       const outcome = uploadOutcome(uploaded.name, result ?? {});
       setUploadMessage(outcome.message);
       setUploadProblem(outcome.problem);
@@ -205,6 +219,9 @@ export function DocumentsPage({ onNavigate, policySetKey, policySetName }: Docum
     } finally {
       setUploading(false);
       setUploadStartedAt(null);
+      // Cleared last: the panel stops polling when its operation id goes, and
+      // this keeps that tied to the request ending rather than to a timer.
+      setUploadOperationId(null);
     }
   };
 
@@ -372,15 +389,36 @@ export function DocumentsPage({ onNavigate, policySetKey, policySetName }: Docum
           <Button type="primary" htmlType="submit" loading={uploading} disabled={uploading}>
             {uploading ? "Reading document…" : "Upload"}
           </Button>
-          {waitState && (
-            <div className="upload-wait" role="status" aria-live="polite">
-              <Space orientation="vertical" size={4}>
-                <Text strong>
-                  {waitState.headline} · {waitState.elapsed} elapsed
-                </Text>
-                <Text type="secondary">{waitState.activity}</Text>
-                <Text type="secondary">{waitState.next}</Text>
-              </Space>
+          {waitState && file && (
+            <div className="upload-wait">
+              {/* The panel states what the server is doing, from what the server
+                  published. `waitState` still carries the one line the server
+                  cannot know — what the reviewer gets when the request returns —
+                  so the two do not overlap and neither guesses.
+
+                  This wrapper is deliberately NOT a live region. The panel is,
+                  and two nested ones mean a single change is announced twice or
+                  attributed to the wrong region. The panel is the single owner;
+                  the sentences below are standing facts about the request rather
+                  than changing state, so they need no announcement of their own.
+                  Pinned by "announces the upload through exactly one live
+                  region" in DocumentsPage.upload.test.tsx. */}
+              <UploadProgressPanel
+                running={uploading}
+                operationId={uploadOperationId}
+                fileName={file.name}
+                fileSizeBytes={file.size}
+                elapsedMs={uploadElapsedMs}
+              />
+              {/* Why the wait has no percentage, and what the server is doing
+                  with the document meanwhile. The panel reports the stages the
+                  server has actually reached; it cannot explain the shape of the
+                  request, and before the first reading arrives there are no
+                  stages to show at all. Both sentences are standing facts about
+                  this request rather than changing state, which is why they sit
+                  outside the panel's live region. */}
+              <Text type="secondary">{waitState.activity}</Text>
+              <Text type="secondary">{waitState.next}</Text>
             </div>
           )}
         </Form>

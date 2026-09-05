@@ -34,6 +34,31 @@ class Settings(BaseSettings):
     #: endpoints with no credentials — continues to pass unmodified.
     rbac_enabled: bool = False
 
+    # ── deployment shape ────────────────────────────────────────────
+    #: Whether this deployment terminates machine-caller access itself, with
+    #: no API gateway in front of it.
+    #:
+    #: Two shapes exist and they differ in who owns subscription keys:
+    #:
+    #: * **Local (True)** — the caller reaches FastAPI directly, so the
+    #:   subscription key *is* the access control and this deployment must be
+    #:   able to issue one. A laptop and an Azure deployment published without
+    #:   API Management are the same case; what matters is the absence of a
+    #:   gateway, not where the container runs.
+    #: * **Gatewayed (False)** — API Management sits in front and owns caller
+    #:   subscriptions. Its policy overrides the subscription-key header with
+    #:   its own backend credential, so a key minted here would be discarded in
+    #:   transit. Offering to manage one would be offering to manage something
+    #:   this deployment does not own.
+    #:
+    #: Default False, and the default is the security decision. Anything that
+    #: cannot state which shape it is gets the closed answer, because showing an
+    #: operator a key-rotation screen that does not control their real
+    #: credential is worse than showing them nothing. Pydantic refuses an
+    #: unparseable value outright, so a typo fails at startup rather than
+    #: resolving to a silent True.
+    local: bool = False
+
     # ── identity ────────────────────────────────────────────────────
     #: Entra (or any OIDC issuer) settings. All three are needed before a
     #: bearer token can be validated; with any of them unset the token path
@@ -70,13 +95,27 @@ class Settings(BaseSettings):
     #: path that has not been configured is not offered rather than offered
     #: weakly.
     #:
-    #: It is deliberately *one* key, not a keyring. This increment gives an
-    #: operator a way to let one system call the audited decision API without
-    #: standing up an issuer; it does not give them per-caller attribution,
-    #: because every request presenting this key resolves to the same identity
-    #: below. Rotation is: change the value, restart the API. There is no
-    #: overlap window and no revocation list, and inventing either without a
-    #: store to hold them would be a claim rather than a feature.
+    #: It was, until the Integration screen existed, deliberately *one* key and
+    #: not a keyring, and the reason given was that "inventing [an overlap
+    #: window or a revocation list] without a store to hold them would be a
+    #: claim rather than a feature". That store now exists —
+    #: `api_subscription_keys`, added by revision `f4b8c2e97d31` — so the
+    #: condition that decision named has been met rather than overruled. An
+    #: administrator can issue and revoke keys, several can be valid at once,
+    #: and rotation is therefore a migration rather than a hard cutover.
+    #:
+    #: This value keeps its own job and is **not** superseded by issued keys.
+    #: Where an API gateway fronts the deployment, its policy rewrites the
+    #: subscription-key header with its own backend credential, so this is the
+    #: gateway's way in and disabling it would sever the gateway from the API.
+    #: Issued keys are consulted only when `local` is set, and only after this
+    #: value has been tried; the two are alternative credentials of the same
+    #: type, not two sources of truth for one credential.
+    #:
+    #: Every key — this one and every issued one — still resolves to the single
+    #: identity and role below. Per-key roles were considered and left out:
+    #: minting a non-expiring bearer credential holding an arbitrary role is a
+    #: materially different question from rotating the key an integration uses.
     policy_subscription_key: str | None = None
     #: The identity a subscription-key caller is recorded as. It appears in
     #: every audited receipt that key produces, so it should name the system,

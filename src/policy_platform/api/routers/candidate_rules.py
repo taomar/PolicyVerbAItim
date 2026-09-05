@@ -66,13 +66,14 @@ from policy_platform.infrastructure.persistence.provision_snapshot import (
     snapshots_carried_forward,
     snapshots_for_candidates,
 )
+from policy_platform.infrastructure.errors import describe_exception
 from policy_platform.infrastructure.persistence.review_facets import build_review_facets
 from policy_platform.infrastructure.projection.published_case_payload import published_case_payloads_for_policy_set
 from policy_platform.infrastructure.search.policy_index import (
     failed_policy_index_build_outcome,
     policy_index_build_outcome_payload,
-    rebuild_project_policy_index,
     record_policy_index_build_state,
+    run_tracked_policy_index_build,
 )
 from policy_platform.infrastructure.assembly.policy_assembly import assemble
 from policy_platform.infrastructure.assembly.provision_lookup import provision_groupings
@@ -791,7 +792,10 @@ async def bulk_review_candidate_rules(
     status_code=201,
 )
 async def publish_approved_candidates(
-    key: str, body: PublishCandidatesRequest, session: AsyncSession = Depends(get_session)
+    key: str,
+    body: PublishCandidatesRequest,
+    operation_id: str | None = None,
+    session: AsyncSession = Depends(get_session),
 ) -> ApprovedPolicyVersionResponse:
     policy_set_repo = PolicySetRepository(session)
     policy_set = await policy_set_repo.get_by_key(key)
@@ -881,18 +885,48 @@ async def publish_approved_candidates(
 
     await session.commit()
 
-    try:
-        policy_index_build = await rebuild_project_policy_index(
-            policy_set_key=key,
-            version_number=version.version_number,
-            projections=await published_case_payloads_for_policy_set(session, policy_set.id),
-        )
-    except Exception as exc:  # noqa: BLE001 - publish already succeeded; report the stale index instead
-        logger.warning("policy index projection failed after publish for policy set '%s': %s", key, exc)
+    # THE BEST-EFFORT INDEX BUILD, THROUGH THE SAME MECHANISM A MANUAL REBUILD USES.
+    #
+    # This used to call the build directly, and the repair endpoint called it
+    # directly too — two copies of the same six steps, which is how they came to
+    # differ and why neither knew the other existed. A publish could therefore
+    # start a full corpus render while an administrator's repair of the same
+    # project was halfway through rewriting its manifest.
+    #
+    # `run_tracked_policy_index_build` owns the slot, the stage reporting and the
+    # history row. It never raises, so the publish above — already committed —
+    # cannot be undone by anything the index does.
+    #
+    # WHEN THE SLOT IS BUSY, THE PUBLISH STILL SUCCEEDS, AND SAYS SO.
+    #
+    # The version is published either way; what did not happen is the rebuild.
+    # That is recorded as a `deferred` history entry and reported in the response
+    # rather than swallowed, because a publisher whose grounding corpus is
+    # silently a version behind has no reason to look.
+    tracked = await run_tracked_policy_index_build(
+        session,
+        policy_set_id=policy_set.id,
+        policy_set_key=key,
+        version_number=version.version_number,
+        load_projections=lambda: published_case_payloads_for_policy_set(session, policy_set.id),
+        trigger="publish",
+        operation_id=operation_id,
+        actor=body.approved_by,
+    )
+    policy_index_build = tracked.outcome
+    if policy_index_build is None:
+        # Only reachable when the history write itself was refused, which means
+        # nothing ran and nothing was recorded. The publish still stands, and the
+        # response must not imply an index build happened.
         policy_index_build = failed_policy_index_build_outcome(
             policy_set_key=key,
             version_number=version.version_number,
-            error=str(exc),
+            error="the index build could not be recorded, so none was started",
+        )
+    if not tracked.accepted:
+        logger.warning(
+            "policy index build for policy set '%s' was deferred: another build holds the slot",
+            key,
         )
     await record_policy_index_build_state(
         session,
@@ -919,6 +953,14 @@ async def publish_approved_candidates(
     except Exception as exc:  # noqa: BLE001 - publish already succeeded; never fail the request because of this
         logger.warning("on-publish PolicyTest re-run failed for policy set '%s': %s", key, exc)
 
+    # The index build's own payload, plus the two facts the publish surface needs
+    # that a build outcome cannot carry: the handle to poll the stages on, and
+    # whether the build ran at all. `deferred` is not `failed` — the repair is to
+    # retry once the slot frees, not to investigate a broken build.
+    index_payload = policy_index_build_outcome_payload(policy_index_build)
+    index_payload["operation_id"] = tracked.build.operation_id if tracked.build else None
+    index_payload["deferred"] = not tracked.accepted
+
     return ApprovedPolicyVersionResponse(
         id=str(version.id),
         policy_set_id=str(version.policy_set_id),
@@ -929,5 +971,5 @@ async def publish_approved_candidates(
         approved_by=version.approved_by,
         approved_at=version.approved_at,
         rule_count=len(rules),
-        policy_index_build=policy_index_build_outcome_payload(policy_index_build),
+        policy_index_build=index_payload,
     )

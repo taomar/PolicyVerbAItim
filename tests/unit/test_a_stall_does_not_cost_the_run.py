@@ -288,3 +288,90 @@ class TestAnExhaustedRetryCostsTheBatchAndNotTheRun:
 
     def test_a_date_formatted_retry_after_falls_back_rather_than_crashing(self) -> None:
         assert openai_client._retry_delay(1, "Wed, 21 Oct 2015 07:28:00 GMT") >= 0
+
+
+class TestAStallThatIsRetriedStillSaysWhatItWas:
+    """Observed live: "chat call failed (attempt 1 of 4):  - retrying in 2.0s".
+
+    The reason was blank because every httpx timeout and transport class carries
+    its meaning in its type and none in its message. Three of those lines
+    appeared during one index rebuild on 2026-09-03 and not one of them said
+    what had failed, so the run's only visible symptom was that it was slow.
+    """
+
+    @pytest.mark.asyncio
+    async def test_a_retry_of_a_message_less_failure_names_the_class(
+        self, monkeypatch, calls, caplog
+    ):
+        client = _client_returning(
+            monkeypatch, calls, [httpx.ReadError(""), _ok("recovered")]
+        )
+
+        with caplog.at_level("WARNING"):
+            assert await client.chat([{"role": "user", "content": "x"}]) == "recovered"
+
+        warnings = [r.getMessage() for r in caplog.records if r.levelname == "WARNING"]
+        assert warnings, "expected the retry to be logged"
+        assert any("ReadError" in line for line in warnings), (
+            f"expected the retried failure to name its class; actual: {warnings}"
+        )
+
+    @pytest.mark.asyncio
+    async def test_an_exhausted_retry_of_a_message_less_failure_names_the_class(
+        self, monkeypatch, calls
+    ):
+        """This sentence is what reaches the recorded index-build error."""
+
+        client = _client_returning(
+            monkeypatch, calls, [httpx.ReadError("") for _ in range(4)]
+        )
+
+        with pytest.raises(AzureOpenAITransientError) as raised:
+            await client.chat([{"role": "user", "content": "x"}])
+
+        message = str(raised.value)
+        assert "ReadError" in message, (
+            f"expected the exhausted retry to name the class; actual: {message!r}"
+        )
+        assert not message.rstrip().endswith(":"), (
+            f"expected a reason after the colon; actual: {message!r}"
+        )
+
+    @pytest.mark.asyncio
+    async def test_a_failure_that_does_have_a_message_is_quoted_not_relabelled(
+        self, monkeypatch, calls
+    ):
+        """The control: naming the class must not replace a real message."""
+
+        client = _client_returning(
+            monkeypatch,
+            calls,
+            [httpx.ReadTimeout("read timed out after 600s") for _ in range(4)],
+        )
+
+        with pytest.raises(AzureOpenAITransientError) as raised:
+            await client.chat([{"role": "user", "content": "x"}])
+
+        assert "read timed out after 600s" in str(raised.value)
+
+
+class TestTheTransportIsBoundedSeparatelyFromTheThinking:
+    """A read budget of ten minutes is the work. A connect budget of ten minutes
+    is a stall nobody can see."""
+
+    def test_the_callers_budget_is_what_waits_for_the_reply(self) -> None:
+        assert openai_client._request_timeout(600.0).read == 600.0
+
+    def test_opening_a_connection_is_bounded_far_below_the_reply(self) -> None:
+        timeout = openai_client._request_timeout(600.0)
+
+        assert timeout.connect < 60.0, (
+            f"expected a short connect bound; actual: {timeout.connect}"
+        )
+        assert timeout.connect < timeout.read
+
+    def test_writing_and_pooling_are_bounded_too(self) -> None:
+        timeout = openai_client._request_timeout(600.0)
+
+        assert timeout.write is not None and timeout.write < timeout.read
+        assert timeout.pool is not None and timeout.pool < timeout.read

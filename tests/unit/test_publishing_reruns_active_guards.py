@@ -63,6 +63,7 @@ from policy_platform.domain.models import (  # noqa: E402
     SourceDocument,
 )
 from policy_platform.infrastructure.persistence.db import get_session  # noqa: E402
+from policy_platform.infrastructure.search import policy_index as policy_index_module  # noqa: E402
 from policy_platform.infrastructure.search.policy_index import PolicyIndexBuildOutcome, policy_index_name  # noqa: E402
 from tests.fixtures.factories import make_rule  # noqa: E402
 
@@ -180,8 +181,12 @@ async def published(monkeypatch):
             indexed_at="2026-08-18T12:00:00+00:00",
         )
 
+    # The seam moved when publish and manual rebuild were unified behind
+    # `run_tracked_policy_index_build`: the router no longer calls the build
+    # itself, the orchestrator inside `policy_index` does. Patching the module
+    # that owns the function is the seam both callers really pass through.
     monkeypatch.setattr(
-        candidate_rules_router,
+        policy_index_module,
         "rebuild_project_policy_index",
         _fake_rebuild_project_policy_index,
     )
@@ -250,7 +255,13 @@ async def test_publishing_reports_and_persists_policy_index_rebuild_outcome(publ
 
     assert response.status_code == 201
     payload = response.json()
-    assert payload["policy_index_build"] == {
+    index_build = payload["policy_index_build"]
+    # The operation id is allocated per request, so it is asserted as present
+    # rather than as a literal — it is the handle the publish surface polls the
+    # build's stages on, and a publish that returned none would leave the page
+    # unable to watch the work it just started.
+    assert index_build.pop("operation_id")
+    assert index_build == {
         "state": "built",
         "policy_set_key": _KEY,
         "index_name": policy_index_name(_KEY),
@@ -271,6 +282,11 @@ async def test_publishing_reports_and_persists_policy_index_rebuild_outcome(publ
         # verdict to report. `None` is that absence stated: it is distinct from a
         # recorded `unavailable`, which would claim a validation was attempted.
         "quality": None,
+        # False because this build ran. It is true only when the single global
+        # build slot was held by another build, in which case the publish still
+        # succeeds and says the rebuild did not happen — which is a different
+        # fact from a rebuild that happened and failed.
+        "deferred": False,
     }
 
     async with maker() as session:

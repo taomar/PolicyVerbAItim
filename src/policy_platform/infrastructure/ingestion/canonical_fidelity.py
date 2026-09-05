@@ -134,6 +134,70 @@ _MODELLED: frozenset[str] = frozenset(
 #: element that does not record them.
 _NOT_RECONSTRUCTIBLE: frozenset[str] = frozenset({"table_cell_join"})
 
+#: The separator a table row is assembled with. Not present in the source, which
+#: is why `table_cell_join` alone is unprovable; a row that also declares
+#: `visual_reading_order` carries its cells explicitly and so can be replayed.
+_CELL_SEPARATOR: Final[str] = " | "
+
+#: What the replay puts at a recorded separating offset.
+_GAP: Final[str] = " "
+
+
+def replay_reading_order(element: CanonicalElement) -> str | None:
+    """Rebuild a re-read row from the parser's own characters, or None if it cannot.
+
+    This is what makes a visual reordering checkable rather than trusted. The
+    element carries the cells the parser produced and the order their printed
+    characters are claimed in; applying it reproduces the text. Two things
+    follow, and they are the whole reason the provenance is shaped this way:
+
+      * a printed character that was not in the parser's cells cannot appear in
+        the result, because the only thing this reads is an index into them; and
+      * a printed character that was dropped is one this refuses to replay,
+        because every one of them has to be claimed exactly once.
+
+    So a model that translated, invented or omitted anything cannot be
+    represented here at all -- the failure happens at acceptance, and this
+    function is the independent check that acceptance told the truth.
+    """
+
+    recovery = element.reading_order
+    if recovery is None:
+        return None
+
+    source = "".join(recovery.source_cells)
+    total = sum(recovery.cell_lengths)
+    order = list(recovery.order)
+    # Unicode whitespace is structural: it separates the printed characters
+    # rather than being one of them, so these offsets are filled by the replay
+    # and are not read from `order`.
+    gaps = list(recovery.spacing)
+
+    if len(order) + len(gaps) != total:
+        return None
+    if len(set(gaps)) != len(gaps) or any(not 0 <= offset < total for offset in gaps):
+        return None
+    if len(set(order)) != len(order) or any(not 0 <= index < len(source) for index in order):
+        # An index repeated, missing or out of range means some character would
+        # be used twice or read from nowhere.
+        return None
+
+    claimed = set(order)
+    if any(index not in claimed for index, char in enumerate(source) if not char.isspace()):
+        return None
+
+    filling = set(gaps)
+    supplied = iter(order)
+    characters = [
+        _GAP if offset in filling else source[next(supplied)] for offset in range(total)
+    ]
+    cells: list[str] = []
+    position = 0
+    for length in recovery.cell_lengths:
+        cells.append("".join(characters[position : position + length]))
+        position += length
+    return _CELL_SEPARATOR.join(cells)
+
 
 def rebuild_row_text(element: CanonicalElement) -> str | None:
     """Reassemble a row from the cells it records, or ``None`` if it records none.
@@ -206,6 +270,27 @@ def verify_element_text(document: CanonicalDocument) -> FidelityReport:
 
     for element in document.elements:
         declared = set(element.transformations)
+
+        if "visual_reading_order" in declared:
+            # Checked here rather than excused as unprovable. A row re-read from
+            # the page is exactly the case where "we cannot check this" would be
+            # the wrong answer: it is the one kind of text that did not come
+            # straight from the parser, so it is the one that most needs proving.
+            replayed = replay_reading_order(element)
+            if replayed is None:
+                failures.append(
+                    f"{element.element_id}: declares a recovered reading order but "
+                    "carries no replayable permutation of its own cells, so the "
+                    "order it states cannot be checked against anything"
+                )
+            elif replayed != element.text:
+                failures.append(
+                    f"{element.element_id}: text is not its recorded cells in its "
+                    "recorded order, so it states something the parser did not read"
+                )
+            else:
+                verified += 1
+            continue
 
         if declared & _NOT_RECONSTRUCTIBLE:
             rebuilt_row = rebuild_row_text(element)

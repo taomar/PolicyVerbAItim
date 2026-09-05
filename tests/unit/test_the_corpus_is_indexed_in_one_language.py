@@ -669,6 +669,22 @@ def test_a_rendering_that_drops_a_number_or_an_identifier_is_refused():
     )
 
 
+def test_quantity_punctuation_does_not_turn_adjacent_prose_into_an_identifier():
+    """Spacing around a percentage or list number may change without inventing a code.
+
+    The quantity check still holds both numbers. The identifier check is for
+    actual identifiers such as ``SUP-0042``, not a word touching punctuation.
+    """
+
+    source = "A 20%deduction applies to item(3 in the schedule."
+    rendered = "A 20% deduction applies to item (3) in the schedule."
+
+    assert english_projection._numbers(source) == english_projection._numbers(rendered)
+    assert english_projection._identifiers(source) == set()
+    assert english_projection._identifiers(rendered) == set()
+    assert english_projection.preservation_failure(source, rendered) is None
+
+
 def test_a_number_survives_a_change_of_digit_set():
     """A quantity is the same quantity whichever digits write it."""
 
@@ -689,12 +705,24 @@ def test_a_rebuild_that_cannot_render_a_policy_leaves_the_index_untouched():
     mean, so the whole build fails and nothing is uploaded.
     """
 
-    def _lose_a_number(_key: str, text: str) -> str:
-        return "".join(character for character in text if not character.isdigit())
+    def _lose_a_protected_literal(_key: str, text: str) -> str:
+        """Drop one withheld occurrence.
+
+        It used to strip digits, which was the same idea while literals travelled
+        to the renderer as themselves. They no longer do: a number is withheld
+        and a marker stands in its place, so stripping digits now removes nothing
+        and this test would pass while proving the opposite of its name. Losing a
+        marker is the modern form of the same failure — the renderer did not give
+        back what it was given — and it is what the build must refuse.
+        """
+
+        import re as _re
+
+        return _re.sub(r"\b[A-Z]{6,}ZQ\b", "", text, count=1)
 
     outcome, search, _client = _rebuild(
         [_projection(rule_count=20)],
-        client=echoing_projection_client(corrupt=_lose_a_number)(),
+        client=echoing_projection_client(corrupt=_lose_a_protected_literal)(),
     )
 
     assert outcome.state == "failed"
