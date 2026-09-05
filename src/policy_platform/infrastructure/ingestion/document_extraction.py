@@ -31,6 +31,8 @@ from policy_platform.contracts.canonical_document import (
     CanonicalDocument,
     IngestionDiagnostic,
     SourceFragment,
+    TABLE_STRUCTURE_KEY,
+    table_structure_of,
 )
 from policy_platform.infrastructure.ingestion.document_ingestion import (  # noqa: F401 - re-exported
     IngestionError,
@@ -287,6 +289,22 @@ def _extract_with_docling(
 def clauses_from_document(document: CanonicalDocument) -> list[ClauseData]:
     clauses: list[ClauseData] = []
     for element in document.elements:
+        provenance: list[dict] = [
+            fragment.model_dump() for fragment in element.source_fragments
+        ]
+        structure = table_structure_of(element)
+        if structure is not None:
+            # Rides with the fragments because that list is the clause's own
+            # provenance and is already stored as free JSON, so the shape of a
+            # grid travels with the element it describes rather than in a second
+            # place that can be written without it.
+            #
+            # Namespaced and skipped by shape on the way back, so a clause
+            # written before this existed rebuilds byte for byte as it did — and
+            # so a reader after fragments never mistakes this for one.
+            provenance.append(
+                {TABLE_STRUCTURE_KEY: structure.model_dump(exclude_none=True)}
+            )
         clauses.append(
             ClauseData(
                 clause_ref=_clause_ref(element.element_id, element.source_fragments),
@@ -295,7 +313,7 @@ def clauses_from_document(document: CanonicalDocument) -> list[ClauseData]:
                 text=element.text,
                 element_id=element.element_id,
                 element_type=element.element_type,
-                source_fragments=[fragment.model_dump() for fragment in element.source_fragments],
+                source_fragments=provenance,
                 # Copied, not reconstructed. Whether a row states column labels
                 # is decided once, by the converter that read the grid, and a
                 # `None` here means that converter found no row that did.

@@ -31,6 +31,7 @@ from policy_platform.contracts.canonical_document import (
     CanonicalDocument,
     CanonicalElement,
     TableCellRef,
+    covered_columns,
 )
 
 #: Relationships between structural nodes. Each is a fact about the document's
@@ -381,12 +382,6 @@ def _add_list_edges(graph: StructuralGraph, ordered: list[CanonicalElement]) -> 
         stack.append((level, element.element_id))
 
 
-def _covered_columns(cell: TableCellRef) -> range:
-    """Every column index a cell occupies, not merely the one it starts in."""
-
-    return range(cell.column_index, cell.column_index + cell.column_span)
-
-
 def _add_table_edges(graph: StructuralGraph, ordered: list[CanonicalElement]) -> None:
     """Connect cells to their table, to their headers, and across merges."""
 
@@ -402,7 +397,7 @@ def _add_table_edges(graph: StructuralGraph, ordered: list[CanonicalElement]) ->
             if cell.table_cell.is_header:
                 # A header that spans columns heads every one of them. Filing it
                 # only under the column it starts in leaves the rest unheaded.
-                for column in _covered_columns(cell.table_cell):
+                for column in covered_columns(cell.table_cell):
                     headers_by_column[column].append(cell)
 
         for cell in cells:
@@ -416,7 +411,7 @@ def _add_table_edges(graph: StructuralGraph, ordered: list[CanonicalElement]) ->
             # how a deliberately uniform value becomes indistinguishable from a
             # flattened sequence of different ones.
             attached: set[str] = set()
-            for column in _covered_columns(cell.table_cell):
+            for column in covered_columns(cell.table_cell):
                 for header in headers_by_column.get(column, ()):
                     assert header.table_cell is not None
                     if header.element_id == cell.element_id:

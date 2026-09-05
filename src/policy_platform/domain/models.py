@@ -290,10 +290,11 @@ class Clause(Base, UUIDPrimaryKeyMixin, TimestampMixin):
     # An empty list would say the grid has no columns, which is a different claim
     # and one nothing here is entitled to make. Nothing writes `[]`.
     #
-    # These carry a row's labels, not a table's geometry. Cell coordinates
-    # (`CanonicalElement.table_cell`) are still not stored, so a reader must not
-    # take a non-null `table_id` here as meaning cell-level structure is
-    # recoverable — it is not.
+    # These carry a row's labels, not a table's geometry. The geometry travels
+    # with the fragments, as a namespaced record beside them
+    # (`canonical_rebuild.stored_table_structure`), so a reader must not take a
+    # non-null `table_id` here as meaning cell-level structure is recoverable —
+    # a row stored before that record existed still has none.
     table_id: Mapped[str | None] = mapped_column(String(200), nullable=True)
     table_headers: Mapped[list[str] | None] = mapped_column(JSONB, nullable=True)
 

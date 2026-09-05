@@ -44,7 +44,11 @@ import re
 from dataclasses import dataclass, field
 from typing import Literal
 
-from policy_platform.contracts.canonical_document import CanonicalDocument, CanonicalElement
+from policy_platform.contracts.canonical_document import (
+    CanonicalDocument,
+    CanonicalElement,
+    TableStructure,
+)
 from policy_platform.contracts.structural_graph import StructuralGraph
 
 #: Why a context element was included. Recorded per element rather than per unit
@@ -165,6 +169,73 @@ def render_table_columns(headers: list[str] | None) -> str:
     if not names:
         return ""
     return _TABLE_COLUMN_MARKER.format(names=_COLUMN_NAME_SEPARATOR.join(names))
+
+
+#: The marker for a row whose *shape* was recorded, not merely its column names.
+#:
+#: It says the opposite of `_TABLE_COLUMN_MARKER` on the one point that matters,
+#: and it is entitled to: each value below is printed beside the label recorded
+#: for the position it actually occupies, so pairing them is reading the grid
+#: rather than assuming the two lists line up. The other sentence is kept — the
+#: names are still only the ones the grid stated — because recording a position
+#: does not conjure a name for a column nobody labelled.
+_TABLE_CELL_MARKER = (
+    "(from a table row, cell by cell, each value shown with the column name "
+    "recorded for the position it occupies; a value whose column was not named "
+    "is shown alone: {cells})"
+)
+
+#: Separates one cell from the next. Deliberately not the pipe the row text is
+#: joined with, so this line can never be mistaken for the row itself.
+_CELL_SEPARATOR = "; "
+
+#: Joins a column name to the value under it.
+_CELL_NAME_VALUE = "{name}: {value}"
+
+#: Joins the several names a merged header leaves covering one column, outermost
+#: first. A banner over a sub-label qualifies the value under both, and dropping
+#: either would narrow or widen what the grid said.
+_CELL_NAME_JOIN = " / "
+
+
+def render_table_cells(structure: TableStructure | None) -> str:
+    """One line pairing a row's values with the columns they sit under.
+
+    Empty unless the structure names at least one column for at least one value.
+    That condition is the point of the line: it exists to say which column a
+    value sits under, and a structure that names none has nothing to say that the
+    value's own text does not already. An element holding a single cell is the
+    ordinary case — its shape records where it sits, not what its neighbours are
+    called — so it falls through to the column-names line, which does have
+    something to add.
+
+    Whitespace inside a value is collapsed for the same reason it is collapsed in
+    a column name: the marker occupies one line. Nothing is added, reordered or
+    dropped, and a value whose column nobody named is printed by itself rather
+    than under a borrowed one.
+    """
+
+    if structure is None:
+        return ""
+
+    rendered: list[str] = []
+    named = False
+    for names, cell in structure.header_value_pairs():
+        value = " ".join(cell.text.split())
+        if not value:
+            continue
+        labels = [name for name in (" ".join(n.split()) for n in names) if name]
+        if labels:
+            named = True
+            rendered.append(
+                _CELL_NAME_VALUE.format(name=_CELL_NAME_JOIN.join(labels), value=value)
+            )
+        else:
+            rendered.append(value)
+
+    if not named:
+        return ""
+    return _TABLE_CELL_MARKER.format(cells=_CELL_SEPARATOR.join(rendered))
 
 
 @dataclass(frozen=True)

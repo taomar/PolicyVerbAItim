@@ -70,6 +70,9 @@ from policy_platform.contracts.canonical_document import (
     ElementType,
     IngestionDiagnostic,
     SourceFragment,
+    TableCell,
+    TableCellRef,
+    TableStructure,
     Transformation,
 )
 from policy_platform.infrastructure.ingestion.canonical_fidelity import (
@@ -200,6 +203,12 @@ class _Block:
     table_id: str | None = None
     table_headers: list[str] | None = None
     cell_text: str | None = None  # set for table rows, whose text is not line-derived
+    #: The row's cells before they were joined, and the row's own index in the
+    #: grid. Both are known here and were previously discarded at this point,
+    #: which is what left every later stage with only the joined line and no way
+    #: back to the values it was made of.
+    cells: list[str] | None = None
+    row_index: int | None = None
 
     @property
     def top(self) -> float:
@@ -925,6 +934,8 @@ def _table_to_blocks(
                 table_id=table_id,
                 table_headers=headers if has_headers else None,
                 cell_text=cell_text,
+                cells=cells,
+                row_index=row_index,
             )
         )
     return blocks, diagnostics
@@ -1891,9 +1902,46 @@ def _assemble_elements(page_blocks: list[list[_Block]]) -> list[CanonicalElement
                 transformations=transformations,
                 table_id=block.table_id,
                 table_headers=block.table_headers,
+                table_structure=_row_structure(
+                    block.cells, block.row_index, block.table_headers
+                ),
             )
         )
     return elements
+
+
+def _row_structure(
+    cells: list[str] | None, row_index: int | None, headers: list[str] | None
+) -> TableStructure | None:
+    """The shape of one grid row, from the cells the parser already read.
+
+    Every cell is recorded, including the empty ones, because a blank cell holds
+    a column open: dropping it would leave the values after it sitting one column
+    to the left of where the grid put them, and nothing downstream could tell.
+
+    ``headers`` are passed as positional labels only because this parser builds
+    them that way — one entry per column of the row it read them from. A parser
+    whose labels are compacted or partial must leave them out rather than let
+    them be indexed, which is why this takes them as an argument instead of
+    reaching for whatever labels happen to be nearby.
+
+    Returns ``None`` when either the cells or the row's own index is missing,
+    since a coordinate is the whole value of the record and half of one would be
+    a claim about position that nothing supports.
+    """
+
+    if cells is None or row_index is None:
+        return None
+    return TableStructure(
+        cells=[
+            TableCell(
+                text=value,
+                position=TableCellRef(row_index=row_index, column_index=column),
+            )
+            for column, value in enumerate(cells)
+        ],
+        column_labels=headers,
+    )
 
 
 def _fragments_for(lines: list[_Line]) -> list[SourceFragment]:
@@ -1961,6 +2009,7 @@ def ingest_docx(storage_path: str | Path, document_id: str = "") -> CanonicalDoc
         headers: list[str] | None = None,
         transformations: list[Transformation] | None = None,
         raw_line: str | None = None,
+        structure: TableStructure | None = None,
     ) -> None:
         nonlocal offset, section
         line = raw_line if raw_line is not None else text
@@ -1986,6 +2035,7 @@ def ingest_docx(storage_path: str | Path, document_id: str = "") -> CanonicalDoc
                 transformations=transformations or [],
                 table_id=table_id,
                 table_headers=headers,
+                table_structure=structure,
             )
         )
 
@@ -2028,8 +2078,12 @@ def ingest_docx(storage_path: str | Path, document_id: str = "") -> CanonicalDoc
             # `None` rather than `[]`: no row stated column labels, which is not
             # the same as a header row that was blank.
             headers = rows[0] if has_headers else None
-            data_rows = rows[1:] if has_headers else rows
-            for row in data_rows:
+            # Enumerated over the whole grid rather than over the slice, so a
+            # row's recorded index is its position in the table the reader sees
+            # and not its position in whatever remained after the header was
+            # taken off the front.
+            data_rows = list(enumerate(rows))[1:] if has_headers else list(enumerate(rows))
+            for row_index, row in data_rows:
                 if not any(row):
                     continue
                 if genuine:
@@ -2039,6 +2093,7 @@ def ingest_docx(storage_path: str | Path, document_id: str = "") -> CanonicalDoc
                         table_id=table_id,
                         headers=headers,
                         transformations=["table_cell_join"],
+                        structure=_row_structure(list(row), row_index, headers),
                     )
                 else:
                     # A single-column "table" is a layout device, so its cells

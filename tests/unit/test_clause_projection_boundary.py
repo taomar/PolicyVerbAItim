@@ -21,22 +21,23 @@ and coverage endpoints all do exactly this. So there is a boundary between "the
 converter recovered it" and "something read it", and the existing guard stops
 before that boundary.
 
-These tests describe where the association currently stops. The projection
-carries a clause's text, section, element id, element type, source fragments and
--- since the table-identity migration -- the id of the table a row belongs to
-and the column labels that table stated, because those are the columns the table
-has. It carries no row index, no column index and no header flag. So a graph
-rebuilt from stored clauses still has no *cell* edges to build, whatever produced
-the clauses -- and that is a property of the projection, not of any converter.
+WHERE THE BOUNDARY IS NOW, AND WHY THESE TESTS CHANGED
+------------------------------------------------------
+These tests used to describe a gap: the projection carried a clause's text,
+section, element id, element type, source fragments, table id and column labels,
+and no coordinate at all -- so a graph rebuilt from stored clauses had no *cell*
+edges to build, whatever produced the clauses.
 
-WHY ASSERT SOMETHING THAT IS A GAP
-----------------------------------
-Because the gap is invisible otherwise, and this repository has a documented
-history of capabilities that are built, tested against their own output, and
-reach nobody. A test that pins the boundary makes the next person's change
-speak: when the projection is widened to carry cell structure, these tests fail
-and say exactly which claim changed. That is the moment the converter choice
-starts to matter downstream, and it is the moment someone should be told.
+They were written to fail when that changed, and they did. The clause projection
+now carries the grid a clause was part of: every cell it covers, each with the
+row, column and span it was read at. So the association survives storage, the
+cell edges rebuild, and the reading plan can frame a bare value with the header
+above it on a document nothing has re-parsed.
+
+The claims are inverted here rather than deleted, because the boundary is still
+the thing worth pinning -- it has moved, not disappeared. What remains outside it
+is stated below and asserted just as explicitly: a clause stored before the
+carrier existed has no shape and is not given one.
 
 Written against synthetic grids of several shapes, like the module it extends.
 No real document, no domain, no observed count -- the claims are structural and
@@ -51,6 +52,7 @@ from policy_platform.contracts.canonical_document import (
     CanonicalElement,
     CanonicalPage,
     SourceFragment,
+    TABLE_STRUCTURE_KEY,
     TableCellRef,
 )
 from policy_platform.contracts.reading_plan import build_reading_plan
@@ -173,13 +175,11 @@ def test_structure_is_present_before_the_clause_projection(body_rows: int, colum
 
 
 @pytest.mark.parametrize(("body_rows", "columns"), GRID_SHAPES)
-def test_the_clause_projection_carries_no_cell_structure(body_rows: int, columns: int) -> None:
-    """Text survives the round trip; where the text sat in its table does not.
+def test_the_clause_projection_carries_cell_structure(body_rows: int, columns: int) -> None:
+    """Text survives the round trip, and so does where the text sat in its table.
 
-    The table a cell belongs to now survives, which is why this asserts the
-    absence of the coordinate and not the absence of the identity: the two are
-    different fields carried by different columns, and only one of them is
-    stored. Keeping the claim narrow is the point -- a reader must be able to
+    Asserted as the coordinate rather than as the table id, because the two are
+    different claims carried by different records and a reader has to be able to
     tell "this row knows its table" from "this cell knows its position".
     """
 
@@ -189,28 +189,89 @@ def test_the_clause_projection_carries_no_cell_structure(body_rows: int, columns
     assert [element.text for element in rebuilt.elements] == [
         element.text for element in document.elements
     ]
-    assert all(element.table_cell is None for element in rebuilt.elements)
+    assert [element.table_cell for element in rebuilt.elements] == [
+        element.table_cell for element in document.elements
+    ]
+    assert any(element.table_cell is not None for element in rebuilt.elements)
 
 
 @pytest.mark.parametrize(("body_rows", "columns"), GRID_SHAPES)
-def test_a_graph_rebuilt_from_clauses_has_no_table_edges(body_rows: int, columns: int) -> None:
-    """No cell coordinates, so no edge the coordinates would have justified."""
-
-    rebuilt = _round_trip(_cell_document(body_rows, columns))
-    graph = build_structural_graph(rebuilt)
-
-    assert not [edge for edge in graph.edges if edge.kind in TABLE_EDGE_KINDS]
-
-
-@pytest.mark.parametrize(("body_rows", "columns"), GRID_SHAPES)
-def test_the_reading_plan_cannot_frame_a_cell_after_the_round_trip(
+def test_a_clause_stored_without_structure_is_given_none(
     body_rows: int, columns: int
 ) -> None:
-    """The header is in the plan's reach before the round trip and not after.
+    """The boundary that remains: absence stays absence.
 
-    This is the claim that decides whether a converter change alone can reach a
-    model: `_add_table_context` frames a bare value from `header_for`, and after
-    the round trip there is no such edge to read.
+    A clause written before the carrier existed has no shape recorded, and this
+    layer does not derive one for it. The values are all in the text and their
+    positions are not, so producing a coordinate here would be this system
+    stating where a value sat on evidence it does not have.
+    """
+
+    document = _cell_document(body_rows, columns)
+    legacy = [
+        _StoredClause(data, index)
+        for index, data in enumerate(clauses_from_document(document))
+    ]
+    for clause in legacy:
+        # Exactly what a row stored before the carrier holds: its fragments, and
+        # nothing beside them.
+        clause.source_fragments = [
+            entry
+            for entry in clause.source_fragments
+            if TABLE_STRUCTURE_KEY not in entry
+        ]
+
+    rebuilt = canonical_from_clauses(document.document_id, legacy)
+
+    assert [element.text for element in rebuilt.elements] == [
+        element.text for element in document.elements
+    ]
+    assert all(element.table_cell is None for element in rebuilt.elements)
+    assert all(element.table_structure is None for element in rebuilt.elements)
+    assert not [
+        edge
+        for edge in build_structural_graph(rebuilt).edges
+        if edge.kind in TABLE_EDGE_KINDS
+    ]
+
+
+@pytest.mark.parametrize(("body_rows", "columns"), GRID_SHAPES)
+def test_a_graph_rebuilt_from_clauses_has_the_same_table_edges(
+    body_rows: int, columns: int
+) -> None:
+    """The coordinates survive, so the edges they justify are rebuilt identically.
+
+    Compared against the graph of the document before storage rather than merely
+    asserted non-empty: an edge set that is smaller, larger or differently
+    directed would mean the rebuilt document describes a different table from the
+    one that was parsed, which is the failure this whole carry exists to prevent.
+    """
+
+    document = _cell_document(body_rows, columns)
+    before = build_structural_graph(document)
+    after = build_structural_graph(_round_trip(document))
+
+    def table_edges(graph):
+        return sorted(
+            (edge.source, edge.target, edge.kind)
+            for edge in graph.edges
+            if edge.kind in TABLE_EDGE_KINDS
+        )
+
+    assert table_edges(after) == table_edges(before)
+    assert table_edges(after)
+
+
+@pytest.mark.parametrize(("body_rows", "columns"), GRID_SHAPES)
+def test_the_reading_plan_still_frames_a_cell_after_the_round_trip(
+    body_rows: int, columns: int
+) -> None:
+    """The claim that decides whether a converter change alone can reach a model.
+
+    `_add_table_context` frames a bare value from `header_for`. Before the carry
+    there was no such edge after the round trip, so a cell-level parse reached
+    exactly as far as the clause table and stopped. The same cells are framed on
+    both sides now.
     """
 
     document = _cell_document(body_rows, columns)
@@ -232,27 +293,29 @@ def test_the_reading_plan_cannot_frame_a_cell_after_the_round_trip(
     rebuilt = _round_trip(document)
     rebuilt_graph = build_structural_graph(rebuilt)
     rebuilt_plan = build_reading_plan(rebuilt, rebuilt_graph)
-    assert not [
+    framed_after = {
         target
         for unit in rebuilt_plan.units
         for target in unit.target_element_ids
-        if rebuilt_graph.sources(target, "header_for")
-    ]
+        if target in body_cells and rebuilt_graph.sources(target, "header_for")
+    }
+    assert framed_after == framed_before
 
 
 def test_a_row_joined_into_one_clause_keeps_its_values_together() -> None:
-    """What a row-shaped element still carries once cell structure is gone.
+    """What a row-shaped element carries when its shape was never recorded.
 
     Stated because it is the other half of the comparison and it cuts the other
     way: an element holding a whole row keeps the association between the values
     in that row inside its own text, and that text is the one thing the
-    projection does carry. A parse that splits the same row into one element per
-    cell has nowhere to put the association once coordinates are dropped.
+    projection has always carried.
 
-    The row's column labels now survive alongside its text. They are labels, not
-    positions: nothing here pairs a label with a value, because the joined text
-    is a rendering of the row and splitting it back into cells would be this
-    system guessing where the boundaries were.
+    This row is built without a structure on purpose, which is what a row parsed
+    before the carrier existed looks like. Its labels survive and nothing pairs
+    them with a value, because the joined text is a *rendering* of the row and
+    splitting it back into cells would be this system guessing where the
+    boundaries were. A row is given a coordinate only when one was recorded for
+    it, never because it could be inferred from a separator.
     """
 
     row_text = "Body r1 c0 | Body r1 c1 | Body r1 c2"
@@ -284,3 +347,4 @@ def test_a_row_joined_into_one_clause_keeps_its_values_together() -> None:
     assert survivor.text == row_text
     assert survivor.table_headers == headers
     assert survivor.table_cell is None
+    assert survivor.table_structure is None

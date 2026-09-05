@@ -112,6 +112,193 @@ class TableCellRef(BaseModel):
     merged_into: str | None = None
 
 
+class TableCell(BaseModel):
+    """One cell's value together with the position it occupies in the grid.
+
+    The pair is the point. A value alone is not a fact — "5" means nothing until
+    something says which row and column it sits in — and a position alone cannot
+    be quoted. Holding them together is what lets a later stage answer "which
+    value sits under which column" by *reading* rather than by splitting a
+    rendered line back apart and hoping the separator was not also in the text.
+
+    ``element_id`` is set when the cell is itself a canonical element, so a
+    converter that emits one element per cell keeps the link between the two
+    representations. It is ``None`` for a converter that emits whole rows, which
+    is a fact about that converter and not a gap in this record.
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    text: str = Field(default="", description="The cell's exact text, as the parser read it.")
+    position: TableCellRef
+    element_id: str | None = Field(
+        default=None,
+        description="element_id of this cell, when the cell is a canonical element of its own.",
+    )
+    bbox: BoundingBox | None = Field(
+        default=None,
+        description="Rendered position of the cell, when the source format exposes geometry.",
+    )
+
+
+class TableStructure(BaseModel):
+    """The grid region an element occupies, kept as structure rather than as text.
+
+    WHY A CARRIER RATHER THAN A RENDERING
+    -------------------------------------
+    Both parsers in this platform can see a table's shape and both then throw
+    most of it away. The row parser joins a row's cells with a separator that
+    appears nowhere in the source; the cell parser keeps coordinates in memory
+    and loses them at the clause projection. Either way the only thing that
+    reaches a later stage is a line of display text, so any consumer that wants
+    the shape back has to re-derive it by splitting on the separator — which is
+    guessing where the boundaries were, and guesses wrong the moment a cell
+    legitimately contains the separator.
+
+    This is the record that makes that unnecessary. It holds the cells a parser
+    actually read, each with the coordinate and span it was read at, and it is
+    carried through storage so a rebuilt document has the same shape the parse
+    did.
+
+    WHAT IT REFUSES TO DO
+    ---------------------
+    Nothing here derives structure the source did not state. ``column_labels``
+    is set only by a producer that knows its labels are indexed by column
+    position; a producer whose labels are compacted, partial or unordered leaves
+    it ``None``, and a column then simply has no recorded name. Absent stays
+    absent: an unnamed column is reported as unnamed rather than given the
+    nearest label that happens to be free.
+    """
+
+    model_config = ConfigDict(extra="ignore")
+
+    cells: list[TableCell] = Field(
+        default_factory=list,
+        description="Every cell of the region this element covers, in any order.",
+    )
+    column_labels: list[str] | None = Field(
+        default=None,
+        description=(
+            "Column names indexed by column position, set only by a producer whose "
+            "labels really are positional. `None` means no positional labelling was "
+            "recorded, which is not the same as a grid with no labels."
+        ),
+    )
+
+    @property
+    def ordered_cells(self) -> list[TableCell]:
+        """Every cell in reading order: down the rows, then across the columns.
+
+        Sorted rather than trusted to arrive ordered, so the order is a property
+        of the coordinates and not of whichever loop happened to append them.
+        Two cells cannot tie: a row/column pair identifies at most one cell.
+        """
+
+        return sorted(
+            self.cells, key=lambda cell: (cell.position.row_index, cell.position.column_index)
+        )
+
+    @property
+    def rows(self) -> list[tuple[int, list[TableCell]]]:
+        """The cells grouped by row, rows ascending and cells left to right."""
+
+        grouped: dict[int, list[TableCell]] = {}
+        for cell in self.ordered_cells:
+            grouped.setdefault(cell.position.row_index, []).append(cell)
+        return [(row_index, grouped[row_index]) for row_index in sorted(grouped)]
+
+    @property
+    def sole_cell(self) -> TableCell | None:
+        """The one cell this structure describes, or ``None`` if it describes more.
+
+        A structure holding exactly one cell is a *cell*; a structure holding
+        several is a row or a region. Only the first can lend its coordinate to
+        the element that carries it, and asking the question here keeps that
+        rule in one place.
+        """
+
+        return self.cells[0] if len(self.cells) == 1 else None
+
+    def labels_by_column(self) -> dict[int, tuple[str, ...]]:
+        """Column index -> the labels recorded for it, outermost header first.
+
+        Two sources, in a fixed order and never mixed within one column:
+
+        1. header cells present in this structure, which carry their own
+           coordinates and spans — a header spanning three columns names all
+           three, which is exactly the qualification that flattening loses;
+        2. ``column_labels``, positionally, for columns no header cell covered.
+
+        A column named by neither is absent from the result. It is not given an
+        empty string, because "" is a label a header cell can genuinely hold and
+        the two must stay distinguishable.
+        """
+
+        labels: dict[int, list[str]] = {}
+        for cell in self.ordered_cells:
+            if not cell.position.is_header or cell.position.merged_into is not None:
+                continue
+            name = cell.text.strip()
+            if not name:
+                continue
+            for column in covered_columns(cell.position):
+                labels.setdefault(column, []).append(name)
+        for column, label in enumerate(self.column_labels or []):
+            if column in labels:
+                continue
+            name = label.strip()
+            if name:
+                labels[column] = [name]
+
+        return {column: tuple(names) for column, names in sorted(labels.items())}
+
+    def header_value_pairs(self) -> list[tuple[tuple[str, ...], TableCell]]:
+        """Every value cell with the labels recorded for the columns it covers.
+
+        Deterministic and derived only from what is present: the labels come
+        from :meth:`labels_by_column`, and a cell whose columns nobody named
+        arrives with an empty tuple rather than with a guess. Order is reading
+        order, so the same structure always produces the same pairing.
+
+        Header cells are not values and are skipped. So is a cell marked as
+        covered by another cell's merge: it is a placeholder for a value stored
+        elsewhere, and emitting it would report one value twice.
+        """
+
+        labels = self.labels_by_column()
+        pairs: list[tuple[tuple[str, ...], TableCell]] = []
+        for cell in self.ordered_cells:
+            if cell.position.is_header or cell.position.merged_into is not None:
+                continue
+            covered: list[str] = []
+            for column in covered_columns(cell.position):
+                for name in labels.get(column, ()):
+                    if name not in covered:
+                        covered.append(name)
+            pairs.append((tuple(covered), cell))
+        return pairs
+
+
+def covered_columns(position: TableCellRef) -> range:
+    """Every column index a cell occupies, not merely the one it starts in.
+
+    One rule, in one place: a merged cell that heads three columns heads all
+    three, and every consumer that resolves a span has to agree about that or
+    two of them will disagree about which column a value sits under.
+    """
+
+    return range(position.column_index, position.column_index + position.column_span)
+
+
+#: Key the persisted carrier travels under inside a clause's provenance list.
+#:
+#: Namespaced with a prefix no source fragment uses, so a reader wanting
+#: fragments can skip it by shape and a record written before this existed reads
+#: back exactly as it did before. Declared beside the model it serialises rather
+#: than beside either the writer or the reader, so the two cannot drift.
+TABLE_STRUCTURE_KEY = "__table_structure__"
+
+
 class SourceFragment(BaseModel):
     """A contiguous run of characters on one physical page.
 
@@ -202,6 +389,14 @@ class CanonicalElement(BaseModel):
         default=None,
         description="Position and merge span, set on table_cell elements.",
     )
+    table_structure: TableStructure | None = Field(
+        default=None,
+        description=(
+            "The cells this element covers, each with its coordinate and span. Set by a "
+            "producer that read a grid; `None` on every element that is not part of one, "
+            "and on records written before the carrier existed."
+        ),
+    )
     caption_for: str | None = Field(
         default=None,
         description="element_id of the table/figure this caption describes.",
@@ -249,6 +444,55 @@ class CanonicalElement(BaseModel):
     @property
     def spans_pages(self) -> bool:
         return len(self.pages) > 1
+
+
+def table_structure_of(element: CanonicalElement) -> TableStructure | None:
+    """The grid an element carries, whichever way its converter expressed it.
+
+    Two shapes reach this point and neither is wrong. A converter that emits one
+    element per *cell* states the coordinate on ``table_cell`` and says nothing
+    about its neighbours; a converter that emits one element per *row* has
+    several cells and no single coordinate to put on the element. Both are the
+    same fact — this element covers this part of this grid — and a consumer that
+    had to know which converter ran would be reading the parser rather than the
+    document.
+
+    So the row shape is taken as given and the cell shape is lifted into it. The
+    lift adds nothing: the cell's own text and its own recorded coordinate are
+    all that go in. An element with neither returns ``None``, because a grid it
+    was never part of is not something to invent one for.
+    """
+
+    if element.table_structure is not None:
+        return element.table_structure
+    if element.table_cell is not None:
+        return TableStructure(
+            cells=[
+                TableCell(
+                    text=element.text,
+                    position=element.table_cell,
+                    element_id=element.element_id,
+                )
+            ]
+        )
+    return None
+
+
+def table_cell_of(
+    element_type: str | None, structure: TableStructure | None
+) -> TableCellRef | None:
+    """The coordinate an element holds *in its own right*, or ``None``.
+
+    A row's structure describes several cells, and none of them is the row's own
+    position — a row does not sit in a column. Only an element that is itself one
+    cell may take a coordinate from its structure, which is what this decides, in
+    one place, for everything that rebuilds an element from storage.
+    """
+
+    if structure is None or element_type != "table_cell":
+        return None
+    sole = structure.sole_cell
+    return sole.position if sole is not None else None
 
 
 class CanonicalPage(BaseModel):

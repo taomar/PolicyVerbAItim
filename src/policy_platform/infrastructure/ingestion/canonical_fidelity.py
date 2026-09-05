@@ -63,7 +63,7 @@ character ever legitimately changes.
 
 WHAT THIS CANNOT PROVE, AND WHY THAT IS SAID OUT LOUD
 -----------------------------------------------------
-``table_cell_join`` is different in kind, and excluded. A table row's text is
+``table_cell_join`` is different in kind. A table row's text is
 ``" | ".join(cells)`` -- a separator that appears nowhere in the source -- and
 its fragments are the raw lines the row's *bounding box* covers, falling back
 to the whole table's span when no row box is available. So a row's provenance
@@ -73,19 +73,28 @@ interleave characters from cells the row does not contain, by construction.
 Measured on the live corpus, this is 400 of 3,000 elements. Every one of them
 is a table row, and none is a defect.
 
-The consequence is worth stating plainly rather than burying in an exclusion:
-**a table row's text cannot be proved to have come from the source by
-reconstruction.** Its cells are individually verbatim, but nothing here can
-demonstrate that. That is a genuinely weaker guarantee than prose enjoys, and
-it applies to exactly the content -- rate tables, allowance schedules -- where a
-misread number is most costly.
+The consequence used to be worth stating plainly: **a table row's text could not
+be proved to have come from the source by reconstruction.** Its cells were
+individually verbatim and nothing here could demonstrate it, which was a
+genuinely weaker guarantee than prose enjoyed, on exactly the content -- rate
+tables, allowance schedules -- where a misread number is most costly.
 
-The right check for that class is containment-in-order rather than equality:
-every character of the row present in the fragments, in order, interleaved with
-others. That is precisely what ``FragmentResolution.span_not_isolating`` in
-``contracts/canonical_document.py`` is being built to express, so it belongs
-there and is deliberately not reimplemented here. A second, parallel judgement
-about the same evidence is how two checks come to disagree.
+That gap closes for a row that records the cells it was assembled from. The
+cells are the parser's own text; joining them is the same deterministic step the
+assembly performed, so the comparison is as exact as the prose one and is made
+the same way. A row that records no cells is still unprovable and still says so:
+the check reports what it established, never what it assumed. This is why the
+carrier exists at the canonical layer rather than at the point of assembly --
+a proof that is dropped at the next boundary proves nothing to anyone after it.
+
+The remaining weaker case is the *fragments* of such a row, which are still
+geometric. The right check for that class is containment-in-order rather than
+equality: every character of the row present in the fragments, in order,
+interleaved with others. That is precisely what
+``FragmentResolution.span_not_isolating`` in ``contracts/canonical_document.py``
+is being built to express, so it belongs there and is deliberately not
+reimplemented here. A second, parallel judgement about the same evidence is how
+two checks come to disagree.
 """
 
 from __future__ import annotations
@@ -105,6 +114,11 @@ _BREAK = re.compile(r"[ \t]*\n[ \t]*")
 #: continued by a lower-case fragment. Mirrors the condition in `_join_lines`.
 _HYPHEN_BREAK = re.compile(r"(?<=[^\W\d_])-[ \t]*\n[ \t]*(?=[a-z])")
 
+#: The separator a row's cells are assembled with. Declared here so the reader
+#: of an assembled row and its writer are pinned together rather than each
+#: carrying its own copy of a string that must match.
+_CELL_SEPARATOR = " | "
+
 #: Transformations this module knows how to reproduce. Anything outside this
 #: set fails rather than passing unmodelled -- see "fails closed" above.
 _MODELLED: frozenset[str] = frozenset(
@@ -115,9 +129,35 @@ _MODELLED: frozenset[str] = frozenset(
     }
 )
 
-#: Declared transformations whose element text is assembled rather than joined,
-#: and so cannot be reconstructed here. Excluded knowingly, and counted.
+#: Declared transformations whose element text is assembled rather than joined.
+#: Reconstructible only from the cells the assembly used, and unprovable on an
+#: element that does not record them.
 _NOT_RECONSTRUCTIBLE: frozenset[str] = frozenset({"table_cell_join"})
+
+
+def rebuild_row_text(element: CanonicalElement) -> str | None:
+    """Reassemble a row from the cells it records, or ``None`` if it records none.
+
+    This is the half of the chain the module docstring says cannot be closed by
+    reconstruction — and it closes for exactly those rows that kept the cells
+    they were assembled from. The row's text is its cells joined with a separator
+    this platform chose, so given the cells the join is reproducible; given only
+    the joined line it is not, because splitting it back apart assumes no cell
+    contains the separator, and nothing establishes that.
+
+    Nothing is read from the source fragments here. A row's fragments are located
+    by bounding box and interleave characters from cells the row does not
+    contain, which is precisely why they cannot settle the question.
+
+    ``None`` means "no cells recorded", which is the state of every row parsed
+    before the cells were carried. It is a different answer from "the cells do
+    not reproduce the text", and the caller keeps them apart.
+    """
+
+    structure = element.table_structure
+    if structure is None or not structure.cells:
+        return None
+    return _CELL_SEPARATOR.join(cell.text for cell in structure.ordered_cells)
 
 
 @dataclass(frozen=True)
@@ -168,11 +208,27 @@ def verify_element_text(document: CanonicalDocument) -> FidelityReport:
         declared = set(element.transformations)
 
         if declared & _NOT_RECONSTRUCTIBLE:
-            unprovable.append(
-                f"{element.element_id}: assembled from cells with a separator that is "
-                "not in the source, and located by bounding box, so its text cannot be "
-                "reconstructed from its fragments"
-            )
+            rebuilt_row = rebuild_row_text(element)
+            if rebuilt_row is None:
+                unprovable.append(
+                    f"{element.element_id}: assembled from cells with a separator that is "
+                    "not in the source, and located by bounding box, so its text cannot be "
+                    "reconstructed from its fragments"
+                )
+            elif rebuilt_row == element.text or rebuilt_row.strip() == element.text:
+                # The only tolerance is the strip the element builder applies, so
+                # a row opening or closing on an empty cell still reproduces.
+                # Every character between the separators has to match exactly.
+                verified += 1
+            else:
+                # Two recorded facts about one row disagreeing is a failure, not
+                # an exemption. Passing over it would leave the row counted as
+                # unprovable while it is in fact provably wrong, which is the
+                # verdict this module refuses to give.
+                failures.append(
+                    f"{element.element_id}: text is not the cells it records joined as a "
+                    f"row; expected {rebuilt_row[:80]!r}, stored {element.text[:80]!r}"
+                )
             continue
 
         unknown = sorted(declared - _MODELLED)

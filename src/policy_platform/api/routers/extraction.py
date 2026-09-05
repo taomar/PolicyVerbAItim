@@ -39,6 +39,8 @@ from policy_platform.domain.models import Clause, DocumentVersion
 from policy_platform.infrastructure.ingestion import source_structure
 from policy_platform.infrastructure.ingestion.canonical_rebuild import (
     canonical_from_clauses,
+    stored_fragments,
+    stored_table_structure,
 )
 from policy_platform.infrastructure.persistence.db import get_session
 
@@ -78,6 +80,37 @@ def _canonical_from_clauses(document_id: str, clauses: list[Clause]):
     return canonical_from_clauses(document_id, clauses)
 
 
+def _canonical_element_payload(clause: Clause) -> dict:
+    """One canonical element as this endpoint has always described it, plus shape.
+
+    ``source_fragments`` is filtered rather than handed over raw. The stored list
+    is the clause's whole provenance and may now carry a namespaced record beside
+    the fragments; a consumer iterating it expects a page and offsets on every
+    entry, so the fragments are separated here and the shape is published under
+    its own key.
+
+    That key is present only when there is a shape to publish, which keeps the
+    response for every other element byte for byte what it was — and gives a
+    consumer the grid itself, so nothing downstream has to split a rendered row
+    back apart to find out what was in it.
+    """
+
+    payload = {
+        "element_id": clause.element_id,
+        "element_type": clause.element_type,
+        "sequence": clause.sequence,
+        "section": clause.section,
+        "page": clause.page,
+        "clause_ref": clause.clause_ref,
+        "text": clause.text,
+        "source_fragments": stored_fragments(clause.source_fragments),
+    }
+    structure = stored_table_structure(clause.source_fragments)
+    if structure is not None:
+        payload["table_structure"] = structure.model_dump(exclude_none=True)
+    return payload
+
+
 @router.get("/{document_version_id}/canonical")
 async def get_canonical_document(
     document_version_id: uuid.UUID,
@@ -95,19 +128,7 @@ async def get_canonical_document(
         "document_version_id": str(document_version_id),
         "total_elements": len(clauses),
         "offset": offset,
-        "elements": [
-            {
-                "element_id": clause.element_id,
-                "element_type": clause.element_type,
-                "sequence": clause.sequence,
-                "section": clause.section,
-                "page": clause.page,
-                "clause_ref": clause.clause_ref,
-                "text": clause.text,
-                "source_fragments": clause.source_fragments or [],
-            }
-            for clause in window
-        ],
+        "elements": [_canonical_element_payload(clause) for clause in window],
     }
 
 

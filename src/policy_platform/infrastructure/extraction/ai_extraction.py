@@ -49,7 +49,11 @@ from sqlalchemy.orm import selectinload
 
 from policy_platform.contracts.passage import PolicyPassage
 from policy_platform.contracts.provision_grouping import Provision, raw_groups
-from policy_platform.contracts.reading_plan import DividedProvision, render_table_columns
+from policy_platform.contracts.reading_plan import (
+    DividedProvision,
+    render_table_cells,
+    render_table_columns,
+)
 from policy_platform.contracts.structural_graph import build_structural_graph
 from policy_platform.contracts.policy import (
     AmbiguityStatus,
@@ -87,6 +91,7 @@ from policy_platform.infrastructure.extraction.formulation_mapping import (
 from policy_platform.infrastructure.ingestion import source_structure
 from policy_platform.infrastructure.ingestion.canonical_rebuild import (
     canonical_from_clauses,
+    stored_table_structure,
 )
 from policy_platform.infrastructure.extraction.continuation_adjudicator import (
     ClauseWindow,
@@ -205,8 +210,24 @@ def _rendered_size(clause: Clause) -> int:
 
 
 def _column_marker(clause: Clause) -> str:
-    """The column-names line for a table row, or "" for anything else."""
+    """The table line for a clause that is a row, or "" for anything else.
 
+    Two lines are possible and the stronger one is preferred. Where the row's
+    shape was recorded, each value is shown under the column recorded for its
+    own position — the pairing the column-names line explicitly tells a reader
+    not to attempt, because without coordinates it would be a guess. Where it was
+    not, nothing has changed: a clause stored before the shape was carried, or by
+    a parser that never had it, still gets exactly the line it got before.
+
+    Read through ``getattr`` because this is handed real rows and stand-ins
+    alike, and a stand-in that predates the carrier means "no structure", not a
+    crash.
+    """
+
+    structure = stored_table_structure(getattr(clause, "source_fragments", None))
+    paired = render_table_cells(structure)
+    if paired:
+        return paired
     return render_table_columns(clause.table_headers)
 
 
